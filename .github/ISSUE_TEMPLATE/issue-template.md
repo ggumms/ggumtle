@@ -1,7 +1,7 @@
 ---
 name: Issue template
 about: "작업 사항을 입력해 주세요. \U0001F643"
-title: "[Feat] 구현할 기능을 입력해 주세요"
+title: 'Feat: 구현할 기능을 입력해 주세요'
 labels: ''
 assignees: ''
 
