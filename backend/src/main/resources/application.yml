@@ -1,0 +1,76 @@
+server:
+  port: 8081
+
+spring:
+  # logging
+  logging:
+    level:
+      root: INFO
+      web: DEBUG
+      com:
+        ggums:
+          ggumtle: DEBUG
+      org.springframework.security: DEBUG
+      org.springframework.web.cors: DEBUG
+      org:
+        hibernate:
+          sql: debug
+
+  # DB Connection Info
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ninetofive?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ninetofive
+    password: 98765
+
+  # Jpa Setting
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto:
+    properties:
+      hibernate:
+        format_sql: true
+
+  # jwt setting
+  jwt:
+    secret:
+      access: bucket_access_token
+      refresh: bucket_refresh_token
+      develop_token: Zml2ZXRvbmluZQ==
+
+  # Redis setting
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      address: redis://127.0.0.1:6379
+
+  # Java Mail Sender Setting
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+# Swagger
+springdoc:
+  packages-to-scan: com.ggums.ggumtle.controller
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger-ui
+    disable-swagger-default-url: true
+    display-request-duration: true
+    tags-sorter: alpha
+    operations-sorter: alpha
+    info:
+      title: GGUMTLE API Server
+      description: NineToFive API Server
+      version: 0.0.1
