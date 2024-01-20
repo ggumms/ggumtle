@@ -1,9 +1,9 @@
 package com.ggums.ggumtle.common.jwt;
 
-import com.S10P11D111.NineToFive.common.exception.CustomException;
-import com.S10P11D111.NineToFive.common.exception.ExceptionType;
-import com.S10P11D111.NineToFive.common.redis.RefreshTokenRepository;
-import com.S10P11D111.NineToFive.common.security.UserDetailsServiceImpl;
+import com.ggums.ggumtle.common.exception.CustomException;
+import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.redis.RefreshTokenRepository;
+import com.ggums.ggumtle.common.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
