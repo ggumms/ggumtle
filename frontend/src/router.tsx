@@ -10,6 +10,7 @@ import BucketSearch from './pages/Search/components/BucketSearch'
 import ReviewSearch from './pages/Search/components/ReviewSearch'
 import UserPage from './pages/UserPage/UserPage'
 import BucketDetail from './pages/Bucket/BucketDetail'
+import AddBucket from './pages/Bucket/AddBucket'
 
 const router = createBrowserRouter([
 	{
@@ -56,10 +57,8 @@ const router = createBrowserRouter([
 		path: '/user/:userId',
 		element: <UserPage />,
 	},
-	{
-		path: '/bucket/:bucketId',
-		element: <BucketDetail />,
-	},
+	{ path: '/bucket/:bucketId', element: <BucketDetail /> },
+	{ path: '/bucket/write', element: <AddBucket /> },
 ])
 
 export default router
