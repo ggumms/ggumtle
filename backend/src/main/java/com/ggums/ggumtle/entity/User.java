@@ -23,6 +23,10 @@ public class User extends BaseTime implements UserDetails {
     @Column(nullable = false)
     private Long id;
 
+    private String userNickname;
+
+    private String userProfileImage;
+
     private LocalDate birthDate;
 
     private Gender gender;
