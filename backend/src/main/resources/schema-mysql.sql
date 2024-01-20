@@ -10,3 +10,12 @@ create table user (
     updated_date DATETIME(6) NOT NULL,
     PRIMARY KEY (id)
 );
+
+-- Review Table
+create table review (
+    created_date datetime(6) not null,
+    id           bigint not null auto_increment,
+    updated_date datetime(6) not null,
+    context      LONGTEXT,
+    primary key (id)
+);
