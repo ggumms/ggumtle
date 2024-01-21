@@ -72,8 +72,8 @@ const router = createBrowserRouter([
 			</DefaultLayout>
 		),
 		children: [
-			{ path: 'main', element: <MainInfo /> },
 			{ path: 'category', element: <CategoryInfo /> },
+			{ path: 'main', element: <MainInfo /> },
 			{ path: 'place', element: <PlaceInfo /> },
 			{ path: 'additional', element: <AdditionalInfo /> },
 		],
@@ -84,8 +84,8 @@ const router = createBrowserRouter([
 // export const addBucketHeaderList = () => {
 // }
 export const addBucketHeaderList: MultiPageHeaderInfo[] = [
-	{ name: '꿈 내용', path: 'main' },
 	{ name: '카테고리', path: 'category' },
+	{ name: '꿈 내용', path: 'main' },
 	{ name: '장소', path: 'place' },
 	{ name: '추가정보', path: 'additional' },
 ]

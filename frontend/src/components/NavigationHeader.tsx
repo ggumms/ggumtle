@@ -12,7 +12,14 @@ const NavigationHeader = ({ headerData }: NavigationHeaderProps) => {
 			{headerData.map((headerItem, index) => {
 				return (
 					<li key={`hedaer-${index}`}>
-						<NavLink to={headerItem.path}>{headerItem.name}</NavLink>
+						<NavLink
+							to={headerItem.path}
+							className={({ isActive }) =>
+								isActive ? 'text-[#454645] font-[700]' : 'text-[#D9D9D9]'
+							}
+						>
+							{headerItem.name}
+						</NavLink>
 					</li>
 				)
 			})}
