@@ -13,9 +13,10 @@ create table user (
 
 -- Review Table
 create table review (
-    created_date datetime(6) not null,
     id           bigint not null auto_increment,
-    updated_date datetime(6) not null,
+    title        VARCHAR(255),
     context      LONGTEXT,
+    created_date datetime(6) not null,
+    updated_date datetime(6) not null,
     primary key (id)
 );
