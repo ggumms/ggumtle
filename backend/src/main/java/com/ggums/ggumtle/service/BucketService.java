@@ -99,6 +99,7 @@ public class BucketService {
                 .address(bucket.getAddress())
                 .dayCount(ChronoUnit.DAYS.between(bucket.getCreatedDate(), LocalDateTime.now()))
                 .writeDate(bucket.getCreatedDate())
+                .achievementDate(bucket.getAchievementDate())
                 .category(bucket.getInterests().stream()
                         .map(Interest::getName)
                         .collect(Collectors.toCollection(ArrayList::new)))

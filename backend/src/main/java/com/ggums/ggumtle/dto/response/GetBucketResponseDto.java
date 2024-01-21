@@ -1,5 +1,6 @@
 package com.ggums.ggumtle.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,7 +21,9 @@ public class GetBucketResponseDto {
     private Long longitude;
     private String address;
     private Long dayCount;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate achievementDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime writeDate;
     private List<String> category;
     private Boolean isPrivate;
