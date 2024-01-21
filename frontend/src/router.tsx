@@ -11,7 +11,12 @@ import ReviewSearch from './pages/Search/components/ReviewSearch'
 import UserPage from './pages/UserPage/UserPage'
 import BucketDetail from './pages/Bucket/BucketDetail'
 import AddBucket from './pages/Bucket/AddBucket'
+import MainInfo from './pages/Bucket/AddBucket/MainInfo'
 import DefaultLayout from './components/layout/DefaultLayout'
+import CategoryInfo from './pages/Bucket/AddBucket/CategoryInfo'
+import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
+import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo'
+import { MultiPageHeaderInfo } from './types/router'
 
 const router = createBrowserRouter([
 	{
@@ -66,7 +71,23 @@ const router = createBrowserRouter([
 				<AddBucket />
 			</DefaultLayout>
 		),
+		children: [
+			{ path: 'main', element: <MainInfo /> },
+			{ path: 'category', element: <CategoryInfo /> },
+			{ path: 'place', element: <PlaceInfo /> },
+			{ path: 'additional', element: <AdditionalInfo /> },
+		],
 	},
 ])
+
+//  TODO : router 배열을 변수로 분리해서 router 배열을 이용해서 headerList 제공하도록 만들기
+// export const addBucketHeaderList = () => {
+// }
+export const addBucketHeaderList: MultiPageHeaderInfo[] = [
+	{ name: '꿈 내용', path: 'main' },
+	{ name: '카테고리', path: 'category' },
+	{ name: '장소', path: 'place' },
+	{ name: '추가정보', path: 'additional' },
+]
 
 export default router
