@@ -6,6 +6,8 @@ import { MultiPageHeaderInfo } from '../../../types/router'
 interface MultiPageLayoutProps {
 	headerData: MultiPageHeaderInfo[]
 }
+
+// TODO: div 태그 삭제하기
 const MultiPageLayout = ({ headerData }: MultiPageLayoutProps) => {
 	return (
 		<div>
