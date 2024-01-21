@@ -17,8 +17,8 @@ public class GetBucketResponseDto {
     private String timeCapsule;
     private String bucketPicture;
     private String color;
-    private Long latitude;
-    private Long longitude;
+    private Double latitude;
+    private Double longitude;
     private String address;
     private Long dayCount;
     @JsonFormat(pattern = "yyyy-MM-dd")

@@ -33,9 +33,9 @@ public class Bucket extends BaseTime {
 
     private String bucketPicture;
 
-    private Long latitude;
+    private Double latitude;
 
-    private Long longitude;
+    private Double longitude;
 
     private String color;
 
