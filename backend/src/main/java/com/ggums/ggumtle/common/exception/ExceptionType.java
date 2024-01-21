@@ -31,6 +31,9 @@ public enum ExceptionType {
     // bucket
     BUCKET_NOT_FOUND(404, "해당 버킷을 찾을 수 없습니다."),
     BUCKET_NOT_VALID(400, "버킷이 비공개입니다."),
+
+    // review
+    REVIEW_NOT_FOUND(404, "해당 후기를 찾을 수 없습니다.")
     ;
 
     private final int code;
