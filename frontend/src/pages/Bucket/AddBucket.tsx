@@ -1,7 +1,7 @@
 import React from 'react'
 
 const AddBucket = () => {
-	return <div>This is Add Bucket Page</div>
+	return <div className="text-orange-500">This is Add Bucket Page</div>
 }
 
 export default AddBucket
