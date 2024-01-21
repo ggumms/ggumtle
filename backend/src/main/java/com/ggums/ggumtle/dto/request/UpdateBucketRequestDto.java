@@ -20,9 +20,9 @@ public class UpdateBucketRequestDto {
     private String timeCapsule;
 
     @Schema(example = "23.452")
-    private Long latitude;
+    private Double latitude;
     @Schema(example = "143.213")
-    private Long longitude;
+    private Double longitude;
 
     @Schema(example = "dream green")
     @Size(max = 255, message = "타임캡슐 크기를 초과하였습니다.")
