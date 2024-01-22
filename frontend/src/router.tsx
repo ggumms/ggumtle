@@ -13,6 +13,7 @@ import ReviewSearch from './pages/Search/components/ReviewSearch'
 import UserPage from './pages/UserPage/UserPage'
 import BucketDetail from './pages/Bucket/BucketDetail'
 import DefaultLayout from './components/layout/DefaultLayout'
+import NotFoundPage from './pages/NotfoundPage'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -77,6 +78,7 @@ const routerData: RouterElement[] = [
 		element: <BucketDetail />,
 	},
 	{ path: '/bucket/:bucketId', element: <BucketDetail /> },
+	{ path: '*', element: <NotFoundPage /> },
 ]
 
 const router: RemixRouter = createBrowserRouter(
