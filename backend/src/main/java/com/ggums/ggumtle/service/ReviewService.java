@@ -79,45 +79,11 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
 
-//        Bucket bucket = review.getBucket();
-//        User writer = bucket.getUser();
-
-         // 버킷이 비공개이면서 본인의 후기가 아닌 경우 리뷰 열람 불가능
-//        if (bucket.getIsprivate() && !writer.getId().equals(user.getId())) {
-//            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
-//        }
-
-//        List<String> categories = new ArrayList<>();
-//        for (Interest interest : bucket.getInterests()) {
-//            categories.add(interest.getName());
-//        }
-
-//        Map<String, Integer> reactionCounts = new HashMap<>();
-//        String myReaction = null;
-//        for (ReviewReaction reaction : review.getReviewReactions()) {
-//            String reactionType = reaction.getReaction();
-//            reactionCounts.put(reactionType, reactionCounts.getOrDefault(reactionType, 0) + 1);
-//
-//            if (reaction.getUser().equals(user)) {
-//                myReaction = reaction.getReaction();
-//            }
-//        }
-
         return ReviewResponseDto.builder()
-//                .writerId(writer.getId())
-//                .writerProfileImage(writer.getUserProfileImage())
-//                .writerNickname(writer.getUserNickname())
-//                .representativeBucketTitle()
-//                .isAchieved()
-//                .daysSinceDream()
-//                .bucketTitle(bucket.getTitle())
                 .reviewTitle(review.getTitle())
                 .reviewContext(review.getContext())
                 .reviewCreatedDate(review.getCreatedDate())
                 .reviewUpdatedDate(review.getUpdatedDate())
-//                .categories(categories)
-//                .reactionCounts(reactionCounts)
-//                .myReaction(myReaction)
                 .build();
     }
 
@@ -125,11 +91,6 @@ public class ReviewService {
     public Long putReview(User user, Long reviewId, ReviewRequestDto requestDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
-
-        // 본인의 후기가 아니면 수정 불가능
-//        if (!review.getBucket().getUser().getId().equals(user.getId())) {
-//            throw new CustomException(ExceptionType.NOT_VALID_USER);
-//        }
 
         review.setTitle(requestDto.getTitle());
         review.setContext(requestDto.getContext());
@@ -140,11 +101,6 @@ public class ReviewService {
     public String deleteReview(User user, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
-
-        // 본인의 후기가 아니면 삭제 불가능
-//        if (!review.getBucket().getUser().getId().equals(user.getId())) {
-//            throw new CustomException(ExceptionType.NOT_VALID_USER);
-//        }
 
         reviewRepository.delete(review);
 

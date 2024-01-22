@@ -18,13 +18,11 @@ public class ReviewController {
 
     @PostMapping
     public Long postReview(@AuthenticationPrincipal User user, @RequestBody ReviewRequestDto requestDto) {
-//        return new Response("review_id", reviewService.postReview(user, requestDto));
         return reviewService.postReview(user, requestDto);
     }
 
     @PostMapping("/image")
     public String postImage(@RequestParam final MultipartFile image) {
-//        return Response("file_path", reviewService.postImage(image));
         return reviewService.postImage(image);
     }
 
