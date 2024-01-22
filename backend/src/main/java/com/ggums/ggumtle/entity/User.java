@@ -29,6 +29,7 @@ public class User extends BaseTime implements UserDetails {
 
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private LocalDateTime deletedDate;

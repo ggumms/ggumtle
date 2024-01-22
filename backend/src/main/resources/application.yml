@@ -24,7 +24,7 @@ spring:
   # DB Connection Info
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ninetofive?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/ninetofive?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: ninetofive
     password: 98765
 
@@ -35,6 +35,7 @@ spring:
       ddl-auto:
     properties:
       hibernate:
+        default_batch_fetch_size: 100
         format_sql: true
 #        show_sql: true  # DB로 날리는 쿼리를 출력합니다. - inhwa
 
@@ -64,6 +65,10 @@ spring:
           auth: true
           starttls:
             enable: true
+
+  # Web Address
+  web:
+    baseUrl: http://localhost:8081
 
 # Swagger
 springdoc:
