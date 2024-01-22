@@ -33,8 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/**",
             /* swagger v3 -> authorization */
             "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/image/**"
+            "/swagger-ui/**"
     };
     private final RequestMatcher permitMatcher;
 
