@@ -11,7 +11,7 @@ import ReviewSearch from './pages/Search/components/ReviewSearch'
 import UserPage from './pages/UserPage/UserPage'
 import BucketDetail from './pages/Bucket/BucketDetail'
 
-const router = createBrowserRouter([
+const routerData = [
 	{
 		path: 'auth',
 		element: <LoginPage />,
@@ -60,6 +60,8 @@ const router = createBrowserRouter([
 		path: '/bucket/:bucketId',
 		element: <BucketDetail />,
 	},
-])
+	{ path: '/bucket/:bucketId', element: <BucketDetail /> },
+]
+const router = createBrowserRouter(routerData)
 
 export default router
