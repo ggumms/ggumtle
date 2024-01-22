@@ -5,9 +5,9 @@ import { BucketInfoProps } from '../interfaces'
 
 const ProfileBucketWide = ({ bucketInfo }: BucketInfoProps) => {
 	const { title, color, dDay, isLock } = bucketInfo
-	
+
 	return (
-		<div className="flex justify-between px-3">
+		<div className="flex justify-between px-3 pt-10">
 			<div className="text-text">
 				<p>{title}</p>
 				<p className="text-xs">
@@ -19,7 +19,7 @@ const ProfileBucketWide = ({ bucketInfo }: BucketInfoProps) => {
 				</p>
 			</div>
 			<div className="flex flex-col items-end justify-center">
-				<div className="w-6 h-6 rounded-full bg-green-300"></div>
+				<div className={`w-6 h-6 rounded-full bg-[#52A88C]`}></div>
 				<div className={isLock ? 'pt-2' : 'hidden'}>
 					<FaLock />
 				</div>
