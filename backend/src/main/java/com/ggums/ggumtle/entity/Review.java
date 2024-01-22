@@ -27,6 +27,6 @@ public class Review extends BaseTime {
     @Column(columnDefinition = "LONGTEXT")
     private String context;
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ReviewReaction> reviewReactions = new ArrayList<>();
+//    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+//    List<ReviewReaction> reviewReactions = new ArrayList<>();
 }

@@ -1,23 +1,26 @@
 package com.ggums.ggumtle.dto.response;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+@Getter
 @Builder
 public class ReviewResponseDto {
+    // bucket
+//    private String bucketTitle;
+
     // user
-    private Long writerId;
-    private String writerProfileImage;
-    private String writerNickname;
+//    private Long writerId;
+//    private String writerProfileImage;
+//    private String writerNickname;
+
 //    private String representativeBucketTitle;
 //    private Boolean isAchieved; // null 값일 수 있으므로 래퍼 클래스로 선언
 //    private int daysSinceDream;
-
-    // bucket
-    private String bucketTitle;
 
     // review
     private String reviewTitle;
