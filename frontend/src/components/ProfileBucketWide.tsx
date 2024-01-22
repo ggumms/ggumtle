@@ -8,8 +8,8 @@ const ProfileBucketWide = ({ bucketInfo }: BucketInfoProps) => {
 	
 	return (
 		<div className="flex justify-between px-3">
-			<div className="">
-				<p className="text-text">{title}</p>
+			<div className="text-text">
+				<p>{title}</p>
 				<p className="text-xs">
 					를 마음에 품은지{' '}
 					<span className={`text-${color}`}>
