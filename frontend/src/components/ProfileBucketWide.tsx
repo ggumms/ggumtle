@@ -20,7 +20,7 @@ const ProfileBucketWide = ({ bucketInfo }: BucketInfoProps) => {
 			</div>
 			<div className="flex flex-col items-end justify-center">
 				<div className="w-6 h-6 rounded-full bg-green-300"></div>
-				<div className={isLock ? '' : 'hidden'}>
+				<div className={isLock ? 'pt-2' : 'hidden'}>
 					<FaLock />
 				</div>
 			</div>
