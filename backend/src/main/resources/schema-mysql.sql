@@ -11,6 +11,16 @@ CREATE TABLE user (
     PRIMARY KEY (id)
 );
 
+-- Review Table
+create table review (
+    id           bigint not null auto_increment,
+    title        VARCHAR(255),
+    context      LONGTEXT,
+    created_date datetime(6) not null,
+    updated_date datetime(6) not null,
+    primary key (id)
+);
+
 -- Bucket Table
 CREATE TABLE bucket (
     achievement_date DATE,
@@ -47,5 +57,3 @@ CREATE TABLE reactions (
     FOREIGN KEY (bucket_id) REFERENCES bucket(id),
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
-
-

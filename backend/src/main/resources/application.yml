@@ -16,6 +16,11 @@ spring:
         hibernate:
           sql: debug
 
+#          # "?"로 표시되던 파라미터 값이 무엇인지 알 수 있습니다. - inhwa
+#          type:
+#            descriptor:
+#              sql: trace
+
   # DB Connection Info
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -32,6 +37,7 @@ spring:
       hibernate:
         default_batch_fetch_size: 100
         format_sql: true
+#        show_sql: true  # DB로 날리는 쿼리를 출력합니다. - inhwa
 
   # jwt setting
   jwt:
