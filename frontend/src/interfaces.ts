@@ -4,3 +4,7 @@ export interface IBucketWide {
 	dDay: number
 	isLock: boolean
 }
+
+export interface BucketInfoProps {
+	bucketInfo: IBucketWide
+}
