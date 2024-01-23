@@ -2,10 +2,9 @@ import { Router as RemixRouter } from '@remix-run/router/dist/router'
 
 import { createBrowserRouter } from 'react-router-dom'
 import LoginPage from './pages/auth/LoginPage'
-import FollowingTab from './pages/Rader/components/FollowingTab'
-import AllTab from './pages/Rader/components/AllTab'
-import Rader from './pages/Rader/Rader'
-import AlarmPage from './pages/Rader/components/AlarmPage'
+import FollowingTab from './pages/Radar/components/FollowingTab'
+import AllTab from './pages/Radar/components/AllTab'
+import AlarmPage from './pages/Radar/components/AlarmPage'
 import SearchPage from './pages/Search/SearchPage'
 import UserSearch from './pages/Search/components/UserSearch'
 import BucketSearch from './pages/Search/components/BucketSearch'
@@ -19,6 +18,7 @@ import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
 import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
 import NotFoundPage from './pages/NotfoundPage'
+import Radar from './pages/Radar/Radar'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -41,7 +41,7 @@ const routerData: RouterElement[] = [
 	},
 	{
 		path: '/',
-		element: <Rader />,
+		element: <Radar />,
 		label: '',
 		children: [
 			{

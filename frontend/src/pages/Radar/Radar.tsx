@@ -1,11 +1,10 @@
-import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import ProfileBucketWide from '../../components/ProfileBucketWide'
 import Header from '../../components/Header'
 import { IMenu, IMenuFunc } from '../../interfaces'
 import { icons } from '../../constants/header-icons'
+import ProfileBucket from '../../components/ProfileBucket'
 
-const Rader = () => {
+const Radar = () => {
 	// 헤더 컴포넌트 사용 예시입니다.
 	const navigate = useNavigate()
 
@@ -23,7 +22,7 @@ const Rader = () => {
 	}
 	const bucketInfo = {
 		title: '구독자 100만명 달성하기',
-		color: 'test',
+		color: 'green',
 		dDay: 168,
 		isLock: true,
 	}
@@ -31,10 +30,10 @@ const Rader = () => {
 	return (
 		<div>
 			<Header menu={menu} func={func} />
-			<ProfileBucketWide bucketInfo={bucketInfo} />
+			<ProfileBucket bucketInfo={bucketInfo} />
 			<Outlet />
 		</div>
 	)
 }
 
-export default Rader
+export default Radar
