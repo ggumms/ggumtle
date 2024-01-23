@@ -140,11 +140,13 @@ const router: RemixRouter = createBrowserRouter(
 
 export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
 	let headerData
-	if (router.label !== '버킷 작성') return [...prev]
+	if (router.label !== '버킷작성') return [...prev]
 	if (router.children) {
-		headerData = router.children.map((child) => {
-			return { name: child?.label, path: child.path }
-		})
+		headerData = router.children
+			.filter((child) => child.path)
+			.map((child) => {
+				return { name: child?.label, path: child.path }
+			})
 		return [...headerData]
 	}
 	return [...prev]
