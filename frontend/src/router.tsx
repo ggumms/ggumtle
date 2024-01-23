@@ -25,8 +25,8 @@ import NotFoundPage from './pages/NotfoundPage'
 interface IRouterBase {
 	path: string // 페이지 경로
 	element: React.ReactNode // 페이지 엘리먼트
+	label: string
 	children?: IRouterBase[]
-	label?: string
 }
 
 // 나중에 인증과 관련된 여러 종류의 Router 설정을 위해 사용된다.
@@ -38,67 +38,80 @@ const routerData: RouterElement[] = [
 	{
 		path: 'auth',
 		element: <LoginPage />,
+		label: '',
 	},
 	{
 		path: '/',
 		element: <Rader />,
+		label: '',
 		children: [
 			{
 				path: '',
 				element: <FollowingTab />,
+				label: '',
 			},
 			{
 				path: 'all',
 				element: <AllTab />,
+				label: '',
 			},
 		],
 	},
 	{
 		path: '/alarm',
 		element: <AlarmPage />,
+		label: '',
 	},
 	{
 		path: '/search',
 		element: <SearchPage />,
+		label: '',
 		children: [
 			{
 				path: '',
 				element: <UserSearch />,
+				label: '',
 			},
 			{
 				path: 'bucket',
 				element: <BucketSearch />,
+				label: '',
 			},
 			{
 				path: 'review',
 				element: <ReviewSearch />,
+				label: '',
 			},
 		],
 	},
 	{
 		path: '/user/:userId',
 		element: <UserPage />,
+		label: '',
 	},
-	{ path: '/bucket/:bucketId', element: <BucketDetail /> },
+	{ path: '/bucket/:bucketId', element: <BucketDetail />, label: '' },
 	{
 		path: '/bucket/write',
 		element: <AddBucket />,
+		label: '버킷작성',
 		children: [
 			{
 				path: '',
 				element: <CategoryInfo />,
+				label: '카테고리',
 			},
 			{
 				path: 'category',
 				element: <CategoryInfo />,
+				label: '카테고리',
 			},
-			{ path: 'main', element: <MainInfo /> },
-			{ path: 'place', element: <PlaceInfo /> },
-			{ path: 'additional', element: <AdditionalInfo /> },
+			{ path: 'main', element: <MainInfo />, label: '꿈내용' },
+			{ path: 'place', element: <PlaceInfo />, label: '장소' },
+			{ path: 'additional', element: <AdditionalInfo />, label: '추가정보' },
 		],
 	},
-	{ path: '/bucket/:bucketId', element: <BucketDetail /> },
-	{ path: '*', element: <NotFoundPage /> },
+	{ path: '/bucket/:bucketId', element: <BucketDetail />, label: '' },
+	{ path: '*', element: <NotFoundPage />, label: '' },
 ]
 
 const router: RemixRouter = createBrowserRouter(
@@ -126,14 +139,15 @@ const router: RemixRouter = createBrowserRouter(
 // 	return { name: router.label, path: router.path }
 // })
 
-//  TODO : router 배열을 변수로 분리해서 router 배열을 이용해서 headerList 제공하도록 만들기
-// export const addBucketHeaderList = () => {
-// }
-export const addBucketHeaderList: MultiPageHeaderInfo[] = [
-	{ name: '카테고리', path: 'category' },
-	{ name: '꿈 내용', path: 'main' },
-	{ name: '장소', path: 'place' },
-	{ name: '추가정보', path: 'additional' },
-]
+export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
+	if (router.label !== '버킷 작성') return [...prev]
+	if (router.children) {
+		const headerData = router.children.map((child) => {
+			return { name: child?.label, path: child.path }
+		})
+		return [...headerData]
+	}
+	return [...prev]
+}, [] as MultiPageHeaderInfo[])
 
 export default router
