@@ -1,3 +1,4 @@
+import BucketItem from './BucketItem'
 import UserItem from './UserItem'
 
 const FollowingTab = () => {
@@ -7,6 +8,9 @@ const FollowingTab = () => {
 			<UserItem />
 			<UserItem />
 			<UserItem />
+			<BucketItem />
+			<BucketItem />
+			<BucketItem />
 		</div>
 	)
 }
