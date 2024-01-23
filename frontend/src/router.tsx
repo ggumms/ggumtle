@@ -84,7 +84,14 @@ const routerData: RouterElement[] = [
 		path: '/bucket/write',
 		element: <AddBucket />,
 		children: [
-			{ path: 'category', element: <CategoryInfo /> },
+			{
+				path: '',
+				element: <CategoryInfo />,
+			},
+			{
+				path: 'category',
+				element: <CategoryInfo />,
+			},
 			{ path: 'main', element: <MainInfo /> },
 			{ path: 'place', element: <PlaceInfo /> },
 			{ path: 'additional', element: <AdditionalInfo /> },

@@ -11,13 +11,20 @@ interface NavigationHeaderProps {
 const NavigationHeader = ({ headerData }: NavigationHeaderProps) => {
 	const [selectedIndex, setSelectedIndex] = useState<number>()
 	const { currentPath } = useRouter()
+
 	useEffect(() => {
 		headerData.forEach((item, index) => {
 			if (currentPath.includes(item.path)) {
 				setSelectedIndex(index)
 			}
 		})
-	})
+
+		// bucket/write/{children}으로 안들어왔을 경우
+		if (selectedIndex === undefined) {
+			setSelectedIndex(0)
+			return
+		}
+	}, [currentPath])
 
 	return (
 		<ul className={`flex gap-[2px]`}>
@@ -27,9 +34,9 @@ const NavigationHeader = ({ headerData }: NavigationHeaderProps) => {
 						<NavLink
 							to={headerItem.path}
 							data-id={index}
-							className={({ isActive }) =>
+							className={
 								'inline-block w-full text-center py-2' +
-								(isActive ? ' text-[#454645] font-[700]' : ' text-[#D9D9D9]   ')
+								(selectedIndex === index ? ' text-[#454645] font-[700]' : ' text-[#D9D9D9]   ')
 							}
 						>
 							{headerItem.name}
