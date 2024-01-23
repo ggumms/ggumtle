@@ -18,7 +18,6 @@ import CategoryInfo from './pages/Bucket/AddBucket/CategoryInfo'
 import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
 import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
-import DefaultLayout from './components/layout/DefaultLayout'
 import NotFoundPage from './pages/NotfoundPage'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
@@ -118,7 +117,7 @@ const router: RemixRouter = createBrowserRouter(
 	routerData.map((router) => {
 		return {
 			path: router.path,
-			element: <DefaultLayout>{router.element}</DefaultLayout>,
+			element: router.element,
 			children: router.children ?? router.children,
 		}
 	})
@@ -140,14 +139,16 @@ const router: RemixRouter = createBrowserRouter(
 // })
 
 export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
+	let headerData
 	if (router.label !== '버킷 작성') return [...prev]
 	if (router.children) {
-		const headerData = router.children.map((child) => {
+		headerData = router.children.map((child) => {
 			return { name: child?.label, path: child.path }
 		})
 		return [...headerData]
 	}
 	return [...prev]
 }, [] as MultiPageHeaderInfo[])
+// export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData
 
 export default router
