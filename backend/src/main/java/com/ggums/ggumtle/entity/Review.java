@@ -17,9 +17,16 @@ public class Review extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "bucket_id")
+    private Bucket bucket;
+
     private String title;
 
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String context;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ReviewReaction> reviewReactions = new ArrayList<>();
 }
