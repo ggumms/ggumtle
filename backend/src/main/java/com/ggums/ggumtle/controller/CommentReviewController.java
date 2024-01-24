@@ -4,7 +4,7 @@ package com.ggums.ggumtle.controller;
 import com.ggums.ggumtle.common.response.Response;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.entity.User;
-import com.ggums.ggumtle.service.CommentBucketService;
+import com.ggums.ggumtle.service.CommentReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/comment/bucket")
-public class CommentBucketController {
+@RequestMapping("/comment/review")
+public class CommentReviewController {
 
-    private final CommentBucketService commentService;
+    private final CommentReviewService commentService;
 
-    @PostMapping("/{bucketId}")
-    public Response commentCreate(@AuthenticationPrincipal User user, @PathVariable long bucketId, @Valid @RequestBody CommentRequestDto requestDto) {
+    @PostMapping("/{reviewId}")
+    public Response commentCreate(@AuthenticationPrincipal User user, @PathVariable long reviewId, @Valid @RequestBody CommentRequestDto requestDto) {
 
-        return new Response("message", commentService.commentCreate(user, bucketId, requestDto));
+        return new Response("message", commentService.commentCreate(user, reviewId, requestDto));
     }
 
-    @GetMapping("/{bucketId}")
-    public Response commentList(@AuthenticationPrincipal User user, @PathVariable long bucketId, Pageable pageable ) {
+    @GetMapping("/{reviewId}")
+    public Response commentList(@AuthenticationPrincipal User user, @PathVariable long reviewId, Pageable pageable ) {
 
-        return new Response("bucketCommentList", commentService.commentList(user, bucketId, pageable));
+        return new Response("reviewCommentList", commentService.commentList(user, reviewId, pageable));
     }
 
     @DeleteMapping("/{commentId}")
