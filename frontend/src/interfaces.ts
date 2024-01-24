@@ -62,5 +62,6 @@ export type ColorType =
 export interface ICategoryItem {
 	name: CategoryType
 	color: ColorType
-	isSelected?: boolean
 }
+
+export type selectedInfoType = Record<CategoryType, boolean>

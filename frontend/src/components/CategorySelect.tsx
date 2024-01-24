@@ -1,21 +1,25 @@
 import React from 'react'
-import { ICategoryItem } from '../interfaces'
+import { CategoryType, ICategoryItem } from '../interfaces'
 
 import { bgColorClass, textColorClass, borderColorClass } from '../constants/dynamicClass'
 import { ImPlus } from 'react-icons/im'
 import { FaCheck } from 'react-icons/fa6'
+import { useBucketStore } from '../store/bucketStore'
+import { isCategoryType } from '../utils/typeFilter'
 
 interface CategorySelectProps {
 	categoryData: ICategoryItem[]
 }
 
 const CategorySelect = ({ categoryData }: CategorySelectProps) => {
+	const { selectedInfo, addCategory, removeCategory } = useBucketStore()
+
+	// event handlers
 	const handleCategorySelect = (event: React.MouseEvent<HTMLLIElement>) => {
-		const { index } = event.currentTarget.dataset
-		if (index) {
-			const numIndex = parseInt(index)
-			console.log(numIndex + 'item clicked!')
-			categoryData[numIndex].isSelected = !categoryData[numIndex].isSelected
+		const selectedName = event.currentTarget.dataset.name as CategoryType
+
+		if (selectedName && isCategoryType(selectedName)) {
+			selectedInfo[selectedName] ? removeCategory(selectedName) : addCategory(selectedName)
 		}
 	}
 
@@ -25,17 +29,17 @@ const CategorySelect = ({ categoryData }: CategorySelectProps) => {
 				return (
 					<li
 						key={`category-${index}`}
-						data-index={index}
+						data-name={item.name}
 						onClick={handleCategorySelect}
 						className={
 							`flex items-center font-bold px-4 py-[10px] rounded-[8px] ${borderColorClass[item.color]} border-2 text-sm` +
 							' ' +
-							(item.isSelected
+							(selectedInfo[item.name]
 								? `bg-white ${textColorClass[item.color]}`
 								: `${bgColorClass[item.color]} text-white`)
 						}
 					>
-						{item.isSelected ? (
+						{selectedInfo[item.name] ? (
 							<FaCheck size={15} className="mr-1 " />
 						) : (
 							<ImPlus size={8} className="mr-1" />

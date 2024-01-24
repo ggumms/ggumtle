@@ -1,26 +1,15 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+
 import CategorySelect from '../../../components/CategorySelect'
-import { ICategoryItem } from '../../../interfaces'
+import { categoryData } from '../../../utils/category'
 
 const CategoryInfo = () => {
-	const categoryData: ICategoryItem[] = [
-		{ name: '환경', color: 'green', isSelected: false },
-		{ name: '자선활동', color: 'lightGreen', isSelected: false },
-		{ name: '인간관계', color: 'red', isSelected: false },
-		{ name: '휴식', color: 'yellow', isSelected: true },
-		{ name: '연애', color: 'pink', isSelected: false },
-		{ name: '운동', color: 'mint', isSelected: true },
-		{ name: '여행', color: 'orange', isSelected: false },
-		{ name: '언어', color: 'skyBlue', isSelected: false },
-		{ name: '문화', color: 'purple', isSelected: false },
-		{ name: '도전', color: 'beige', isSelected: false },
-		{ name: '취미', color: 'sandPink', isSelected: false },
-		{ name: '직장', color: 'brown', isSelected: false },
-	]
-
 	return (
 		<div>
 			<CategorySelect categoryData={categoryData} />
+			{/* 페이지 전환 시 state를 유지하는지 테스트 하기 위한 버튼 */}
+			<Link to="/">다음</Link>
 		</div>
 	)
 }
