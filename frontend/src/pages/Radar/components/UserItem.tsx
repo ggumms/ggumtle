@@ -25,10 +25,8 @@ const UserItem = ({ pos }: UserItemProps) => {
 		bottom: `${40 + pos.y}%`,
 	}
 	const name = 'wan'
-	// const left = `left-[${50 + pos.x}%]`
-	// const bottom = `bottom-[${50 + pos.y}%]`
 	return (
-		<div className="inline-flex flex-col items-center" style={itemStyle}>
+		<div className="inline-flex flex-col items-center animate-floating" style={itemStyle}>
 			{/* @TODO: api 통신할 때에는 img 태그로 변경 후 실제 데이터 삽입하기
       <img src="" alt="" /> */}
 			<div className={`bg-black rounded-full ${userSize[1]}`}></div>

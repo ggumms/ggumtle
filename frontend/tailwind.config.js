@@ -12,12 +12,21 @@ export default {
 						borderColor: '#4646467a',
 					},
 				},
+				floating: {
+					'100%': {
+						transform: 'translateY(0)',
+					},
+					'50%': {
+						transform: 'translateY(-5px)',
+					},
+				},
 			},
 		},
 		animation: {
 			radar1: '1.5s linear 1s infinite alternate radar',
 			radar2: '1.5s linear 2s infinite alternate radar',
 			radar3: '1.5s linear 3s infinite alternate radar',
+			floating: '2.5s infinite ease-in-out floating',
 		},
 	},
 	colors: {
