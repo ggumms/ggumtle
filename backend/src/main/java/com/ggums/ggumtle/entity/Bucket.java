@@ -54,5 +54,5 @@ public class Bucket extends BaseTime {
             joinColumns = @JoinColumn(name = "bucket_id"),
             inverseJoinColumns = @JoinColumn(name = "interest_id")
     )
-    private Set<Interest> interests = new HashSet<>();
+    private Set<Interest> bucketInterest = new HashSet<>();
 }
