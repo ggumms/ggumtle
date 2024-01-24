@@ -43,7 +43,12 @@ public enum ExceptionType {
     // review
     REVIEW_NOT_FOUND(404, "해당 후기를 찾을 수 없습니다."),
     REVIEW_NOT_VALID(400, "후기가 비공개입니다."),
-    IMAGE_NOT_FOUND(404, "해당 이미지를 찾을 수 없습니다.")
+    IMAGE_NOT_FOUND(404, "해당 이미지를 찾을 수 없습니다."),
+
+    // comment
+    COMMENT_NOT_FOUND(404, "댓글을 찾을 수 없습니다."),
+    LIKE_NOT_FOUND(404, "좋아요를 하지 않은 댓글입니다."),
+    ALREADY_EXIST_LIKE(400, "이미 좋아요한 댓글입니다."),
     ;
 
     private final int code;
