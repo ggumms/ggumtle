@@ -112,7 +112,7 @@ public class ReviewService {
         long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
 
         List<String> categories = new ArrayList<>();
-        for (Interest interest : bucket.getInterests()) {
+        for (Interest interest : bucket.getBucketInterest()) {
             categories.add(interest.getName());
         }
 
