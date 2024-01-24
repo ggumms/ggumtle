@@ -11,9 +11,20 @@ import java.util.Map;
 @Builder
 public class ReviewResponseDto {
 
+    // bucket
+    private Long bucketId;
+    private String bucketTitle;
+    private long daysSinceDream;
+
+    // user
+    private Long writerId;
+    private String writerProfileImage;
+    private String writerNickname;
+
+    // review
     private String reviewTitle;
     private String reviewContext;
     private LocalDateTime reviewCreatedDate;
     private LocalDateTime reviewUpdatedDate;
-
+    private List<String> categories;
 }
