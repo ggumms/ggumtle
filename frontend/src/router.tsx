@@ -19,6 +19,7 @@ import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
 import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
 import NotFoundPage from './pages/NotfoundPage'
+import AchieveBucket from './pages/Bucket/AchieveBucket'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -110,6 +111,7 @@ const routerData: RouterElement[] = [
 		],
 	},
 	{ path: '/bucket/:bucketId', element: <BucketDetail />, label: '' },
+	{ path: '/bucket/achieve', element: <AchieveBucket />, label: '' },
 	{ path: '*', element: <NotFoundPage />, label: '' },
 ]
 
