@@ -21,6 +21,10 @@ public class Interest {
 
     private String name;
 
-    @ManyToMany(mappedBy = "interests")
+    @ManyToMany(mappedBy = "bucketInterest")
     private Set<Bucket> buckets = new HashSet<>();
+
+    @ManyToMany(mappedBy = "userInterest")
+    private Set<User> users = new HashSet<>();
+
 }
