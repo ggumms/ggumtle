@@ -7,8 +7,10 @@ import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
 import com.ggums.ggumtle.entity.Bucket;
 import com.ggums.ggumtle.entity.CommentBucket;
+import com.ggums.ggumtle.entity.CommentBucketLike;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.repository.BucketRepository;
+import com.ggums.ggumtle.repository.CommentBucketLikeRepository;
 import com.ggums.ggumtle.repository.CommentBucketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,11 +29,17 @@ public class CommentBucketService {
 
     private final BucketRepository bucketRepository;
     private final CommentBucketRepository commentBucketRepository;
+    private final CommentBucketLikeRepository commentBucketLikeRepository;
 
     public String commentCreate(User user, long bucketId, CommentRequestDto requestDto) {
 
         Bucket bucket = bucketRepository.findById(bucketId)
                 .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        // 비공개 버킷일 경우, 버킷 작성자만 댓글을 달 수 있다.
+        if (bucket.getIsPrivate() && !(bucket.getUser().getId().equals(user.getId()))) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
 
         CommentBucket commentBucket = CommentBucket.builder()
                 .user(user)
@@ -121,6 +130,40 @@ public class CommentBucketService {
 
         comment.update(requestDto.getContext());
         return "댓글이 수정되었습니다.";
+    }
+
+    public String commentLike(User user, Long commentId) {
+
+        CommentBucket commentBucket = commentBucketRepository.findById(commentId)
+                .orElseThrow(() -> new CustomException(ExceptionType.COMMENT_NOT_FOUND));
+
+        // 아직은 버킷의 작성자만이 해당 버켓의 댓글에 좋아요를 누를 수 있음
+        // 만약 해당 댓글이 달린 버켓의 작성자와 현재 요청하는 사용자가 다를 경우 오류 반환
+        if(!commentBucket.getBucket().getUser().getId().equals(user.getId())){
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
+        //todo 좋아요 확장 시, 사용자 validation 변경 필요
+
+        Optional<CommentBucketLike> like = commentBucketLikeRepository
+                .findByCommentBucketAndUser(commentBucket, user);
+
+//      만약에 해당 유저가 이미 좋아요를 눌렀다면 좋아요 취소
+        if (like.isPresent()) {
+            commentBucketLikeRepository.delete(like.get());
+            return "좋아요가 취소되었습니다.";
+        }
+        // 아니면 좋아요 추가
+        else{
+            CommentBucketLike newLike = CommentBucketLike.builder()
+                    .user(user)
+                    .commentBucket(commentBucket)
+                    .build();
+
+            commentBucketLikeRepository.save(newLike);
+            return "좋아요가 생성되었습니다.";
+        }
+
     }
 }
 

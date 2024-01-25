@@ -42,4 +42,10 @@ public class CommentReviewController {
         return new Response("message", commentService.commentUpdate(user, requestDto, commentId));
     }
 
+    @PutMapping("/like/{commentId}")
+    public Response commentLike(@AuthenticationPrincipal User user, @PathVariable Long commentId) {
+
+        return new Response("commentReviewLikeId", commentService.commentLike(user, commentId));
+    }
+
 }
