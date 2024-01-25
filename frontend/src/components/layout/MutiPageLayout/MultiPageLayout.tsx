@@ -5,13 +5,14 @@ import { MultiPageHeaderInfo } from '../../../types/router'
 
 interface MultiPageLayoutProps {
 	headerData: MultiPageHeaderInfo[]
+	hasIcon: boolean
 }
 
 // TODO: div 태그 삭제하기
-const MultiPageLayout = ({ headerData }: MultiPageLayoutProps) => {
+const MultiPageLayout = ({ headerData, hasIcon }: MultiPageLayoutProps) => {
 	return (
 		<div>
-			<NavigationHeader headerData={headerData} />
+			<NavigationHeader headerData={headerData} hasIcon={hasIcon} />
 			<Outlet />
 		</div>
 	)

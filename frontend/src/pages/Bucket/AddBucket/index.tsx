@@ -3,7 +3,7 @@ import MultiPageLayout from '../../../components/layout/MutiPageLayout/MultiPage
 import { addBucketHeaderList } from '../../../router'
 
 const AddBucket = () => {
-	return <MultiPageLayout headerData={addBucketHeaderList} />
+	return <MultiPageLayout headerData={addBucketHeaderList} hasIcon={false} />
 }
 
 export default AddBucket
