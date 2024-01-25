@@ -16,6 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -55,6 +58,30 @@ public class CommentBucketService {
     }
 
     private CommentResponseDto convertToCommentResponseDto(CommentBucket item) {
+
+        String timeUnit;
+        long time;
+
+        if(ChronoUnit.YEARS.between(item.getCreatedDate(), LocalDateTime.now()) >= 1){
+            timeUnit = "year";
+            time = ChronoUnit.YEARS.between(item.getCreatedDate(), LocalDateTime.now());
+        }else if(ChronoUnit.MONTHS.between(item.getCreatedDate(), LocalDateTime.now()) >= 1){
+            timeUnit = "month";
+            time = ChronoUnit.MONTHS.between(item.getCreatedDate(), LocalDateTime.now());
+        }else if(ChronoUnit.WEEKS.between(item.getCreatedDate(), LocalDateTime.now()) >= 1){
+            timeUnit = "week";
+            time = ChronoUnit.WEEKS.between(item.getCreatedDate(), LocalDateTime.now());
+        }else if(ChronoUnit.DAYS.between(item.getCreatedDate(), LocalDateTime.now()) >= 1){
+            timeUnit = "day";
+            time = ChronoUnit.DAYS.between(item.getCreatedDate(), LocalDateTime.now());
+        }else if(ChronoUnit.HOURS.between(item.getCreatedDate(), LocalDateTime.now()) >= 1){
+            timeUnit = "hour";
+            time = ChronoUnit.HOURS.between(item.getCreatedDate(), LocalDateTime.now());
+        }else{
+            timeUnit = "min";
+            time = ChronoUnit.MINUTES.between(item.getCreatedDate(), LocalDateTime.now());
+        }
+
         return CommentResponseDto.builder()
                 .id(item.getId())
                 .userId(item.getUser().getId())
@@ -62,6 +89,8 @@ public class CommentBucketService {
                 .context(item.getContext())
                 .createdDate(item.getCreatedDate())
                 .updatedDate(item.getUpdatedDate())
+                .timeUnit(timeUnit)
+                .time(time)
                 .numberOfLikes(item.getCommentBucketLikes().size())
                 .build();
     }
