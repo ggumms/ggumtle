@@ -7,6 +7,7 @@ import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,5 +52,10 @@ public class ReviewController {
     @GetMapping("/{reviewId}/reaction")
     public Response getReviewReaction(@AuthenticationPrincipal User user, @PathVariable Long reviewId) {
         return new Response("review_reactions", reviewService.getReviewReaction(user, reviewId));
+    }
+
+    @GetMapping("/search")
+    public Response searchReview(@RequestParam String keyword, Pageable pageable) {
+        return new Response("reviewSearchList", reviewService.searchReview(keyword, pageable));
     }
 }
