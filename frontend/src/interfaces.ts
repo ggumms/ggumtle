@@ -28,3 +28,38 @@ export interface IHeaderProp {
 }
 
 export type ClassType = Record<string, string>
+
+export type CategoryType =
+	| '환경'
+	| '자선활동'
+	| '인간관계'
+	| '휴식'
+	| '연애'
+	| '운동'
+	| '여행'
+	| '언어'
+	| '문화'
+	| '도전'
+	| '취미'
+	| '직장'
+
+export type ColorType =
+	| 'green'
+	| 'lightGreen'
+	| 'red'
+	| 'yellow'
+	| 'pink'
+	| 'mint'
+	| 'orange'
+	| 'skyBlue'
+	| 'purple'
+	| 'beige'
+	| 'sandPink'
+	| 'brown'
+
+export interface ICategoryItem {
+	name: CategoryType
+	color: ColorType
+}
+
+export type selectedInfoType = Record<CategoryType, boolean>

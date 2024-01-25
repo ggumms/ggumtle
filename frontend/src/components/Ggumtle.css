@@ -1,0 +1,73 @@
+/* Switch your OS theme between light and dark :) */
+
+.ggumtle {
+	/* box-shadow: var(--shades); */
+	/* background-size: 1600% 1600%; */
+	/* 요소의 변형 원점을 설정 */
+	/* transform-origin: 50% 50%; */
+	/* 3d 공간에 배치할지 2d 공간에 배치할지 결정 */
+	/* transform-style: preserve-3d; */
+	/* 원근법을 적용하기 위한 속성 */
+	/* perspective: 1000px; */
+	animation: transform 10s ease-in-out infinite both alternate;
+	/* movement 40s ease-in-out infinite both; */
+}
+
+@keyframes transform {
+	0%,
+	100% {
+		border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
+	}
+	14% {
+		border-radius: 40% 60% 54% 46% / 49% 60% 40% 51%;
+	}
+	28% {
+		border-radius: 54% 46% 38% 62% / 49% 70% 30% 51%;
+	}
+	42% {
+		border-radius: 61% 39% 55% 45% / 61% 38% 62% 39%;
+	}
+	56% {
+		border-radius: 61% 39% 67% 33% / 70% 50% 50% 30%;
+	}
+	70% {
+		border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%;
+	}
+	84% {
+		border-radius: 46% 54% 50% 50% / 35% 61% 39% 65%;
+	}
+}
+/* 
+@keyframes movement {
+	0%,
+	100% {
+		transform: none;
+	}
+	50% {
+		transform: translateY(20%) rotateY(10deg);
+	}
+} */
+
+/* :root {
+	--background: #fff;
+	--blob: #fdfbfd;
+	--shades: inset 10px 0 40px #f7f8fc, inset -10px 0 20px #f7e1ef, inset -40px 10px 100px #c3c5ea;
+
+	@media (prefers-color-scheme: dark) {
+		--background: #0f0c24;
+		--blob: #bca5e3;
+		--shades: inset 10px 0 40px #a174db, inset -10px 0 20px #40245e, inset -40px 10px 110px #1b1648;
+	}
+}
+
+@use postcss-preset-env {
+	stage: 0;
+	autoprefixer: {
+		grid: true;
+	}
+	browsers:
+		[ 'last 1 Chrome versions',
+		'last 1 Firefox versions',
+		'last 1 Safari versions',
+		'last 1 Edge versions'];
+} */
