@@ -2,10 +2,10 @@ import { Router as RemixRouter } from '@remix-run/router/dist/router'
 
 import { createBrowserRouter } from 'react-router-dom'
 import LoginPage from './pages/auth/LoginPage'
-import FollowingTab from './pages/Rader/components/FollowingTab'
-import AllTab from './pages/Rader/components/AllTab'
-import Rader from './pages/Rader/Rader'
-import AlarmPage from './pages/Rader/components/AlarmPage'
+import FollowingTab from './pages/Radar/components/FollowingTab'
+import AllTab from './pages/Radar/components/AllTab'
+import Radar from './pages/Radar/Radar'
+import AlarmPage from './pages/Radar/components/AlarmPage'
 import SearchPage from './pages/Search/SearchPage'
 import UserSearch from './pages/Search/components/UserSearch'
 import BucketSearch from './pages/Search/components/BucketSearch'
@@ -42,18 +42,23 @@ const routerData: RouterElement[] = [
 	},
 	{
 		path: '/',
-		element: <Rader />,
-		label: '',
+		element: <Radar />,
+		label: '메인페이지',
 		children: [
 			{
 				path: '',
 				element: <FollowingTab />,
-				label: '',
+				label: '팔로잉',
+			},
+			{
+				path: 'follow',
+				element: <FollowingTab />,
+				label: '팔로잉',
 			},
 			{
 				path: 'all',
 				element: <AllTab />,
-				label: '',
+				label: '전체',
 			},
 		],
 	},
@@ -154,5 +159,20 @@ export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData.reduce((pre
 	return [...prev]
 }, [] as MultiPageHeaderInfo[])
 // export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData
+
+
+export const mainHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
+	let headerData
+	if (router.label !== '메인페이지') return [...prev]
+	if (router.children) {
+		headerData = router.children
+			.filter((child) => child.path)
+			.map((child) => {
+				return { name: child?.label, path: child.path }
+			})
+		return [...headerData]
+	}
+	return [...prev]
+}, [] as MultiPageHeaderInfo[])
 
 export default router

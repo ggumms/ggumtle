@@ -16,7 +16,7 @@ public class RepresentativeBucket {
     @Column(nullable = false)
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 

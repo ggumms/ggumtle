@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,6 +25,10 @@ public class User extends BaseTime implements UserDetails {
     @Column(nullable = false)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "rep_bucket_id")
+    private RepresentativeBucket repBucket;
+
     private String userNickname;
 
     private String userProfileImage;
@@ -31,6 +37,14 @@ public class User extends BaseTime implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_interest",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "interest_id")
+    )
+    private Set<Interest> userInterest = new HashSet<>();
 
     private LocalDateTime deletedDate;
 

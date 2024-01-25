@@ -2,6 +2,7 @@ package com.ggums.ggumtle.service;
 
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.handler.ImageHandler;
 import com.ggums.ggumtle.dto.request.PostBucketReactionRequestDto;
 import com.ggums.ggumtle.dto.request.PostBucketRequestDto;
 import com.ggums.ggumtle.dto.request.UpdateBucketRequestDto;
@@ -17,31 +18,24 @@ import com.ggums.ggumtle.repository.BucketReactionRepository;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.InterestRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class BucketService {
 
-    @Value("${spring.web.baseUrl}")
-    private String baseUrl;
-
+    private final ImageHandler imageHandler;
     private final BucketRepository bucketRepository;
     private final InterestRepository interestRepository;
     private final BucketReactionRepository bucketReactionRepository;
@@ -52,7 +46,11 @@ public class BucketService {
         if (requestDto.getCategory() != null) {
             for (String interestName : requestDto.getCategory()) {
                 Interest interest = interestRepository.findByName(interestName)
-                        .orElseGet(() -> interestRepository.save(new Interest(null, interestName, new HashSet<>())));
+                        .orElseGet(() -> {
+                            Interest newInterest = new Interest();
+                            newInterest.setName(interestName);
+                            return interestRepository.save(newInterest);
+                        });
                 interests.add(interest);
             }
         }
@@ -65,7 +63,7 @@ public class BucketService {
                 .longitude(requestDto.getLongitude())
                 .color(requestDto.getColor())
                 .address(requestDto.getAddress())
-                .interests(interests)
+                .bucketInterest(interests)
                 .isPrivate(requestDto.getIsPrivate())
                 .build();
 
@@ -100,7 +98,7 @@ public class BucketService {
                 .dayCount(ChronoUnit.DAYS.between(bucket.getCreatedDate(), LocalDateTime.now()))
                 .writeDate(bucket.getCreatedDate())
                 .achievementDate(bucket.getAchievementDate())
-                .category(bucket.getInterests().stream()
+                .category(bucket.getBucketInterest().stream()
                         .map(Interest::getName)
                         .collect(Collectors.toCollection(ArrayList::new)))
                 .isPrivate(bucket.getIsPrivate())
@@ -125,10 +123,13 @@ public class BucketService {
         if (requestDto.getCategory() != null) {
             Set<Interest> updatedInterests = requestDto.getCategory().stream()
                     .map(interestName -> interestRepository.findByName(interestName)
-                            .orElseGet(() -> interestRepository.save(new Interest(null, interestName, new HashSet<>())))
-                    )
+                            .orElseGet(() -> {
+                                Interest newInterest = new Interest();
+                                newInterest.setName(interestName);
+                                return interestRepository.save(newInterest);
+                            }))
                     .collect(Collectors.toSet());
-            bucket.setInterests(updatedInterests);
+            bucket.setBucketInterest(updatedInterests);
         }
 
         bucketRepository.save(bucket);
@@ -186,7 +187,7 @@ public class BucketService {
                 .bucketId(bucket.getId())
                 .title(bucket.getTitle())
                 .dayCount(ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()))
-                .category(bucket.getInterests().stream().map(Interest::getName).collect(Collectors.toList()))
+                .category(bucket.getBucketInterest().stream().map(Interest::getName).collect(Collectors.toList()))
                 .reactionCount(bucket.getBucketReactions().size())
                 .commentCount(0) // doesn't have comment feature
                 .color(bucket.getColor())
@@ -202,71 +203,9 @@ public class BucketService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
-        try {
-            String basicPath = new File(System.getProperty("user.dir")).getParent();
-            String uploadFilePath = basicPath + File.separator + "image" + File.separator + "bucketImage";
-            String fileName = "bucket_image_" + bucket.getId();
-            String fileExtension = extractExtension(bucketImage.getOriginalFilename());
-            Path imageDirectoryPath = Paths.get(uploadFilePath);
+        bucket.setBucketPicture(imageHandler.uploadImage(bucketImage, "bucketImage", "bucket_image_" + bucket.getId()));
 
-            // Deleting existing files that match the pattern
-            deleteFilesWithPattern(uploadFilePath, fileName);
-
-            // Creating directories if they don't exist
-            Files.createDirectories(imageDirectoryPath);
-
-            Path targetLocation = imageDirectoryPath.resolve(fileName + "." + fileExtension);
-            bucket.setBucketPicture(null);
-
-            // upload file
-            if (!bucketImage.isEmpty()) {
-                Files.copy(bucketImage.getInputStream(), targetLocation);
-                bucket.setBucketPicture(baseUrl + "/image/bucketImage/" + fileName + "." + fileExtension);
-                bucketRepository.save(bucket);
-                return baseUrl + "/image/bucketImage/" + fileName + "." + fileExtension;
-            }
-
-            bucketRepository.save(bucket);
-            return null;
-        } catch (IOException e) {
-            if (e instanceof DirectoryNotEmptyException) {
-                throw new CustomException(ExceptionType.DIRECTORY_CREATION_FAILED);
-            } else if (e instanceof FileAlreadyExistsException) {
-                throw new CustomException(ExceptionType.FILE_DELETION_FAILED);
-            } else {
-                throw new CustomException(ExceptionType.FILE_COPY_FAILED);
-            }
-        }
-    }
-
-    private String extractExtension(String originalFileName) {
-        if (originalFileName == null || originalFileName.lastIndexOf('.') == -1) {
-            return ""; // No extension found
-        }
-        return originalFileName.substring(originalFileName.lastIndexOf('.') + 1);
-    }
-
-    private void deleteFilesWithPattern(String directoryPath, String pattern) {
-        try {
-            Path dirPath = Paths.get(directoryPath);
-            if (Files.exists(dirPath) && Files.isDirectory(dirPath)) {
-                try (Stream<Path> paths = Files.list(dirPath)) {
-                    paths.filter(Files::isRegularFile)
-                            .filter(path -> path.getFileName().toString().contains(pattern))
-                            .forEach(path -> {
-                                try {
-                                    if (Files.exists(path)) { // if files exist, delete
-                                        Files.delete(path);
-                                    }
-                                } catch (IOException e) {
-                                    throw new CustomException(ExceptionType.FILE_DELETION_FAILED);
-                                }
-                            });
-                }
-            }
-        } catch (IOException e) {
-            throw new CustomException(ExceptionType.DIRECTORY_CREATION_FAILED);
-        }
+        return bucket.getBucketPicture();
     }
 
     @Transactional(readOnly = true)

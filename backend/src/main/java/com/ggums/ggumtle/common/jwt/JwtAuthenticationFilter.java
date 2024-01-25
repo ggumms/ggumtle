@@ -24,9 +24,19 @@ import java.util.stream.Collectors;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Value("${spring.jwt.secret.develop_token}")
-    private String developToken;
-    
+    @Value("${spring.jwt.secret.develop_dummy_1}")
+    private String developDummy1;
+    @Value("${spring.jwt.secret.develop_dummy_2}")
+    private String developDummy2;
+    @Value("${spring.jwt.secret.develop_dummy_3}")
+    private String developDummy3;
+    @Value("${spring.jwt.secret.develop_dummy_4}")
+    private String developDummy4;
+    @Value("${spring.jwt.secret.develop_dummy_5}")
+    private String developDummy5;
+    @Value("${spring.jwt.secret.develop_dummy_6}")
+    private String developDummy6;
+
     private final JwtTokenManager tokenManager;
     private static final String[] PERMIT_URL_ARRAY = {
             /* api */
@@ -55,11 +65,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-
         // for develop test
-        if (Objects.equals(tokenManager.resolveAccessToken(request), developToken)) {
+        List<String> developDummyTokens = Arrays.asList(developDummy1, developDummy2, developDummy3, developDummy4, developDummy5, developDummy6);
+        String resolvedToken = tokenManager.resolveAccessToken(request);
+        if (developDummyTokens.contains(resolvedToken)) {
             // getting authentication
-            Authentication auth = tokenManager.getAuthentication("1");
+            Authentication auth;
+            if(resolvedToken.equals(developDummy1)){
+                auth = tokenManager.getAuthentication("1");
+            } else if (resolvedToken.equals(developDummy2)) {
+                auth = tokenManager.getAuthentication("2");
+            } else if (resolvedToken.equals(developDummy3)) {
+                auth = tokenManager.getAuthentication("3");
+            } else if (resolvedToken.equals(developDummy4)) {
+                auth = tokenManager.getAuthentication("4");
+            } else if (resolvedToken.equals(developDummy5)){
+                auth = tokenManager.getAuthentication("5");
+            } else auth = tokenManager.getAuthentication("6");
+
             SecurityContextHolder.getContext().setAuthentication(auth);
         }else{
             try {
