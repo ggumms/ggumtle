@@ -26,3 +26,5 @@ export interface IHeaderProp {
 	menu: IMenu
 	func: IMenuFunc
 }
+
+export type ClassType = Record<string, string>

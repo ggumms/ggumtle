@@ -5,7 +5,7 @@ const BucketDetail = () => {
 	return (
 		<>
 			<div>This is BucketDetail</div>
-			<UserProfile />
+			<UserProfile type="detail" />
 		</>
 	)
 }
