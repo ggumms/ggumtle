@@ -26,6 +26,11 @@ public class UserController {
         return new Response("message", userService.updateUser(user, userImage, requestDto));
     }
 
+    @GetMapping("/{user}")
+    public Response userInfo(@AuthenticationPrincipal User user, @PathVariable("user") Long userId){
+        return new Response("userInfo", userService.userInfo(user, userId));
+    }
+
     @PutMapping("/featured-bucket")
     public Response representativeBucket(@AuthenticationPrincipal User user, @RequestParam("bucket") Long bucketId){
         return new Response("message", userService.representativeBucket(user, bucketId));
