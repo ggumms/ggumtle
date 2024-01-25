@@ -7,12 +7,16 @@ import com.ggums.ggumtle.dto.request.ReviewReactionRequestDto;
 import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
 import com.ggums.ggumtle.dto.response.ReviewReactionResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewResponseDto;
+import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
+import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.ReviewReactionRepository;
 import com.ggums.ggumtle.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,6 +52,11 @@ public class ReviewService {
         // 버킷의 주인만 후기를 작성할 수 있다.
         if (!bucket.getUser().getId().equals(user.getId())) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
+        // 버킷에 이미 달린 후기가 있는 경우 에러
+        if (reviewRepository.findByBucket(bucket).isPresent()) {
+            throw new CustomException(ExceptionType.REVIEW_ALREADY_EXISTS);
         }
 
         Review review = Review.builder()
@@ -230,6 +239,38 @@ public class ReviewService {
         return ReviewReactionResponseDto.builder()
                 .reactionCounts(reactionCounts)
                 .myReaction(myReaction)
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewSearchResponseDto searchReview(String keyword, Pageable pageable) {
+        Page<Review> reviews = reviewRepository.findByTitleContainingOrContextContainingAndIsPrivateIsFalse(keyword, pageable);
+        Page<ReviewSearchListDto> searchList = reviews.map(this::convertToReviewSearchListDto);
+        return ReviewSearchResponseDto.builder()
+                .searchList(searchList)
+                .build();
+    }
+
+    private ReviewSearchListDto convertToReviewSearchListDto(Review review) {
+        Bucket bucket = review.getBucket();
+        User user = bucket.getUser();
+
+        LocalDate createdDate = bucket.getCreatedDate().toLocalDate();
+        LocalDate achievementDate = bucket.getAchievementDate();
+        long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
+
+        return ReviewSearchListDto.builder()
+                .reviewId(review.getId())
+                .reviewTitle(review.getTitle())
+                .reviewCreatedDate(review.getCreatedDate())
+                .reviewReactionCount(review.getReviewReactions().size())
+                .bucketId(bucket.getId())
+                .bucketTitle(bucket.getTitle())
+                .bucketColor(bucket.getColor())
+                .daysSinceDream(daysSinceDream)
+                .writerId(user.getId())
+                .writerNickname(user.getUserNickname())
+                .writerProfileImage(user.getUserProfileImage())
                 .build();
     }
 }
