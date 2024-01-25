@@ -57,8 +57,6 @@ export type ColorType =
 	| 'sandPink'
 	| 'brown'
 
-// export type CategoryItemType = Record<Category, Color>
-
 export interface ICategoryItem {
 	name: CategoryType
 	color: ColorType
