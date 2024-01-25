@@ -7,6 +7,7 @@ import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.dto.request.UserFollowRequestDto;
 import com.ggums.ggumtle.dto.request.UserUpdateRequestDto;
+import com.ggums.ggumtle.dto.response.UserInfoResponseDto;
 import com.ggums.ggumtle.dto.response.UserListResponseDto;
 import com.ggums.ggumtle.dto.response.UserStatsResponseDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -83,6 +86,40 @@ public class UserService {
         return "업데이트를 완료하였습니다.";
     }
 
+    @Transactional(readOnly = true)
+    public UserInfoResponseDto userInfo(User currentUser, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
+        Bucket bucket = representativeBucketRepository.findByUser(user).map(RepresentativeBucket::getBucket).orElse(null);
+
+        Optional<Follow> follow = followRepository.findByFollowerAndFollowee(user, currentUser);
+        Boolean followStatus = null;
+        if(!currentUser.getId().equals(userId)){
+            followStatus = follow.isPresent();
+        }
+        Boolean isAchieved = null;
+        LocalDateTime dateTime = (bucket != null && bucket.getCreatedDate() != null) ? bucket.getCreatedDate() : LocalDateTime.now();
+        if (bucket != null && bucket.getId() != null) {
+            isAchieved = bucket.getAchievementDate() != null;
+            if (isAchieved) {
+                dateTime = bucket.getAchievementDate().atStartOfDay();
+            }
+        }
+
+        return UserInfoResponseDto.builder()
+                .userId(userId)
+                .userProfileImage(user.getUserProfileImage())
+                .userNickname(user.getUserNickname())
+                .category(user.getUserInterest().stream().map(Interest::getName).collect(Collectors.toList()))
+                .bucketId(bucket != null ? bucket.getId() : null)
+                .bucketTitle(bucket != null ? bucket.getTitle() : null)
+                .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) : null)
+                .color(bucket != null ? bucket.getColor() : null)
+                .isAchieved(isAchieved)
+                .owner(currentUser.getId().equals(userId))
+                .isFollowing(followStatus)
+                .build();
+    }
+
     public String representativeBucket(User user, Long bucketId){
         if(bucketId == null){
             representativeBucketRepository.findByUser(user)
@@ -129,8 +166,8 @@ public class UserService {
     }
 
     private Map<Long, RepresentativeBucket> getRepresentativeBucketsMap(List<Long> userIds) {
-        List<RepresentativeBucket> repBuckets = representativeBucketRepository.findByUserIdIn(userIds);
-        return repBuckets.stream().collect(Collectors.toConcurrentMap(rb -> rb.getUser().getId(), Function.identity()));
+        List<RepresentativeBucket> repBucket = representativeBucketRepository.findByUserIdIn(userIds);
+        return repBucket.stream().collect(Collectors.toConcurrentMap(rb -> rb.getUser().getId(), Function.identity()));
     }
 
     private Map<Long, Boolean> getFollowingMap(User currentUser, List<Long> userIds) {

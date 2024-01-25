@@ -25,6 +25,10 @@ public class User extends BaseTime implements UserDetails {
     @Column(nullable = false)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "rep_bucket_id")
+    private Bucket bucket;
+
     private String userNickname;
 
     private String userProfileImage;
