@@ -5,7 +5,6 @@ import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
-import com.ggums.ggumtle.dto.response.model.BucketSearchListDto;
 import com.ggums.ggumtle.entity.Bucket;
 import com.ggums.ggumtle.entity.CommentBucket;
 import com.ggums.ggumtle.entity.User;
@@ -16,9 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
