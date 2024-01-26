@@ -132,7 +132,7 @@ public class CommentBucketService {
         return "댓글이 수정되었습니다.";
     }
 
-    public String commentLike(User user, Long commentId) {
+    public String commentLike(User user, long commentId) {
 
         CommentBucket commentBucket = commentBucketRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ExceptionType.COMMENT_NOT_FOUND));

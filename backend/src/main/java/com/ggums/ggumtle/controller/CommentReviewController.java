@@ -43,7 +43,7 @@ public class CommentReviewController {
     }
 
     @PutMapping("/like/{commentId}")
-    public Response commentLike(@AuthenticationPrincipal User user, @PathVariable Long commentId) {
+    public Response commentLike(@AuthenticationPrincipal User user, @PathVariable long commentId) {
 
         return new Response("commentReviewLikeId", commentService.commentLike(user, commentId));
     }
