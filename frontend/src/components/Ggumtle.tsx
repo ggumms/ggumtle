@@ -36,8 +36,10 @@ const Ggumtle = ({
 		getGgumtleSize(width, height),
 		getGgumtleAnimation(speed)
 	)
+	console.log(ggumtleInlineStyle)
 
 	return (
+		// TODO : class 이름에 있는 Tailwind width height 스타일 inline css로 대체하기 -> safeList 활용해보기
 		<div style={ggumtleInlineStyle} className={`ggumtle w-[4vh] h-[4vh] ${bgColorClass[color]}`}>
 			{explanation && <p className="sr-only">{explanation}</p>}
 			{children}
