@@ -58,13 +58,13 @@ const profileStyle: IProfileStyle = {
 	},
 }
 
-// Todo: nickname에 bold 처리 필요
 const UserProfile = ({ type = 'comment', userInfo }: IUserProfileProps) => {
 	return (
 		<section className="inline-block">
 			<Link to={'/user/1'} className="inline-flex">
 				<img
-					src={userInfo.userProfileImage}
+					src={'/defaultProfile.svg'}
+					// src={userInfo.userProfileImage}
 					alt="유저 프로필 이미지"
 					className={`${profileStyle[type].profileSize} ${profileStyle[type].profileRightMargin}`}
 				/>
