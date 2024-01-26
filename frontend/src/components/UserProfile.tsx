@@ -70,7 +70,7 @@ const UserProfile = ({ type = 'comment', userInfo }: IUserProfileProps) => {
 				/>
 
 				<div className="relative flex flex-col self-end justify-center">
-					<p className={`${profileStyle[type].nameTextSize}`}>{userInfo.userNickname}</p>
+					<p className={`font-bold ${profileStyle[type].nameTextSize}`}>{userInfo.userNickname}</p>
 					<Link to={'/bucket/1'} className="flex items-center">
 						<p
 							className={`inline-block  leading-none ${profileStyle[type].bucketTextSize} ${userInfo.isAchieved ? textColorClass[userInfo.color] : 'text-point1'} ${profileStyle[type].bucketTitleLeftMargin}`}
