@@ -42,4 +42,10 @@ public class CommentBucketController {
         return new Response("message", commentService.commentUpdate(user, requestDto, commentId));
     }
 
+    @PutMapping("/like/{commentId}")
+    public Response commentLike(@AuthenticationPrincipal User user, @PathVariable Long commentId) {
+
+        return new Response("commentBucketLikeId", commentService.commentLike(user, commentId));
+    }
+
 }
