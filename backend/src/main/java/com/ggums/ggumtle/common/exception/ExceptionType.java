@@ -44,6 +44,7 @@ public enum ExceptionType {
     REVIEW_NOT_FOUND(404, "해당 후기를 찾을 수 없습니다."),
     REVIEW_NOT_VALID(400, "후기가 비공개입니다."),
     IMAGE_NOT_FOUND(404, "해당 이미지를 찾을 수 없습니다."),
+    REVIEW_ALREADY_EXISTS(409, "해당 버킷의 리뷰가 이미 존재합니다."),
 
     // comment
     COMMENT_NOT_FOUND(404, "댓글을 찾을 수 없습니다."),
