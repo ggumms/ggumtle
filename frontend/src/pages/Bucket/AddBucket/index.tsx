@@ -2,9 +2,20 @@ import React, { useEffect } from 'react'
 import MultiPageLayout from '../../../components/layout/MutiPageLayout/MultiPageLayout'
 import { addBucketHeaderList } from '../../../router'
 import { useBucketStore } from '../../../store/bucketStore'
+import Header from '../../../components/Header'
+import { icons } from './../../../constants/header-icons'
+import { IMenu, IMenuFunc } from '../../../interfaces'
+import { useRouter } from '../../../hooks/useRouter'
 
 const AddBucket = () => {
 	const { resetCategory } = useBucketStore()
+	const { goBack } = useRouter()
+
+	const handleLeftFunc = () => {
+		goBack()
+	}
+	const headerMenu: IMenu = { left: icons.BACK, center: '꿈틀 생성하기', right: undefined }
+	const headerFunc: IMenuFunc = { left_func: handleLeftFunc, right_func: undefined }
 
 	useEffect(() => {
 		// 정리 함수
@@ -15,7 +26,12 @@ const AddBucket = () => {
 		}
 	}, [resetCategory])
 
-	return <MultiPageLayout headerData={addBucketHeaderList} />
+	return (
+		<>
+			<Header menu={headerMenu} func={headerFunc} />
+			<MultiPageLayout headerData={addBucketHeaderList} />
+		</>
+	)
 }
 
 export default AddBucket
