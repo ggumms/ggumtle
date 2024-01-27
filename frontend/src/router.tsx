@@ -14,7 +14,7 @@ import UserPage from './pages/UserPage/UserPage'
 import BucketDetail from './pages/Bucket/BucketDetail'
 import AddBucket from './pages/Bucket/AddBucket'
 import MainInfo from './pages/Bucket/AddBucket/MainInfo'
-import CategoryInfo from './pages/Bucket/AddBucket/CategoryInfo'
+import CategoryInfo from './pages/Bucket/AddBucket/CategoryInfo/CategoryInfo'
 import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
 import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
@@ -159,7 +159,6 @@ export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData.reduce((pre
 	return [...prev]
 }, [] as MultiPageHeaderInfo[])
 // export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData
-
 
 export const mainHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
 	let headerData
