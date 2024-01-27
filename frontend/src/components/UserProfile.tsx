@@ -17,8 +17,8 @@ export interface ICustomStyle {
 	profileSize: string
 	nameTextSize: string
 	bucketTextSize: string
-	achieveIconWidth: string
-	achieveIconHeight: string
+	achieveIconWidth: number
+	achieveIconHeight: number
 	profileRightMargin: string
 	bucketTitleLeftMargin: string
 }
@@ -33,8 +33,8 @@ const profileStyle: IProfileStyle = {
 		profileSize: 'w-[36px] h-[36px]',
 		nameTextSize: 'text-[12px]',
 		bucketTextSize: 'text-[10px]',
-		achieveIconWidth: 'w-[12px]',
-		achieveIconHeight: 'h-[12px]',
+		achieveIconWidth: 12,
+		achieveIconHeight: 12,
 		profileRightMargin: 'mr-[8px]',
 		bucketTitleLeftMargin: 'mr-[8px]',
 	},
@@ -42,8 +42,9 @@ const profileStyle: IProfileStyle = {
 		profileSize: 'w-[42px] h-[42px]',
 		nameTextSize: 'text-[14px]',
 		bucketTextSize: 'text-[12px]',
-		achieveIconWidth: 'w-[14px]',
-		achieveIconHeight: 'h-[14px]',
+		achieveIconWidth: 14,
+		achieveIconHeight: 14,
+
 		profileRightMargin: 'mr-[12px]',
 		bucketTitleLeftMargin: 'mr-[12px]',
 	},
@@ -51,8 +52,8 @@ const profileStyle: IProfileStyle = {
 		profileSize: 'w-[55px] h-[55px]',
 		nameTextSize: 'text-[14px]',
 		bucketTextSize: 'text-[12px]',
-		achieveIconWidth: 'w-[14px]',
-		achieveIconHeight: 'h-[14px]',
+		achieveIconWidth: 14,
+		achieveIconHeight: 14,
 		profileRightMargin: 'mr-[16px]',
 		bucketTitleLeftMargin: 'mr-[6px]',
 	},
