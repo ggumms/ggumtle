@@ -23,7 +23,7 @@ const NavigateButton = ({ path, isDisable = false, children }: NavigateButtonPro
 			<button
 				onClick={handlePageMove}
 				disabled={isDisable}
-				className={`w-full text-white py-4 rounded-[5px] ${isDisable ? bgColorClass['unActive'] : bgColorClass['point1']}`}
+				className={`w-full text-white font-bold py-4 rounded-[5px] ${isDisable ? bgColorClass['unActive'] : bgColorClass['point1']}`}
 			>
 				{children}
 			</button>
