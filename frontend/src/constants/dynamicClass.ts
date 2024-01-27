@@ -44,3 +44,17 @@ export const borderColorClass: ClassType = {
 	sandPink: 'border-sandPink',
 	brown: 'border-brown',
 }
+export const fillColorClass: ClassType = {
+	green: 'fill-green',
+	lightGreen: 'fill-lightGreen',
+	red: 'fill-red',
+	yellow: 'fill-yellow',
+	mint: 'fill-mint',
+	orange: 'fill-orange',
+	skyBlue: 'fill-skyBlue',
+	purple: 'fill-purple',
+	pink: 'fill-pink',
+	beige: 'fill-beige',
+	sandPink: 'fill-sandPink',
+	brown: 'fill-brown',
+}

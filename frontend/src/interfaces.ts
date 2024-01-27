@@ -63,3 +63,31 @@ export interface ICategoryItem {
 }
 
 export type selectedInfoType = Record<CategoryType, boolean>
+export interface IMyUserInfo {
+	userId: number
+	userProfileImage: string
+	userNickname: string
+	category: CategoryType[]
+	bucketId: number | null
+	bucketTitle: string
+	dayCount: number
+	color: ColorType
+	isAchieved: boolean
+	owner: true
+	isFollowing: null
+}
+export interface IOtherUserInfo {
+	userId: number
+	userProfileImage: string
+	userNickname: string
+	category: CategoryType[]
+	bucketId: number | null
+	bucketTitle: string
+	dayCount: number
+	color: ColorType
+	isAchieved: boolean
+	owner: false
+	isFollowing: boolean
+}
+
+export type UserInfoType = IMyUserInfo | IOtherUserInfo
