@@ -7,14 +7,18 @@ import PageDescription from '../../../components/PageDescription'
 
 const CategoryInfo = () => {
 	return (
-		<div>
-			<PageDescription type={'categoryJoin'} />
-			<CategorySelect categoryData={categoryData} />
+		<section className="flex flex-col pt-12 grow">
+			<section>
+				<PageDescription type={'categoryWrite'} />
+			</section>
+			<section className="pt-20 grow">
+				<CategorySelect categoryData={categoryData} />
+			</section>
 			{/* 페이지 전환 시 state를 유지하는지 테스트 하기 위한 버튼 */}
 			<NavigateButton path="/bucket/write/main" isDisable={true}>
 				다음
 			</NavigateButton>
-		</div>
+		</section>
 	)
 }
 
