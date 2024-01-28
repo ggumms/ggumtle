@@ -13,5 +13,18 @@ pipeline {
 			credentialsId: 'ggumtle'
 		}
 	}
-  }	
+  }
+
+	stage ('backend build') {
+      steps {
+        sh 'cd deploy/ && chmod +x test-build-backend.sh && ./test-build-backend.sh'
+      }
+    }
+	
+	stage ('frontend build') {
+	  tools { nodejs "NodeJS20" }
+      steps {
+	    sh 'cd deploy/ && chmod +x test-build-frontend.sh && ./test-build-frontend.sh'
+      }
+    }  
 }
