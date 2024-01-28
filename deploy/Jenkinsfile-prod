@@ -1,0 +1,17 @@
+pipeline {
+  agent any
+  
+  environment {
+      CI = false
+  }
+ 
+  stages {
+	stage('git clone') {
+		steps {
+			git url: 'https://lab.ssafy.com/s10-webmobile2-sub2/S10P12D111.git',
+			branch: 'feat/#6-infra',
+			credentialsId: 'ggumtle'
+		}
+	}
+  }	
+}
