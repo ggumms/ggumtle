@@ -13,8 +13,6 @@ pipeline {
 			credentialsId: 'ggumtle'
 		}
 	}
-  }
-
 	stage ('backend build') {
       steps {
         sh 'cd deploy/ && chmod +x test-build-backend.sh && ./test-build-backend.sh'
@@ -27,4 +25,5 @@ pipeline {
 	    sh 'cd deploy/ && chmod +x test-build-frontend.sh && ./test-build-frontend.sh'
       }
     }  
+  }
 }
