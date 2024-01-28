@@ -5,6 +5,7 @@ const colorPalette = {
 	point1: '#454645',
 	unActive: '#D9D9D9',
 	subText: '#ACADAD',
+	inputBg: '#F8F8F8',
 
 	// Main Colors
 	green: '#52A88C',
