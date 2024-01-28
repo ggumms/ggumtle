@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  test-frontend:
+    image: $REGISTRY/ggumtle-frontend:$TAG
+    ports:
+      - "80:80"
+    volumes:
+      - $HOME/ggumtle/frontend:/app/dist/data
+    restart: unless-stopped
+
+  test-backend:
+    image: $REGISTRY/ggumtle-backend:$TAG
+    ports:
+      - "8081:8081"
+    volumes:
+      - $HOME/ggumtle/backend/logs:/logs
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    restart: unless-stopped

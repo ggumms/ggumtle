@@ -15,15 +15,46 @@ pipeline {
 	}
 	stage ('backend build') {
       steps {
-        sh 'cd deploy/ && chmod +x test-build-backend.sh && ./test-build-backend.sh'
+        sh 'cd deploy/ && chmod +x ggumtle-build-backend.sh && ./ggumtle-build-backend.sh'
       }
     }
 	
 	stage ('frontend build') {
 	  tools { nodejs "NodeJS20" }
       steps {
-	    sh 'cd deploy/ && chmod +x test-build-frontend.sh && ./test-build-frontend.sh'
+	    sh 'cd deploy/ && chmod +x ggumtle-build-frontend.sh && ./ggumtle-build-frontend.sh'
       }
-    }  
+    }
+	
+	stage('docker build and push'){
+      steps {
+        sh 'cd deploy/ && chmod +x ggumtle-docker-build-push-prod.sh && ./ggumtle-docker-build-push-prod.sh' 
+      }
+    }		
+	
+	stage('docker deploy over ssh') {
+      steps([$class: 'BapSshPromotionPublisherPlugin']) {
+        sshPublisher(
+          continueOnError: false,
+          failOnError: true,
+          publishers: [
+            sshPublisherDesc(
+              configName: 'ggumtle', 
+              verbose: true,
+              transfers: [
+                sshTransfer(
+                    sourceFiles: 'deploy/deploy-prod/*',
+                    removePrefix: 'deploy/deploy-prod/',
+                    remoteDirectory: 'S10P12D111/deploy',
+                    execCommand: 'cd S10P12D111/deploy && chmod 755 *.sh; \
+                                  ./ggumtle-stop.sh; \
+                                  ./ggumtle-start.sh'
+                )
+              ]
+            )
+          ]
+        )
+      }
+    }
   }
 }
