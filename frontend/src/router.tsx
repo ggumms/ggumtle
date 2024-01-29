@@ -160,7 +160,6 @@ export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData.reduce((pre
 }, [] as MultiPageHeaderInfo[])
 // export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData
 
-
 export const mainHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
 	let headerData
 	if (router.label !== '메인페이지') return [...prev]

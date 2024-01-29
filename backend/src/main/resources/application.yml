@@ -32,9 +32,10 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto:
+      ddl-auto: 
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         default_batch_fetch_size: 1000
         format_sql: true
 #        show_sql: true  # DB로 날리는 쿼리를 출력합니다. - inhwa

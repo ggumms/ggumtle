@@ -15,7 +15,7 @@ const AddBucket = () => {
 		}
 	}, [resetCategory])
 
-	return <MultiPageLayout headerData={addBucketHeaderList} />
+	return <MultiPageLayout headerData={addBucketHeaderList} hasIcon={false} />
 }
 
 export default AddBucket

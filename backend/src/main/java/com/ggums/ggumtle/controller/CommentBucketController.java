@@ -45,7 +45,7 @@ public class CommentBucketController {
     @PutMapping("/like/{commentId}")
     public Response commentLike(@AuthenticationPrincipal User user, @PathVariable long commentId) {
 
-        return new Response("commentBucketLikeId", commentService.commentLike(user, commentId));
+        return new Response("message", commentService.commentLike(user, commentId));
     }
 
 }

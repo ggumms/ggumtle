@@ -3,16 +3,18 @@ import './Ggumtle.css'
 import { bgColorClass } from '../constants/dynamicClass'
 
 const DEFAULT_COLOR = 'green'
-const DEFAULT_WIDTH = '4vh'
-const DEFAULT_HEIGHT = '4vh'
+const DEFAULT_WIDTH = 14
+const DEFAULT_HEIGHT = 14
+// const DEFAULT_WIDTH = '4vh'
+// const DEFAULT_HEIGHT = '4vh'
 const DEFAULT_SPEED = 10
 
 // screen-reader 설명을 위한 explanation props 추가
 // 검색 아이콘을 위한 children props 추가
 interface IGgumtleProps {
 	color: string
-	width: string
-	height: string
+	width: number
+	height: number
 	speed: number
 	explanation?: string
 	children?: ReactNode
@@ -26,8 +28,8 @@ const Ggumtle = ({
 	explanation,
 	children,
 }: IGgumtleProps) => {
-	const getGgumtleSize = (width: string, height: string) => {
-		return { width, height }
+	const getGgumtleSize = (width: number, height: number) => {
+		return { width: `${width}px`, height: `${height}px` }
 	}
 	const getGgumtleAnimation = (speed: number) => {
 		return { animation: `transform ${speed}s ease-in-out infinite both alternate` }
@@ -38,7 +40,7 @@ const Ggumtle = ({
 	)
 
 	return (
-		<div style={ggumtleInlineStyle} className={`ggumtle w-[4vh] h-[4vh] ${bgColorClass[color]}`}>
+		<div style={ggumtleInlineStyle} className={`ggumtle ${bgColorClass[color]}`}>
 			{explanation && <p className="sr-only">{explanation}</p>}
 			{children}
 		</div>

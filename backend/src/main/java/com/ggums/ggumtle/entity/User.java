@@ -25,9 +25,9 @@ public class User extends BaseTime implements UserDetails {
     @Column(nullable = false)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rep_bucket_id")
-    private RepresentativeBucket repBucket;
+    private Bucket repBucket;
 
     private String userNickname;
 
