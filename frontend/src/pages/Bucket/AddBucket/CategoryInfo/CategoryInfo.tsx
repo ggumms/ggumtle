@@ -7,12 +7,11 @@ import CategoryNextButton from './CategoryNextButton'
 
 const CategoryInfo = () => {
 	return (
-		<section className="flex flex-col pt-12 grow">
+		<section className="flex flex-col h-full pt-12 grow">
 			<section>
 				<PageDescription type={'categoryWrite'} />
 			</section>
-			{/* // Todo : pt-12로 변경 예정 */}
-			<section className="pt-20 grow">
+			<section className="pt-12 grow">
 				<CategorySelect categoryData={categoryData} />
 			</section>
 			<CategoryNextButton />

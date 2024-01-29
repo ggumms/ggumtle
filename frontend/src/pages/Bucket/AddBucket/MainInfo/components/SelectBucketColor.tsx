@@ -33,9 +33,8 @@ const SelectBucketColor = () => {
 	return (
 		<section className="flex flex-col items-center">
 			{bucketColor && <Ggumtle color={bucketColor} width={100} height={100} speed={10} />}
-			{/* // Todo : flex-wrap 속성 추가 예정 */}
 			{selectedColorList.length > 1 && (
-				<ul className="flex justify-center gap-3 mt-12">
+				<ul className="flex flex-wrap justify-center gap-3 mt-12">
 					{selectedColorList.map((color, index) => (
 						<li key={`color-${index}`} data-color={color} onClick={handleSelectColor}>
 							{color && <Ggumtle color={color} width={40} height={40} speed={0} />}
