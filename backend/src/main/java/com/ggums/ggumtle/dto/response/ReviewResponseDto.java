@@ -5,7 +5,6 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Builder
@@ -20,6 +19,9 @@ public class ReviewResponseDto {
     private Long writerId;
     private String writerProfileImage;
     private String writerNickname;
+    private Long repBucketId;
+    private String repBucketTitle;
+    private Boolean isRepBucketAchieved;
 
     // review
     private String reviewTitle;

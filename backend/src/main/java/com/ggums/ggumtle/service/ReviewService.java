@@ -116,9 +116,20 @@ public class ReviewService {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
+        Bucket repBucket = writer.getRepBucket();
+        Long repBucketId = null;
+        String repBucketTitle = null;
+        Boolean isRepBucketAchieved = null;
+        if (repBucket != null) {    // 대표버킷이 있는 경우
+            repBucketId = repBucket.getId();
+            repBucketTitle = repBucket.getTitle();
+            isRepBucketAchieved = repBucket.getAchievementDate() != null;
+        }
+
         LocalDate createdDate = bucket.getCreatedDate().toLocalDate();
         LocalDate achievementDate = bucket.getAchievementDate();
         long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
+
 
         List<String> categories = new ArrayList<>();
         for (Interest interest : bucket.getBucketInterest()) {
@@ -132,6 +143,9 @@ public class ReviewService {
                 .writerId(writer.getId())
                 .writerProfileImage(writer.getUserProfileImage())
                 .writerNickname(writer.getUserNickname())
+                .repBucketId(repBucketId)
+                .repBucketTitle(repBucketTitle)
+                .isRepBucketAchieved(isRepBucketAchieved)
                 .reviewTitle(review.getTitle())
                 .reviewContext(review.getContext())
                 .reviewCreatedDate(review.getCreatedDate())
