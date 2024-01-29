@@ -1,37 +1,7 @@
 import { AlarmMainMSG, AlarmSubMSG } from '../../../../constants/alarmMessage'
+import { IAlarm, TimeUnitType } from '../../types/alarm'
 import Desc from './Desc'
 
-enum TimeUnitType {
-	min = '분',
-	hour = '시간',
-	week = '주',
-	month = '달',
-	year = '년',
-}
-
-type AlarmType =
-	| 'follow'
-	| 'likeCommentBucket'
-	| 'likeCommentReview'
-	| 'join'
-	| 'remind'
-	| 'bucket'
-	| 'review'
-	| 'bucketAchieve'
-	| 'commentReview'
-	| 'commentBucket'
-
-export interface IAlarm {
-	alarmId: number
-	sender: string
-	senderProfileImage: string
-	timeUnit: 'min' | 'hour' | 'week' | 'month' | 'year'
-	time: number
-	isRead: boolean
-	context: string | null
-	type: AlarmType
-	dataId: number
-}
 const getAlarmMsg = (alarm: IAlarm) => {
 	const date =
 		alarm.timeUnit === 'min' && alarm.time === 0

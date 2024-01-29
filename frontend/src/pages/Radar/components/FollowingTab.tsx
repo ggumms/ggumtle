@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { bucketPositioning } from '../utils'
 import UserItem from './UserItem'
-import { IBucket } from '../Interfaces'
+import { IBucket } from '../types/bucket'
 
 // 더미 데이터
 const users1 = ['a', 'b', 'c', 'd', 'e', 'f']

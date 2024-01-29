@@ -5,8 +5,9 @@ import Header from '../../../../components/Header'
 import { icons } from '../../../../constants/header-icons'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
 import Button from '@mui/material-next/Button'
-import AlarmItem, { IAlarm } from './AlarmItem'
 import { useEffect, useState } from 'react'
+import { IAlarm } from '../../types/alarm'
+import AlarmItem from './AlarmItem'
 
 // 더미 데이터
 const data: IAlarm[] = [
