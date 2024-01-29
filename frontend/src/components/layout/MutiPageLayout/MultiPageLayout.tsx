@@ -11,7 +11,7 @@ interface MultiPageLayoutProps {
 // TODO: div 태그 삭제하기
 const MultiPageLayout = ({ headerData, hasIcon }: MultiPageLayoutProps) => {
 	return (
-		<div>
+		<div className="p-[20px]">
 			<NavigationHeader headerData={headerData} hasIcon={hasIcon} />
 			<Outlet />
 		</div>

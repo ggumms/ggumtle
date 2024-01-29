@@ -7,6 +7,7 @@ import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.dto.request.UserFollowRequestDto;
 import com.ggums.ggumtle.dto.request.UserUpdateRequestDto;
+import com.ggums.ggumtle.dto.response.UserInfoResponseDto;
 import com.ggums.ggumtle.dto.response.UserListResponseDto;
 import com.ggums.ggumtle.dto.response.UserStatsResponseDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -28,7 +31,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final RepresentativeBucketRepository representativeBucketRepository;
     private final RedisLockRepository redisLockRepository;
     private final TransactionHandler transactionHandler;
     private final InterestRepository interestRepository;
@@ -83,10 +85,45 @@ public class UserService {
         return "업데이트를 완료하였습니다.";
     }
 
+    @Transactional(readOnly = true)
+    public UserInfoResponseDto userInfo(User currentUser, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
+        Bucket bucket = user.getRepBucket();
+
+        Optional<Follow> follow = followRepository.findByFollowerAndFollowee(user, currentUser);
+        Boolean followStatus = null;
+        if(!currentUser.getId().equals(userId)){
+            followStatus = follow.isPresent();
+        }
+        Boolean isAchieved = null;
+        LocalDateTime dateTime = (bucket != null && bucket.getCreatedDate() != null) ? bucket.getCreatedDate() : LocalDateTime.now();
+        if (bucket != null && bucket.getId() != null) {
+            isAchieved = bucket.getAchievementDate() != null;
+            if (isAchieved) {
+                dateTime = bucket.getAchievementDate().atStartOfDay();
+            }
+        }
+
+        return UserInfoResponseDto.builder()
+                .userId(userId)
+                .userProfileImage(user.getUserProfileImage())
+                .userNickname(user.getUserNickname())
+                .category(user.getUserInterest().stream().map(Interest::getName).collect(Collectors.toList()))
+                .bucketId(bucket != null ? bucket.getId() : null)
+                .bucketTitle(bucket != null ? bucket.getTitle() : null)
+                .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) : null)
+                .color(bucket != null ? bucket.getColor() : null)
+                .isAchieved(isAchieved)
+                .owner(currentUser.getId().equals(userId))
+                .isFollowing(followStatus)
+                .build();
+    }
+
     public String representativeBucket(User user, Long bucketId){
+        User findUser = userRepository.findById(user.getId()).orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
+
         if(bucketId == null){
-            representativeBucketRepository.findByUser(user)
-                    .ifPresent(representativeBucketRepository::delete);
+            findUser.setRepBucket(null);
             return "대표 버킷이 삭제되었습니다.";
         }
 
@@ -97,18 +134,7 @@ public class UserService {
             throw new CustomException(ExceptionType.NOT_VALID_ROLE);
         }
 
-        Optional<RepresentativeBucket> representativeBucketOp = representativeBucketRepository.findByUser(user);
-        RepresentativeBucket representativeBucket;
-        if(representativeBucketOp.isPresent()){
-            representativeBucket = representativeBucketOp.get();
-            representativeBucket.setBucket(bucket);
-        }else{
-            representativeBucket = RepresentativeBucket.builder()
-                    .user(user)
-                    .bucket(bucket)
-                    .build();
-        }
-        representativeBucketRepository.save(representativeBucket);
+        findUser.setRepBucket(bucket);
 
         return "대표 버킷을 반영하였습니다. 버킷 : " + bucketId;
     }
@@ -121,16 +147,16 @@ public class UserService {
                 .map(User::getId) // only one user needs to be filtered
                 .collect(Collectors.toList());
 
-        Map<Long, RepresentativeBucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
+        Map<Long, Bucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
         Map<Long, Boolean> followingMap = getFollowingMap(currentUser, userIds);
 
         Page<UserListDto> searchList = users.map(user -> convertToUserSearchListDto(user, repBucketsMap, followingMap));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
-    private Map<Long, RepresentativeBucket> getRepresentativeBucketsMap(List<Long> userIds) {
-        List<RepresentativeBucket> repBuckets = representativeBucketRepository.findByUserIdIn(userIds);
-        return repBuckets.stream().collect(Collectors.toConcurrentMap(rb -> rb.getUser().getId(), Function.identity()));
+    private Map<Long, Bucket> getRepresentativeBucketsMap(List<Long> userIds) {
+        List<Bucket> repBucket = bucketRepository.findByUserIdIn(userIds);
+        return repBucket.stream().collect(Collectors.toConcurrentMap(rb -> rb.getUser().getId(), Function.identity()));
     }
 
     private Map<Long, Boolean> getFollowingMap(User currentUser, List<Long> userIds) {
@@ -139,17 +165,17 @@ public class UserService {
         return userIds.stream().collect(Collectors.toConcurrentMap(Function.identity(), followingIds::contains));
     }
 
-    private UserListDto convertToUserSearchListDto(User user, Map<Long, RepresentativeBucket> repBucketsMap, Map<Long, Boolean> followingMap) {
-        RepresentativeBucket repBucket = repBucketsMap.get(user.getId());
+    private UserListDto convertToUserSearchListDto(User user, Map<Long, Bucket> repBucketsMap, Map<Long, Boolean> followingMap) {
+        Bucket repBucket = repBucketsMap.get(user.getId());
         String bucketTitle = null;
         String bucketColor = null;
         boolean isAchieved = false;
         Long bucketId = null;
 
-        if (repBucket != null && repBucket.getBucket() != null) {
-            bucketTitle = repBucket.getBucket().getTitle();
-            bucketColor = repBucket.getBucket().getColor();
-            isAchieved = repBucket.getBucket().getAchievementDate() != null;
+        if (repBucket != null) {
+            bucketTitle = repBucket.getTitle();
+            bucketColor = repBucket.getColor();
+            isAchieved = repBucket.getAchievementDate() != null;
             bucketId = repBucket.getId();
         }
 
@@ -204,7 +230,7 @@ public class UserService {
                 .map(follow -> follow.getFollowee().getId())
                 .collect(Collectors.toList());
 
-        Map<Long, RepresentativeBucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
+        Map<Long, Bucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
 
         Page<UserListDto> searchList = following.map(follow -> convertToUserListDto(follow.getFollowee(), repBucketsMap));
         return UserListResponseDto.builder().searchList(searchList).build();
@@ -221,23 +247,23 @@ public class UserService {
                 .map(User::getId)
                 .collect(Collectors.toList());
 
-        Map<Long, RepresentativeBucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
+        Map<Long, Bucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
 
         Page<UserListDto> searchList = followers.map(follower -> convertToUserListDto(follower.getFollower(), repBucketsMap));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
-    private UserListDto convertToUserListDto(User user, Map<Long, RepresentativeBucket> repBucketsMap) {
-        RepresentativeBucket repBucket = repBucketsMap.get(user.getId());
+    private UserListDto convertToUserListDto(User user, Map<Long, Bucket> repBucketsMap) {
+        Bucket repBucket = repBucketsMap.get(user.getId());
         String bucketTitle = null;
         String bucketColor = null;
         boolean isAchieved = false;
         Long bucketId = null;
 
-        if (repBucket != null && repBucket.getBucket() != null) {
-            bucketTitle = repBucket.getBucket().getTitle();
-            bucketColor = repBucket.getBucket().getColor();
-            isAchieved = repBucket.getBucket().getAchievementDate() != null;
+        if (repBucket != null) {
+            bucketTitle = repBucket.getTitle();
+            bucketColor = repBucket.getColor();
+            isAchieved = repBucket.getAchievementDate() != null;
             bucketId = repBucket.getId();
         }
 
