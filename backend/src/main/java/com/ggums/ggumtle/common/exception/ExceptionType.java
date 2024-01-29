@@ -50,6 +50,10 @@ public enum ExceptionType {
     COMMENT_NOT_FOUND(404, "댓글을 찾을 수 없습니다."),
     LIKE_NOT_FOUND(404, "좋아요를 하지 않은 댓글입니다."),
     ALREADY_EXIST_LIKE(400, "이미 좋아요한 댓글입니다."),
+
+    // alarm
+    ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),
+    ALARM_NOT_VALID(400, "알람이 유효하지 않습니다."),
     ;
 
     private final int code;
