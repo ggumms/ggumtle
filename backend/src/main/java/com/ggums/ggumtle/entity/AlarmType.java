@@ -1,7 +1,7 @@
 package com.ggums.ggumtle.entity;
 
 public enum AlarmType {
-    ikeCommentBucket, remind, followBucket,
+    likeCommentBucket, remind, followBucket, follow,
     followBucketAchieve, commentBucket, join,
     likeCommentReview, followReview, followCommentReview,
     bucketReaction, reviewReaction;

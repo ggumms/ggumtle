@@ -5,10 +5,8 @@ import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +20,8 @@ public class AlarmController {
     }
 
     @GetMapping("/")
-    public Response alarm(@AuthenticationPrincipal User user){
-        return new Response("", null);
+    public Response alarm(@AuthenticationPrincipal User user, @RequestParam Pageable pageable){
+        return new Response("alarm", alarmService.alarmList(user, pageable));
     }
 
     @PostMapping("/{alarmId}")
