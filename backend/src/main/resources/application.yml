@@ -32,7 +32,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto:
+      ddl-auto: 
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
