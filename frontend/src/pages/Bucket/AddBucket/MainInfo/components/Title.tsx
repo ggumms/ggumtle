@@ -18,9 +18,8 @@ const Title = () => {
 				id="title"
 				placeholder="어떤 버킷을 이루고 싶나요?"
 				onChange={handleChangeTitle}
-				// Todo : 최대 글자수 백앤드 협의 후 지정
-				// maxLength={}
-				className="w-[350px] px-5 py-4 text-sm bg-inputBg rounded-[5px]"
+				maxLength={100}
+				className="w-full px-5 py-4 text-sm bg-inputBg rounded-[5px]"
 			/>
 		</label>
 	)

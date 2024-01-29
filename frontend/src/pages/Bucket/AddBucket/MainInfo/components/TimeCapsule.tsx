@@ -18,9 +18,8 @@ const TimeCapsule = () => {
 				id="timeCapsule"
 				placeholder="버킷을 이뤘을 미래의 나에게 어떤 마음으로 버킷을 시작했는지 알려주세요. 작성해주신 글은 버킷을 달성한 나에게 전달됩니다."
 				onChange={handleChangeTimeCapsule}
-				// Todo : 최대 글자수 백앤드 협의 후 지정
-				// maxLength={}
-				className="w-[350px] h-36 px-5 py-4 text-sm bg-inputBg text-wrap rounded-[5px] resize-none"
+				maxLength={1000}
+				className="w-full h-36 px-5 py-4 text-sm bg-inputBg text-wrap rounded-[5px] resize-none"
 			/>
 		</label>
 	)
