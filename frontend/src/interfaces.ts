@@ -8,7 +8,11 @@ export interface IBucketWide {
 }
 
 export interface BucketInfoProps {
-	bucketInfo: IBucketWide
+	// bucketInfo: IBucketWide
+	title: string
+	color: string
+	dayCount: number
+	isLock: boolean | null
 }
 
 // 헤더 아이콘 type
