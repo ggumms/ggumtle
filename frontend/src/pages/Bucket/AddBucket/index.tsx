@@ -29,7 +29,7 @@ const AddBucket = () => {
 	return (
 		<>
 			<Header menu={headerMenu} func={headerFunc} />
-			<MultiPageLayout headerData={addBucketHeaderList} />
+			<MultiPageLayout headerData={addBucketHeaderList} hasIcon={false} />
 		</>
 	)
 }

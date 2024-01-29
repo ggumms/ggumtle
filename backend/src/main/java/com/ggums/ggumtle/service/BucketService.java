@@ -114,7 +114,6 @@ public class BucketService {
         }
 
         if (requestDto.getTitle() != null) bucket.setTitle(requestDto.getTitle());
-        if (requestDto.getTimeCapsule() != null) bucket.setTimeCapsule(requestDto.getTimeCapsule());
         if (requestDto.getLatitude() != null) bucket.setLatitude(requestDto.getLatitude());
         if (requestDto.getLongitude() != null) bucket.setLongitude(requestDto.getLongitude());
         if (requestDto.getColor() != null) bucket.setColor(requestDto.getColor());

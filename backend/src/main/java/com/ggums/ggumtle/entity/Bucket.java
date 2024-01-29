@@ -2,6 +2,7 @@ package com.ggums.ggumtle.entity;
 
 import com.ggums.ggumtle.common.entity.BaseTime;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -27,8 +28,10 @@ public class Bucket extends BaseTime {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Size(max = 100)
     private String title;
 
+    @Size(max = 1000)
     private String timeCapsule;
 
     private String bucketPicture;

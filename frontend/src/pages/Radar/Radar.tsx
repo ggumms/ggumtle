@@ -9,7 +9,7 @@ const Radar = () => {
 	// }
 	// <ProfileBucket bucketInfo={bucketInfo} />
 
-	return <MultiPageLayout headerData={mainHeaderList} />
+	return <MultiPageLayout headerData={mainHeaderList} hasIcon={true} />
 }
 
 export default Radar
