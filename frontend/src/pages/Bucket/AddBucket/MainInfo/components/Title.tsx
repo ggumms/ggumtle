@@ -1,12 +1,13 @@
-import React, { ChangeEvent, useState } from 'react'
+import { ChangeEvent } from 'react'
+import { useBucketStore } from '../../../../../store/bucketStore'
 
 const Title = () => {
-	// Todo : zustand로 변환하기
-	const [title, setTitle] = useState('')
+	const { bucketTitle, changeBucketTitle } = useBucketStore()
 
 	const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
 		const input = event.currentTarget.value
-		if (input) setTitle(title)
+		if (input) changeBucketTitle(input)
+		console.log(bucketTitle)
 	}
 
 	return (
@@ -17,6 +18,7 @@ const Title = () => {
 				name="title"
 				id="title"
 				placeholder="어떤 버킷을 이루고 싶나요?"
+				value={bucketTitle}
 				onChange={handleChangeTitle}
 				maxLength={100}
 				className="w-full px-5 py-4 text-sm bg-inputBg rounded-[5px]"

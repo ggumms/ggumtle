@@ -11,6 +11,7 @@ const CategoryInfo = () => {
 			<section>
 				<PageDescription type={'categoryWrite'} />
 			</section>
+			{/* // Todo : pt-12로 변경 예정 */}
 			<section className="pt-20 grow">
 				<CategorySelect categoryData={categoryData} />
 			</section>

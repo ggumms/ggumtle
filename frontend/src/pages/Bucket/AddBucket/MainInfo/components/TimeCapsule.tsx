@@ -1,12 +1,13 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent } from 'react'
+import { useBucketStore } from '../../../../../store/bucketStore'
 
 const TimeCapsule = () => {
-	// Todo : zustand로 변환하기
-	const [timeCapsule, setTimeCapsule] = useState('')
+	const { timeCapsule, changeTimeCapsule } = useBucketStore()
 
 	const handleChangeTimeCapsule = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		const input = event.currentTarget.value
-		if (input) setTimeCapsule(timeCapsule)
+		if (input) changeTimeCapsule(input)
+		console.log(timeCapsule)
 	}
 
 	// placeholder를 여러 줄로 입력하기 위해 textarea 사용
@@ -16,6 +17,7 @@ const TimeCapsule = () => {
 			<textarea
 				name="timeCapsule"
 				id="timeCapsule"
+				value={timeCapsule}
 				placeholder="버킷을 이뤘을 미래의 나에게 어떤 마음으로 버킷을 시작했는지 알려주세요. 작성해주신 글은 버킷을 달성한 나에게 전달됩니다."
 				onChange={handleChangeTimeCapsule}
 				maxLength={1000}
