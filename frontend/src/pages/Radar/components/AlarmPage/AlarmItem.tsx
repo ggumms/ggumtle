@@ -99,7 +99,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
 	return (
 		<div
-			className={`px-5 py-2 flex gap-2 justify-between items-center ${alarm.isRead && 'bg-[#f3f3f3]'}`}
+			className={`px-5 py-2 w-full flex items-center ${alarm.isRead && 'bg-[#f3f3f3]'}`}
 		>
 			<div>
 				{/* @TODO: alarm.senderProfileImage로 변경, null일 경우만 사용 */}
@@ -133,10 +133,7 @@ const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
 					</g>
 				</svg>
 			</div>
-			<div className="w-4/5 px-2">{getAlarmMsg(alarm)}</div>
-			<div
-				className={`w-[7px] h-[7px] rounded-full bg-[#E14246] ${alarm.isRead && 'invisible'}`}
-			></div>
+			<div className="w-[90%] px-2">{getAlarmMsg(alarm)}</div>
 		</div>
 	)
 }

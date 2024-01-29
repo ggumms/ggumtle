@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import Header from '../../../../components/Header'
 import { icons } from '../../../../constants/header-icons'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
-import Button from '@mui/material-next/Button'
+// import Button from '@mui/material-next/Button'
+import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react'
 import { IAlarm } from '../../types/alarm'
 import AlarmItem from './AlarmItem'
@@ -122,6 +123,7 @@ const data: IAlarm[] = [
 		dataId: 3,
 	},
 ]
+// @TODO: 실제 api통신시에 remind는 dataId 받아와서 버킷 title 다시 post 요청보내기
 
 const AlarmPage = () => {
 	const navigate = useNavigate()
@@ -154,10 +156,9 @@ const AlarmPage = () => {
 					notifications.map((alarm: IAlarm) => <AlarmItem alarm={alarm} key={alarm.alarmId} />)}
 				<div className="fixed bottom-2 w-full flex justify-center">
 					<Button
-						color="secondary"
-						disabled={false}
+						color="primary"
 						onClick={deleteAllAlarms}
-						variant="filledTonal"
+						variant="contained"
 					>
 						다 읽음 처리하기
 					</Button>
