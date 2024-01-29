@@ -6,8 +6,7 @@ const Title = () => {
 
 	const handleChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
 		const input = event.currentTarget.value
-		if (input) changeBucketTitle(input)
-		console.log(bucketTitle)
+		changeBucketTitle(input)
 	}
 
 	return (

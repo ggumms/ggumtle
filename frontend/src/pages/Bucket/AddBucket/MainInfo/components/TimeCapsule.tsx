@@ -6,8 +6,7 @@ const TimeCapsule = () => {
 
 	const handleChangeTimeCapsule = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		const input = event.currentTarget.value
-		if (input) changeTimeCapsule(input)
-		console.log(timeCapsule)
+		changeTimeCapsule(input)
 	}
 
 	// placeholder를 여러 줄로 입력하기 위해 textarea 사용
