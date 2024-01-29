@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { bucketPositioning } from '../utils'
 import UserItem from './UserItem'
-import { IBucket } from '../Interfaces'
+import { IBucket } from '../types/bucket'
 
 // 더미 데이터
 const users1 = ['a', 'b', 'c', 'd', 'e', 'f']
@@ -9,6 +9,7 @@ const users2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
 const users3 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'o', 'p', 'q']
 
 // 버킷들을 띄울 div 스타일 지정
+
 // @TODO: 추후 tailwind 코드로 수정하기 (translate 속성 유의)
 const bucketArea: {
 	position: 'absolute'
@@ -26,6 +27,7 @@ const bucketArea: {
 	aspectRatio: '1 / 1',
 }
 
+// @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
 const FollowingTab = () => {
 	const [buckets, setBuckets] = useState<IBucket[]>([])
 
@@ -68,7 +70,7 @@ const FollowingTab = () => {
 				100 * index + 50 * Math.random()
 			)
 		})
-	}, [])
+	})
 
 	return (
 		<div className="w-screen h-[calc(100vh-5rem)] flex justify-center items-center">
