@@ -12,11 +12,11 @@ public class UpdateBucketRequestDto {
     private Long bucketId;
 
     @Schema(example = "구독자분들과 팬미팅 진행하기")
-    @Size(max = 255, message = "제목 크기를 초과하였습니다.")
+    @Size(max = 100, message = "제목 크기를 초과하였습니다.")
     private String title;
 
     @Schema(example = "20만이 되면 얼마나 좋을까.. 나는야 뽀시래기.. 20만이 되어도 초심을 잃지 말고 그때의 감사한 마음을 담아 구독자분들께 그대로 돌려드리자.")
-    @Size(max = 255, message = "타임캡슐 크기를 초과하였습니다.")
+    @Size(max = 1000, message = "타임캡슐 크기를 초과하였습니다.")
     private String timeCapsule;
 
     @Schema(example = "23.452")
@@ -25,7 +25,7 @@ public class UpdateBucketRequestDto {
     private Double longitude;
 
     @Schema(example = "dream green")
-    @Size(max = 255, message = "타임캡슐 크기를 초과하였습니다.")
+    @Size(max = 255, message = "색 글자 크기를 초과하였습니다.")
     private String color;
 
     @Schema(example = "용산 파크랜드")
