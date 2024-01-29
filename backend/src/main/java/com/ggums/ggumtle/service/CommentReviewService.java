@@ -33,6 +33,11 @@ public class CommentReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
 
+        // 후기가 비공개일 경우 후기의 작성자가 아니면 댓글을 달 수 없다.
+        if (review.getBucket().getIsPrivate() && !review.getBucket().getUser().getId().equals(user.getId())) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
         CommentReview commentReview = CommentReview.builder()
                 .user(user)
                 .review(review)
@@ -49,7 +54,10 @@ public class CommentReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
 
-        //todo 현재 버전에서 review 엔티티에 사용자 필드 X -> 추가되면 사용자 validation 추가 필요
+        // 후기가 비공개일 경우 후기의 작성자가 아니면 댓글 리스트를 조회할 수 없다.
+        if (review.getBucket().getIsPrivate() && !review.getBucket().getUser().getId().equals(user.getId())) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
 
         Page<CommentReview> comments = commentReviewRepository.findByReview(review, pageable);
         return comments.map(this::convertToCommentResponseDto);
@@ -126,9 +134,10 @@ public class CommentReviewService {
         CommentReview commentReview = commentReviewRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ExceptionType.COMMENT_NOT_FOUND));
 
-        // 아직은 버킷의 작성자만이 해당 버켓의 댓글에 좋아요를 누를 수 있음
-        // 만약 해당 댓글이 달린 버켓의 작성자와 현재 요청하는 사용자가 다를 경우 오류 반환
-        //todo 현재 버전에서 review 엔티티에 사용자 필드 X -> 추가되면 사용자 validation 추가 필요
+        // 후기의 작성자가 아닌 경우 해당 후기에 달린 댓글에 좋아요를 누를 수 없다.
+        if (!commentReview.getReview().getBucket().getUser().getId().equals(user.getId())) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
 
         //todo 좋아요 확장 시, 사용자 validation 변경 필요
 
