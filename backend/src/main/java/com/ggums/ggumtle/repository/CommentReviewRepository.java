@@ -9,4 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface CommentReviewRepository extends JpaRepository<CommentReview, Long> {
 
     Page<CommentReview> findByReview(Review review, Pageable pageable);
+
+    int countByReview(Review review);
 }

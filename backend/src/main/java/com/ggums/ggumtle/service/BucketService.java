@@ -16,6 +16,7 @@ import com.ggums.ggumtle.entity.Interest;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.repository.BucketReactionRepository;
 import com.ggums.ggumtle.repository.BucketRepository;
+import com.ggums.ggumtle.repository.CommentBucketRepository;
 import com.ggums.ggumtle.repository.InterestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,7 @@ public class BucketService {
     private final BucketRepository bucketRepository;
     private final InterestRepository interestRepository;
     private final BucketReactionRepository bucketReactionRepository;
+    private final CommentBucketRepository commentBucketRepository;
 
     public Long postBucket(User user, PostBucketRequestDto requestDto){
         Set<Interest> interests = new HashSet<>();
@@ -182,13 +184,15 @@ public class BucketService {
             isAchieved = true;
         }
 
+        int commentCount = commentBucketRepository.countByBucket(bucket);
+
         return BucketSearchListDto.builder()
                 .bucketId(bucket.getId())
                 .title(bucket.getTitle())
                 .dayCount(ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()))
                 .category(bucket.getBucketInterest().stream().map(Interest::getName).collect(Collectors.toList()))
                 .reactionCount(bucket.getBucketReactions().size())
-                .commentCount(0) // doesn't have comment feature
+                .commentCount(commentCount)
                 .color(bucket.getColor())
                 .isAchieved(isAchieved)
                 .build();

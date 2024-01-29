@@ -11,6 +11,7 @@ import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.BucketRepository;
+import com.ggums.ggumtle.repository.CommentReviewRepository;
 import com.ggums.ggumtle.repository.ReviewReactionRepository;
 import com.ggums.ggumtle.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final BucketRepository bucketRepository;
     private final ReviewReactionRepository reviewReactionRepository;
+    private final CommentReviewRepository commentReviewRepository;
 
     @Value("${spring.web.baseUrl}")
     private String baseUrl;
@@ -267,6 +269,8 @@ public class ReviewService {
         Bucket bucket = review.getBucket();
         User user = bucket.getUser();
 
+        int reviewCommentCount = commentReviewRepository.countByReview(review);
+
         LocalDate createdDate = bucket.getCreatedDate().toLocalDate();
         LocalDate achievementDate = bucket.getAchievementDate();
         long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
@@ -276,6 +280,7 @@ public class ReviewService {
                 .reviewTitle(review.getTitle())
                 .reviewCreatedDate(review.getCreatedDate())
                 .reviewReactionCount(review.getReviewReactions().size())
+                .reviewCommentCount(reviewCommentCount)
                 .bucketId(bucket.getId())
                 .bucketTitle(bucket.getTitle())
                 .bucketColor(bucket.getColor())
