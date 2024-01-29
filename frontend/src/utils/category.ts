@@ -1,5 +1,6 @@
 import { CategoryDataType, selectedInfoType } from '../interfaces'
 
+// Todo : Enum으로 수정해서 적용해보기
 export const categoryData: CategoryDataType = {
 	환경: 'green',
 	자선활동: 'lightGreen',
