@@ -4,6 +4,7 @@ const colorPalette = {
 	// Mono Colors
 	point1: '#454645',
 	unActive: '#D9D9D9',
+	lightGray: '#F6F6F6',
 
 	// Main Colors
 	green: '#52A88C',
