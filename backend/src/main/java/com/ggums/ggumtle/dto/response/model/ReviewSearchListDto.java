@@ -14,6 +14,7 @@ public class ReviewSearchListDto {
     private String reviewTitle;
     private LocalDateTime reviewCreatedDate;
     private int reviewReactionCount;
+    private int reviewCommentCount;
 
     // bucket
     private Long bucketId;

@@ -16,10 +16,10 @@ spring:
         hibernate:
           sql: debug
 
-  #          # "?"로 표시되던 파라미터 값이 무엇인지 알 수 있습니다. - inhwa
-  #          type:
-  #            descriptor:
-  #              sql: trace
+#          # "?"로 표시되던 파라미터 값이 무엇인지 알 수 있습니다. - inhwa
+#          type:
+#            descriptor:
+#              sql: trace
 
   # DB Connection Info
   datasource:
@@ -38,7 +38,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
         default_batch_fetch_size: 1000
         format_sql: true
-  #        show_sql: true  # DB로 날리는 쿼리를 출력합니다. - inhwa
+#        show_sql: true  # DB로 날리는 쿼리를 출력합니다. - inhwa
 
   # jwt setting
   jwt:
