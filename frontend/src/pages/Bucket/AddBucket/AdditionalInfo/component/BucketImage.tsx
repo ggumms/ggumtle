@@ -3,12 +3,13 @@ import { checkFileIsValidImage, checkFileSizeIsValid } from '../../../../../util
 import { Picture } from '../../../../../assets/svgs'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { IoCloseSharp } from 'react-icons/io5'
+import { useBucketStore } from '../../../../../store/bucketStore'
 
 // image는 나중에 submit할 때 Post하기
 const BucketImage = () => {
+	const { changeBucketImage, resetBucketImage } = useBucketStore() // 서버에 전송하기 위한 state
 	const [imageSrc, setImageSrc] = useState('') // 화면에 표시하기 위한 state
-	const [file, setFile] = useState<File | null>(null) // 서버에 전송하기 위한 state
-	const fileInputRef = useRef<HTMLInputElement>(null)
+	const fileInputRef = useRef<HTMLInputElement>(null) // onChange를 제대로 동작 시키기 위해 사용
 
 	// 파일을 선택했을 때 돌아가는 함수
 	const handleFileValidation = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,12 +44,11 @@ const BucketImage = () => {
 			}
 		}
 		reader.readAsDataURL(selectedFile)
-		setFile(selectedFile)
+		changeBucketImage(selectedFile)
 	}
 
 	const handleResetImage = () => {
-		console.log('button click')
-		setFile(null)
+		resetBucketImage()
 		setImageSrc('')
 		if (fileInputRef.current) fileInputRef.current.value = ''
 	}

@@ -40,6 +40,12 @@ interface ITimeCapsuleSlice {
 	resetTimeCapsule: () => void
 }
 
+interface IBucketImageSlice {
+	bucketImage: File | null
+	changeBucketImage: (image: File) => void
+	resetBucketImage: () => void
+}
+
 // immer 사용으로 인한 return문 제거
 const createSelectedCategorySlice: SlicePattern<ICategorySlice> = (set) => ({
 	selectedInfo: { ...defaultCategories },
@@ -93,11 +99,23 @@ const createTimeCapsuleSlice: StateCreator<ITimeCapsuleSlice> = (set) => ({
 		}),
 })
 
+const createBucketImageSlice: StateCreator<IBucketImageSlice> = (set) => ({
+	bucketImage: null,
+	changeBucketImage: (image: File) =>
+		set(() => {
+			return { bucketImage: image }
+		}),
+	resetBucketImage: () =>
+		set(() => {
+			return { bucketImage: null }
+		}),
+})
+
 // 버킷 정보를 관리하는 전역 State
 // - 버킷 생성
 // - 상세 버킷 조회
 export const useBucketStore = create<
-	ICategorySlice & IBucketColorSlice & IBucketTitleSlice & ITimeCapsuleSlice
+	ICategorySlice & IBucketColorSlice & IBucketTitleSlice & ITimeCapsuleSlice & IBucketImageSlice
 >()(
 	devtools(
 		immer((...a) => ({
@@ -105,6 +123,7 @@ export const useBucketStore = create<
 			...createBucketColorSlice(...a),
 			...createBucketTitleSlice(...a),
 			...createTimeCapsuleSlice(...a),
+			...createBucketImageSlice(...a),
 		}))
 	)
 )
