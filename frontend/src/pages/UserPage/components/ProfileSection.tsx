@@ -1,4 +1,4 @@
-import React from 'react'
+import InterestTag from '../../../components/InterestTag'
 import ProfileBucket from '../../../components/ProfileBucket'
 import { UserInfoType } from '../../../interfaces'
 
@@ -18,10 +18,19 @@ const ProfileSection = () => {
 	}
 
 	const { bucketTitle, color, dayCount } = userInfo
+	const category: string[] = ['연애', '언어', '환경']
 	return (
 		<div>
-			profile
-			<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+			<div>프로필 부분</div>
+			<div>
+				<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+				<div>
+					{category.map((cate) => (
+						<InterestTag tag={cate} />
+					))}
+					(
+				</div>
+			</div>
 		</div>
 	)
 }
