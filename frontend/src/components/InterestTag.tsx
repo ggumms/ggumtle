@@ -5,7 +5,7 @@ const InterestTag = ({ tag }: { tag: string }) => {
 	const color = categoryData.find((item) => item.name === tag)?.color
 	return (
 		<div
-			className={`px-2 py-[1px] inline-block rounded-lg text-white text-sm font-light ${bgColorClass[color as string]} mr-1`}
+			className={`px-2 py-[1px] inline-block rounded-md text-white text-xs font-light ${bgColorClass[color as string]} mr-1`}
 		>
 			{tag}
 		</div>
