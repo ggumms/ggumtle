@@ -18,7 +18,6 @@ const BucketImage = () => {
 
 		// 파일이 비었는지 검사
 		if (selectedFile === undefined) {
-			alert('파일이 선택되지 않았습니다.')
 			return
 		}
 
