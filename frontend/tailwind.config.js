@@ -26,6 +26,9 @@ export default {
 	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
+			content: {
+				pictureImage: 'url("/src/assets/svgs/pictureImage.svg")',
+			},
 			colors: colorPalette,
 			keyframes: {
 				radar: {

@@ -29,13 +29,14 @@ const NavigationHeader = ({ headerData, hasIcon }: NavigationHeaderProps) => {
 	}, [currentPath])
 
 	return (
-		<div className="flex justify-between items-center">
+		<div className="flex items-center justify-between">
 			<ul className={`flex gap-[2px]`}>
 				{headerData.map((headerItem, index) => {
 					return (
 						<li key={`hedaer-${index}`} className={`w-16 relative`}>
 							<NavLink
 								to={headerItem.path}
+								// Todo : 삭제 예정
 								data-id={index}
 								className={
 									'inline-block w-full text-center py-2' +
