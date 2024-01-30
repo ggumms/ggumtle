@@ -10,13 +10,8 @@ import com.ggums.ggumtle.dto.response.BucketSearchResponseDto;
 import com.ggums.ggumtle.dto.response.GetBucketReactionResponseDto;
 import com.ggums.ggumtle.dto.response.GetBucketResponseDto;
 import com.ggums.ggumtle.dto.response.model.BucketSearchListDto;
-import com.ggums.ggumtle.entity.Bucket;
-import com.ggums.ggumtle.entity.BucketReaction;
-import com.ggums.ggumtle.entity.Interest;
-import com.ggums.ggumtle.entity.User;
-import com.ggums.ggumtle.repository.BucketReactionRepository;
-import com.ggums.ggumtle.repository.BucketRepository;
-import com.ggums.ggumtle.repository.InterestRepository;
+import com.ggums.ggumtle.entity.*;
+import com.ggums.ggumtle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +34,8 @@ public class BucketService {
     private final BucketRepository bucketRepository;
     private final InterestRepository interestRepository;
     private final BucketReactionRepository bucketReactionRepository;
+    private final CommentBucketRepository commentBucketRepository;
+    private final ReviewRepository reviewRepository;
 
     public Long postBucket(User user, PostBucketRequestDto requestDto){
         Set<Interest> interests = new HashSet<>();
@@ -80,6 +77,12 @@ public class BucketService {
             throw new CustomException(ExceptionType.BUCKET_NOT_VALID);
         }
 
+        Long reviewId = null;
+        Optional<Review> review = reviewRepository.findByBucket(bucket);
+        if (review.isPresent()) {
+            reviewId = review.get().getId();
+        }
+
         String timeCapsule = null;
         if (bucket.getAchievementDate() != null) {
             timeCapsule = bucket.getTimeCapsule();
@@ -87,7 +90,7 @@ public class BucketService {
 
         return GetBucketResponseDto.builder()
                 .writerId(bucket.getUser().getId())
-                .reviewId(null)
+                .reviewId(reviewId)
                 .title(bucket.getTitle())
                 .timeCapsule(timeCapsule)
                 .bucketPicture(bucket.getBucketPicture())
@@ -129,6 +132,14 @@ public class BucketService {
                             }))
                     .collect(Collectors.toSet());
             bucket.setBucketInterest(updatedInterests);
+        }
+
+        if (requestDto.getIsPrivate() != null) {
+            bucket.setIsPrivate(requestDto.getIsPrivate());
+            // 비공개로 전환했는데 그게 대표버킷이었을 경우 사용자의 대표버킷 null로 설정
+            if (!requestDto.getIsPrivate() && bucket.getId().equals(user.getRepBucket().getId())) {
+                user.setRepBucket(null);
+            }
         }
 
         bucketRepository.save(bucket);
@@ -182,13 +193,15 @@ public class BucketService {
             isAchieved = true;
         }
 
+        int commentCount = commentBucketRepository.countByBucket(bucket);
+
         return BucketSearchListDto.builder()
                 .bucketId(bucket.getId())
                 .title(bucket.getTitle())
                 .dayCount(ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()))
                 .category(bucket.getBucketInterest().stream().map(Interest::getName).collect(Collectors.toList()))
                 .reactionCount(bucket.getBucketReactions().size())
-                .commentCount(0) // doesn't have comment feature
+                .commentCount(commentCount)
                 .color(bucket.getColor())
                 .isAchieved(isAchieved)
                 .build();

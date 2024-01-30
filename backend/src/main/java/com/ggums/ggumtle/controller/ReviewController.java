@@ -22,12 +22,12 @@ public class ReviewController {
 
     @PostMapping
     public Response postReview(@AuthenticationPrincipal User user, @Valid @RequestBody PostReviewRequestDto requestDto) {
-        return new Response("review_id", reviewService.postReview(user, requestDto));
+        return new Response("reviewId", reviewService.postReview(user, requestDto));
     }
 
     @PostMapping("/image")
     public Response postImage(@RequestParam final MultipartFile image) {
-        return new Response("image_url", reviewService.postImage(image));
+        return new Response("imageUrl", reviewService.postImage(image));
     }
 
     @GetMapping("/{reviewId}")
@@ -37,7 +37,7 @@ public class ReviewController {
 
     @PutMapping("/{reviewId}")
     public Response putReview(@AuthenticationPrincipal User user, @PathVariable Long reviewId, @Valid @RequestBody PutReviewRequestDto requestDto) {
-        return new Response("review_id", reviewService.putReview(user, reviewId, requestDto));
+        return new Response("reviewId", reviewService.putReview(user, reviewId, requestDto));
     }
 
     @DeleteMapping("/{reviewId}")
@@ -52,7 +52,7 @@ public class ReviewController {
 
     @GetMapping("/{reviewId}/reaction")
     public Response getReviewReaction(@AuthenticationPrincipal User user, @PathVariable Long reviewId) {
-        return new Response("review_reactions", reviewService.getReviewReaction(user, reviewId));
+        return new Response("reviewReactions", reviewService.getReviewReaction(user, reviewId));
     }
 
     @GetMapping("/search")
