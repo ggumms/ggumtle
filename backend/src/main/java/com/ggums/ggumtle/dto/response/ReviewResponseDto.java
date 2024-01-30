@@ -1,5 +1,7 @@
 package com.ggums.ggumtle.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ggums.ggumtle.dto.response.model.UserListDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -26,7 +28,9 @@ public class ReviewResponseDto {
     // review
     private String reviewTitle;
     private String reviewContext;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime reviewCreatedDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime reviewUpdatedDate;
     private List<String> categories;
 }
