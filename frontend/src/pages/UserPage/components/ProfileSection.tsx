@@ -1,6 +1,7 @@
 import InterestTag from '../../../components/InterestTag'
 import ProfileBucket from '../../../components/ProfileBucket'
 import { UserInfoType } from '../../../interfaces'
+import FollowButtons from './FollowButtons'
 import NumInfo from './NumInfo'
 
 const ProfileSection = () => {
@@ -21,8 +22,8 @@ const ProfileSection = () => {
 	const { bucketTitle, color, dayCount } = userInfo
 	const category: string[] = ['연애', '언어', '환경']
 	return (
-		<div className='bg-white px-5'>
-			<div className="flex items-center justify-around py-3">
+		<div className='bg-white px-5 py-4'>
+			<div className="flex items-center justify-around">
 				<div className="flex flex-col items-center justify-center w-2/5">
 					{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
 					<svg
@@ -88,6 +89,7 @@ const ProfileSection = () => {
 			</div>
 			<div>
 				<NumInfo />
+        <FollowButtons />
 			</div>
 		</div>
 	)
