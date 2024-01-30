@@ -9,6 +9,7 @@ import com.ggums.ggumtle.dto.response.ReviewReactionResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
+import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.CommentReviewRepository;
@@ -121,10 +122,12 @@ public class ReviewService {
         Bucket repBucket = writer.getRepBucket();
         Long repBucketId = null;
         String repBucketTitle = null;
+        String repBucketColor = null;
         Boolean isRepBucketAchieved = null;
         if (repBucket != null) {    // 대표버킷이 있는 경우
             repBucketId = repBucket.getId();
             repBucketTitle = repBucket.getTitle();
+            repBucketColor = repBucket.getColor();
             isRepBucketAchieved = repBucket.getAchievementDate() != null;
         }
 
@@ -132,22 +135,26 @@ public class ReviewService {
         LocalDate achievementDate = bucket.getAchievementDate();
         long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
 
-
         List<String> categories = new ArrayList<>();
         for (Interest interest : bucket.getBucketInterest()) {
             categories.add(interest.getName());
         }
 
+        UserListDto writerDto = UserListDto.builder()
+                .userId(writer.getId())
+                .userProfileImage(writer.getUserProfileImage())
+                .userNickname(writer.getUserNickname())
+                .bucketId(repBucketId)
+                .bucketTitle(repBucketTitle)
+                .bucketColor(repBucketColor)
+                .bucketAchievement(isRepBucketAchieved)
+                .build();
+
         return ReviewResponseDto.builder()
+                .writer(writerDto)
                 .bucketId(bucket.getId())
                 .bucketTitle(bucket.getTitle())
                 .daysSinceDream(daysSinceDream)
-                .writerId(writer.getId())
-                .writerProfileImage(writer.getUserProfileImage())
-                .writerNickname(writer.getUserNickname())
-                .repBucketId(repBucketId)
-                .repBucketTitle(repBucketTitle)
-                .isRepBucketAchieved(isRepBucketAchieved)
                 .reviewTitle(review.getTitle())
                 .reviewContext(review.getContext())
                 .reviewCreatedDate(review.getCreatedDate())

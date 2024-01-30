@@ -5,6 +5,7 @@ import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
+import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.Bucket;
 import com.ggums.ggumtle.entity.CommentBucket;
 import com.ggums.ggumtle.entity.CommentBucketLike;
@@ -68,6 +69,30 @@ public class CommentBucketService {
 
     private CommentResponseDto convertToCommentResponseDto(CommentBucket item) {
 
+        User writer = item.getUser();
+
+        Bucket repBucket = writer.getRepBucket();
+        Long repBucketId = null;
+        String repBucketTitle = null;
+        String repBucketColor = null;
+        Boolean isRepBucketAchieved = null;
+        if (repBucket != null) {    // 대표버킷이 있는 경우
+            repBucketId = repBucket.getId();
+            repBucketTitle = repBucket.getTitle();
+            repBucketColor = repBucket.getColor();
+            isRepBucketAchieved = repBucket.getAchievementDate() != null;
+        }
+
+        UserListDto writerDto = UserListDto.builder()
+                .userId(writer.getId())
+                .userProfileImage(writer.getUserProfileImage())
+                .userNickname(writer.getUserNickname())
+                .bucketId(repBucketId)
+                .bucketTitle(repBucketTitle)
+                .bucketColor(repBucketColor)
+                .bucketAchievement(isRepBucketAchieved)
+                .build();
+
         String timeUnit;
         long time;
 
@@ -93,14 +118,13 @@ public class CommentBucketService {
 
         return CommentResponseDto.builder()
                 .id(item.getId())
-                .userId(item.getUser().getId())
-                .userNickname(item.getUser().getUserNickname())
                 .context(item.getContext())
-                .createdDate(item.getCreatedDate())
-                .updatedDate(item.getUpdatedDate())
+                .writer(writerDto)
+                .numberOfLikes(item.getCommentBucketLikes().size())
                 .timeUnit(timeUnit)
                 .time(time)
-                .numberOfLikes(item.getCommentBucketLikes().size())
+                .createdDate(item.getCreatedDate())
+                .updatedDate(item.getUpdatedDate())
                 .build();
     }
 
