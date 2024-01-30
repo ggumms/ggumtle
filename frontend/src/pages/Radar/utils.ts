@@ -1,4 +1,4 @@
-import { IAddBucket, IBucket, IBucketPosition } from "./Interfaces"
+import { IAddBucket, IBucket, IBucketPosition } from './types/bucket'
 
 export function getCircleEdgePos(radius: number) {
 	const angle = Math.random() * 2 * Math.PI

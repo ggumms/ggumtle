@@ -30,7 +30,7 @@ const AddBucket = () => {
 	return (
 		<div className="flex flex-col h-screen px-5 pt-16 pb-12">
 			<Header menu={headerMenu} func={headerFunc} />
-			<MultiPageLayout headerData={addBucketHeaderList} />
+			<MultiPageLayout headerData={addBucketHeaderList} hasIcon={false} />
 		</div>
 	)
 }
