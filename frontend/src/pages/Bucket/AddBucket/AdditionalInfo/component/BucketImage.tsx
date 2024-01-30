@@ -46,17 +46,29 @@ const BucketImage = () => {
 		setFile(selectedFile)
 	}
 
+	const handleResetImage = () => {
+		console.log('button click')
+		setFile(null)
+		setImageSrc('')
+		if (fileInputRef.current) fileInputRef.current.value = ''
+	}
+
 	return (
 		<div className="relative inline-block">
 			{imageSrc ? (
-				<label
-					htmlFor="bucket-image"
-					className="box-content relative inline-flex items-end justify-end w-24 h-24 border-2 rounded-md border-[#d9d9d9]"
-					// border-2 rounded-md border-[#d9d9d9]
-				>
-					<img src={imageSrc} alt="Uploaded" className="absolute w-24 h-24 rounded-md" />
-					<Picture className="absolute w-6 h-6 bottom-2 right-2" />
-				</label>
+				<>
+					<label
+						htmlFor="bucket-image"
+						className="box-content relative inline-flex items-end justify-end w-24 h-24 border-2 rounded-md border-[#d9d9d9]"
+						// border-2 rounded-md border-[#d9d9d9]
+					>
+						<img src={imageSrc} alt="Uploaded" className="absolute w-24 h-24 rounded-md" />
+						<Picture className="absolute w-6 h-6 bottom-2 right-2" />
+					</label>
+					<button onClick={handleResetImage} className="absolute top-2 right-2">
+						<IoCloseSharp size={24} color="#d9d9d9" />
+					</button>
+				</>
 			) : (
 				<label
 					htmlFor="bucket-image"
