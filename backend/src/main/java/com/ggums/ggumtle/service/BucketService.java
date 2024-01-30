@@ -137,7 +137,9 @@ public class BucketService {
         if (requestDto.getIsPrivate() != null) {
             bucket.setIsPrivate(requestDto.getIsPrivate());
             // 비공개로 전환했는데 그게 대표버킷이었을 경우 사용자의 대표버킷 null로 설정
-            if (!requestDto.getIsPrivate() && bucket.getId().equals(user.getRepBucket().getId())) {
+            if (!requestDto.getIsPrivate()
+                    && user.getRepBucket() != null
+                    && bucket.getId().equals(user.getRepBucket().getId())) {
                 user.setRepBucket(null);
             }
         }
