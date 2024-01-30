@@ -28,6 +28,7 @@ export default {
 		extend: {
 			content: {
 				pictureImage: 'url("/src/assets/svgs/pictureImage.svg")',
+				calendarImage: 'url("/src/assets/svgs/calendarImage.svg")',
 			},
 			colors: colorPalette,
 			keyframes: {
