@@ -10,7 +10,7 @@ const UserPage = () => {
 	const navigate = useNavigate()
 	const menu: IMenu = {
 		left: icons.BACK,
-		center: 'juno', // 사용자 닉네임
+		center: 'juno', // @TODO: 사용자 닉네임 넣기
 		right: icons.HAMBERGER,
 	}
 
