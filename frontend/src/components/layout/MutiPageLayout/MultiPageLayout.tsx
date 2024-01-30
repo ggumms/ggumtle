@@ -8,10 +8,9 @@ interface MultiPageLayoutProps {
 	hasIcon: boolean
 }
 
-// TODO: div 태그 삭제하기
 const MultiPageLayout = ({ headerData, hasIcon }: MultiPageLayoutProps) => {
 	return (
-		<div className="flex flex-col h-screen px-5 pt-16 pb-12">
+		<div className="flex flex-col grow">
 			<NavigationHeader headerData={headerData} hasIcon={hasIcon} />
 			<Outlet />
 		</div>
