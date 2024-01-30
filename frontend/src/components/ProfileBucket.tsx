@@ -4,10 +4,10 @@ import { bgColorClass, textColorClass } from '../constants/dynamicClass'
 
 const ProfileBucket = ({ title, color, dayCount, isLock }: BucketInfoProps) => {
 	return (
-		<div className="flex justify-between px-3 py-2 bg-white">
+		<div className="flex justify-between bg-white">
 			<div className="text-point1">
-				<p>{title}</p>
-				<p className="text-xs">
+				<p className='text-sm leading-4'>{title}</p>
+				<p className="text-xs font-light">
 					를 마음에 품은지
 					<span className={textColorClass[color]}>
 						<span className="text-base font-semibold">{dayCount}</span>일

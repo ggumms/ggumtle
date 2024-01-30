@@ -78,9 +78,10 @@ const ProfileSection = () => {
 					</svg>
 					<p className="font-semibold text-point1">juno</p>
 				</div>
-				<div className="w-full">
+				<div className="w-full px-2">
+					{/* @TODO: 대표버킷 없을 경우 처리 */}
 					<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
-					<div className="bg-white px-3">
+					<div className="bg-white">
 						{category.map((cate, index) => (
 							<InterestTag tag={cate} key={index}/>
 						))}
