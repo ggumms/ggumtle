@@ -2,6 +2,7 @@ import { useState } from 'react'
 import DatePicker from './DatePicker'
 import { startOfToday } from 'date-fns'
 
+// createdDate로 이름 변경 필요
 const StartDate = () => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [startDate, setStartDate] = useState<Date>(startOfToday)
@@ -20,7 +21,9 @@ const StartDate = () => {
 
 	return (
 		<div>
+			{/* 설명 글자 관련 css도 설정 필요 */}
 			<p>버킷 시작일</p>
+			{/* 버튼 글자 관련 css도 설정 필요 */}
 			<button
 				onClick={handleClickStartDate}
 				className="

@@ -2,6 +2,7 @@ import React from 'react'
 import PageDescription from '../../../../components/PageDescription'
 import BucketImage from './component/BucketImage'
 import StartDate from './component/StartDate'
+import RemindPeriod from './component/RemindPeriod'
 
 const AdditionalInfo = () => {
 	return (
@@ -12,6 +13,7 @@ const AdditionalInfo = () => {
 			<fieldset>
 				<BucketImage />
 				<StartDate />
+				<RemindPeriod />
 			</fieldset>
 		</section>
 	)
