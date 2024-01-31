@@ -276,27 +276,23 @@ public class BucketService {
         Optional<BucketReaction> existingReaction = bucketReactionRepository
                 .findByBucketAndUser(bucket, user);
 
-        // if reaction is same, pass
+        BucketReaction reaction;
         if (existingReaction.isPresent()) {
-            if (existingReaction.get().getReaction().equals(requestDto.getUserReaction())) {
-                return requestDto.getUserReaction();
-            } else {
-                bucketReactionRepository.delete(existingReaction.get());
-            }
-        }
-
-        if(!requestDto.getUserReaction().isEmpty()){
-            BucketReaction newReaction = BucketReaction.builder()
+            reaction = existingReaction.get();
+            reaction.setReaction(requestDto.getUserReaction());
+        } else {
+            reaction = BucketReaction.builder()
                     .bucket(bucket)
                     .user(user)
                     .reaction(requestDto.getUserReaction())
                     .build();
-            bucketReactionRepository.save(newReaction);
             if(!user.getId().equals(bucket.getUser().getId())){
                 alarmHandler.createBucketAlarm(bucket.getUser(), user, AlarmType.bucketReaction, bucket);
             }
         }
+        bucketReactionRepository.save(reaction);
 
         return requestDto.getUserReaction();
     }
+
 }
