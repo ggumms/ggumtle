@@ -24,7 +24,7 @@ public class RadarService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
-    public Map<String, Object> getFollowing(User user) {
+    public Map<String, Object> getFollowing(User user) throws Exception {
 
         Map<String, Object> radar = new HashMap<>();
 
@@ -46,7 +46,6 @@ public class RadarService {
 
         List<UserListDto> allList = new ArrayList<>();
 
-        System.out.println("====================");
         for (Follow follow : followeeList) {
             User followee = follow.getFollowee();
             allList.add(UserListDto.builder()
@@ -69,7 +68,29 @@ public class RadarService {
                 idx++;
             }
         } else {
+            int idx = 0;
+            int circle1Idx = (int) (size * (float) (3 / 12));
+            int circle2Idx = (int) (size * (float) (7 / 12));
+            int circle3Idx = size - 1;
+            boolean[] visited = new boolean[size];
 
+            while (idx < size) {
+                int randomIdx = (int) (Math.random() * 100);
+                if (idx < 3) {
+                    if (visited[randomIdx % circle1Idx]) continue;
+                    userList1.add(allList.get(randomIdx % circle1Idx));
+                    visited[randomIdx % circle1Idx] = true;
+                } else if (idx < 7) {
+                    if (visited[randomIdx % circle2Idx]) continue;
+                    userList2.add(allList.get(randomIdx % circle2Idx));
+                    visited[randomIdx % circle2Idx] = true;
+                } else {
+                    if (visited[randomIdx % circle3Idx]) continue;
+                    userList3.add(allList.get(randomIdx % circle3Idx));
+                    visited[randomIdx % circle3Idx] = true;
+                }
+                idx++;
+            }
         }
 
         radar.put("circle1", userList1);

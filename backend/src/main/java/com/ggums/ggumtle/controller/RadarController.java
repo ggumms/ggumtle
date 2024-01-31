@@ -25,10 +25,9 @@ public class RadarController {
         return new Response("radar", radarService.getFollowing(user));
     }
 
-    @Operation(summary = "레이다 조회(전체) - 작업중", description = "자신의 관심분야에 따른 ")
+    @Operation(summary = "레이다 조회(전체) - 작업중(어떤식으로 뿌릴지 원주님과 상의)", description = "자신의 관심분야에 따른 리스트를 반환해줍니다. ")
     @GetMapping("/total")
-    public Response getTotal(@AuthenticationPrincipal User user,
-                                 @RequestParam int third) throws Exception {
+    public Response getTotal(@AuthenticationPrincipal User user) throws Exception {
 
         return new Response("radar", radarService.getTotal());
     }
