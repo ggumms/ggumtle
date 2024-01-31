@@ -50,6 +50,9 @@ public class AlarmHandler {
      * @param type join, follow
      */
     public void createUserAlarm(User receiver, User sender, AlarmType type){
+        if (!receiver.getAlarm()) {
+            return;
+        }
         Alarm alarm =  Alarm.builder()
                 .receiver(receiver)
                 .sender(sender)
@@ -69,6 +72,9 @@ public class AlarmHandler {
      * @param bucket alarmed bucket
      */
     public void createBucketAlarm(User receiver, User sender, AlarmType type, Bucket bucket){
+        if (!receiver.getAlarm()) {
+            return;
+        }
         Alarm alarm = Alarm.builder()
                 .receiver(receiver)
                 .sender(sender)
@@ -89,6 +95,9 @@ public class AlarmHandler {
      * @param review alarmed review
      */
     public void createReviewAlarm(User receiver, User sender, AlarmType type, Review review){
+        if (!receiver.getAlarm()) {
+            return;
+        }
         Alarm alarm = Alarm.builder()
                 .receiver(receiver)
                 .sender(sender)
