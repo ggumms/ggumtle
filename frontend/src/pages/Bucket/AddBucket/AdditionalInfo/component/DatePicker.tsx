@@ -16,13 +16,13 @@ import {
 import { useState } from 'react'
 
 interface IDatePicker {
-	startDate: Date
-	setStartDate: React.Dispatch<React.SetStateAction<Date>>
+	createdDate: Date
+	setCreatedDate: React.Dispatch<React.SetStateAction<Date>>
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 // Todo: 미래 날짜 설정 불가능하도록하는 기능 추가
-const DatePicker = ({ startDate, setStartDate, setIsOpen }: IDatePicker) => {
+const DatePicker = ({ createdDate, setCreatedDate, setIsOpen }: IDatePicker) => {
 	const today = startOfToday()
 	const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
 	const firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
@@ -48,7 +48,7 @@ const DatePicker = ({ startDate, setStartDate, setIsOpen }: IDatePicker) => {
 
 		if (dateElement && dateElement.dataset.index) {
 			const dateIndex = parseInt(dateElement.dataset.index)
-			setStartDate(days[dateIndex])
+			setCreatedDate(days[dateIndex])
 			setIsOpen(false)
 		}
 	}
@@ -99,24 +99,24 @@ const DatePicker = ({ startDate, setStartDate, setIsOpen }: IDatePicker) => {
 										type="button"
 										onClick={handleSelectDate}
 										className={`
-												${isEqual(day, startDate) && 'text-white'} 
-												${!isEqual(day, startDate) && isToday(day) && 'text-red-500'} 
+												${isEqual(day, createdDate) && 'text-white'} 
+												${!isEqual(day, createdDate) && isToday(day) && 'text-red-500'} 
 												${
-													!isEqual(day, startDate) &&
+													!isEqual(day, createdDate) &&
 													!isToday(day) &&
 													isSameMonth(day, firstDayCurrentMonth) &&
 													'text-gray-900'
 												} 
 												${
-													!isEqual(day, startDate) &&
+													!isEqual(day, createdDate) &&
 													!isToday(day) &&
 													!isSameMonth(day, firstDayCurrentMonth) &&
 													'text-gray-400'
 												} 
-												${isEqual(day, startDate) && isToday(day) && 'bg-red-500'} 
-												${isEqual(day, startDate) && 'bg-gray-900'} 
-												${!isEqual(day, startDate) && 'hover:bg-gray-200'} 
-												${(isEqual(day, startDate) || isToday(day)) && 'font-semibold'} 
+												${isEqual(day, createdDate) && isToday(day) && 'bg-red-500'} 
+												${isEqual(day, createdDate) && 'bg-gray-900'} 
+												${!isEqual(day, createdDate) && 'hover:bg-gray-200'} 
+												${(isEqual(day, createdDate) || isToday(day)) && 'font-semibold'} 
 												mx-auto flex h-8 w-8 items-center justify-center rounded-full
 											`}
 									>

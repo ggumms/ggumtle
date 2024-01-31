@@ -6,7 +6,7 @@ import { Dialog, Transition } from '@headlessui/react'
 // createdDate로 이름 변경 필요
 const StartDate = () => {
 	const [isOpen, setIsOpen] = useState(false)
-	const [startDate, setStartDate] = useState<Date>(startOfToday)
+	const [createdDate, setCreatedDate] = useState<Date>(startOfToday)
 
 	const handleCloseDatePicker = () => {
 		setIsOpen(false)
@@ -36,7 +36,7 @@ const StartDate = () => {
 					after:content-calendarImage after:inline-block after:h-[19px] after:absolute after:right-2 after:translate-y-1/2 after:bottom-1/2
 				"
 			>
-				{startDate instanceof Date ? formatDate(startDate) : '날짜 선택'}
+				{createdDate instanceof Date ? formatDate(createdDate) : '날짜 선택'}
 			</button>
 			<Transition appear show={isOpen} as={Fragment}>
 				<Dialog as="div" className="relative z-10" onClose={handleCloseDatePicker}>
@@ -65,8 +65,8 @@ const StartDate = () => {
 							>
 								<Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
 									<DatePicker
-										startDate={startDate}
-										setStartDate={setStartDate}
+										createdDate={createdDate}
+										setCreatedDate={setCreatedDate}
 										setIsOpen={setIsOpen}
 									/>
 								</Dialog.Panel>
