@@ -1,14 +1,19 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import DatePicker from './DatePicker'
 import { startOfToday } from 'date-fns'
+import { Dialog, Transition } from '@headlessui/react'
 
 // createdDate로 이름 변경 필요
 const StartDate = () => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [startDate, setStartDate] = useState<Date>(startOfToday)
 
+	const handleCloseDatePicker = () => {
+		setIsOpen(false)
+	}
+
 	const handleClickStartDate = () => {
-		setIsOpen((prev) => !prev)
+		setIsOpen(true)
 	}
 
 	// padStart : 빈 문자열을 채워주는 메서드
@@ -21,9 +26,9 @@ const StartDate = () => {
 
 	return (
 		<div>
-			{/* 설명 글자 관련 css도 설정 필요 */}
+			{/* //Todo : 설명 글자 관련 css도 설정 필요 */}
 			<p>버킷 시작일</p>
-			{/* 버튼 글자 관련 css도 설정 필요 */}
+			{/* //Todo : 버튼 글자 관련 css도 설정 필요 */}
 			<button
 				onClick={handleClickStartDate}
 				className="
@@ -33,9 +38,43 @@ const StartDate = () => {
 			>
 				{startDate instanceof Date ? formatDate(startDate) : '날짜 선택'}
 			</button>
-			{isOpen && (
-				<DatePicker startDate={startDate} setStartDate={setStartDate} setIsOpen={setIsOpen} />
-			)}
+			<Transition appear show={isOpen} as={Fragment}>
+				<Dialog as="div" className="relative z-10" onClose={handleCloseDatePicker}>
+					<Transition.Child
+						as={Fragment}
+						enter="ease-out duration-300"
+						enterFrom="opacity-0"
+						enterTo="opacity-100"
+						leave="ease-in duration-200"
+						leaveFrom="opacity-100"
+						leaveTo="opacity-0"
+					>
+						<div className="fixed inset-0 bg-black/25" />
+					</Transition.Child>
+
+					<div className="fixed inset-0 overflow-y-auto">
+						<div className="flex items-center justify-center min-h-full p-4 text-center">
+							<Transition.Child
+								as={Fragment}
+								enter="ease-out duration-300"
+								enterFrom="opacity-0 scale-95"
+								enterTo="opacity-100 scale-100"
+								leave="ease-in duration-200"
+								leaveFrom="opacity-100 scale-100"
+								leaveTo="opacity-0 scale-95"
+							>
+								<Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+									<DatePicker
+										startDate={startDate}
+										setStartDate={setStartDate}
+										setIsOpen={setIsOpen}
+									/>
+								</Dialog.Panel>
+							</Transition.Child>
+						</div>
+					</div>
+				</Dialog>
+			</Transition>
 		</div>
 	)
 }
