@@ -2,6 +2,7 @@ package com.ggums.ggumtle.service;
 
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.PutReviewRequestDto;
 import com.ggums.ggumtle.dto.request.ReviewReactionRequestDto;
 import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
@@ -11,6 +12,7 @@ import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.BucketRepository;
+import com.ggums.ggumtle.repository.FollowRepository;
 import com.ggums.ggumtle.repository.ReviewReactionRepository;
 import com.ggums.ggumtle.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewService {
 
+    private final AlarmHandler alarmHandler;
+    private final FollowRepository followRepository;
     private final ReviewRepository reviewRepository;
     private final BucketRepository bucketRepository;
     private final ReviewReactionRepository reviewReactionRepository;
@@ -66,6 +70,15 @@ public class ReviewService {
                 .build();
 
         Review savedReview = reviewRepository.save(review);
+        List<Follow> follows = followRepository.findByFollowee(user);
+        if(!follows.isEmpty()){
+            for (Follow follow : follows) {
+                User follower = follow.getFollower();
+                if(follower.getAlarm()){
+                    alarmHandler.createReviewAlarm(follower, user, AlarmType.followReview, review);
+                }
+            }
+        }
         return savedReview.getId();
     }
 
@@ -209,6 +222,7 @@ public class ReviewService {
             else {
                 myReviewReaction.setReaction(reaction);
                 reviewReactionRepository.save(myReviewReaction);
+                alarmHandler.createReviewAlarm(review.getBucket().getUser(), user, AlarmType.reviewReaction, review);
                 return reaction;
             }
         }

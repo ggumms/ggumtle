@@ -6,3 +6,5 @@ public enum AlarmType {
     likeCommentReview, followReview, followCommentReview,
     bucketReaction, reviewReaction;
 }
+
+// todo join, remind
