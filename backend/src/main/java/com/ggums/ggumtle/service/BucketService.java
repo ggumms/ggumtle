@@ -2,6 +2,7 @@ package com.ggums.ggumtle.service;
 
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.common.handler.ImageHandler;
 import com.ggums.ggumtle.dto.request.PostBucketReactionRequestDto;
 import com.ggums.ggumtle.dto.request.PostBucketRequestDto;
@@ -31,7 +32,9 @@ import java.util.stream.Collectors;
 public class BucketService {
 
     private final ImageHandler imageHandler;
+    private final AlarmHandler alarmHandler;
     private final BucketRepository bucketRepository;
+    private final FollowRepository followRepository;
     private final InterestRepository interestRepository;
     private final BucketReactionRepository bucketReactionRepository;
     private final CommentBucketRepository commentBucketRepository;
@@ -65,6 +68,8 @@ public class BucketService {
                 .build();
 
         Bucket savedBucket = bucketRepository.save(bucket);
+        bucketAlarm(user, bucket, AlarmType.followBucket);
+
         return savedBucket.getId();
     }
 
@@ -177,7 +182,21 @@ public class BucketService {
         bucket.setAchievementDate(LocalDate.now());
         bucketRepository.save(bucket);
 
+        bucketAlarm(user, bucket, AlarmType.followBucketAchieve);
+
         return "버킷 달성일이 등록되었습니다.";
+    }
+
+    private void bucketAlarm(User user, Bucket bucket, AlarmType alarmType) {
+        List<Follow> follows = followRepository.findByFollowee(user);
+        if(!follows.isEmpty()){
+            for (Follow follow : follows) {
+                User follower = follow.getFollower();
+                if(follower.getAlarm()){
+                    alarmHandler.createBucketAlarm(follower, user, alarmType, bucket);
+                }
+            }
+        }
     }
 
     @Transactional(readOnly = true)
@@ -273,6 +292,9 @@ public class BucketService {
                     .reaction(requestDto.getUserReaction())
                     .build();
             bucketReactionRepository.save(newReaction);
+            if(!user.getId().equals(bucket.getUser().getId())){
+                alarmHandler.createBucketAlarm(bucket.getUser(), user, AlarmType.bucketReaction, bucket);
+            }
         }
 
         return requestDto.getUserReaction();

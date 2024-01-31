@@ -1,5 +1,6 @@
 package com.ggums.ggumtle.service;
 
+import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.common.handler.ImageHandler;
 import com.ggums.ggumtle.common.handler.TransactionHandler;
 import com.ggums.ggumtle.common.redis.RedisLockRepository;
@@ -38,6 +39,7 @@ public class UserService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
     private final ImageHandler imageHandler;
+    private final AlarmHandler alarmHandler;
 
     public String updateUser(User user, MultipartFile userImage, UserUpdateRequestDto requestDto){
 
@@ -218,6 +220,7 @@ public class UserService {
                 .build());
 
        followRepository.save(follow);
+       alarmHandler.createUserAlarm(followee, user, AlarmType.follow);
 
         return user.getUserNickname() + "님이 " + followee.getUserNickname() + "님을 구독하였습니다.";
     }
