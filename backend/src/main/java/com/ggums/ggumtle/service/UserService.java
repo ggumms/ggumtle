@@ -152,10 +152,9 @@ public class UserService {
                 .map(User::getId) // only one user needs to be filtered
                 .collect(Collectors.toList());
 
-        Map<Long, Bucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
         Map<Long, Boolean> followingMap = getFollowingMap(currentUser, userIds);
 
-        Page<UserListDto> searchList = users.map(user -> convertToUserSearchListDto(user, repBucketsMap, followingMap));
+        Page<UserListDto> searchList = users.map(user -> convertToUserSearchListDto(user, followingMap));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
@@ -170,8 +169,8 @@ public class UserService {
         return userIds.stream().collect(Collectors.toConcurrentMap(Function.identity(), followingIds::contains));
     }
 
-    private UserListDto convertToUserSearchListDto(User user, Map<Long, Bucket> repBucketsMap, Map<Long, Boolean> followingMap) {
-        Bucket repBucket = repBucketsMap.get(user.getId());
+    private UserListDto convertToUserSearchListDto(User user, Map<Long, Boolean> followingMap) {
+        Bucket repBucket = user.getRepBucket();
         String bucketTitle = null;
         String bucketColor = null;
         boolean isAchieved = false;
@@ -223,7 +222,7 @@ public class UserService {
     }
 
     // users who userId follows
-    public UserListResponseDto userFollowerList(Long userId, Pageable pageable){
+    public UserListResponseDto userFolloweeList(Long userId, Pageable pageable){
         Optional<User> userOpt = userRepository.findById(userId);
         if(userOpt.isEmpty()){
             throw new CustomException(ExceptionType.NOT_FOUND_USER);
@@ -231,35 +230,22 @@ public class UserService {
         User user = userOpt.get();
 
         Page<Follow> following = followRepository.findByFollower(user, pageable);
-        List<Long> userIds = following.getContent().stream()
-                .map(follow -> follow.getFollowee().getId())
-                .collect(Collectors.toList());
-
-        Map<Long, Bucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
-
-        Page<UserListDto> searchList = following.map(follow -> convertToUserListDto(follow.getFollowee(), repBucketsMap));
+        Page<UserListDto> searchList = following.map(follow -> convertToUserListDto(follow.getFollowee()));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
     // users who userId follows
-    public UserListResponseDto userFollowingList(Long userId, Pageable pageable) {
+    public UserListResponseDto userFollowerList(Long userId, Pageable pageable) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
 
         Page<Follow> followers = followRepository.findByFollowee(user, pageable);
-        List<Long> userIds = followers.getContent().stream()
-                .map(Follow::getFollower)
-                .map(User::getId)
-                .collect(Collectors.toList());
-
-        Map<Long, Bucket> repBucketsMap = getRepresentativeBucketsMap(userIds);
-
-        Page<UserListDto> searchList = followers.map(follower -> convertToUserListDto(follower.getFollower(), repBucketsMap));
+        Page<UserListDto> searchList = followers.map(follower -> convertToUserListDto(follower.getFollower()));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
-    private UserListDto convertToUserListDto(User user, Map<Long, Bucket> repBucketsMap) {
-        Bucket repBucket = repBucketsMap.get(user.getId());
+    private UserListDto convertToUserListDto(User user) {
+        Bucket repBucket = user.getRepBucket();
         String bucketTitle = null;
         String bucketColor = null;
         boolean isAchieved = false;
