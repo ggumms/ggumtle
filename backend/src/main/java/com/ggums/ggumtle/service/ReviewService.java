@@ -1,5 +1,6 @@
 package com.ggums.ggumtle.service;
 
+import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.dto.request.PutReviewRequestDto;
@@ -11,10 +12,7 @@ import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
-import com.ggums.ggumtle.repository.BucketRepository;
-import com.ggums.ggumtle.repository.CommentReviewRepository;
-import com.ggums.ggumtle.repository.ReviewReactionRepository;
-import com.ggums.ggumtle.repository.ReviewRepository;
+import com.ggums.ggumtle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -32,6 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ReviewService {
 
@@ -39,6 +38,7 @@ public class ReviewService {
     private final BucketRepository bucketRepository;
     private final ReviewReactionRepository reviewReactionRepository;
     private final CommentReviewRepository commentReviewRepository;
+    private final FollowRepository followRepository;
 
     @Value("${spring.web.baseUrl}")
     private String baseUrl;
@@ -46,7 +46,6 @@ public class ReviewService {
     private final String basicDir = Paths.get(System.getProperty("user.dir")).getParent().toString();
     private final String uploadDir = Paths.get(basicDir, "image", "reviewImage").toString();
 
-    @Transactional
     public Long postReview(User user, PostReviewRequestDto requestDto) {
 
         Bucket bucket = bucketRepository.findById(requestDto.getBucketId())
@@ -106,7 +105,6 @@ public class ReviewService {
         }
     }
 
-    @Transactional(readOnly = true)
     public ReviewResponseDto getReview(User user, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
@@ -150,6 +148,14 @@ public class ReviewService {
                 .bucketAchievement(isRepBucketAchieved)
                 .build();
 
+        // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, writer);
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(currentScore + Score.READ);
+        }
+
         return ReviewResponseDto.builder()
                 .writer(writerDto)
                 .bucketId(bucket.getId())
@@ -163,7 +169,6 @@ public class ReviewService {
                 .build();
     }
 
-    @Transactional
     public Long putReview(User user, Long reviewId, PutReviewRequestDto requestDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
@@ -181,7 +186,6 @@ public class ReviewService {
         return review.getId();
     }
 
-    @Transactional
     public String deleteReview(User user, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
@@ -196,7 +200,6 @@ public class ReviewService {
         return "삭제를 완료하였습니다.";
     }
 
-    @Transactional
     public String postReviewReaction(User user, Long reviewId, ReviewReactionRequestDto requestDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
