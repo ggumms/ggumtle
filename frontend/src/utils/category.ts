@@ -1,19 +1,20 @@
-import { ICategoryItem, selectedInfoType } from '../interfaces'
+import { CategoryDataType, selectedInfoType } from '../interfaces'
 
-export const categoryData: ICategoryItem[] = [
-	{ name: '환경', color: 'green' },
-	{ name: '자선활동', color: 'lightGreen' },
-	{ name: '인간관계', color: 'red' },
-	{ name: '휴식', color: 'yellow' },
-	{ name: '연애', color: 'pink' },
-	{ name: '운동', color: 'mint' },
-	{ name: '여행', color: 'orange' },
-	{ name: '언어', color: 'skyBlue' },
-	{ name: '문화', color: 'purple' },
-	{ name: '도전', color: 'beige' },
-	{ name: '취미', color: 'sandPink' },
-	{ name: '직장', color: 'brown' },
-]
+// Todo : Enum으로 수정해서 적용해보기
+export const categoryData: CategoryDataType = {
+	환경: 'green',
+	자선활동: 'lightGreen',
+	인간관계: 'red',
+	휴식: 'yellow',
+	연애: 'pink',
+	운동: 'mint',
+	여행: 'orange',
+	언어: 'skyBlue',
+	문화: 'purple',
+	도전: 'beige',
+	취미: 'sandPink',
+	직장: 'brown',
+}
 
 // const defaultCategories = {
 // 	환경: false,
@@ -29,6 +30,6 @@ export const categoryData: ICategoryItem[] = [
 // 	취미: false,
 // 	직장: false,
 // }
-export const defaultCategories = categoryData.reduce((prev, category) => {
-	return { ...prev, [category.name]: false }
+export const defaultCategories = Object.keys(categoryData).reduce((prev, category) => {
+	return { ...prev, [category]: false }
 }, {} as selectedInfoType)

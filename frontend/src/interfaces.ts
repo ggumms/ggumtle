@@ -61,12 +61,10 @@ export type ColorType =
 	| 'sandPink'
 	| 'brown'
 
-export interface ICategoryItem {
-	name: CategoryType
-	color: ColorType
-}
+export type CategoryDataType = Record<CategoryType, ColorType>
 
 export type selectedInfoType = Record<CategoryType, boolean>
+
 export interface IMyUserInfo {
 	userId: number
 	userProfileImage: string

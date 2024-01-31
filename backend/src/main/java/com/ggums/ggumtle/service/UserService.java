@@ -134,6 +134,11 @@ public class UserService {
             throw new CustomException(ExceptionType.NOT_VALID_ROLE);
         }
 
+        // 비공개인 버킷은 대표버킷으로 지정할 수 없다.
+        if (bucket.getIsPrivate()) {
+            throw new CustomException(ExceptionType.BUCKET_NOT_VALID);
+        }
+
         findUser.setRepBucket(bucket);
 
         return "대표 버킷을 반영하였습니다. 버킷 : " + bucketId;

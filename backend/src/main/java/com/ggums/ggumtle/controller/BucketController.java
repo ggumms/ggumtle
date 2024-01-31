@@ -22,20 +22,20 @@ public class BucketController {
 
     @PostMapping("/")
     public Response postBucket(@AuthenticationPrincipal User user, @Valid @RequestBody PostBucketRequestDto requestDto){
-        return new Response("bucket_id", bucketService.postBucket(user, requestDto));
+        return new Response("bucketId", bucketService.postBucket(user, requestDto));
     }
 
     @GetMapping("/info/{bucket}")
     public Response getBucket(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucketId){
-        return new Response("bucket_info", bucketService.getBucket(user, bucketId));
+        return new Response("bucketInfo", bucketService.getBucket(user, bucketId));
     }
 
     @PutMapping("/")
     public Response updateBucket(@AuthenticationPrincipal User user, @Valid @RequestBody UpdateBucketRequestDto requestDto){
-        return new Response("bucket_id", bucketService.updateBucket(user, requestDto));
+        return new Response("bucketId", bucketService.updateBucket(user, requestDto));
     }
 
-    @DeleteMapping("/delete/{bucket}")
+    @DeleteMapping("/{bucket}")
     public Response deleteBucket(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucket_id){
         return new Response("message", bucketService.deleteBucket(user, bucket_id));
     }
