@@ -1,10 +1,11 @@
-import InterestTag from '../../../components/InterestTag'
-import ProfileBucket from '../../../components/ProfileBucket'
-import { UserInfoType } from '../../../interfaces'
+import InterestTag from '../../../../components/InterestTag'
+import ProfileBucket from '../../../../components/ProfileBucket'
+import { UserInfoType } from '../../../../interfaces'
 import { FiShare } from 'react-icons/fi'
 import LocationInfo from './LocationInfo'
 import TotalReaction from './TotalReaction'
 import TotalComment from './TotalComment'
+import UserProfile from '../../../../components/UserProfile'
 
 // 하나의 피드 (버킷)
 const BucketFeed = () => {
@@ -29,6 +30,11 @@ const BucketFeed = () => {
 	const commentCnt = 12
 	return (
 		<div className="bg-white px-4 py-2">
+			{/* 작성자 프로필 정보 */}
+			<div className="pt-1 pb-2">
+				<UserProfile type="detail" userInfo={userInfo} />
+			</div>
+
 			{/* 버킷 */}
 			<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
 

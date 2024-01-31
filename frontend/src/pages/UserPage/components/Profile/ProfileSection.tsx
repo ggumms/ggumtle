@@ -1,6 +1,6 @@
-import InterestTag from '../../../components/InterestTag'
-import ProfileBucket from '../../../components/ProfileBucket'
-import { UserInfoType } from '../../../interfaces'
+import InterestTag from '../../../../components/InterestTag'
+import ProfileBucket from '../../../../components/ProfileBucket'
+import { UserInfoType } from '../../../../interfaces'
 import FollowButtons from './FollowButtons'
 import NumInfo from './NumInfo'
 
@@ -22,7 +22,7 @@ const ProfileSection = () => {
 	const { bucketTitle, color, dayCount } = userInfo
 	const category: string[] = ['연애', '언어', '환경']
 	return (
-		<div className='bg-white px-5 py-4'>
+		<div className="bg-white px-5 py-4">
 			<div className="flex items-center justify-around">
 				<div className="flex flex-col items-center justify-center w-2/5">
 					{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
@@ -83,14 +83,14 @@ const ProfileSection = () => {
 					<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
 					<div className="bg-white">
 						{category.map((cate, index) => (
-							<InterestTag tag={cate} key={index}/>
+							<InterestTag tag={cate} key={index} />
 						))}
 					</div>
 				</div>
 			</div>
 			<div>
 				<NumInfo />
-        <FollowButtons />
+				<FollowButtons />
 			</div>
 		</div>
 	)

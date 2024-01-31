@@ -1,4 +1,4 @@
-import { CheerUpReaction, CoolReaction, MetooReaction } from '../../../constants/reactions'
+import { CheerUpReaction, CoolReaction, MetooReaction } from '../../../../constants/reactions'
 
 // 피드 총 공감 개수 컴포넌트
 const TotalReaction = ({ count }: { count: number }) => {
