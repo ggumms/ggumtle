@@ -54,6 +54,10 @@ public enum ExceptionType {
     // alarm
     ALARM_NOT_FOUND(404, "알람을 찾을 수 없습니다."),
     ALARM_NOT_VALID(400, "알람이 유효하지 않습니다."),
+
+    // sse error
+    SSE_EMITTER_ERROR(500, "SSE Emitter에서 오류가 발생했습니다."),
+
     ;
 
     private final int code;

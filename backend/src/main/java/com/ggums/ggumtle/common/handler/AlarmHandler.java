@@ -1,8 +1,12 @@
 package com.ggums.ggumtle.common.handler;
 
+import com.ggums.ggumtle.common.exception.CustomException;
+import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.AlarmRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -21,6 +25,22 @@ public class AlarmHandler {
 
     public final Map<Long, SseEmitter> userEmitters = new ConcurrentHashMap<>();
     private final AlarmRepository alarmRepository;
+
+    // Giving signals to client
+    @Async
+    @Scheduled(fixedRate = 30000)
+    public void sendHeartbeatToClients() {
+        for (Map.Entry<Long, SseEmitter> entry : userEmitters.entrySet()) {
+            try {
+                entry.getValue().send(SseEmitter.event().comment("heartbeat"));
+            } catch (IOException e) {
+                userEmitters.remove(entry.getKey());
+            } catch (Exception e) {
+                throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
+            }
+        }
+    }
+
 
     /**
      * Saves alarm when user follows or joins
@@ -80,13 +100,17 @@ public class AlarmHandler {
         sendEventToUser(receiver.getId());
     }
 
-    private void sendEventToUser(Long userId) {
+    @Async
+    protected void sendEventToUser(Long userId) {
         SseEmitter emitter = userEmitters.get(userId);
         if (emitter != null) {
             try {
                 emitter.send(SseEmitter.event().name("serverEvent").data("readAlarm"));
             } catch (IOException e) {
                 emitter.completeWithError(e);
+                userEmitters.remove(userId);
+            } catch (Exception e) {
+                throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
             }
         }
     }

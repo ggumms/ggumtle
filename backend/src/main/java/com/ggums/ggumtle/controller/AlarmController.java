@@ -1,5 +1,7 @@
 package com.ggums.ggumtle.controller;
 
+import com.ggums.ggumtle.common.exception.CustomException;
+import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.common.response.Response;
 import com.ggums.ggumtle.entity.User;
@@ -9,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,6 +26,11 @@ public class AlarmController {
     public SseEmitter subscribe(@AuthenticationPrincipal User user) {
         Long userId = user.getId();
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
+        try {
+            emitter.send(SseEmitter.event().name("INIT"));
+        } catch (IOException e) {
+            throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
+        }
 
         // if previous emitter exist, complete(delete)
         SseEmitter previousEmitter = alarmHandler.userEmitters.put(userId, emitter);
@@ -49,5 +58,15 @@ public class AlarmController {
     @PostMapping("/{alarmId}")
     public Response alarmRead(@AuthenticationPrincipal User user, @PathVariable("alarmId") Long alarmId){
         return new Response("message", alarmService.alarmRead(user, alarmId));
+    }
+
+    @PatchMapping("/user")
+    public Response alarmUser(@AuthenticationPrincipal User user, @RequestParam boolean alarm){
+        return new Response("message", alarmService.alarmUser(user, alarm));
+    }
+
+    @PutMapping("/all-read")
+    public Response readAllAlarm(@AuthenticationPrincipal User user){
+        return new Response("message", alarmService.readAllAlarm(user));
     }
 }

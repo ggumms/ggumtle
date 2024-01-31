@@ -6,18 +6,23 @@ import com.ggums.ggumtle.dto.response.AlarmResponseDto;
 import com.ggums.ggumtle.entity.Alarm;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.repository.AlarmRepository;
+import com.ggums.ggumtle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class AlarmService {
 
+    private final UserRepository userRepository;
     private final AlarmRepository alarmRepository;
 
     // count unread alarms
@@ -83,4 +88,23 @@ public class AlarmService {
                 .build();
     }
 
+    public String alarmUser(User user, Boolean alarm){
+
+        user.setAlarm(alarm);
+        userRepository.save(user);
+
+        return "알람이 " + alarm + " 입니다.";
+    }
+
+    public String readAllAlarm(User user){
+        List<Alarm> alarms = alarmRepository.findByReceiver(user);
+        if(!alarms.isEmpty()){
+            for (Alarm alarm : alarms) {
+                alarm.setIsRead(true);
+            }
+        }
+        alarmRepository.saveAll(alarms);
+
+        return "전부 읽기 성공";
+    }
 }
