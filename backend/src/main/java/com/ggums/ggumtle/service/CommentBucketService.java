@@ -1,18 +1,17 @@
 package com.ggums.ggumtle.service;
 
 
+import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
-import com.ggums.ggumtle.entity.Bucket;
-import com.ggums.ggumtle.entity.CommentBucket;
-import com.ggums.ggumtle.entity.CommentBucketLike;
-import com.ggums.ggumtle.entity.User;
+import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.CommentBucketLikeRepository;
 import com.ggums.ggumtle.repository.CommentBucketRepository;
+import com.ggums.ggumtle.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +30,7 @@ public class CommentBucketService {
     private final BucketRepository bucketRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final CommentBucketLikeRepository commentBucketLikeRepository;
+    private final FollowRepository followRepository;
 
     public String commentCreate(User user, long bucketId, CommentRequestDto requestDto) {
 
@@ -49,6 +49,15 @@ public class CommentBucketService {
                 .build();
 
         commentBucketRepository.save(commentBucket);
+
+        // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, bucket.getUser());
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(currentScore + Score.COMMENT);
+        }
+
         return "댓글이 생성되었습니다.";
     }
 
@@ -139,6 +148,15 @@ public class CommentBucketService {
         }
 
         commentBucketRepository.delete(comment);
+
+        // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, comment.getBucket().getUser());
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(Math.max(currentScore - Score.COMMENT, 0L));
+        }
+
         return "댓글이 삭제되었습니다.";
     }
 
