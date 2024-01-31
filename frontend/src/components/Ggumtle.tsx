@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import './Ggumtle.css'
 import { bgColorClass } from '../constants/dynamicClass'
 
