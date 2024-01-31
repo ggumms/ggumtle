@@ -1,4 +1,3 @@
-import React from 'react'
 import { useBucketStore } from '../../../../../store/bucketStore'
 import NavigateButton from '../../../../../components/NavigateButton'
 
