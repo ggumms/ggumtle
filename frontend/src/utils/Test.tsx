@@ -4,14 +4,12 @@ import { useEffect } from 'react'
 const Test = () => {
 
 	const realUrl = 'http://localhost:5173'
+  const feedTitle = '구독자 100만명 달성하기'
+  const username = 'juno'
 
-	// 재랜더링시에 실행되게 해준다.
 	useEffect(() => {
-		// init 해주기 전에 clean up 을 해준다.
 		window.Kakao.cleanup()
-		// 자신의 js 키를 넣어준다.
 		window.Kakao.init(import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY)
-		// 잘 적용되면 true 를 뱉는다.
 		console.log(window.Kakao.isInitialized())
 	}, [])
 
@@ -19,20 +17,20 @@ const Test = () => {
 		window.Kakao.Share.sendDefault({
 			objectType: 'feed',
 			content: {
-				title: '오늘의 디저트',
-				description: '아메리카노, 빵, 케익',
+				title: username,
+				description: feedTitle,
 				imageUrl:
 					'https://mud-kage.kakao.com/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg',
 				link: {
-					// mobileWebUrl: realUrl,
+					mobileWebUrl: realUrl,
           webUrl: realUrl,
 				},
 			},
 			buttons: [
         {
-          title: '나도 테스트 하러가기',
+          title: '보러가기',
 					link: {
-            // mobileWebUrl: realUrl,
+            mobileWebUrl: realUrl,
             webUrl: realUrl,
 					},
 				},
