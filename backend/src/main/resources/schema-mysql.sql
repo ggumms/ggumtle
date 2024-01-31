@@ -150,8 +150,8 @@ create table review_reaction
     review_id bigint,
     reaction  varchar(255),
     primary key (id),
-    foreign key (user_id) references `user` (id)
-    foreign key (review_id) references review (id),
+    foreign key (user_id) references `user` (id),
+    foreign key (review_id) references review (id)
 ) engine=InnoDB;
 
 

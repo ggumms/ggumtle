@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import MultiPageLayout from '../../../components/layout/MutiPageLayout/MultiPageLayout'
 import { addBucketHeaderList } from '../../../router'
 import { useBucketStore } from '../../../store/bucketStore'

@@ -24,7 +24,7 @@ public class Bucket extends BaseTime {
     @Column(nullable = false)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
