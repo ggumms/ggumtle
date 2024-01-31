@@ -19,45 +19,45 @@ public class UserController {
 
     private final UserService userService;
 
-    @PutMapping("/")
-    public Response updateUser(@RequestPart("userImage") MultipartFile userImage,
-                               @Valid @RequestPart("userData") UserUpdateRequestDto requestDto,
-                               @AuthenticationPrincipal User user){
-        return new Response("message", userService.updateUser(user, userImage, requestDto));
-    }
+//    @PutMapping("/")
+//    public Response updateUser(@RequestPart("userImage") MultipartFile userImage,
+//                               @Valid @RequestPart("userData") UserUpdateRequestDto requestDto,
+//                               @AuthenticationPrincipal User user){
+//        return new Response("message", userService.updateUser(user, userImage, requestDto));
+//    }
 
-    @GetMapping("/{user}")
-    public Response userInfo(@AuthenticationPrincipal User user, @PathVariable("user") Long userId){
-        return new Response("userInfo", userService.userInfo(user, userId));
-    }
+//    @GetMapping("/{user}")
+//    public Response userInfo(@AuthenticationPrincipal User user, @PathVariable("user") Long userId){
+//        return new Response("userInfo", userService.userInfo(user, userId));
+//    }
 
-    @PutMapping("/featured-bucket")
-    public Response representativeBucket(@AuthenticationPrincipal User user, @RequestParam("bucket") Long bucketId){
-        return new Response("message", userService.representativeBucket(user, bucketId));
-    }
+//    @PutMapping("/featured-bucket")
+//    public Response representativeBucket(@AuthenticationPrincipal User user, @RequestParam("bucket") Long bucketId){
+//        return new Response("message", userService.representativeBucket(user, bucketId));
+//    }
 
-    @GetMapping("/search")
-    public Response searchUser(@AuthenticationPrincipal User user, @RequestParam String word, Pageable pageable){
-        return new Response("userSearchList", userService.searchUsers(word, pageable, user));
-    }
+//    @GetMapping("/search")
+//    public Response searchUser(@AuthenticationPrincipal User user, @RequestParam String word, Pageable pageable){
+//        return new Response("userSearchList", userService.searchUsers(word, pageable, user));
+//    }
 
-    @PutMapping("/follow")
-    public Response followUser(@AuthenticationPrincipal User user, @RequestBody UserFollowRequestDto requestDto){
-        return new Response("message", userService.followUser(user, requestDto));
-    }
+//    @PutMapping("/follow")
+//    public Response followUser(@AuthenticationPrincipal User user, @RequestBody UserFollowRequestDto requestDto){
+//        return new Response("message", userService.followUser(user, requestDto));
+//    }
 
-    @GetMapping("/follower")
-    public Response userFollower(@RequestParam Long userId, Pageable pageable){
-        return new Response("followerList", userService.userFollowerList(userId, pageable));
-    }
+//    @GetMapping("/follower")
+//    public Response userFollower(@RequestParam Long userId, Pageable pageable){
+//        return new Response("followerList", userService.userFollowerList(userId, pageable));
+//    }
 
-    @GetMapping("/following")
-    public Response userFollowing(@RequestParam Long userId, Pageable pageable){
-        return new Response("followerList", userService.userFollowingList(userId, pageable));
-    }
+//    @GetMapping("/following")
+//    public Response userFollowing(@RequestParam Long userId, Pageable pageable){
+//        return new Response("followerList", userService.userFollowingList(userId, pageable));
+//    }
 
-    @GetMapping("/stats/{user}")
-    public Response userStats(@PathVariable("user") Long userId){
-        return new Response("userStats", userService.getUserStats(userId));
-    }
+//    @GetMapping("/stats/{user}")
+//    public Response userStats(@PathVariable("user") Long userId){
+//        return new Response("userStats", userService.getUserStats(userId));
+//    }
 }
