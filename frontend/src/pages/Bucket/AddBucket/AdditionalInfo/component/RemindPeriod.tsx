@@ -1,40 +1,61 @@
 import { useState } from 'react'
+import { Menu, Transition } from '@headlessui/react'
 
-// 미래 날짜 설정 불가능하도록하는 기능 추가
-type PeriodType = 'twoWeek' | 'oneDay' | 'oneWeek' | 'oneMonth' | 'oneYear' | null
+type PeriodType = 'none' | 'oneDay' | 'oneWeek' | 'twoWeek' | 'oneMonth' | 'oneYear'
 const periodData = {
-	twoWeek: '2주 마다',
+	none: '없음',
 	oneDay: '매일',
 	oneWeek: '매주',
+	twoWeek: '2주 마다',
 	oneMonth: '매월',
 	oneYear: '매년',
-	null: '없음',
 }
 
 const RemindPeriod = () => {
-	const [isOpen, setIsOpen] = useState(false)
 	const [period, setPeriod] = useState<PeriodType>('twoWeek')
 
-	// build error를 막기 위한 코드
-	console.log(isOpen, setPeriod)
-
-	const handleClickPeriod = () => {
-		setIsOpen((prev) => !prev)
-	}
-
 	return (
-		<div>
+		<>
 			<p>리마인드 주기</p>
-			<button
-				onClick={handleClickPeriod}
-				className="
-					relative w-full px-2 py-2 text-left border-[0.5px] rounded-[5px]
-					after:content-clockImage after:inline-block after:h-[19px] after:absolute after:right-2 after:translate-y-1/2 after:bottom-1/2
+			<Menu as="div" className={'relative'}>
+				<Menu.Button
+					className="
+				relative w-full px-2 py-2 text-left border-[0.5px] rounded-[5px]
+				after:content-clockImage after:inline-block after:h-[19px] after:absolute after:right-2 after:translate-y-1/2 after:bottom-1/2
 				"
-			>
-				{period && periodData[period]}
-			</button>
-		</div>
+				>
+					{period && periodData[period]}
+				</Menu.Button>
+				<Transition
+					enter="transition duration-100 ease-out"
+					enterFrom="transform scale-95 opacity-0"
+					enterTo="transform scale-100 opacity-100"
+					leave="transition duration-75 ease-out"
+					leaveFrom="transform scale-100 opacity-100"
+					leaveTo="transform scale-95 opacity-0"
+				>
+					<Menu.Items
+						as="ul"
+						className="absolute left-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+					>
+						{Object.entries(periodData).map(([key, value]) => (
+							<Menu.Item key={key}>
+								{({ active }) => (
+									<button
+										className={`${
+											active ? 'bg-gray-100' : 'text-gray-900'
+										} group flex w-full items-center px-2 py-2 text-sm`}
+										onClick={() => setPeriod(key as PeriodType)}
+									>
+										{value}
+									</button>
+								)}
+							</Menu.Item>
+						))}
+					</Menu.Items>
+				</Transition>
+			</Menu>
+		</>
 	)
 }
 

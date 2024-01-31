@@ -21,6 +21,7 @@ interface IDatePicker {
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+// Todo: 미래 날짜 설정 불가능하도록하는 기능 추가
 const DatePicker = ({ startDate, setStartDate, setIsOpen }: IDatePicker) => {
 	const today = startOfToday()
 	const [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
