@@ -1,11 +1,11 @@
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
-import { UserInfoType } from '../../../../interfaces'
-import { FiShare } from 'react-icons/fi'
+import { CategoryType, UserInfoType } from '../../../../interfaces'
 import LocationInfo from './LocationInfo'
 import TotalReaction from './TotalReaction'
 import TotalComment from './TotalComment'
 import UserProfile from '../../../../components/UserProfile'
+import FeedShare from '../../utils/FeedShare'
 
 // 하나의 피드 (버킷)
 const BucketFeed = () => {
@@ -23,7 +23,7 @@ const BucketFeed = () => {
 		isFollowing: null,
 	}
 	const { bucketTitle, color, dayCount } = userInfo
-	const category: string[] = ['직장', '여행', '인간관계']
+	const category: CategoryType[] = ['직장', '여행', '인간관계']
 	const photo = true
 	const location = true
 	const reactionCnt = 28
@@ -62,7 +62,7 @@ const BucketFeed = () => {
 					<TotalReaction count={reactionCnt} />
 					<TotalComment count={commentCnt} />
 				</div>
-				<FiShare size="0.9rem" color="#454645" />
+				<FeedShare />
 			</div>
 		</div>
 	)
