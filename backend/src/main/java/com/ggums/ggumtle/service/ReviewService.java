@@ -210,6 +210,8 @@ public class ReviewService {
                 .filter(reviewReaction -> reviewReaction.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());
 
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, review.getBucket().getUser());
+
         // [POST] 해당 후기에 남긴 리액션이 없는 경우
         if (myReviewReactions.isEmpty()) {
             ReviewReaction newReviewReaction = ReviewReaction.builder()
@@ -218,6 +220,14 @@ public class ReviewService {
                     .reaction(reaction)
                     .build();
             reviewReactionRepository.save(newReviewReaction);
+
+            // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(currentScore + Score.REACTION);
+            }
+
             return reaction;
         }
         // 해당 후기에 이미 남긴 리액션이 있는 경우
@@ -226,7 +236,15 @@ public class ReviewService {
 
             // [DELETE] 해당 리액션을 취소하려는 경우
             if (reaction.equals(myReviewReaction.getReaction())) {
-                reviewReactionRepository.delete(myReviewReaction);
+                review.getReviewReactions().remove(myReviewReaction);
+
+                // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+                if (followOpt.isPresent()) {
+                    Follow follow = followOpt.get();
+                    Long currentScore = follow.getScore();
+                    follow.setScore(Math.max(currentScore - Score.REACTION, 0L));
+                }
+
                 return null;
             }
             // [PUT] 해당 리액션을 수정하려는 경우
