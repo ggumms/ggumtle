@@ -206,6 +206,7 @@ public class ReviewService {
                     .build();
             reviewReactionRepository.save(newReviewReaction);
             review.getReviewReactions().add(newReviewReaction);
+            alarmHandler.createReviewAlarm(review.getBucket().getUser(), user, AlarmType.reviewReaction, review);
             return reaction;
         }
         // 해당 후기에 이미 남긴 리액션이 있는 경우
@@ -222,7 +223,6 @@ public class ReviewService {
             else {
                 myReviewReaction.setReaction(reaction);
                 reviewReactionRepository.save(myReviewReaction);
-                alarmHandler.createReviewAlarm(review.getBucket().getUser(), user, AlarmType.reviewReaction, review);
                 return reaction;
             }
         }
