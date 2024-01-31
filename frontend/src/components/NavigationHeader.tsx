@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { MultiPageHeaderInfo } from '../types/router'
 import { motion } from 'framer-motion'
 import { useRouter } from '../hooks/useRouter'
+import AlarmIcon from './AlarmIcon'
 
 interface NavigationHeaderProps {
 	headerData: MultiPageHeaderInfo[]
+	hasIcon: boolean
 }
 
-const NavigationHeader = ({ headerData }: NavigationHeaderProps) => {
+const NavigationHeader = ({ headerData, hasIcon }: NavigationHeaderProps) => {
 	const [selectedIndex, setSelectedIndex] = useState<number>()
 	const { currentPath } = useRouter()
 
@@ -27,30 +29,33 @@ const NavigationHeader = ({ headerData }: NavigationHeaderProps) => {
 	}, [currentPath])
 
 	return (
-		<ul className={`flex gap-[2px]`}>
-			{headerData.map((headerItem, index) => {
-				return (
-					<li key={`hedaer-${index}`} className={`w-16 relative`}>
-						<NavLink
-							to={headerItem.path}
-							data-id={index}
-							className={
-								'inline-block w-full text-center py-2' +
-								(selectedIndex === index ? ' text-[#454645] font-[700]' : ' text-[#D9D9D9]   ')
-							}
-						>
-							{headerItem.name}
-						</NavLink>
-						{selectedIndex === index && (
-							<motion.div
-								layoutId="underline"
-								className="absolute h-[1px] bottom-1 w-full bg-black"
-							/>
-						)}
-					</li>
-				)
-			})}
-		</ul>
+		<div className="flex justify-between items-center">
+			<ul className={`flex gap-[2px]`}>
+				{headerData.map((headerItem, index) => {
+					return (
+						<li key={`hedaer-${index}`} className={`w-16 relative`}>
+							<NavLink
+								to={headerItem.path}
+								data-id={index}
+								className={
+									'inline-block w-full text-center py-2' +
+									(selectedIndex === index ? ' text-[#454645] font-[700]' : ' text-[#D9D9D9]   ')
+								}
+							>
+								{headerItem.name}
+							</NavLink>
+							{selectedIndex === index && (
+								<motion.div
+									layoutId="underline"
+									className="absolute h-[1px] bottom-1 w-full bg-black"
+								/>
+							)}
+						</li>
+					)
+				})}
+			</ul>
+			{hasIcon && <AlarmIcon />}
+		</div>
 	)
 }
 

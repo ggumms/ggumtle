@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface CommentBucketRepository extends JpaRepository<CommentBucket, Long> {
 
     Page<CommentBucket> findByBucket(Bucket bucket, Pageable pageable);
+
+    int countByBucket(Bucket bucket);
 }

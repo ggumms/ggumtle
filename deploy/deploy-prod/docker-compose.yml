@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-  test-frontend:
+  ggumtle-frontend:
     image: $REGISTRY/ggumtle-frontend:$TAG
     ports:
       - "80:80"
@@ -9,7 +9,7 @@ services:
       - $HOME/ggumtle/frontend:/app/dist/data
     restart: unless-stopped
 
-  test-backend:
+  ggumtle-backend:
     image: $REGISTRY/ggumtle-backend:$TAG
     ports:
       - "8081:8081"

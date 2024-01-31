@@ -10,9 +10,11 @@ import com.ggums.ggumtle.dto.response.ReviewReactionResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
+import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.FollowRepository;
+import com.ggums.ggumtle.repository.CommentReviewRepository;
 import com.ggums.ggumtle.repository.ReviewReactionRepository;
 import com.ggums.ggumtle.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +42,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final BucketRepository bucketRepository;
     private final ReviewReactionRepository reviewReactionRepository;
+    private final CommentReviewRepository commentReviewRepository;
 
     @Value("${spring.web.baseUrl}")
     private String baseUrl;
@@ -129,6 +132,18 @@ public class ReviewService {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
+        Bucket repBucket = writer.getRepBucket();
+        Long repBucketId = null;
+        String repBucketTitle = null;
+        String repBucketColor = null;
+        Boolean isRepBucketAchieved = null;
+        if (repBucket != null) {    // 대표버킷이 있는 경우
+            repBucketId = repBucket.getId();
+            repBucketTitle = repBucket.getTitle();
+            repBucketColor = repBucket.getColor();
+            isRepBucketAchieved = repBucket.getAchievementDate() != null;
+        }
+
         LocalDate createdDate = bucket.getCreatedDate().toLocalDate();
         LocalDate achievementDate = bucket.getAchievementDate();
         long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
@@ -138,13 +153,21 @@ public class ReviewService {
             categories.add(interest.getName());
         }
 
+        UserListDto writerDto = UserListDto.builder()
+                .userId(writer.getId())
+                .userProfileImage(writer.getUserProfileImage())
+                .userNickname(writer.getUserNickname())
+                .bucketId(repBucketId)
+                .bucketTitle(repBucketTitle)
+                .bucketColor(repBucketColor)
+                .bucketAchievement(isRepBucketAchieved)
+                .build();
+
         return ReviewResponseDto.builder()
+                .writer(writerDto)
                 .bucketId(bucket.getId())
                 .bucketTitle(bucket.getTitle())
                 .daysSinceDream(daysSinceDream)
-                .writerId(writer.getId())
-                .writerProfileImage(writer.getUserProfileImage())
-                .writerNickname(writer.getUserNickname())
                 .reviewTitle(review.getTitle())
                 .reviewContext(review.getContext())
                 .reviewCreatedDate(review.getCreatedDate())
@@ -216,7 +239,6 @@ public class ReviewService {
             // [DELETE] 해당 리액션을 취소하려는 경우
             if (reaction.equals(myReviewReaction.getReaction())) {
                 reviewReactionRepository.delete(myReviewReaction);
-                review.getReviewReactions().remove(myReviewReaction);
                 return null;
             }
             // [PUT] 해당 리액션을 수정하려는 경우
@@ -269,6 +291,8 @@ public class ReviewService {
         Bucket bucket = review.getBucket();
         User user = bucket.getUser();
 
+        int reviewCommentCount = commentReviewRepository.countByReview(review);
+
         LocalDate createdDate = bucket.getCreatedDate().toLocalDate();
         LocalDate achievementDate = bucket.getAchievementDate();
         long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
@@ -278,6 +302,7 @@ public class ReviewService {
                 .reviewTitle(review.getTitle())
                 .reviewCreatedDate(review.getCreatedDate())
                 .reviewReactionCount(review.getReviewReactions().size())
+                .reviewCommentCount(reviewCommentCount)
                 .bucketId(bucket.getId())
                 .bucketTitle(bucket.getTitle())
                 .bucketColor(bucket.getColor())

@@ -3,6 +3,7 @@ package com.ggums.ggumtle.entity;
 
 import com.ggums.ggumtle.common.entity.BaseTime;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class CommentBucket extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
+    @Size(max = 1000)
     private String context;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -2,6 +2,7 @@ package com.ggums.ggumtle.entity;
 
 import com.ggums.ggumtle.common.entity.BaseTime;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -17,10 +18,11 @@ public class Review extends BaseTime {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bucket_id")
     private Bucket bucket;
 
+    @Size(max = 100)
     private String title;
 
     @Lob

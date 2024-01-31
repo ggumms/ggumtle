@@ -5,6 +5,7 @@ import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
+import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.CommentReviewLikeRepository;
 import com.ggums.ggumtle.repository.ReviewRepository;
@@ -35,6 +36,11 @@ public class CommentReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
 
+        // 후기가 비공개일 경우 후기의 작성자가 아니면 댓글을 달 수 없다.
+        if (review.getBucket().getIsPrivate() && !review.getBucket().getUser().getId().equals(user.getId())) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
         CommentReview commentReview = CommentReview.builder()
                 .user(user)
                 .review(review)
@@ -52,13 +58,41 @@ public class CommentReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
 
-        //todo 현재 버전에서 review 엔티티에 사용자 필드 X -> 추가되면 사용자 validation 추가 필요
+        // 후기가 비공개일 경우 후기의 작성자가 아니면 댓글 리스트를 조회할 수 없다.
+        if (review.getBucket().getIsPrivate() && !review.getBucket().getUser().getId().equals(user.getId())) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
 
         Page<CommentReview> comments = commentReviewRepository.findByReview(review, pageable);
         return comments.map(this::convertToCommentResponseDto);
     }
 
     private CommentResponseDto convertToCommentResponseDto(CommentReview item) {
+
+        User writer = item.getUser();
+
+        Bucket repBucket = writer.getRepBucket();
+        Long repBucketId = null;
+        String repBucketTitle = null;
+        String repBucketColor = null;
+        Boolean isRepBucketAchieved = null;
+        if (repBucket != null) {    // 대표버킷이 있는 경우
+            repBucketId = repBucket.getId();
+            repBucketTitle = repBucket.getTitle();
+            repBucketColor = repBucket.getColor();
+            isRepBucketAchieved = repBucket.getAchievementDate() != null;
+        }
+
+        UserListDto writerDto = UserListDto.builder()
+                .userId(writer.getId())
+                .userProfileImage(writer.getUserProfileImage())
+                .userNickname(writer.getUserNickname())
+                .bucketId(repBucketId)
+                .bucketTitle(repBucketTitle)
+                .bucketColor(repBucketColor)
+                .bucketAchievement(isRepBucketAchieved)
+                .build();
+
 
         String timeUnit;
         long time;
@@ -85,14 +119,13 @@ public class CommentReviewService {
 
         return CommentResponseDto.builder()
                 .id(item.getId())
-                .userId(item.getUser().getId())
-                .userNickname(item.getUser().getUserNickname())
                 .context(item.getContext())
-                .createdDate(item.getCreatedDate())
-                .updatedDate(item.getUpdatedDate())
+                .writer(writerDto)
+                .numberOfLikes(item.getCommentReviewLikes().size())
                 .timeUnit(timeUnit)
                 .time(time)
-                .numberOfLikes(item.getCommentReviewLikes().size())
+                .createdDate(item.getCreatedDate())
+                .updatedDate(item.getUpdatedDate())
                 .build();
     }
 
@@ -129,9 +162,10 @@ public class CommentReviewService {
         CommentReview commentReview = commentReviewRepository.findById(commentId)
                 .orElseThrow(() -> new CustomException(ExceptionType.COMMENT_NOT_FOUND));
 
-        // 아직은 버킷의 작성자만이 해당 버켓의 댓글에 좋아요를 누를 수 있음
-        // 만약 해당 댓글이 달린 버켓의 작성자와 현재 요청하는 사용자가 다를 경우 오류 반환
-        //todo 현재 버전에서 review 엔티티에 사용자 필드 X -> 추가되면 사용자 validation 추가 필요
+        // 후기의 작성자가 아닌 경우 해당 후기에 달린 댓글에 좋아요를 누를 수 없다.
+        if (!commentReview.getReview().getBucket().getUser().getId().equals(user.getId())) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
 
         //todo 좋아요 확장 시, 사용자 validation 변경 필요
 

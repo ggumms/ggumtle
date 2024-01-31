@@ -8,7 +8,11 @@ export interface IBucketWide {
 }
 
 export interface BucketInfoProps {
-	bucketInfo: IBucketWide
+	// bucketInfo: IBucketWide
+	title: string
+	color: string
+	dayCount: number
+	isLock: boolean | null
 }
 
 // 헤더 아이콘 type
@@ -57,12 +61,10 @@ export type ColorType =
 	| 'sandPink'
 	| 'brown'
 
-export interface ICategoryItem {
-	name: CategoryType
-	color: ColorType
-}
+export type CategoryDataType = Record<CategoryType, ColorType>
 
 export type selectedInfoType = Record<CategoryType, boolean>
+
 export interface IMyUserInfo {
 	userId: number
 	userProfileImage: string
