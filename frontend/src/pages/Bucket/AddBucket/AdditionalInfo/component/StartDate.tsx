@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react'
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css' // css import
-
-type StartDateType = Date | null
-type EndDateType = Date | null
-type BucketDate = StartDateType | [StartDateType, EndDateType]
+import { useState } from 'react'
+import DatePicker from './DatePicker'
+import { startOfToday } from 'date-fns'
 
 const StartDate = () => {
 	const [isOpen, setIsOpen] = useState(false)
-	const [startDate, setStartDate] = useState<BucketDate>(new Date())
+	const [startDate, setStartDate] = useState<Date>(startOfToday)
 
 	const handleClickStartDate = () => {
 		setIsOpen((prev) => !prev)
@@ -34,7 +30,9 @@ const StartDate = () => {
 			>
 				{startDate instanceof Date ? formatDate(startDate) : '날짜 선택'}
 			</button>
-			{isOpen && <Calendar onChange={setStartDate} value={startDate} />}
+			{isOpen && (
+				<DatePicker startDate={startDate} setStartDate={setStartDate} setIsOpen={setIsOpen} />
+			)}
 		</div>
 	)
 }
