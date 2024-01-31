@@ -1,10 +1,12 @@
 package com.ggums.ggumtle.service;
 
+import com.ggums.ggumtle.dto.response.RadarBucketDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
+import com.ggums.ggumtle.entity.Bucket;
 import com.ggums.ggumtle.entity.Follow;
 import com.ggums.ggumtle.entity.User;
+import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.FollowRepository;
-import com.ggums.ggumtle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,13 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Service
 public class RadarService {
 
     private final FollowRepository followRepository;
-    private final UserRepository userRepository;
+    private final BucketRepository bucketRepository;
+
 
     public Map<String, Object> getFollowing(User user) throws Exception {
 
@@ -34,9 +37,38 @@ public class RadarService {
         return radar;
     }
 
-    public Object getTotal() {
-        // TODO : ing...
-        return null;
+    // TODO : refactor for integrate
+    public Map<String, Object> getTotal(User user, List<String> categories) {
+        Map<String, Object> map = new HashMap<>();
+
+        List<Bucket> buckets = bucketRepository.findByIdIn(bucketRepository.getTotal(categories));
+
+        List<RadarBucketDto> allList = new ArrayList<>();
+        for (Bucket bucket : buckets) {
+            allList.add(RadarBucketDto.builder()
+                    .bucketId(bucket.getId())
+                    .title(bucket.getTitle())
+                    .bucketPicture(bucket.getBucketPicture())
+                    .color(bucket.getColor())
+                    .build());
+        }
+
+        List<RadarBucketDto> bucketList1 = new ArrayList<>();    // 1 circle (3)
+        List<RadarBucketDto> bucketList2 = new ArrayList<>();    // 2 circle (4)
+        List<RadarBucketDto> bucketList3 = new ArrayList<>();    // 3 circle (5)
+
+        int idx = 0;
+        while (idx < 12) {
+            if (idx < 3) bucketList1.add(allList.get(idx));
+            else if (idx < 7) bucketList2.add(allList.get(idx));
+            else bucketList3.add(allList.get(idx));
+            idx++;
+        }
+
+        map.put("circle1", bucketList1);
+        map.put("circle2", bucketList2);
+        map.put("circle3", bucketList3);
+        return map;
     }
 
     public static void makeCircle(Map<String, Object> radar, List<Follow> followeeList) {

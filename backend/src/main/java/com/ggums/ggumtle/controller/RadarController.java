@@ -6,9 +6,10 @@ import com.ggums.ggumtle.service.RadarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "1. 레이다 관리")
 @RequiredArgsConstructor
@@ -25,10 +26,10 @@ public class RadarController {
         return new Response("radar", radarService.getFollowing(user));
     }
 
-    @Operation(summary = "레이다 조회(전체) - 작업중(어떤식으로 뿌릴지 원주님과 상의)", description = "자신의 관심분야에 따른 리스트를 반환해줍니다. ")
+    @Operation(summary = "레이다 조회(전체)", description = "자신의 관심분야에 따른 리스트를 반환해줍니다. ")
     @GetMapping("/total")
-    public Response getTotal(@AuthenticationPrincipal User user) throws Exception {
+    public Response getTotal(@AuthenticationPrincipal User user, @RequestParam List<String> categories) throws Exception {
 
-        return new Response("radar", radarService.getTotal());
+        return new Response("radar", radarService.getTotal(user, categories));
     }
 }
