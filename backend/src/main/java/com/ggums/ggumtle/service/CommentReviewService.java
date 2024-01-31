@@ -190,9 +190,19 @@ public class CommentReviewService {
         Optional<CommentReviewLike> like = commentReviewLikeRepository
                 .findByCommentReviewAndUser(commentReview, user);
 
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, commentReview.getUser());
+
 //      만약에 해당 유저가 이미 좋아요를 눌렀다면 좋아요 취소
         if (like.isPresent()) {
             commentReviewLikeRepository.delete(like.get());
+
+            // user가 댓글 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(Math.max(currentScore - Score.COMMENT_LIKE, 0L));
+            }
+
             return "좋아요가 취소되었습니다.";
         }
         // 아니면 좋아요 추가
@@ -203,6 +213,14 @@ public class CommentReviewService {
                     .build();
 
             commentReviewLikeRepository.save(newLike);
+
+            // user가 댓글 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(currentScore + Score.COMMENT_LIKE);
+            }
+
             return "좋아요가 생성되었습니다.";
         }
     }
