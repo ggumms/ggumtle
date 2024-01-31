@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { bucketPositioning } from '../utils'
 import UserItem from './UserItem'
 import { IBucket } from '../types/bucket'
-
+import PreviewUser from './preview/PreviewUser'
 // 더미 데이터
 const users1 = ['a', 'b', 'c', 'd', 'e', 'f']
 const users2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
@@ -73,24 +73,29 @@ const FollowingTab = () => {
 	})
 
 	return (
-		<div className="w-screen h-[calc(100vh-5rem)] flex justify-center items-center">
-			<div className="w-[110%] mt-10 animate-radar3 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center">
-				<div className="w-2/3 animate-radar2 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center">
-					<div className="w-1/2 animate-radar1 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center"></div>
+		<div className="">
+			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
+				<div className="w-[110%] mt-10 animate-radar3 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center">
+					<div className="w-2/3 animate-radar2 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center">
+						<div className="w-1/2 animate-radar1 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center"></div>
+					</div>
+				</div>
+
+				<div className="mt-10" style={bucketArea}>
+					{buckets.map((item, index) => (
+						// @TODO: 레이더 라인별 UserItem 크기 조절
+						<UserItem
+							// key값 변경
+							key={index}
+							pos={item.pos}
+							// item={item.}
+							// onClick={() => navigate(`detail/${item.post_id}`)}
+						/>
+					))}
 				</div>
 			</div>
-
-			<div className="mt-10" style={bucketArea}>
-				{buckets.map((item, index) => (
-					// @TODO: 레이더 라인별 UserItem 크기 조절
-					<UserItem
-						// key값 변경
-						key={index}
-						pos={item.pos}
-						// item={item.}
-						// onClick={() => navigate(`detail/${item.post_id}`)}
-					/>
-				))}
+			<div className='absolute bottom-0 z-20 w-full'>
+				<PreviewUser />
 			</div>
 		</div>
 	)
