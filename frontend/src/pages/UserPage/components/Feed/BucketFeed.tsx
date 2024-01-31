@@ -1,6 +1,6 @@
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
-import { UserInfoType } from '../../../../interfaces'
+import { CategoryType, UserInfoType } from '../../../../interfaces'
 import { FiShare } from 'react-icons/fi'
 import LocationInfo from './LocationInfo'
 import TotalReaction from './TotalReaction'
@@ -23,7 +23,7 @@ const BucketFeed = () => {
 		isFollowing: null,
 	}
 	const { bucketTitle, color, dayCount } = userInfo
-	const category: string[] = ['직장', '여행', '인간관계']
+	const category: CategoryType[] = ['직장', '여행', '인간관계']
 	const photo = true
 	const location = true
 	const reactionCnt = 28

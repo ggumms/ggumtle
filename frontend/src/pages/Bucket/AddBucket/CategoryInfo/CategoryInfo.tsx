@@ -1,5 +1,3 @@
-import React from 'react'
-
 import CategorySelect from '../../../../components/CategorySelect'
 import { categoryData } from '../../../../utils/category'
 import PageDescription from '../../../../components/PageDescription'

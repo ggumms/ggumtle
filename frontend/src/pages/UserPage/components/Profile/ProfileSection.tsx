@@ -1,6 +1,6 @@
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
-import { UserInfoType } from '../../../../interfaces'
+import { CategoryType, UserInfoType } from '../../../../interfaces'
 import FollowButtons from './FollowButtons'
 import NumInfo from './NumInfo'
 
@@ -20,7 +20,7 @@ const ProfileSection = () => {
 	}
 
 	const { bucketTitle, color, dayCount } = userInfo
-	const category: string[] = ['연애', '언어', '환경']
+	const category: CategoryType[] = ['연애', '언어', '환경']
 	return (
 		<div className="bg-white px-5 py-4">
 			<div className="flex items-center justify-around">

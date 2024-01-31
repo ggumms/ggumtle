@@ -1,4 +1,3 @@
-import React from 'react'
 import Header from '../../components/Header'
 import { IMenu, IMenuFunc } from '../../interfaces'
 import { icons } from '../../constants/header-icons'
