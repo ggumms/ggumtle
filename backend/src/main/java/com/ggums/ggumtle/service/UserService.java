@@ -90,7 +90,7 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
         Bucket bucket = user.getRepBucket();
 
-        Optional<Follow> follow = followRepository.findByFollowerAndFollowee(user, currentUser);
+        Optional<Follow> follow = followRepository.findByFollowerAndFollowee(currentUser, user);
         Boolean followStatus = null;
         if(!currentUser.getId().equals(userId)){
             followStatus = follow.isPresent();
