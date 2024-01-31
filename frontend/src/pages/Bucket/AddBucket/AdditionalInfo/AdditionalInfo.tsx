@@ -3,6 +3,7 @@ import BucketImage from './component/BucketImage'
 import StartDate from './component/StartDate'
 import RemindPeriod from './component/RemindPeriod'
 import Private from './component/Private'
+import CompleteButton from './component/CompleteButton'
 
 const AdditionalInfo = () => {
 	return (
@@ -16,6 +17,7 @@ const AdditionalInfo = () => {
 				<RemindPeriod />
 				<Private />
 			</fieldset>
+			<CompleteButton />
 		</section>
 	)
 }
