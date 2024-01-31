@@ -6,6 +6,7 @@ import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
+import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.CommentBucketLikeRepository;
