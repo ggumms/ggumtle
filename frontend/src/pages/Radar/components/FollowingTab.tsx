@@ -3,6 +3,8 @@ import { bucketPositioning } from '../utils'
 import UserItem from './UserItem'
 import { IBucket } from '../types/bucket'
 import PreviewUser from './preview/PreviewUser'
+import { MdOutlineRefresh } from 'react-icons/md'
+
 // 더미 데이터
 const users1 = ['a', 'b', 'c', 'd', 'e', 'f']
 const users2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
@@ -72,6 +74,20 @@ const FollowingTab = () => {
 		})
 	})
 
+	const [isPressed, setIsPressed] = useState(false)
+
+	const handleMouseDown = () => {
+		setIsPressed(true)
+	}
+
+	const handleMouseUp = () => {
+		setIsPressed(false)
+	}
+
+	const handleRefresh = () => {
+		console.log('refresh')
+	}
+
 	return (
 		<div className="">
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
@@ -94,7 +110,19 @@ const FollowingTab = () => {
 					))}
 				</div>
 			</div>
-			<div className='absolute bottom-0 z-20 w-full'>
+			<div className="absolute bottom-0 z-20 w-full flex flex-col items-center justify-center">
+				{/* <div className="inline-flex justify-center items-center py-2 px-4 gap-2 rounded-md bg-white border-2 border-point1"> */}
+				<div
+					className={`inline-flex justify-center items-center py-2 px-4 gap-2 rounded-md border-2 transition-colors ${
+						isPressed ? 'bg-point1 text-white border-point1' : 'bg-white text-point1 border-point1'
+					}`}
+					onMouseDown={handleMouseDown}
+					onMouseUp={handleMouseUp}
+					onClick={handleRefresh}
+				>
+					<MdOutlineRefresh />
+					새로고침
+				</div>
 				<PreviewUser />
 			</div>
 		</div>

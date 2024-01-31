@@ -23,7 +23,7 @@ const PreviewUser = () => {
 	const username: string = 'want_u.u'
 
 	return (
-		<div className="flex items-center justify-around px-5 py-5">
+		<div className="w-full flex items-center justify-around px-5 py-5">
 			<div className="flex flex-col items-center justify-center w-2/5">
 				{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
 				<svg
