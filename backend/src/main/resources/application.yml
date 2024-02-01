@@ -89,5 +89,5 @@ springdoc:
     operations-sorter: alpha
     info:
       title: GGUMTLE API Server
-      description: NineToFive API Server
+      description: GGUMTLE GGUMTLE
       version: 0.0.1

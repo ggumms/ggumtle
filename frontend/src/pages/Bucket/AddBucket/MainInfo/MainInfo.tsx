@@ -1,4 +1,3 @@
-import React from 'react'
 import SelectBucketColor from './components/SelectBucketColor'
 import Title from './components/Title'
 import TimeCapsule from './components/TimeCapsule'

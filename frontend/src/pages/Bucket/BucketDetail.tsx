@@ -1,4 +1,3 @@
-import React from 'react'
 import UserProfile from '../../components/UserProfile'
 import { UserInfoType } from '../../interfaces'
 

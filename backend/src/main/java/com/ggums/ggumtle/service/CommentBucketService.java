@@ -1,18 +1,18 @@
 package com.ggums.ggumtle.service;
 
 
+import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
-import com.ggums.ggumtle.entity.Bucket;
-import com.ggums.ggumtle.entity.CommentBucket;
-import com.ggums.ggumtle.entity.CommentBucketLike;
-import com.ggums.ggumtle.entity.User;
+import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.CommentBucketLikeRepository;
 import com.ggums.ggumtle.repository.CommentBucketRepository;
+import com.ggums.ggumtle.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,9 +28,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentBucketService {
 
+    private final AlarmHandler alarmHandler;
     private final BucketRepository bucketRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final CommentBucketLikeRepository commentBucketLikeRepository;
+    private final FollowRepository followRepository;
 
     public String commentCreate(User user, long bucketId, CommentRequestDto requestDto) {
 
@@ -49,6 +51,17 @@ public class CommentBucketService {
                 .build();
 
         commentBucketRepository.save(commentBucket);
+
+        // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, bucket.getUser());
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(currentScore + Score.COMMENT);
+        }
+
+        alarmHandler.createBucketAlarm(bucket.getUser(), user, AlarmType.commentBucket, bucket);
+
         return "댓글이 생성되었습니다.";
     }
 
@@ -139,6 +152,15 @@ public class CommentBucketService {
         }
 
         commentBucketRepository.delete(comment);
+
+        // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, comment.getBucket().getUser());
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(Math.max(currentScore - Score.COMMENT, 0L));
+        }
+
         return "댓글이 삭제되었습니다.";
     }
 
@@ -172,9 +194,19 @@ public class CommentBucketService {
         Optional<CommentBucketLike> like = commentBucketLikeRepository
                 .findByCommentBucketAndUser(commentBucket, user);
 
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, commentBucket.getUser());
+
 //      만약에 해당 유저가 이미 좋아요를 눌렀다면 좋아요 취소
         if (like.isPresent()) {
             commentBucketLikeRepository.delete(like.get());
+
+            // user가 댓글 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(Math.max(currentScore - Score.COMMENT_LIKE, 0L));
+            }
+
             return "좋아요가 취소되었습니다.";
         }
         // 아니면 좋아요 추가
@@ -185,6 +217,16 @@ public class CommentBucketService {
                     .build();
 
             commentBucketLikeRepository.save(newLike);
+
+            // user가 댓글 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(currentScore + Score.COMMENT_LIKE);
+            }
+
+            alarmHandler.createBucketAlarm(commentBucket.getUser(), user, AlarmType.likeCommentBucket, commentBucket.getBucket());
+
             return "좋아요가 생성되었습니다.";
         }
 
