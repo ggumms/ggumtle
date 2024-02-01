@@ -19,12 +19,12 @@ public class UserController {
 
     private final UserService userService;
 
-//     @PutMapping("/")
-//     public Response updateUser(@RequestPart("userImage") MultipartFile userImage,
-//                                @Valid @RequestPart("userData") UserUpdateRequestDto requestDto,
-//                                @AuthenticationPrincipal User user){
-//         return new Response("message", userService.updateUser(user, userImage, requestDto));
-//     }
+     @PutMapping("/")
+     public Response updateUser(@RequestPart("userImage") MultipartFile userImage,
+                                @Valid @RequestPart("userData") UserUpdateRequestDto requestDto,
+                                @AuthenticationPrincipal User user){
+         return new Response("message", userService.updateUser(user, userImage, requestDto));
+     }
 
 //     @GetMapping("/{user}")
 //     public Response userInfo(@AuthenticationPrincipal User user, @PathVariable("user") Long userId){
