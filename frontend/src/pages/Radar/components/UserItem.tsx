@@ -1,36 +1,75 @@
-// @TODO: 데이터 형식 어떻게 받아올지는 추후 논의
-const userSize: Record<number, string> = {
-	1: 'w-12 h-12',
-	2: 'w-10 h-10',
-	3: 'w-8 h-8',
+export type UserElemType = 'first' | 'second' | 'third'
+
+export interface IUserDirection {
+	left: number
+	bottom: number
 }
 
-const userFontSize: Record<number, string> = {
-	1: 'text-sm',
-	2: 'text-xs',
-	3: 'text-[10px]',
+export interface IUserStyle {
+	size: string
+	text: string
+}
+
+export interface IUserElementStyle {
+	first: { style: IUserStyle; direction: IUserDirection }
+	second: { style: IUserStyle; direction: IUserDirection }
+	third: { style: IUserStyle; direction: IUserDirection }
+}
+
+const UserElementStyle: IUserElementStyle = {
+	first: {
+		style: {
+			size: 'w-14 h-14',
+			text: 'text-base',
+		},
+		direction: {
+			left: 45,
+			bottom: 40,
+		},
+	},
+	second: {
+		style: {
+			size: 'w-12 h-12',
+			text: 'text-sm',
+		},
+		direction: {
+			left: 45,
+			bottom: 40,
+		},
+	},
+	third: {
+		style: {
+			size: 'w-10 h-10',
+			text: 'text-xs',
+		},
+		direction: {
+			left: 46,
+			bottom: 42,
+		},
+	},
 }
 
 export interface UserItemProps {
 	pos: { x: number; y: number }
+	type: UserElemType
 	post_id?: string
 	// onClick: () => void
 }
 
-const UserItem = ({ pos }: UserItemProps) => {
+const UserItem = ({ pos, type }: UserItemProps) => {
 	// const UserItem = ({ pos, onClick }: UserItemProps) => {
 	const itemStyle: { position: 'absolute'; left: string; bottom: string } = {
 		position: 'absolute',
-		left: `${45 + pos.x}%`,
-		bottom: `${40 + pos.y}%`,
+		left: `${UserElementStyle[type].direction.left + pos.x}%`,
+		bottom: `${UserElementStyle[type].direction.bottom + pos.y}%`,
 	}
 	const name = 'wan'
 	return (
 		<div className="inline-flex flex-col items-center animate-floating" style={itemStyle}>
 			{/* @TODO: api 통신할 때에는 img 태그로 변경 후 실제 데이터 삽입하기
       <img src="" alt="" /> */}
-			<div className={`bg-black rounded-full ${userSize[1]}`}></div>
-			<span className={`${userFontSize[1]} font-semibold`}>{name}</span>
+			<div className={`bg-green rounded-full ${UserElementStyle[type].style.size}`}></div>
+			<span className={`font-semibold ${UserElementStyle[type].style.text}`}>{name}</span>
 		</div>
 	)
 }
