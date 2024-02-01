@@ -22,7 +22,7 @@ pipeline {
 	stage ('frontend build') {
 	  tools { nodejs "NodeJS20" }
       steps {
-	    sh 'cd deploy/ && chmod +x ggumtle-build-frontend.sh && ./ggumtle-build-frontend.sh'
+	    sh 'cd ../frontend && ls -al && rm -rf package-lock.json && ls -al'
       }
     }
 	
