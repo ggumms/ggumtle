@@ -15,7 +15,7 @@ import java.util.List;
 public class ReviewResponseDto {
 
     // writer
-    @Schema(description = "사용자 정보 : isFollowing은 항상 null, 대표버킷 없는 경우에는 관련 필드 null")
+    @Schema(description = "작성자 정보 : isFollowing은 항상 null, 대표버킷 없는 경우에는 관련 필드 null")
     private UserListDto writer;
 
     // bucket

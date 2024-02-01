@@ -1,6 +1,5 @@
 package com.ggums.ggumtle.controller;
 
-import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.response.Response;
 import com.ggums.ggumtle.dto.request.PutReviewRequestDto;
 import com.ggums.ggumtle.dto.request.ReviewReactionRequestDto;
@@ -8,12 +7,9 @@ import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
 import com.ggums.ggumtle.dto.response.ReviewReactionResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
-import com.ggums.ggumtle.dto.response.UserListResponseDto;
-import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.StringToClassMapItem;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
@@ -27,7 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "후기")
+@Tag(name = "후기", description = "후기와 관련된 API들 입니다")
 @RestController
 @RequestMapping("/review")
 @RequiredArgsConstructor
