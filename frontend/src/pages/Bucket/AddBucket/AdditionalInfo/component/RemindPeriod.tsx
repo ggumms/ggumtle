@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
+import { useBucketStore } from '../../../../../store/bucketStore'
+import { PeriodType } from '../../../../../types/bucket'
 
-type PeriodType = 'none' | 'oneDay' | 'oneWeek' | 'twoWeek' | 'oneMonth' | 'oneYear'
 const periodData = {
 	none: '없음',
 	oneDay: '매일',
@@ -12,7 +12,7 @@ const periodData = {
 }
 
 const RemindPeriod = () => {
-	const [period, setPeriod] = useState<PeriodType>('twoWeek')
+	const { period, changePeriod } = useBucketStore()
 
 	return (
 		<div>
@@ -45,7 +45,7 @@ const RemindPeriod = () => {
 										className={`${
 											active ? 'bg-gray-100' : 'text-gray-900'
 										} group flex w-full items-center px-2 py-2 text-sm`}
-										onClick={() => setPeriod(key as PeriodType)}
+										onClick={() => changePeriod(key as PeriodType)}
 									>
 										{value}
 									</button>
