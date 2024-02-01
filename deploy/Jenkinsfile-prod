@@ -22,7 +22,7 @@ pipeline {
 	stage ('frontend build') {
 	  tools { nodejs "NodeJS20" }
       steps {
-	    sh 'cd ../frontend && ls -al && rm -rf package-lock.json && ls -al'
+	    sh 'cd frontend/ && ls -al && rm -rf package-lock.json && ls -al'
       }
     }
 	
