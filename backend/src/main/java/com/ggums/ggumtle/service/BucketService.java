@@ -1,5 +1,6 @@
 package com.ggums.ggumtle.service;
 
+import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
@@ -73,7 +74,6 @@ public class BucketService {
         return savedBucket.getId();
     }
 
-    @Transactional(readOnly = true)
     public GetBucketResponseDto getBucket(User user, Long bucketId){
         Bucket bucket = bucketRepository.findById(bucketId)
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
@@ -91,6 +91,15 @@ public class BucketService {
         String timeCapsule = null;
         if (bucket.getAchievementDate() != null) {
             timeCapsule = bucket.getTimeCapsule();
+        }
+
+        // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+        User writer = bucket.getUser();
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, writer);
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(currentScore + Score.READ);
         }
 
         return GetBucketResponseDto.builder()
@@ -276,16 +285,36 @@ public class BucketService {
         Optional<BucketReaction> existingReaction = bucketReactionRepository
                 .findByBucketAndUser(bucket, user);
 
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, bucket.getUser());
+
         BucketReaction reaction;
         if (existingReaction.isPresent()) {
             reaction = existingReaction.get();
             reaction.setReaction(requestDto.getUserReaction());
+
+            if (requestDto.getUserReaction() == null) {
+                // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+                if (followOpt.isPresent()) {
+                    Follow follow = followOpt.get();
+                    Long currentScore = follow.getScore();
+                    follow.setScore(Math.max(currentScore - Score.REACTION, 0L));
+                }
+            }
+
         } else {
             reaction = BucketReaction.builder()
                     .bucket(bucket)
                     .user(user)
                     .reaction(requestDto.getUserReaction())
                     .build();
+
+            // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(currentScore + Score.REACTION);
+            }
+
             if(!user.getId().equals(bucket.getUser().getId())){
                 alarmHandler.createBucketAlarm(bucket.getUser(), user, AlarmType.bucketReaction, bucket);
             }

@@ -46,14 +46,14 @@ public class UserController {
         return new Response("message", userService.followUser(user, requestDto));
     }
 
+    @GetMapping("/followee")
+    public Response userFollowee(@RequestParam Long userId, Pageable pageable){
+        return new Response("followerList", userService.userFolloweeList(userId, pageable));
+    }
+
     @GetMapping("/follower")
     public Response userFollower(@RequestParam Long userId, Pageable pageable){
         return new Response("followerList", userService.userFollowerList(userId, pageable));
-    }
-
-    @GetMapping("/following")
-    public Response userFollowing(@RequestParam Long userId, Pageable pageable){
-        return new Response("followerList", userService.userFollowingList(userId, pageable));
     }
 
     @GetMapping("/stats/{user}")
