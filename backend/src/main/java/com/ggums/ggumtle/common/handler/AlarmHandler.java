@@ -4,13 +4,20 @@ import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.AlarmRepository;
+import com.ggums.ggumtle.repository.BucketRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,7 +33,7 @@ public class AlarmHandler {
     public final Map<Long, SseEmitter> userEmitters = new ConcurrentHashMap<>();
     private final AlarmRepository alarmRepository;
 
-    // Giving signals to client
+    // Giving connection signals to client
     @Async
     @Scheduled(fixedRate = 30000)
     public void sendHeartbeatToClients() {
@@ -39,6 +46,20 @@ public class AlarmHandler {
                 throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
             }
         }
+    }
+
+    private boolean shouldSendReminder(Bucket bucket, LocalDate today) {
+        LocalDate createdDate = bucket.getCreatedDate().toLocalDate();
+        ReminderDate reminder = bucket.getReminderDate();
+
+        return switch (reminder) {
+            case oneDay -> createdDate.plusDays(1).isEqual(today);
+            case oneWeek -> createdDate.plusWeeks(1).isEqual(today);
+            case twoWeeks -> createdDate.plusWeeks(2).isEqual(today);
+            case oneMonth -> createdDate.plusMonths(1).isEqual(today);
+            case oneYear -> createdDate.plusYears(1).isEqual(today);
+            default -> false;
+        };
     }
 
 
@@ -104,6 +125,23 @@ public class AlarmHandler {
                 .context(review.getTitle())
                 .type(type)
                 .dataId(review.getId())
+                .build();
+        alarmRepository.save(alarm);
+        sendEventToUser(receiver.getId());
+    }
+
+    /**
+     *  For Reminder
+     * @param receiver receiver user
+     */
+    public void createReminderAlarm(User receiver, Bucket bucket){
+        if (!receiver.getAlarm()) {
+            return;
+        }
+        Alarm alarm = Alarm.builder()
+                .receiver(receiver)
+                .type(AlarmType.remind)
+                .dataId(bucket.getId())
                 .build();
         alarmRepository.save(alarm);
         sendEventToUser(receiver.getId());
