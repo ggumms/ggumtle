@@ -9,6 +9,7 @@ import {
 	IBucketImageSlice,
 	IBucketTitleSlice,
 	ICategorySlice,
+	IIsPrivateSlice,
 	IPeriodSlice,
 	IStartDateSlice,
 	ITimeCapsuleSlice,
@@ -113,6 +114,18 @@ const createPeriodSlice: StateCreator<IPeriodSlice> = (set) => ({
 		}),
 })
 
+const createIsPrivateSlice: StateCreator<IIsPrivateSlice> = (set) => ({
+	isPrivate: false,
+	changeIsPrivate: (privateValue: boolean) =>
+		set(() => {
+			return { isPrivate: privateValue }
+		}),
+	resetIsPrivate: () =>
+		set(() => {
+			return { isPrivate: false }
+		}),
+})
+
 // 버킷 정보를 관리하는 전역 State
 // - 버킷 생성
 // - 상세 버킷 조회
@@ -123,7 +136,8 @@ export const useBucketStore = create<
 		ITimeCapsuleSlice &
 		IBucketImageSlice &
 		IStartDateSlice &
-		IPeriodSlice
+		IPeriodSlice &
+		IIsPrivateSlice
 >()(
 	devtools(
 		immer((...a) => ({
@@ -134,6 +148,7 @@ export const useBucketStore = create<
 			...createBucketImageSlice(...a),
 			...createStartDateSlice(...a),
 			...createPeriodSlice(...a),
+			...createIsPrivateSlice(...a),
 		}))
 	)
 )

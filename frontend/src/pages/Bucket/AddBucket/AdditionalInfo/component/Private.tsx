@@ -1,12 +1,12 @@
-import { useState } from 'react'
 import { GoCheckCircleFill } from 'react-icons/go'
 import { GoCheckCircle } from 'react-icons/go'
+import { useBucketStore } from '../../../../../store/bucketStore'
 
 const Private = () => {
-	const [isPrivate, setIsPrivate] = useState(false)
+	const { isPrivate, changeIsPrivate } = useBucketStore()
 
 	const handleClickRadio = () => {
-		setIsPrivate((prev) => !prev)
+		changeIsPrivate(!isPrivate)
 	}
 	return (
 		<div>

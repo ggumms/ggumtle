@@ -46,3 +46,9 @@ export interface IPeriodSlice {
 	changePeriod: (period: PeriodType) => void
 	resetPeriod: () => void
 }
+
+export interface IIsPrivateSlice {
+	isPrivate: boolean
+	changeIsPrivate: (privateValue: boolean) => void
+	resetIsPrivate: () => void
+}
