@@ -8,10 +8,12 @@ import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
 import com.ggums.ggumtle.dto.response.ReviewReactionResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
+import com.ggums.ggumtle.dto.response.UserListResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.StringToClassMapItem;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
@@ -120,7 +122,7 @@ public class ReviewController {
             @ApiResponse(responseCode = "200", description = "리액션 조회 성공",
                     content = @Content(schemaProperties = {
                             @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
-                            @SchemaProperty(name = "reviewReactions", schema = @Schema(implementation = ReviewReactionResponseDto.class))
+                            @SchemaProperty(name = "reviewReactions", schema = @Schema(implementation = ReviewReactionResponseDto.class)),
                     }))
     })
     public Response getReviewReaction(@AuthenticationPrincipal User user, @PathVariable Long reviewId) {
