@@ -300,7 +300,7 @@ public class BucketService {
                     .build();
             bucketReactionRepository.save(newReaction);
 
-            // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+            // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
             if (followOpt.isPresent()) {
                 Follow follow = followOpt.get();
                 Long currentScore = follow.getScore();
