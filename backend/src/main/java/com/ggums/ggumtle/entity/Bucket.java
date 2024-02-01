@@ -36,6 +36,8 @@ public class Bucket {
 
     private String bucketPicture;
 
+    private ReminderDate reminderDate;
+
     private Double latitude;
 
     private Double longitude;

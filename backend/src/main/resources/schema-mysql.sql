@@ -7,6 +7,7 @@ create table `user`
     user_profile_image varchar(255),
     gender             enum ('Male','Female'),
     birth_date         date,
+    alarm              bit(1),
     created_date       datetime(6) not null,
     updated_date       datetime(6) not null,
     primary key (id)
@@ -23,11 +24,11 @@ create table bucket
     time_capsule     varchar(1000),
     color            varchar(255),
     bucket_picture   varchar(255),
+    reminder_date    enum ('oneDay','oneWeek', 'twoWeeks', 'oneMonth', 'oneYear'),
     latitude         float(53),
     longitude        float(53),
     address          varchar(255),
-    created_date     datetime(6) not null,
-    updated_date     datetime(6) not null,
+    created_date     datetime(6),
     primary key (id)
 ) engine=InnoDB;
 
@@ -163,3 +164,16 @@ create table user_interest
     foreign key (interest_id) references interest (id),
     foreign key (user_id) references `user` (id)
 ) engine=InnoDB;
+
+
+CREATE TABLE alarm
+(
+    id           BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    is_read      BIT(1),
+    created_date DATETIME(6) NOT NULL,
+    data_id      BIGINT,
+    receiver_id  BIGINT NOT NULL,
+    sender_id    BIGINT NOT NULL,
+    context      VARCHAR(1000),
+    type         ENUM('likeCommentBucket', 'remind', 'followBucket', 'follow', 'followBucketAchieve', 'commentBucket', 'join', 'likeCommentReview', 'followReview', 'followCommentReview', 'bucketReaction', 'reviewReaction')
+);
