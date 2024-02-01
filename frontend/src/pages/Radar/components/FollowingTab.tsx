@@ -78,7 +78,7 @@ const FollowingTab = () => {
 				</div>
 			</div>
 
-			{/* <ButtonArea /> */}
+			<ButtonArea />
 			<PreviewBottomSheet />
 		</div>
 	)

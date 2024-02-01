@@ -6,18 +6,20 @@ const ButtonArea = () => {
 	const [isPressed, setIsPressed] = useState(false)
 
 	const handleMouseDown = () => {
+		console.log("down")
 		setIsPressed(true)
 	}
-
+	
 	const handleMouseUp = () => {
+		console.log("up")
 		setIsPressed(false)
 	}
-
+	
 	const handleRefresh = () => {
 		console.log('refresh')
 	}
 	return (
-		<div className="absolute bottom-0 z-20 w-full flex flex-col items-center justify-center">
+		<div className="absolute bottom-14 z-20 w-full flex flex-col items-center justify-center">
 			<div className="w-full m-0 flex items-end justify-center">
 				<div
 					className={`inline-flex justify-center items-center py-2 w-32 mr-0 gap-2 rounded-md border-2 transition-colors ${
