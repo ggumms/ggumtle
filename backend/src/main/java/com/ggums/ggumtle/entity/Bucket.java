@@ -1,11 +1,11 @@
 package com.ggums.ggumtle.entity;
 
-import com.ggums.ggumtle.common.entity.BaseTime;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Bucket extends BaseTime {
+public class Bucket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +45,8 @@ public class Bucket extends BaseTime {
     private String address;
 
     private Boolean isPrivate;
+
+    private LocalDateTime createdDate;
 
     private LocalDate achievementDate;
 
