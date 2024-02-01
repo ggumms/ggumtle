@@ -3,13 +3,11 @@ package com.ggums.ggumtle.dto.response;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter @Setter @Builder
@@ -38,11 +36,11 @@ public class GetBucketResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Schema(description = "버킷 달성 날짜", example = "2023-01-01", type = "string")
     private LocalDate achievementDate;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-    @Schema(description = "버킷 생성 시간", example = "2024-01-26 12:54", type = "string")
-    private LocalDateTime writeDate;
     @ArraySchema(arraySchema = @Schema(description = "후기 카테고리", example = "[\"취업\",\"여행\", \"인간관계\"]"))
     private List<String> category;
     @Schema(description = "비공개 여부", example = "false")
     private Boolean isPrivate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Schema(description = "버킷 생성 날짜", example = "2023-07-05", type = "string")
+    private LocalDate createdDate;
 }

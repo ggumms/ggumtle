@@ -3,7 +3,9 @@ package com.ggums.ggumtle.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -37,4 +39,8 @@ public class UpdateBucketRequestDto {
 
     @Schema(example = "false")
     private Boolean isPrivate;
+
+    @Schema(example = "2023-07-05")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdDate;
 }

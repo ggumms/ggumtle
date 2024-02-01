@@ -66,6 +66,7 @@ public class BucketService {
                 .address(requestDto.getAddress())
                 .bucketInterest(interests)
                 .isPrivate(requestDto.getIsPrivate())
+                .createdDate(requestDto.getCreatedDate().atStartOfDay())
                 .build();
 
         Bucket savedBucket = bucketRepository.save(bucket);
@@ -113,12 +114,12 @@ public class BucketService {
                 .longitude(bucket.getLongitude())
                 .address(bucket.getAddress())
                 .dayCount(ChronoUnit.DAYS.between(bucket.getCreatedDate(), LocalDateTime.now()))
-                .writeDate(bucket.getCreatedDate())
                 .achievementDate(bucket.getAchievementDate())
                 .category(bucket.getBucketInterest().stream()
                         .map(Interest::getName)
                         .collect(Collectors.toCollection(ArrayList::new)))
                 .isPrivate(bucket.getIsPrivate())
+                .createdDate(bucket.getCreatedDate().toLocalDate())
                 .build();
     }
 
@@ -135,6 +136,7 @@ public class BucketService {
         if (requestDto.getLongitude() != null) bucket.setLongitude(requestDto.getLongitude());
         if (requestDto.getColor() != null) bucket.setColor(requestDto.getColor());
         if (requestDto.getAddress() != null) bucket.setAddress(requestDto.getAddress());
+        if (requestDto.getCreatedDate() != null) bucket.setCreatedDate(requestDto.getCreatedDate().atStartOfDay());
 
         if (requestDto.getCategory() != null) {
             Set<Interest> updatedInterests = requestDto.getCategory().stream()
@@ -234,6 +236,7 @@ public class BucketService {
                 .commentCount(commentCount)
                 .color(bucket.getColor())
                 .isAchieved(isAchieved)
+                .createdDate(bucket.getCreatedDate().toLocalDate())
                 .build();
     }
 
