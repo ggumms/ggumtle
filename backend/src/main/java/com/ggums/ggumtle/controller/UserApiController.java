@@ -15,8 +15,8 @@ public class UserApiController {
 
     private final UserApiService userApiService;
 
-    @GetMapping("/nickname/{nickname}")
-    public Response isNicknameDuplicate(@PathVariable("nickname") String nickname){
-        return new Response("isNicknameDuplicate", userApiService.isNicknameDuplicate(nickname));
-    }
+//    @GetMapping("/nickname/{nickname}")
+//    public Response isNicknameDuplicate(@PathVariable("nickname") String nickname){
+//        return new Response("isNicknameDuplicate", userApiService.isNicknameDuplicate(nickname));
+//    }
 }

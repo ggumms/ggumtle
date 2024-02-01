@@ -8,5 +8,7 @@ import org.springframework.data.domain.Page;
 @Getter
 @Builder
 public class ReviewSearchResponseDto {
+
+
     Page<ReviewSearchListDto> searchList;
 }

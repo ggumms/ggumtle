@@ -18,34 +18,34 @@ public class CommentReviewController {
 
     private final CommentReviewService commentService;
 
-    @PostMapping("/{reviewId}")
-    public Response commentCreate(@AuthenticationPrincipal User user, @PathVariable long reviewId, @Valid @RequestBody CommentRequestDto requestDto) {
+//    @PostMapping("/{reviewId}")
+//    public Response commentCreate(@AuthenticationPrincipal User user, @PathVariable long reviewId, @Valid @RequestBody CommentRequestDto requestDto) {
+//
+//        return new Response("message", commentService.commentCreate(user, reviewId, requestDto));
+//    }
 
-        return new Response("message", commentService.commentCreate(user, reviewId, requestDto));
-    }
+//    @GetMapping("/{reviewId}")
+//    public Response commentList(@AuthenticationPrincipal User user, @PathVariable long reviewId, Pageable pageable ) {
+//
+//        return new Response("reviewCommentList", commentService.commentList(user, reviewId, pageable));
+//    }
 
-    @GetMapping("/{reviewId}")
-    public Response commentList(@AuthenticationPrincipal User user, @PathVariable long reviewId, Pageable pageable ) {
+//    @DeleteMapping("/{commentId}")
+//    public Response commentDelete(@AuthenticationPrincipal User user, @PathVariable long commentId) {
+//
+//        return new Response("message", commentService.commentDelete(user, commentId));
+//    }
 
-        return new Response("reviewCommentList", commentService.commentList(user, reviewId, pageable));
-    }
+//    @PutMapping("/{commentId}")
+//    public Response commentUpdate(@AuthenticationPrincipal User user, @PathVariable long commentId, @Valid @RequestBody CommentRequestDto requestDto) {
+//
+//        return new Response("message", commentService.commentUpdate(user, requestDto, commentId));
+//    }
 
-    @DeleteMapping("/{commentId}")
-    public Response commentDelete(@AuthenticationPrincipal User user, @PathVariable long commentId) {
-
-        return new Response("message", commentService.commentDelete(user, commentId));
-    }
-
-    @PutMapping("/{commentId}")
-    public Response commentUpdate(@AuthenticationPrincipal User user, @PathVariable long commentId, @Valid @RequestBody CommentRequestDto requestDto) {
-
-        return new Response("message", commentService.commentUpdate(user, requestDto, commentId));
-    }
-
-    @PutMapping("/like/{commentId}")
-    public Response commentLike(@AuthenticationPrincipal User user, @PathVariable long commentId) {
-
-        return new Response("message", commentService.commentLike(user, commentId));
-    }
+//    @PutMapping("/like/{commentId}")
+//    public Response commentLike(@AuthenticationPrincipal User user, @PathVariable long commentId) {
+//
+//        return new Response("message", commentService.commentLike(user, commentId));
+//    }
 
 }
