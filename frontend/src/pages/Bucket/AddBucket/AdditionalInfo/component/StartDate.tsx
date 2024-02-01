@@ -1,12 +1,12 @@
 import { Fragment, useState } from 'react'
 import DatePicker from './DatePicker'
-import { startOfToday } from 'date-fns'
 import { Dialog, Transition } from '@headlessui/react'
+import { useBucketStore } from '../../../../../store/bucketStore'
 
 // createdDate로 이름 변경 필요
 const StartDate = () => {
 	const [isOpen, setIsOpen] = useState(false)
-	const [createdDate, setCreatedDate] = useState<Date>(startOfToday)
+	const { createdDate, changeCreatedDate } = useBucketStore()
 
 	const handleCloseDatePicker = () => {
 		setIsOpen(false)
@@ -64,7 +64,7 @@ const StartDate = () => {
 								<Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
 									<DatePicker
 										createdDate={createdDate}
-										setCreatedDate={setCreatedDate}
+										setCreatedDate={changeCreatedDate}
 										setIsOpen={setIsOpen}
 									/>
 								</Dialog.Panel>

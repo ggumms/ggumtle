@@ -3,6 +3,7 @@ import { devtools } from 'zustand/middleware'
 import { CategoryType, ColorType, selectedInfoType } from '../interfaces'
 import { defaultCategories } from '../utils/category'
 import { immer } from 'zustand/middleware/immer'
+import { startOfToday } from 'date-fns'
 
 declare module 'zustand' {
 	type SlicePattern<T, S = T> = StateCreator<
@@ -44,6 +45,12 @@ interface IBucketImageSlice {
 	bucketImage: File | null
 	changeBucketImage: (image: File) => void
 	resetBucketImage: () => void
+}
+
+interface IStartDateSlice {
+	createdDate: Date
+	changeCreatedDate: (date: Date) => void
+	resetCreatedDate: () => void
 }
 
 // immer 사용으로 인한 return문 제거
@@ -111,11 +118,28 @@ const createBucketImageSlice: StateCreator<IBucketImageSlice> = (set) => ({
 		}),
 })
 
+const createStartDateSlice: StateCreator<IStartDateSlice> = (set) => ({
+	createdDate: startOfToday(),
+	changeCreatedDate: (date: Date) =>
+		set(() => {
+			return { createdDate: date }
+		}),
+	resetCreatedDate: () =>
+		set(() => {
+			return { createdDate: startOfToday() }
+		}),
+})
+
 // 버킷 정보를 관리하는 전역 State
 // - 버킷 생성
 // - 상세 버킷 조회
 export const useBucketStore = create<
-	ICategorySlice & IBucketColorSlice & IBucketTitleSlice & ITimeCapsuleSlice & IBucketImageSlice
+	ICategorySlice &
+		IBucketColorSlice &
+		IBucketTitleSlice &
+		ITimeCapsuleSlice &
+		IBucketImageSlice &
+		IStartDateSlice
 >()(
 	devtools(
 		immer((...a) => ({
@@ -124,6 +148,7 @@ export const useBucketStore = create<
 			...createBucketTitleSlice(...a),
 			...createTimeCapsuleSlice(...a),
 			...createBucketImageSlice(...a),
+			...createStartDateSlice(...a),
 		}))
 	)
 )

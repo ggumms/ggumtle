@@ -17,7 +17,7 @@ import { useState } from 'react'
 
 interface IDatePicker {
 	createdDate: Date
-	setCreatedDate: React.Dispatch<React.SetStateAction<Date>>
+	setCreatedDate: (date: Date) => void
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
