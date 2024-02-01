@@ -1,6 +1,6 @@
 import { CategoryType, ColorType, selectedInfoType } from '../interfaces'
 
-export type PeriodType = 'none' | 'oneDay' | 'oneWeek' | 'twoWeek' | 'oneMonth' | 'oneYear'
+export type PeriodType = 'none' | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
 
 export interface ICategorySlice {
 	// State

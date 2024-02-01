@@ -103,14 +103,14 @@ const createStartDateSlice: StateCreator<IStartDateSlice> = (set) => ({
 })
 
 const createPeriodSlice: StateCreator<IPeriodSlice> = (set) => ({
-	period: 'twoWeek',
+	period: 'twoWeeks',
 	changePeriod: (period: PeriodType) =>
 		set(() => {
 			return { period: period }
 		}),
 	resetPeriod: () =>
 		set(() => {
-			return { period: 'twoWeek' }
+			return { period: 'twoWeeks' }
 		}),
 })
 

@@ -6,7 +6,7 @@ const periodData = {
 	none: '없음',
 	oneDay: '매일',
 	oneWeek: '매주',
-	twoWeek: '2주 마다',
+	twoWeeks: '2주 마다',
 	oneMonth: '매월',
 	oneYear: '매년',
 }
