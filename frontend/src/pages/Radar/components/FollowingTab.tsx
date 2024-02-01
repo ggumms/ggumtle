@@ -11,8 +11,8 @@ import { bucket3rdPositioning } from '../utils/radar3rd'
 
 // 더미 데이터
 const users1 = ['a', 'b', 'c'] // 3
-const users2 = ['a', 'b', 'c', 'd', 'e', 'f'] // 6명
-const users3 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'] // 9명
+const users2 = ['a', 'b', 'c', 'd'] // 4명
+const users3 = ['a', 'b', 'c', 'd', 'e'] // 5명
 
 // @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
 const FollowingTab = () => {
