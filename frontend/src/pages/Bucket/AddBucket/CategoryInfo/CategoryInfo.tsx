@@ -5,7 +5,7 @@ import CategoryNextButton from './CategoryNextButton'
 
 const CategoryInfo = () => {
 	return (
-		<section className="flex flex-col h-full pt-12 grow">
+		<section className="flex flex-col h-full pt-12 pb-10 grow">
 			<section>
 				<PageDescription type={'categoryWrite'} />
 			</section>

@@ -3,7 +3,7 @@ import ReviewTitle from './ReviewTitle'
 import { icons } from '../../../constants/header-icons'
 import { useRouter } from '../../../hooks/useRouter'
 import { IMenu, IMenuFunc } from '../../../interfaces'
-import Header from '../../../components/Header'
+import WithHeaderLayout from '../../../components/layout/WithHeaderLayout'
 
 const AddReview = () => {
 	const [title, setTitle] = useState('')
@@ -16,10 +16,9 @@ const AddReview = () => {
 	const headerFunc: IMenuFunc = { left_func: handleLeftFunc, right_func: undefined }
 
 	return (
-		<div className="flex flex-col h-screen px-5 pt-16 pb-12">
-			<Header menu={headerMenu} func={headerFunc} />
+		<WithHeaderLayout headerMenu={headerMenu} headerFunc={headerFunc}>
 			<ReviewTitle title={title} setTitle={setTitle} />
-		</div>
+		</WithHeaderLayout>
 	)
 }
 
