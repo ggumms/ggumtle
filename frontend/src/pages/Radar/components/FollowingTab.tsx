@@ -4,6 +4,8 @@ import UserItem from './UserItem'
 import { IBucket } from '../types/bucket'
 import ButtonArea from './ButtonArea'
 import PreviewBottomSheet from './preview/PreviewBottomSheet'
+import Radar from './radar/Radar'
+import { ProfileAvatar } from '../../../assets/svgs'
 
 // 더미 데이터
 const users1 = ['a', 'b', 'c', 'd', 'e', 'f']
@@ -58,11 +60,9 @@ const FollowingTab = () => {
 	return (
 		<div className="">
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
-				<div className="w-[110%] mb-5 animate-radar3 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center">
-					<div className="w-2/3 animate-radar2 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center">
-						<div className="w-1/2 animate-radar1 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center"></div>
-					</div>
-				</div>
+				<Radar>
+					<ProfileAvatar className="h-14 w-14" />
+				</Radar>
 
 				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
 					{buckets.map((item, index) => (
