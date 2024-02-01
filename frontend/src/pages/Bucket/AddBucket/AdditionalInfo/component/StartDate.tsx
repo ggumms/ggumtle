@@ -26,14 +26,12 @@ const StartDate = () => {
 
 	return (
 		<div>
-			{/* //Todo : 설명 글자 관련 css도 설정 필요 */}
-			<p>버킷 시작일</p>
-			{/* //Todo : 버튼 글자 관련 css도 설정 필요 */}
+			<p className="mb-[14px] text-sm font-bold  ml-[2px]">버킷 시작일</p>
 			<button
 				onClick={handleClickStartDate}
 				className="
-					relative w-full px-2 py-2 text-left border-[0.5px] rounded-[5px]
-					after:content-calendarImage after:inline-block after:h-[19px] after:absolute after:right-2 after:translate-y-1/2 after:bottom-1/2
+					relative w-full px-4 py-2 text-left border-[0.5px] rounded-[5px] text-sm
+					after:content-calendarImage after:inline-block after:h-[19px] after:absolute after:right-4 after:translate-y-1/2 after:bottom-1/2
 				"
 			>
 				{createdDate instanceof Date ? formatDate(createdDate) : '날짜 선택'}

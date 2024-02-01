@@ -7,11 +7,11 @@ import CompleteButton from './component/CompleteButton'
 
 const AdditionalInfo = () => {
 	return (
-		<section>
-			<section>
+		<section className="pb-12">
+			<section className="mt-10 mb-7">
 				<PageDescription type={'additionalWrite'} />
 			</section>
-			<fieldset>
+			<fieldset className="flex flex-col gap-8 mb-14">
 				<BucketImage />
 				<StartDate />
 				<RemindPeriod />

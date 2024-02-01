@@ -10,10 +10,14 @@ const Private = () => {
 	}
 	return (
 		<div>
-			<p>공개 여부</p>
+			<p className="mb-[14px] text-sm font-bold  ml-[2px]">공개 여부</p>
 			<fieldset className="flex gap-20">
 				<label htmlFor="public" className="flex items-center gap-2">
-					{isPrivate ? <GoCheckCircle size={24} /> : <GoCheckCircleFill size={24} />}
+					{isPrivate ? (
+						<GoCheckCircle size={24} color="#D9D9D9" />
+					) : (
+						<GoCheckCircleFill size={24} />
+					)}
 					<input
 						type="radio"
 						name="is-private"
@@ -22,10 +26,14 @@ const Private = () => {
 						onChange={handleClickRadio}
 						className="hidden"
 					/>
-					<p>공개</p>
+					<p className="text-sm">공개</p>
 				</label>
 				<label htmlFor="private" className="flex items-center gap-2">
-					{isPrivate ? <GoCheckCircleFill size={24} /> : <GoCheckCircle size={24} />}
+					{isPrivate ? (
+						<GoCheckCircleFill size={24} />
+					) : (
+						<GoCheckCircle size={24} color="#D9D9D9" />
+					)}
 					<input
 						type="radio"
 						name="is-private"
@@ -34,7 +42,7 @@ const Private = () => {
 						onChange={handleClickRadio}
 						className="hidden"
 					/>
-					<p>비공개</p>
+					<p className="text-sm">비공개</p>
 				</label>
 			</fieldset>
 		</div>

@@ -53,43 +53,46 @@ const BucketImage = () => {
 	}
 
 	return (
-		<div className="relative inline-block">
-			{imageSrc ? (
-				<>
+		<div>
+			<p className="mb-[14px] text-sm font-bold  ml-[2px]">이미지</p>
+			<div className="relative inline-block">
+				{imageSrc ? (
+					<>
+						<label
+							htmlFor="bucket-image"
+							className="box-content relative inline-flex items-end justify-end w-24 h-24 border-2 rounded-md border-[#d9d9d9]"
+							// border-2 rounded-md border-[#d9d9d9]
+						>
+							<img src={imageSrc} alt="Uploaded" className="absolute w-24 h-24 rounded-md" />
+							<Picture className="absolute w-6 h-6 bottom-2 right-2" />
+						</label>
+						<button onClick={handleResetImage} className="absolute top-2 right-2">
+							<IoCloseSharp size={24} color="#d9d9d9" />
+						</button>
+					</>
+				) : (
 					<label
 						htmlFor="bucket-image"
-						className="box-content relative inline-flex items-end justify-end w-24 h-24 border-2 rounded-md border-[#d9d9d9]"
-						// border-2 rounded-md border-[#d9d9d9]
-					>
-						<img src={imageSrc} alt="Uploaded" className="absolute w-24 h-24 rounded-md" />
-						<Picture className="absolute w-6 h-6 bottom-2 right-2" />
-					</label>
-					<button onClick={handleResetImage} className="absolute top-2 right-2">
-						<IoCloseSharp size={24} color="#d9d9d9" />
-					</button>
-				</>
-			) : (
-				<label
-					htmlFor="bucket-image"
-					className="
-						bucket_image 
+						className="
+				bucket_image 
 						inline-flex justify-center items-center w-24 h-24 border-2 border-dashed rounded-md border-[#d9d9d9] relative box-content
 						after:content-pictureImage after:inline-block after:w-6 after:h-6 after:absolute after:right-2 after:bottom-2
-					"
-				>
-					<p className="sr-only">버킷 이미지</p>
-					<AiOutlinePlus size={24} color="#d9d9d9" />
-				</label>
-			)}
-			<input
-				type="file"
-				accept="image/png, image/jpg, image/jpeg image/gif"
-				name="bucket-i	mage"
-				id="bucket-image"
-				ref={fileInputRef}
-				className="hidden"
-				onChange={handleFileValidation}
-			/>
+						"
+					>
+						<p className="sr-only">버킷 이미지</p>
+						<AiOutlinePlus size={24} color="#d9d9d9" />
+					</label>
+				)}
+				<input
+					type="file"
+					accept="image/png, image/jpg, image/jpeg image/gif"
+					name="bucket-i	mage"
+					id="bucket-image"
+					ref={fileInputRef}
+					className="hidden"
+					onChange={handleFileValidation}
+				/>
+			</div>
 		</div>
 	)
 }
