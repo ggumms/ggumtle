@@ -30,13 +30,30 @@ export default {
 			colors: colorPalette,
 			keyframes: {
 				radar: {
-					from: {
-						borderColor: '#c6c6c661',
+					'0%, 100%': {
+						borderColor: '#FF98B7',
 					},
-					to: {
-						borderColor: '#4646467a',
+					'20%': {
+						borderColor: '#F7B578',
+					},
+					'40%': {
+						borderColor: '#8DC788',
+					},
+					'60%': {
+						borderColor: '#A4BCF6',
+					},
+					'80%': {
+						borderColor: '#C39DF9',
 					},
 				},
+				// radar: {
+				// 	from: {
+				// 		borderColor: '#c6c6c661',
+				// 	},
+				// 	to: {
+				// 		borderColor: '#4646467a',
+				// 	},
+				// },
 				floating: {
 					'0%, 100%': {
 						transform: 'translateY(0)',
