@@ -3,6 +3,7 @@ package com.ggums.ggumtle.service;
 import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.common.handler.ImageHandler;
 import com.ggums.ggumtle.dto.request.PostBucketReactionRequestDto;
 import com.ggums.ggumtle.dto.request.PostBucketRequestDto;
@@ -32,12 +33,13 @@ import java.util.stream.Collectors;
 public class BucketService {
 
     private final ImageHandler imageHandler;
+    private final AlarmHandler alarmHandler;
     private final BucketRepository bucketRepository;
+    private final FollowRepository followRepository;
     private final InterestRepository interestRepository;
     private final BucketReactionRepository bucketReactionRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final ReviewRepository reviewRepository;
-    private final FollowRepository followRepository;
 
     public Long postBucket(User user, PostBucketRequestDto requestDto){
         Set<Interest> interests = new HashSet<>();
@@ -67,6 +69,8 @@ public class BucketService {
                 .build();
 
         Bucket savedBucket = bucketRepository.save(bucket);
+        bucketAlarm(user, bucket, AlarmType.followBucket);
+
         return savedBucket.getId();
     }
 
@@ -187,7 +191,21 @@ public class BucketService {
         bucket.setAchievementDate(LocalDate.now());
         bucketRepository.save(bucket);
 
+        bucketAlarm(user, bucket, AlarmType.followBucketAchieve);
+
         return "버킷 달성일이 등록되었습니다.";
+    }
+
+    private void bucketAlarm(User user, Bucket bucket, AlarmType alarmType) {
+        List<Follow> follows = followRepository.findByFollowee(user);
+        if(!follows.isEmpty()){
+            for (Follow follow : follows) {
+                User follower = follow.getFollower();
+                if(follower.getAlarm()){
+                    alarmHandler.createBucketAlarm(follower, user, alarmType, bucket);
+                }
+            }
+        }
     }
 
     @Transactional(readOnly = true)
@@ -269,52 +287,41 @@ public class BucketService {
 
         Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, bucket.getUser());
 
-        // 이미 남긴 리액션이 있는 경우
+        BucketReaction reaction;
         if (existingReaction.isPresent()) {
-            // if reaction is same, pass
-            // 이미 있는 리액션과 요청한 리액션이 같은 경우
-            if (existingReaction.get().getReaction().equals(requestDto.getUserReaction())) {
-                return requestDto.getUserReaction();
-            }
-            // [PUT, DELETE] 이미 있는 리액션과 다른 종류의 리액션 또는 null을 요청한 경우
-            // 다른 리액션으로 바뀌는 경우에도 일단 삭제한 후 다시 리액션을 저장한다.
-            else {
-                bucketReactionRepository.delete(existingReaction.get());
+            reaction = existingReaction.get();
+            reaction.setReaction(requestDto.getUserReaction());
 
-                // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+            if (requestDto.getUserReaction() == null) {
+                // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
                 if (followOpt.isPresent()) {
                     Follow follow = followOpt.get();
                     Long currentScore = follow.getScore();
-                    follow.setScore(currentScore - Score.REACTION);
+                    follow.setScore(Math.max(currentScore - Score.REACTION, 0L));
                 }
-
             }
-        }
 
-        // [POST, PUT] 무언가 리액션을 남기려는 경우
-        if(!requestDto.getUserReaction().isEmpty()){
-            BucketReaction newReaction = BucketReaction.builder()
+        } else {
+            reaction = BucketReaction.builder()
                     .bucket(bucket)
                     .user(user)
                     .reaction(requestDto.getUserReaction())
                     .build();
-            bucketReactionRepository.save(newReaction);
 
-            // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+            // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
             if (followOpt.isPresent()) {
                 Follow follow = followOpt.get();
                 Long currentScore = follow.getScore();
                 follow.setScore(currentScore + Score.REACTION);
             }
-        }
 
-        if (followOpt.isPresent()) {
-            Follow follow = followOpt.get();
-            if (follow.getScore() < 0) {
-                follow.setScore(0L);
+            if(!user.getId().equals(bucket.getUser().getId())){
+                alarmHandler.createBucketAlarm(bucket.getUser(), user, AlarmType.bucketReaction, bucket);
             }
         }
+        bucketReactionRepository.save(reaction);
 
         return requestDto.getUserReaction();
     }
+
 }

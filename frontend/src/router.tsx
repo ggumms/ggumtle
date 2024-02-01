@@ -10,7 +10,7 @@ import SearchPage from './pages/Search/SearchPage'
 import UserSearch from './pages/Search/components/UserSearch'
 import BucketSearch from './pages/Search/components/BucketSearch'
 import ReviewSearch from './pages/Search/components/ReviewSearch'
-import UserPage from './pages/UserPage/UserPage'
+import UserPage from './pages/UserPage'
 import BucketDetail from './pages/Bucket/BucketDetail'
 import AddBucket from './pages/Bucket/AddBucket'
 import MainInfo from './pages/Bucket/AddBucket/MainInfo/MainInfo'
@@ -20,6 +20,7 @@ import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
 import NotFoundPage from './pages/NotfoundPage'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
+import Test from './utils/Test'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -118,6 +119,7 @@ const routerData: RouterElement[] = [
 	{ path: '/bucket/:bucketId', element: <BucketDetail />, label: '' },
 	{ path: '/bucket/achieve', element: <AchieveBucket />, label: '' },
 	{ path: '*', element: <NotFoundPage />, label: '' },
+	{ path: '/test', element: <Test />, label: '' },
 ]
 
 const router: RemixRouter = createBrowserRouter(

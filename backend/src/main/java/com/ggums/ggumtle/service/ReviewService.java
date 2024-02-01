@@ -3,6 +3,7 @@ package com.ggums.ggumtle.service;
 import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.PutReviewRequestDto;
 import com.ggums.ggumtle.dto.request.ReviewReactionRequestDto;
 import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
@@ -12,7 +13,11 @@ import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
-import com.ggums.ggumtle.repository.*;
+import com.ggums.ggumtle.repository.BucketRepository;
+import com.ggums.ggumtle.repository.FollowRepository;
+import com.ggums.ggumtle.repository.CommentReviewRepository;
+import com.ggums.ggumtle.repository.ReviewReactionRepository;
+import com.ggums.ggumtle.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -34,11 +39,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ReviewService {
 
+    private final AlarmHandler alarmHandler;
+    private final FollowRepository followRepository;
     private final ReviewRepository reviewRepository;
     private final BucketRepository bucketRepository;
     private final ReviewReactionRepository reviewReactionRepository;
     private final CommentReviewRepository commentReviewRepository;
-    private final FollowRepository followRepository;
 
     @Value("${spring.web.baseUrl}")
     private String baseUrl;
@@ -68,6 +74,15 @@ public class ReviewService {
                 .build();
 
         Review savedReview = reviewRepository.save(review);
+        List<Follow> follows = followRepository.findByFollowee(user);
+        if(!follows.isEmpty()){
+            for (Follow follow : follows) {
+                User follower = follow.getFollower();
+                if(follower.getAlarm()){
+                    alarmHandler.createReviewAlarm(follower, user, AlarmType.followReview, review);
+                }
+            }
+        }
         return savedReview.getId();
     }
 
@@ -227,6 +242,8 @@ public class ReviewService {
                 Long currentScore = follow.getScore();
                 follow.setScore(currentScore + Score.REACTION);
             }
+
+            alarmHandler.createReviewAlarm(review.getBucket().getUser(), user, AlarmType.reviewReaction, review);
 
             return reaction;
         }

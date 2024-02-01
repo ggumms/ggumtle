@@ -4,6 +4,7 @@ package com.ggums.ggumtle.service;
 import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
@@ -27,6 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentBucketService {
 
+    private final AlarmHandler alarmHandler;
     private final BucketRepository bucketRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final CommentBucketLikeRepository commentBucketLikeRepository;
@@ -57,6 +59,8 @@ public class CommentBucketService {
             Long currentScore = follow.getScore();
             follow.setScore(currentScore + Score.COMMENT);
         }
+
+        alarmHandler.createBucketAlarm(bucket.getUser(), user, AlarmType.commentBucket, bucket);
 
         return "댓글이 생성되었습니다.";
     }
@@ -220,6 +224,8 @@ public class CommentBucketService {
                 Long currentScore = follow.getScore();
                 follow.setScore(currentScore + Score.COMMENT_LIKE);
             }
+
+            alarmHandler.createBucketAlarm(commentBucket.getUser(), user, AlarmType.likeCommentBucket, commentBucket.getBucket());
 
             return "좋아요가 생성되었습니다.";
         }
