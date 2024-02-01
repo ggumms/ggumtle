@@ -72,9 +72,6 @@ dependencies {
 
 	// set test db
 	testImplementation 'com.h2database:h2'
-
-	// spring batch
-	implementation group: 'org.springframework.batch', name: 'spring-batch-core', version: '4.3.10'
 }
 
 tasks.named('test') {
