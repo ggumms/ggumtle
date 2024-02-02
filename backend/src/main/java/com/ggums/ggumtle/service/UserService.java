@@ -44,7 +44,7 @@ public class UserService {
     public String updateUser(User user, MultipartFile userImage, UserUpdateRequestDto requestDto){
 
         // user update
-        if(requestDto.getUserNickname() != null){
+        if(requestDto.getUserNickname() != null && !user.getUserNickname().equals(requestDto.getUserNickname())){
             String lockKey = "user_nickname_lock";
             redisLockRepository.runOnLock(lockKey, () -> {
                 transactionHandler.runOnWriteTransaction(() -> {
@@ -77,10 +77,7 @@ public class UserService {
             user.setUserInterest(updatedInterests);
         }
 
-        // image update
-        if(userImage != null){
-            user.setUserProfileImage(imageHandler.uploadImage(userImage, "userProfile", "user_profile_" + user.getId()));
-        }
+        user.setUserProfileImage(imageHandler.uploadImage(userImage, "userProfile", "user_profile_" + user.getId()));
 
         userRepository.save(user);
 
