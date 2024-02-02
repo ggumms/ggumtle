@@ -1,3 +1,4 @@
+import { DummyUser1 } from '../../../../assets/svgs'
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType, UserInfoType } from '../../../../interfaces'
@@ -23,43 +24,10 @@ const PreviewUser = () => {
 	const username: string = 'want_u.u'
 
 	return (
-		<div className="w-full flex items-center justify-around px-5 py-5">
+		<div className="w-full flex items-center justify-around">
 			<div className="flex flex-col items-center justify-center w-2/5">
 				{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
-				<svg
-					viewBox="0 0 36 36"
-					fill="none"
-					role="img"
-					xmlns="http://www.w3.org/2000/svg"
-					width="60"
-					height="60"
-				>
-					<mask id=":r14:" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36">
-						<rect width="36" height="36" rx="72" fill="#FFFFFF"></rect>
-					</mask>
-					<g mask="url(#:r14:)">
-						<rect width="36" height="36" fill="#ff8482"></rect>
-						<rect
-							x="0"
-							y="0"
-							width="36"
-							height="36"
-							transform="translate(-3 -3) rotate(87 18 18) scale(1)"
-							fill="#f8d8a5"
-							rx="36"
-						></rect>
-						<g transform="translate(-7 -4) rotate(7 18 18)">
-							<path
-								d="M15 19c2 1 4 1 6 0"
-								stroke="#000000"
-								fill="none"
-								stroke-linecap="round"
-							></path>
-							<rect x="12" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect>
-							<rect x="22" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect>
-						</g>
-					</g>
-				</svg>
+				<DummyUser1 />
 				<p className="font-semibold text-point1">{username}</p>
 			</div>
 			<div className="w-full px-2">

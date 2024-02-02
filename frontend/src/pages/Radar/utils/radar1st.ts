@@ -39,19 +39,20 @@ export const bucket1stPositioning = ({ setBuckets1st, user, radius, maxNum }: IB
 	const pos = getCircleEdgePos(radius)
 	if (prevBuckets.length === 0) {
 		return addBucket1st({ pos, user, setBuckets1st })
-	} else {
+	} else { // @TODO: 간혹 겹치는 요소 발생 오류 해결하기
 		const isInRange = prevBuckets.some((user) => {
 			const interDistance = Math.sqrt(
 				(pos.x - user.pos.x) * (pos.x - user.pos.x) + (pos.y - user.pos.y) * (pos.y - user.pos.y)
 			)
+			console.log(interDistance)
 
 			// 거리가 13 미만이면
-			return interDistance < 14
+			return interDistance > 15
 		})
-		if (!isInRange) {
+		if (isInRange) {
 			return addBucket1st({ pos, user, setBuckets1st })
 		} else {
-			// console.log("recursive");
+			console.log("recursive");
 			// 겹치면 다른 값으로 재귀 호출
 			bucket1stPositioning({ setBuckets1st, user, radius, maxNum })
 		}

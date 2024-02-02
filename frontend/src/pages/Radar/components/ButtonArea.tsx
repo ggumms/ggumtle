@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { MdOutlineRefresh } from 'react-icons/md'
 import { GoPlus } from 'react-icons/go'
+import { Link } from 'react-router-dom'
 
 const ButtonArea = () => {
 	const [isPressed, setIsPressed] = useState(false)
@@ -34,11 +35,11 @@ const ButtonArea = () => {
 					<MdOutlineRefresh />
 					새로고침
 				</div>
-				<div className="absolute right-4" onClick={() => console.log('helo')}>
+				<Link to="/bucket/write" className="absolute right-4">
 					<div className="rounded-full shadow-lg p-2 border-[0.5px] border-lightGray">
 						<GoPlus size="2rem" color="#52A88C" />
 					</div>
-				</div>
+				</Link>
 			</div>
 		</div>
 	)

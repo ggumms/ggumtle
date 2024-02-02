@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import UserItem from './UserItem'
+import UserItem from './radar/UserItem'
 import { IBucket } from '../types/bucket'
 import ButtonArea from './ButtonArea'
 import PreviewBottomSheet from './preview/PreviewBottomSheet'
@@ -14,12 +14,28 @@ const users1 = ['a', 'b', 'c'] // 3
 const users2 = ['a', 'b', 'c', 'd'] // 4명
 const users3 = ['a', 'b', 'c', 'd', 'e'] // 5명
 
+export interface IUserSimple {
+	userId: number
+	userProfileImage: string
+	userNickname: string
+}
+
 // @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
 const FollowingTab = () => {
 	const [buckets1st, setBuckets1st] = useState<IBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IBucket[]>([])
-	
+	const [openPreview, setOpenPreview] = useState<boolean>(false)
+	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
+
+	const handleOpenPreview = () => {
+		setOpenPreview(true)
+		setUserInfo({
+			userId: 1,
+			userProfileImage: 'url',
+			userNickname: 'usung',
+		})
+	}
 	// @TODO: 추후 실제 데이터로 api 통신 시에 데이터 형식에 따라 코드 대폭 수정 예정
 	useEffect(() => {
 		console.log(buckets1st)
@@ -30,7 +46,7 @@ const FollowingTab = () => {
 				() => {
 					bucket1stPositioning({ setBuckets1st, user, radius, maxNum })
 				},
-				100 * index + 50 * Math.random()
+				100 * index + 100 * Math.random()
 			)
 		})
 	}, [])
@@ -44,7 +60,7 @@ const FollowingTab = () => {
 				() => {
 					bucket2ndPositioning({ setBuckets2nd, user, radius, maxNum })
 				},
-				100 * index + 50 * Math.random()
+				100 * index + 100 * Math.random()
 			)
 		})
 	}, [])
@@ -57,7 +73,7 @@ const FollowingTab = () => {
 				() => {
 					bucket3rdPositioning({ setBuckets3rd, user, radius, maxNum })
 				},
-				100 * index + 50 * Math.random()
+				100 * index + 100 * Math.random()
 			)
 		})
 	})
@@ -71,14 +87,12 @@ const FollowingTab = () => {
 
 				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
 					{buckets1st.map((item, index) => (
-						// @TODO: 레이더 라인별 UserItem 크기 조절
+						// @TODO: UserItem key 추후 userId로 변경
 						<UserItem
-							// key값 변경
 							key={index}
 							pos={item.pos}
 							type="first"
-							// item={item.}
-							// onClick={() => navigate(`detail/${item.post_id}`)}
+							// 클릭했을때 setOpenPreview(true), userInfo 전달
 						/>
 					))}
 					{buckets2nd.map((item, index) => (
