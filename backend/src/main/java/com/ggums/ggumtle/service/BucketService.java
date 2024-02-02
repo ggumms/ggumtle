@@ -60,6 +60,7 @@ public class BucketService {
                 .user(user)
                 .title(requestDto.getTitle())
                 .timeCapsule(requestDto.getTimeCapsule())
+                .reminderDate(requestDto.getReminderDate())
                 .latitude(requestDto.getLatitude())
                 .longitude(requestDto.getLongitude())
                 .color(requestDto.getColor())
@@ -110,6 +111,7 @@ public class BucketService {
                 .timeCapsule(timeCapsule)
                 .bucketPicture(bucket.getBucketPicture())
                 .color(bucket.getColor())
+                .reminderDate(bucket.getReminderDate())
                 .latitude(bucket.getLatitude())
                 .longitude(bucket.getLongitude())
                 .address(bucket.getAddress())
@@ -132,6 +134,7 @@ public class BucketService {
         }
 
         if (requestDto.getTitle() != null) bucket.setTitle(requestDto.getTitle());
+        if (requestDto.getReminderDate() != null) bucket.setReminderDate(requestDto.getReminderDate());
         if (requestDto.getLatitude() != null) bucket.setLatitude(requestDto.getLatitude());
         if (requestDto.getLongitude() != null) bucket.setLongitude(requestDto.getLongitude());
         if (requestDto.getColor() != null) bucket.setColor(requestDto.getColor());

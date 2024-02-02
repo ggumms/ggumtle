@@ -1,6 +1,7 @@
 package com.ggums.ggumtle.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ggums.ggumtle.entity.ReminderDate;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -25,6 +26,8 @@ public class GetBucketResponseDto {
     private String bucketPicture;
     @Schema(description = "버킷 색상", example = "dream green")
     private String color;
+    @Schema(description = "리마인드 주기", example = "twoWeeks")
+    private ReminderDate reminderDate;
     @Schema(description = "위도", example = "23.452")
     private Double latitude;
     @Schema(description = "경도", example = "143.213")
