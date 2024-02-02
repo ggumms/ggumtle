@@ -7,8 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TimelineRepository extends JpaRepository<Timeline, Long> {
-
+public interface TimelineRepository extends JpaRepository<Timeline, Long>, TimelineCustomRepository {
     void deleteByBucket(Bucket bucket);
     void deleteByReview(Review review);
 }

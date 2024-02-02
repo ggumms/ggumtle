@@ -1,5 +1,6 @@
 package com.ggums.ggumtle.dto.response.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ggums.ggumtle.entity.TimelineType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public class TimelineDto {
     private String context;
 
     @Schema(description = "미달성 : 경과 시간 or 달성 : 걸린 시간", example = "17")
-    private int day;
+    private Long day;
 
     @Schema(description = "버킷 색깔", example = "dream green")
     private String color;
@@ -46,6 +47,7 @@ public class TimelineDto {
     @Schema(description = "버킷 or 후기 댓글 수", example = "3")
     private int commentCount;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Schema(description = "만든날짜", example = "2024-02-02")
     private LocalDate createdDate;
 }
