@@ -23,7 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "후기", description = "후기와 관련된 API들 입니다")
+@Tag(name = "3. 후기", description = "후기와 관련된 API들 입니다")
 @RestController
 @RequestMapping("/review")
 @RequiredArgsConstructor
