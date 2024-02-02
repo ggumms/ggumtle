@@ -36,6 +36,7 @@ public class Bucket {
 
     private String bucketPicture;
 
+    @Enumerated(EnumType.STRING)
     private ReminderDate reminderDate;
 
     private Double latitude;

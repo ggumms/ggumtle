@@ -45,7 +45,7 @@ public class BucketController {
 
     @Operation(summary = "버킷 조회", description = "주어진 id의 버킷 상세 정보를 반환합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "버킷 조희 성공",
+            @ApiResponse(responseCode = "200", description = "버킷 조회 성공",
                     content = @Content(schemaProperties = {
                             @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
                             @SchemaProperty(name = "bucketInfo", schema = @Schema(implementation = GetBucketResponseDto.class))
