@@ -288,6 +288,11 @@ public class BucketService {
         Bucket bucket = bucketRepository.findById(requestDto.getBucketId())
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
 
+        // 버킷이 비공개인데 user가 버킷의 주인이 아닌 경우 예외 처리
+        if (bucket.getIsPrivate() && !user.getId().equals(bucket.getUser().getId())) {
+            throw new CustomException(ExceptionType.BUCKET_NOT_VALID);
+        }
+
         Optional<BucketReaction> existingReaction = bucketReactionRepository
                 .findByBucketAndUser(bucket, user);
 
