@@ -16,7 +16,7 @@
         <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <file>${FILENAME}.log</file>
             <encoder>
-                <pattern>${PATTERN}</pattern>
+                <pattern>${LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
                 <fileNamePattern>${FILENAME}.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
