@@ -9,6 +9,5 @@ import org.springframework.data.domain.Page;
 @Builder
 public class ReviewSearchResponseDto {
 
-
     Page<ReviewSearchListDto> searchList;
 }

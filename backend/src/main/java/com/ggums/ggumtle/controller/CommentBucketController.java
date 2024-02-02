@@ -5,12 +5,14 @@ import com.ggums.ggumtle.common.response.Response;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.service.CommentBucketService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "7. 버킷 댓글", description = "버킷 하위 댓글과 관련된 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comment/bucket")
