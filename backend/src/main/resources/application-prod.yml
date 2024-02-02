@@ -14,3 +14,11 @@ spring:
 
   web:
     baseUrl: http://i10d111.p.ssafy.io:8081
+
+  logging:
+    level:
+      root: INFO
+      web: DEBUG
+      com.ggums.ggumtle: DEBUG
+      org.springframework.security: DEBUG
+      org.springframework.web.cors: DEBUG
