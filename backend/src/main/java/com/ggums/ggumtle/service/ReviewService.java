@@ -219,6 +219,11 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
 
+        // 후기가 비공개인데 user가 후기의 주인이 아닌 경우 에러
+        if (review.getBucket().getIsPrivate() && !user.getId().equals(review.getBucket().getUser().getId())) {
+            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
+
         String reaction = requestDto.getReaction();
 
         List<ReviewReaction> myReviewReactions = review.getReviewReactions().stream()
