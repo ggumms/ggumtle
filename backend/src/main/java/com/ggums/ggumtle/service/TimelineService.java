@@ -2,6 +2,7 @@ package com.ggums.ggumtle.service;
 
 import com.ggums.ggumtle.dto.response.model.TimelineDto;
 import com.ggums.ggumtle.entity.User;
+import com.ggums.ggumtle.repository.TimelineRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TimelineService {
 
+    private final TimelineRepository timelineRepository;
 
     public Page<TimelineDto> get(User user, Boolean doing, Boolean done, Boolean review, Pageable pageable) {
         return null;
