@@ -32,17 +32,17 @@ const FollowingTab = () => {
 		queryFn: getRadarUsers,
 	})
 
-	!isLoading ? console.log('--get1--', radar) : console.log('로딩중')
 	const [buckets1st, setBuckets1st] = useState<IBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IBucket[]>([])
+
 	const { sheet, openPreview, closePreview, togglePreview } = useBottomSheet()
 	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
 
-	const handleOpenPreview = () => {
+	const handleOpenPreview = (userId: number) => {
 		closePreview()
-		console.log('open!', sheet)
 		openPreview()
+		// @TODO: userId로 user정보 호출 api
 		setUserInfo({
 			userId: 1,
 			userProfileImage: 'url',
@@ -50,8 +50,8 @@ const FollowingTab = () => {
 		})
 	}
 
+	// 첫 번째 레이더 (가장 안쪽)
 	useEffect(() => {
-		console.log(buckets1st)
 		const radius = 19
 		const maxNum = 3
 		!isLoading &&
@@ -65,8 +65,8 @@ const FollowingTab = () => {
 			})
 	}, [isLoading])
 
+	// 두 번째 레이더
 	useEffect(() => {
-		console.log(buckets2nd)
 		const radius = 34
 		const maxNum = 6
 		!isLoading &&
@@ -79,8 +79,9 @@ const FollowingTab = () => {
 				)
 			})
 	}, [isLoading])
+
+	// 세 번째 레이더
 	useEffect(() => {
-		console.log(buckets3rd)
 		const radius = 50
 		const maxNum = 9
 		!isLoading &&
@@ -105,7 +106,7 @@ const FollowingTab = () => {
 					{buckets1st.map((item) => (
 						<UserItem
 							key={item.userId}
-							pos={item.pos}
+							user={item}
 							type="first"
 							handleOpenPreview={handleOpenPreview}
 						/>
@@ -113,7 +114,7 @@ const FollowingTab = () => {
 					{buckets2nd.map((item) => (
 						<UserItem
 							key={item.userId}
-							pos={item.pos}
+							user={item}
 							type="second"
 							handleOpenPreview={handleOpenPreview}
 						/>
@@ -121,7 +122,7 @@ const FollowingTab = () => {
 					{buckets3rd.map((item) => (
 						<UserItem
 							key={item.userId}
-							pos={item.pos}
+							user={item}
 							type="third"
 							handleOpenPreview={handleOpenPreview}
 						/>

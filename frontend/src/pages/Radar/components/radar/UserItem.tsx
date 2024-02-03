@@ -1,3 +1,5 @@
+import { IBucket } from "../../types/bucket"
+
 export type UserElemType = 'first' | 'second' | 'third'
 
 export interface IUserDirection {
@@ -50,31 +52,30 @@ const UserElementStyle: IUserElementStyle = {
 }
 
 export interface UserItemProps {
-	pos: { x: number; y: number }
+	user: IBucket
 	type: UserElemType
 	post_id?: string
 	handleOpenPreview: () => void
 	// onClick: () => void
 }
 
-const UserItem = ({ pos, type, handleOpenPreview }: UserItemProps) => {
+const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
 	const itemStyle: { position: 'absolute'; left: string; bottom: string } = {
 		position: 'absolute',
-		left: `${UserElementStyle[type].direction.left + pos.x}%`,
-		bottom: `${UserElementStyle[type].direction.bottom + pos.y}%`,
+		left: `${UserElementStyle[type].direction.left + user.pos.x}%`,
+		bottom: `${UserElementStyle[type].direction.bottom + user.pos.y}%`,
 	}
-	const name = 'wan'
 	// handleOpenPreview
 	return (
 		<div
-			onClick={() => handleOpenPreview()}
+			onClick={() => handleOpenPreview(user.userId)}
 			className="inline-flex flex-col items-center animate-floating"
 			style={itemStyle}
 		>
 			{/* @TODO: api 통신할 때에는 img 태그로 변경 후 실제 데이터 삽입하기
       <img src="" alt="" /> */}
 			<div className={`bg-green rounded-full ${UserElementStyle[type].style.size}`}></div>
-			<span className={`font-semibold ${UserElementStyle[type].style.text}`}>{name}</span>
+			<span className={`font-semibold ${UserElementStyle[type].style.text}`}>{user.userNickname}</span>
 		</div>
 	)
 }
