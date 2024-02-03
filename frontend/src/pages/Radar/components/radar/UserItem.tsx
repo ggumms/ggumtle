@@ -1,4 +1,4 @@
-import { IBucket } from "../../types/bucket"
+import { IRadarUser } from "../../types/bucket"
 
 export type UserElemType = 'first' | 'second' | 'third'
 
@@ -52,10 +52,10 @@ const UserElementStyle: IUserElementStyle = {
 }
 
 export interface UserItemProps {
-	user: IBucket
+	user: IRadarUser
 	type: UserElemType
 	post_id?: string
-	handleOpenPreview: () => void
+	handleOpenPreview: (userid: number) => void
 	// onClick: () => void
 }
 

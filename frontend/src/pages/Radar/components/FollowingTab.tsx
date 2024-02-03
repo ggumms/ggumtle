@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
 import UserItem from './radar/UserItem'
-import { IBucket } from '../types/bucket'
 import ButtonArea from './ButtonArea'
 import PreviewBottomSheet from './preview/PreviewBottomSheet'
 import Radar from './radar/Radar'
 import { ProfileAvatar } from '../../../assets/svgs'
-import { bucket1stPositioning } from '../utils/radar1st'
-import { bucket2ndPositioning } from '../utils/radar2nd'
-import { bucket3rdPositioning } from '../utils/radar3rd'
 import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
 import { getRadarUsers } from '../api'
 import { useQuery } from '@tanstack/react-query'
+import { user1stPositioning } from '../utils/radar1st'
+import { user2ndPositioning } from '../utils/radar2nd'
+import { user3rdPositioning } from '../utils/radar3rd'
+import { IRadarUser } from '../types/bucket'
 
 export interface IUserSimple {
 	userId: number
@@ -18,23 +18,24 @@ export interface IUserSimple {
 	userNickname: string
 }
 
-interface IRadarUser {
-	circle1: IBucket[]
-	circle2: IBucket[]
-	circle3: IBucket[]
+interface IRadarUserList {
+	circle1: IRadarUser[]
+	circle2: IRadarUser[]
+	circle3: IRadarUser[]
 	refresh: boolean
 }
 
 // @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
+// @TODO: 리렌더링 횟수 줄이기
 const FollowingTab = () => {
-	const { isLoading, data: radar } = useQuery<IRadarUser>({
+	const { isLoading, data: radar } = useQuery<IRadarUserList>({
 		queryKey: ['radarUser'],
 		queryFn: getRadarUsers,
 	})
 
-	const [buckets1st, setBuckets1st] = useState<IBucket[]>([])
-	const [buckets2nd, setBuckets2nd] = useState<IBucket[]>([])
-	const [buckets3rd, setBuckets3rd] = useState<IBucket[]>([])
+	const [users1st, setUsers1st] = useState<IRadarUser[]>([])
+	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
+	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 
 	const { sheet, openPreview, closePreview, togglePreview } = useBottomSheet()
 	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
@@ -42,6 +43,7 @@ const FollowingTab = () => {
 	const handleOpenPreview = (userId: number) => {
 		closePreview()
 		openPreview()
+		console.log("userId: ", userId)
 		// @TODO: userId로 user정보 호출 api
 		setUserInfo({
 			userId: 1,
@@ -55,10 +57,10 @@ const FollowingTab = () => {
 		const radius = 19
 		const maxNum = 3
 		!isLoading &&
-			radar!.circle1.forEach((bucket, index) => {
+			radar!.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
-						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+						user1stPositioning({ setUsers1st, user, radius, maxNum })
 					},
 					100 * index + 100 * Math.random()
 				)
@@ -70,10 +72,10 @@ const FollowingTab = () => {
 		const radius = 34
 		const maxNum = 6
 		!isLoading &&
-			radar!.circle2.forEach((bucket, index) => {
+			radar!.circle2.forEach((user, index) => {
 				setTimeout(
 					() => {
-						bucket2ndPositioning({ setBuckets2nd, bucket, radius, maxNum })
+						user2ndPositioning({ setUsers2nd, user, radius, maxNum })
 					},
 					100 * index + 100 * Math.random()
 				)
@@ -85,10 +87,10 @@ const FollowingTab = () => {
 		const radius = 50
 		const maxNum = 9
 		!isLoading &&
-			radar!.circle3.forEach((bucket, index) => {
+			radar!.circle3.forEach((user, index) => {
 				setTimeout(
 					() => {
-						bucket3rdPositioning({ setBuckets3rd, bucket, radius, maxNum })
+						user3rdPositioning({ setUsers3rd, user, radius, maxNum })
 					},
 					100 * index + 100 * Math.random()
 				)
@@ -103,26 +105,26 @@ const FollowingTab = () => {
 				</Radar>
 
 				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
-					{buckets1st.map((item) => (
+					{users1st.map((user) => (
 						<UserItem
-							key={item.userId}
-							user={item}
+							key={user.userId}
+							user={user}
 							type="first"
 							handleOpenPreview={handleOpenPreview}
 						/>
 					))}
-					{buckets2nd.map((item) => (
+					{users2nd.map((user) => (
 						<UserItem
-							key={item.userId}
-							user={item}
+							key={user.userId}
+							user={user}
 							type="second"
 							handleOpenPreview={handleOpenPreview}
 						/>
 					))}
-					{buckets3rd.map((item) => (
+					{users3rd.map((user) => (
 						<UserItem
-							key={item.userId}
-							user={item}
+							key={user.userId}
+							user={user}
 							type="third"
 							handleOpenPreview={handleOpenPreview}
 						/>
