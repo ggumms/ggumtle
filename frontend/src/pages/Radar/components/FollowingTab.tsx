@@ -26,7 +26,7 @@ const FollowingTab = () => {
 	const [buckets1st, setBuckets1st] = useState<IBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IBucket[]>([])
-	const { sheet, openPreview, closePreview } = useBottomSheet()
+	const { sheet, openPreview, closePreview, togglePreview } = useBottomSheet()
 	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
 
 	const handleOpenPreview = () => {
@@ -97,7 +97,6 @@ const FollowingTab = () => {
 							pos={item.pos}
 							type="first"
 							handleOpenPreview={handleOpenPreview}
-							// 클릭했을때 setOpenPreview(true), userInfo 전달
 						/>
 					))}
 					{buckets2nd.map((item, index) => (
@@ -107,8 +106,7 @@ const FollowingTab = () => {
 							key={index}
 							pos={item.pos}
 							type="second"
-							// item={item.}
-							// onClick={() => navigate(`detail/${item.post_id}`)}
+							handleOpenPreview={handleOpenPreview}
 						/>
 					))}
 					{buckets3rd.map((item, index) => (
@@ -118,15 +116,15 @@ const FollowingTab = () => {
 							key={index}
 							pos={item.pos}
 							type="third"
-							// item={item.}
-							// onClick={() => navigate(`detail/${item.post_id}`)}
+							handleOpenPreview={handleOpenPreview}
 						/>
 					))}
 				</div>
 			</div>
 
+			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
 			<ButtonArea />
-			<PreviewBottomSheet ref={sheet} userInfo={userInfo} />
+			<PreviewBottomSheet ref={sheet} userInfo={userInfo} togglePreview={togglePreview} />
 		</div>
 	)
 }

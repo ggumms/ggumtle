@@ -8,13 +8,14 @@ export const BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y // 바텀시트의
 
 interface UserInfoProp {
 	userInfo: IUserSimple | null
+	togglePreview: () => void
 }
 const PreviewBottomSheet = forwardRef<HTMLDivElement, UserInfoProp>((props, sheet) => {
-	const { userInfo } = props
+	const { userInfo, togglePreview } = props
 	console.log('userinfo: ', userInfo)
 	return (
 		<div
-			// onClick={togglePreview}
+			onClick={togglePreview}
 			ref={sheet}
 			// ref={previewRef}
 			style={{ height: `${BOTTOM_SHEET_HEIGHT}px` }}
