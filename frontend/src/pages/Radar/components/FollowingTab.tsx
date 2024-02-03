@@ -9,6 +9,8 @@ import { bucket1stPositioning } from '../utils/radar1st'
 import { bucket2ndPositioning } from '../utils/radar2nd'
 import { bucket3rdPositioning } from '../utils/radar3rd'
 import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
+import { getRadarUsers } from '../api'
+import { useQuery } from '@tanstack/react-query'
 
 // 더미 데이터
 const users1 = ['a', 'b', 'c'] // 3
@@ -21,8 +23,22 @@ export interface IUserSimple {
 	userNickname: string
 }
 
+interface IRadarUser {
+	circle1: IBucket[]
+	circle2: IBucket[]
+	circle3: IBucket[]
+}
+
 // @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
 const FollowingTab = () => {
+	const { isLoading, data } = useQuery<IRadarUser>({
+		queryKey: ['radarUser'],
+		queryFn: getRadarUsers,
+	})
+
+	!isLoading ? console.log('--get1--', data) : console.log('로딩중')
+	// console.log("--get2--", data?.circle2)
+	// console.log("--get3--", data?.circle3)
 	const [buckets1st, setBuckets1st] = useState<IBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IBucket[]>([])
@@ -39,8 +55,6 @@ const FollowingTab = () => {
 			userNickname: 'usung',
 		})
 	}
-	// handleOpenPreview();
-	// @TODO: 추후 실제 데이터로 api 통신 시에 데이터 형식에 따라 코드 대폭 수정 예정
 	useEffect(() => {
 		console.log(buckets1st)
 		const radius = 19
