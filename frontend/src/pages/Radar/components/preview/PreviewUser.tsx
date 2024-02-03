@@ -3,8 +3,9 @@ import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType, UserInfoType } from '../../../../interfaces'
 
-const PreviewUser = () => {
-	// 더미 데이터
+const PreviewUser = ({ userId }: { userId: number }) => {
+	console.log('userId: ', userId)
+	// 더미 데이터 (userId로 api 호출해서 얻어온 유저 정보)
 	const userInfo: UserInfoType = {
 		userId: 1,
 		userProfileImage: 'url',
@@ -32,7 +33,9 @@ const PreviewUser = () => {
 			</div>
 			<div className="w-full px-2">
 				{/* @TODO: 대표버킷 없을 경우 처리 */}
+
 				<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+
 				<div className="bg-white">
 					{category.map((cate, index) => (
 						<InterestTag tag={cate} key={index} />

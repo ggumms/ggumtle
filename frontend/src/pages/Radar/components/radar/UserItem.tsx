@@ -53,19 +53,24 @@ export interface UserItemProps {
 	pos: { x: number; y: number }
 	type: UserElemType
 	post_id?: string
+	handleOpenPreview: () => void
 	// onClick: () => void
 }
 
-const UserItem = ({ pos, type }: UserItemProps) => {
-	// const UserItem = ({ pos, onClick }: UserItemProps) => {
+const UserItem = ({ pos, type, handleOpenPreview }: UserItemProps) => {
 	const itemStyle: { position: 'absolute'; left: string; bottom: string } = {
 		position: 'absolute',
 		left: `${UserElementStyle[type].direction.left + pos.x}%`,
 		bottom: `${UserElementStyle[type].direction.bottom + pos.y}%`,
 	}
 	const name = 'wan'
+	// handleOpenPreview
 	return (
-		<div className="inline-flex flex-col items-center animate-floating" style={itemStyle}>
+		<div
+			onClick={() => handleOpenPreview()}
+			className="inline-flex flex-col items-center animate-floating"
+			style={itemStyle}
+		>
 			{/* @TODO: api 통신할 때에는 img 태그로 변경 후 실제 데이터 삽입하기
       <img src="" alt="" /> */}
 			<div className={`bg-green rounded-full ${UserElementStyle[type].style.size}`}></div>

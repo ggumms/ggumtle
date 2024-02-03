@@ -31,13 +31,19 @@ export default function useBottomSheet() {
 	})
 
 	const openPreview = () => {
-		sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
-		setToggle(true)
+		console.log("run open Preview")
+		if (sheet.current) {
+			console.log("True")
+			sheet.current.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
+			setToggle(true)
+		}
 	}
 
 	const closePreview = () => {
-		sheet.current!.style.setProperty('transform', 'translateY(0)')
-		setToggle(false)
+		if (sheet.current) {
+			sheet.current.style.setProperty('transform', 'translateY(0)')
+			setToggle(false)
+		}
 	}
 
 	const togglePreview = () => {
@@ -45,10 +51,12 @@ export default function useBottomSheet() {
 	}
 
 	useEffect(() => {
-		if (toggle) {
-			sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
-		} else {
-			sheet.current!.style.setProperty('transform', 'translateY(0)')
+		if (sheet.current) {
+			if (toggle) {
+				sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
+			} else {
+				sheet.current!.style.setProperty('transform', 'translateY(0)')
+			}
 		}
 	}, [toggle])
 
@@ -60,7 +68,7 @@ export default function useBottomSheet() {
 				return true
 			}
 
-			if (sheet.current!.getBoundingClientRect().y !== MIN_Y) {
+			if (sheet.current && sheet.current!.getBoundingClientRect().y !== MIN_Y) {
 				return true
 			}
 
@@ -124,16 +132,18 @@ export default function useBottomSheet() {
 			// Snap Animation
 			const currentSheetY = sheet.current!.getBoundingClientRect().y
 
-			if (currentSheetY !== MIN_Y) {
-				if (touchMove.movingDirection === 'down') {
-					sheet.current!.style.setProperty('transform', 'translateY(0)')
-					setToggle(false)
-				}
+			if (sheet.current) {
+				if (currentSheetY !== MIN_Y) {
+					if (touchMove.movingDirection === 'down') {
+						sheet.current!.style.setProperty('transform', 'translateY(0)')
+						setToggle(false)
+					}
 
-				if (touchMove.movingDirection === 'up') {
-					sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
-					setToggle(true)
-					console.log(toggle)
+					if (touchMove.movingDirection === 'up') {
+						sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
+						setToggle(true)
+						console.log(toggle)
+					}
 				}
 			}
 
@@ -152,17 +162,19 @@ export default function useBottomSheet() {
 		}
 
 		// @TODO: 마우스 이벤트 리스너 추가하기
-		sheet.current!.addEventListener('touchstart', handleTouchStart)
-		sheet.current!.addEventListener('touchmove', handleTouchMove)
-		sheet.current!.addEventListener('touchend', handleTouchEnd)
+		if (sheet.current) {
+			sheet.current.addEventListener('touchstart', handleTouchStart)
+			sheet.current.addEventListener('touchmove', handleTouchMove)
+			sheet.current.addEventListener('touchend', handleTouchEnd)
+		}
 	}, [])
 
-	useEffect(() => {
-		const handleTouchStart = () => {
-			metrics.current!.isContentAreaTouched = true
-		}
-		content.current!.addEventListener('touchstart', handleTouchStart)
-	}, [])
+	// useEffect(() => {
+	// 	const handleTouchStart = () => {
+	// 		metrics.current!.isContentAreaTouched = true
+	// 	}
+	// 	content.current!.addEventListener('touchstart', handleTouchStart)
+	// }, [])
 
 	return { sheet, content, openPreview, closePreview, togglePreview }
 }

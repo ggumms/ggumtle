@@ -8,6 +8,7 @@ import { ProfileAvatar } from '../../../assets/svgs'
 import { bucket1stPositioning } from '../utils/radar1st'
 import { bucket2ndPositioning } from '../utils/radar2nd'
 import { bucket3rdPositioning } from '../utils/radar3rd'
+import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
 
 // 더미 데이터
 const users1 = ['a', 'b', 'c'] // 3
@@ -25,17 +26,20 @@ const FollowingTab = () => {
 	const [buckets1st, setBuckets1st] = useState<IBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IBucket[]>([])
-	const [openPreview, setOpenPreview] = useState<boolean>(false)
+	const { sheet, openPreview, closePreview } = useBottomSheet()
 	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
 
 	const handleOpenPreview = () => {
-		setOpenPreview(true)
+		closePreview()
+		console.log('open!', sheet)
+		openPreview()
 		setUserInfo({
 			userId: 1,
 			userProfileImage: 'url',
 			userNickname: 'usung',
 		})
 	}
+	// handleOpenPreview();
 	// @TODO: 추후 실제 데이터로 api 통신 시에 데이터 형식에 따라 코드 대폭 수정 예정
 	useEffect(() => {
 		console.log(buckets1st)
@@ -79,7 +83,7 @@ const FollowingTab = () => {
 	})
 
 	return (
-		<div className="">
+		<div>
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
 					<ProfileAvatar className="h-14 w-14" />
@@ -92,6 +96,7 @@ const FollowingTab = () => {
 							key={index}
 							pos={item.pos}
 							type="first"
+							handleOpenPreview={handleOpenPreview}
 							// 클릭했을때 setOpenPreview(true), userInfo 전달
 						/>
 					))}
@@ -121,7 +126,7 @@ const FollowingTab = () => {
 			</div>
 
 			<ButtonArea />
-			<PreviewBottomSheet />
+			<PreviewBottomSheet ref={sheet} userInfo={userInfo} />
 		</div>
 	)
 }
