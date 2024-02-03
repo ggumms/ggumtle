@@ -12,11 +12,6 @@ import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
 import { getRadarUsers } from '../api'
 import { useQuery } from '@tanstack/react-query'
 
-// 더미 데이터
-const users1 = ['a', 'b', 'c'] // 3
-const users2 = ['a', 'b', 'c', 'd'] // 4명
-const users3 = ['a', 'b', 'c', 'd', 'e'] // 5명
-
 export interface IUserSimple {
 	userId: number
 	userProfileImage: string
@@ -27,18 +22,17 @@ interface IRadarUser {
 	circle1: IBucket[]
 	circle2: IBucket[]
 	circle3: IBucket[]
+	refresh: boolean
 }
 
 // @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
 const FollowingTab = () => {
-	const { isLoading, data } = useQuery<IRadarUser>({
+	const { isLoading, data: radar } = useQuery<IRadarUser>({
 		queryKey: ['radarUser'],
 		queryFn: getRadarUsers,
 	})
 
-	!isLoading ? console.log('--get1--', data) : console.log('로딩중')
-	// console.log("--get2--", data?.circle2)
-	// console.log("--get3--", data?.circle3)
+	!isLoading ? console.log('--get1--', radar) : console.log('로딩중')
 	const [buckets1st, setBuckets1st] = useState<IBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IBucket[]>([])
@@ -55,46 +49,50 @@ const FollowingTab = () => {
 			userNickname: 'usung',
 		})
 	}
+
 	useEffect(() => {
 		console.log(buckets1st)
 		const radius = 19
 		const maxNum = 3
-		users1.forEach((user, index) => {
-			setTimeout(
-				() => {
-					bucket1stPositioning({ setBuckets1st, user, radius, maxNum })
-				},
-				100 * index + 100 * Math.random()
-			)
-		})
-	}, [])
+		!isLoading &&
+			radar!.circle1.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+					},
+					100 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading])
 
 	useEffect(() => {
 		console.log(buckets2nd)
 		const radius = 34
 		const maxNum = 6
-		users2.forEach((user, index) => {
-			setTimeout(
-				() => {
-					bucket2ndPositioning({ setBuckets2nd, user, radius, maxNum })
-				},
-				100 * index + 100 * Math.random()
-			)
-		})
-	}, [])
+		!isLoading &&
+			radar!.circle2.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						bucket2ndPositioning({ setBuckets2nd, bucket, radius, maxNum })
+					},
+					100 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading])
 	useEffect(() => {
 		console.log(buckets3rd)
 		const radius = 50
 		const maxNum = 9
-		users3.forEach((user, index) => {
-			setTimeout(
-				() => {
-					bucket3rdPositioning({ setBuckets3rd, user, radius, maxNum })
-				},
-				100 * index + 100 * Math.random()
-			)
-		})
-	})
+		!isLoading &&
+			radar!.circle3.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						bucket3rdPositioning({ setBuckets3rd, bucket, radius, maxNum })
+					},
+					100 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading])
 
 	return (
 		<div>
@@ -104,30 +102,25 @@ const FollowingTab = () => {
 				</Radar>
 
 				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
-					{buckets1st.map((item, index) => (
-						// @TODO: UserItem key 추후 userId로 변경
+					{buckets1st.map((item) => (
 						<UserItem
-							key={index}
+							key={item.userId}
 							pos={item.pos}
 							type="first"
 							handleOpenPreview={handleOpenPreview}
 						/>
 					))}
-					{buckets2nd.map((item, index) => (
-						// @TODO: 레이더 라인별 UserItem 크기 조절
+					{buckets2nd.map((item) => (
 						<UserItem
-							// key값 변경
-							key={index}
+							key={item.userId}
 							pos={item.pos}
 							type="second"
 							handleOpenPreview={handleOpenPreview}
 						/>
 					))}
-					{buckets3rd.map((item, index) => (
-						// @TODO: 레이더 라인별 UserItem 크기 조절
+					{buckets3rd.map((item) => (
 						<UserItem
-							// key값 변경
-							key={index}
+							key={item.userId}
 							pos={item.pos}
 							type="third"
 							handleOpenPreview={handleOpenPreview}

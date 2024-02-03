@@ -1,14 +1,13 @@
-import { IAddBucket, IBucket, IBucketPosition } from "../types/bucket"
-import { getCircleEdgePos } from "./common"
+import { IAddBucket, IBucket, IBucketPosition } from '../types/bucket'
+import { getCircleEdgePos } from './common'
 
-export function addBucket1st({ pos, user, setBuckets1st }: IAddBucket) {
+export function addBucket1st({ pos, bucket, setBuckets1st }: IAddBucket) {
 	setBuckets1st!((prevBuckets: IBucket[]) => {
-		
-    // 초과 방지
-		if (prevBuckets.length >= 3 ) return prevBuckets
+		// 초과 방지
+		if (prevBuckets.length >= 3) return prevBuckets
 
 		// 이미 존재하는 user인지 확인
-		const isUserExist = prevBuckets.some((bucket) => bucket.user === user)
+		const isUserExist = prevBuckets.some((e) => e.userId === bucket.userId)
 
 		// 존재하지 않으면 추가
 		if (!isUserExist) {
@@ -16,7 +15,9 @@ export function addBucket1st({ pos, user, setBuckets1st }: IAddBucket) {
 				...prevBuckets,
 				{
 					pos: pos,
-					user: user,
+					userId: bucket.userId,
+					userNickname: bucket.userNickname,
+					userProfileImage: bucket.userProfileImage,
 				},
 			]
 		}
@@ -26,8 +27,12 @@ export function addBucket1st({ pos, user, setBuckets1st }: IAddBucket) {
 	})
 }
 
-
-export const bucket1stPositioning = ({ setBuckets1st, user, radius, maxNum }: IBucketPosition) => {
+export const bucket1stPositioning = ({
+	setBuckets1st,
+	bucket,
+	radius,
+	maxNum,
+}: IBucketPosition) => {
 	let prevBuckets: IBucket[] = []
 	setBuckets1st!((prev) => {
 		prevBuckets = prev
@@ -38,8 +43,9 @@ export const bucket1stPositioning = ({ setBuckets1st, user, radius, maxNum }: IB
 	// const radius = 16.5 // 16.5 | 34.5 | 50
 	const pos = getCircleEdgePos(radius)
 	if (prevBuckets.length === 0) {
-		return addBucket1st({ pos, user, setBuckets1st })
-	} else { // @TODO: 간혹 겹치는 요소 발생 오류 해결하기
+		return addBucket1st({ pos, bucket, setBuckets1st })
+	} else {
+		// @TODO: 간혹 겹치는 요소 발생 오류 해결하기
 		const isInRange = prevBuckets.some((user) => {
 			const interDistance = Math.sqrt(
 				(pos.x - user.pos.x) * (pos.x - user.pos.x) + (pos.y - user.pos.y) * (pos.y - user.pos.y)
@@ -50,11 +56,11 @@ export const bucket1stPositioning = ({ setBuckets1st, user, radius, maxNum }: IB
 			return interDistance > 15
 		})
 		if (isInRange) {
-			return addBucket1st({ pos, user, setBuckets1st })
+			return addBucket1st({ pos, bucket, setBuckets1st })
 		} else {
-			console.log("recursive");
+			console.log('recursive')
 			// 겹치면 다른 값으로 재귀 호출
-			bucket1stPositioning({ setBuckets1st, user, radius, maxNum })
+			bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
 		}
 	}
 }

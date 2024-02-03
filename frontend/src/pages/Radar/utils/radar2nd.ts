@@ -1,13 +1,13 @@
 import { IAddBucket, IBucket, IBucketPosition } from '../types/bucket'
 import { getCircleEdgePos } from './common'
 
-export function addBucket2nd({ pos, user, setBuckets2nd }: IAddBucket) {
+export function addBucket2nd({ pos, bucket, setBuckets2nd }: IAddBucket) {
 	setBuckets2nd!((prevBuckets: IBucket[]) => {
 		// 초과 방지
 		if (prevBuckets.length >= 6) return prevBuckets
 
 		// 이미 존재하는 user인지 확인
-		const isUserExist = prevBuckets.some((bucket) => bucket.user === user)
+		const isUserExist = prevBuckets.some((e) => e.userId === bucket.userId)
 
 		// 존재하지 않으면 추가
 		if (!isUserExist) {
@@ -15,7 +15,9 @@ export function addBucket2nd({ pos, user, setBuckets2nd }: IAddBucket) {
 				...prevBuckets,
 				{
 					pos: pos,
-					user: user,
+					userId: bucket.userId,
+					userNickname: bucket.userNickname,
+					userProfileImage: bucket.userProfileImage,
 				},
 			]
 		}
@@ -25,7 +27,7 @@ export function addBucket2nd({ pos, user, setBuckets2nd }: IAddBucket) {
 	})
 }
 
-export const bucket2ndPositioning = ({ setBuckets2nd, user, radius, maxNum }: IBucketPosition) => {
+export const bucket2ndPositioning = ({ setBuckets2nd, bucket, radius, maxNum }: IBucketPosition) => {
 	let prevBuckets: IBucket[] = []
 	setBuckets2nd!((prev) => {
 		prevBuckets = prev
@@ -36,7 +38,7 @@ export const bucket2ndPositioning = ({ setBuckets2nd, user, radius, maxNum }: IB
 	// const radius = 16.5 // 16.5 | 34.5 | 50
 	const pos = getCircleEdgePos(radius)
 	if (prevBuckets.length === 0) {
-		return addBucket2nd({ pos, user, setBuckets2nd })
+		return addBucket2nd({ pos, bucket, setBuckets2nd })
 	} else {
 		const isInRange = prevBuckets.some((user) => {
 			const interDistance = Math.sqrt(
@@ -47,11 +49,11 @@ export const bucket2ndPositioning = ({ setBuckets2nd, user, radius, maxNum }: IB
 			return interDistance < 13
 		})
 		if (!isInRange) {
-			return addBucket2nd({ pos, user, setBuckets2nd })
+			return addBucket2nd({ pos, bucket, setBuckets2nd })
 		} else {
 			// console.log("recursive");
 			// 겹치면 다른 값으로 재귀 호출
-			bucket2ndPositioning({ setBuckets2nd, user, radius, maxNum })
+			bucket2ndPositioning({ setBuckets2nd, bucket, radius, maxNum })
 		}
 	}
 }

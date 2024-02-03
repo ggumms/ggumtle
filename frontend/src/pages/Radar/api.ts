@@ -13,5 +13,5 @@ export const getRadarUsers = async () => {
 				Authorization: `Bearer ${import.meta.env.VITE_USER1_TOKEN}`,
 			},
 		})
-		.then((response) => response.data)
+		.then((response) => response.data.radar)
 }

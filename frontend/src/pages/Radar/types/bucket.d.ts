@@ -3,13 +3,20 @@ export type BucketPosType = {
 	y: number
 }
 export interface IBucket {
-	user: string
 	pos: BucketPosType
+	userId: string
+	userProfileImage: string
+	userNickname: string
+	isFollowing?: boolean | null
+	bucketId?: number | null
+	bucketTitle?: string | null
+	bucketColor?: string | null
+	bucketAchievement?: boolean | null
 }
 
 export interface IAddBucket {
 	pos: BucketPosType
-	user: string
+	bucket: IBucket
 	setBuckets1st?: (value: React.SetStateAction<IBucket[]>) => void
 	setBuckets2nd?: (value: React.SetStateAction<IBucket[]>) => void
 	setBuckets3rd?: (value: React.SetStateAction<IBucket[]>) => void
@@ -19,7 +26,7 @@ export interface IBucketPosition {
 	setBuckets1st?: (value: React.SetStateAction<IBucket[]>) => void
 	setBuckets2nd?: (value: React.SetStateAction<IBucket[]>) => void
 	setBuckets3rd?: (value: React.SetStateAction<IBucket[]>) => void
-	user: string
+	bucket: IBucket
 	radius: number
 	maxNum: number
 }
