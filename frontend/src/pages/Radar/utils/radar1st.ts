@@ -1,4 +1,4 @@
-import { IAddBucket, IRadarUser, IUserPosition } from '../types/bucket'
+import { IAddBucket, IRadarUser, IUserPosition } from '../types/radarUser'
 import { getCircleEdgePos } from './common'
 
 export function addBucket1st({ pos, user, setUsers1st }: IAddBucket) {
@@ -27,12 +27,7 @@ export function addBucket1st({ pos, user, setUsers1st }: IAddBucket) {
 	})
 }
 
-export const user1stPositioning = ({
-	setUsers1st,
-	user,
-	radius,
-	maxNum,
-}: IUserPosition) => {
+export const user1stPositioning = ({ setUsers1st, user, radius, maxNum }: IUserPosition) => {
 	let prevUsers: IRadarUser[] = []
 	setUsers1st!((prev) => {
 		prevUsers = prev

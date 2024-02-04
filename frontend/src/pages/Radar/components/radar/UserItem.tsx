@@ -1,4 +1,4 @@
-import { IRadarUser } from "../../types/bucket"
+import { IRadarUser } from "../../types/radarUser"
 
 export type UserElemType = 'first' | 'second' | 'third'
 

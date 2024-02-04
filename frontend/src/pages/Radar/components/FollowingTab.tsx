@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import { user1stPositioning } from '../utils/radar1st'
 import { user2ndPositioning } from '../utils/radar2nd'
 import { user3rdPositioning } from '../utils/radar3rd'
-import { IRadarUser } from '../types/bucket'
+import { IRadarUser } from '../types/radarUser'
 
 export interface IUserSimple {
 	userId: number
@@ -39,11 +39,12 @@ const FollowingTab = () => {
 
 	const { sheet, openPreview, closePreview, togglePreview } = useBottomSheet()
 	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
+	const [refresh, setRefresh] = useState<boolean>(false)
 
 	const handleOpenPreview = (userId: number) => {
 		closePreview()
 		openPreview()
-		console.log("userId: ", userId)
+		console.log('userId: ', userId)
 		// @TODO: userId로 user정보 호출 api
 		setUserInfo({
 			userId: 1,
@@ -52,20 +53,29 @@ const FollowingTab = () => {
 		})
 	}
 
+	const refreshRadar = (state: boolean) => {
+		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
+		setUsers1st([])
+		setUsers2nd([])
+		setUsers3rd([])
+		setRefresh(state)
+	}
 	// 첫 번째 레이더 (가장 안쪽)
 	useEffect(() => {
+		console.log('Inside useEffect1 - refresh:', refresh)
 		const radius = 19
 		const maxNum = 3
 		!isLoading &&
 			radar!.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
+						console.log('Calling user1stPositioning')
 						user1stPositioning({ setUsers1st, user, radius, maxNum })
 					},
 					100 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading])
+	}, [isLoading, refresh, radar, setUsers1st, user1stPositioning])
 
 	// 두 번째 레이더
 	useEffect(() => {
@@ -80,7 +90,7 @@ const FollowingTab = () => {
 					100 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading])
+	}, [isLoading, refresh, radar])
 
 	// 세 번째 레이더
 	useEffect(() => {
@@ -95,7 +105,7 @@ const FollowingTab = () => {
 					100 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading])
+	}, [isLoading, refresh, radar])
 
 	return (
 		<div>
@@ -133,7 +143,7 @@ const FollowingTab = () => {
 			</div>
 
 			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
-			<ButtonArea />
+			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
 			<PreviewBottomSheet ref={sheet} userInfo={userInfo} togglePreview={togglePreview} />
 		</div>
 	)

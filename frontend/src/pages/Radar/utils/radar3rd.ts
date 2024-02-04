@@ -1,11 +1,10 @@
-import { IAddBucket, IRadarUser, IUserPosition } from "../types/bucket"
-import { getCircleEdgePos } from "./common"
+import { IAddBucket, IRadarUser, IUserPosition } from '../types/radarUser'
+import { getCircleEdgePos } from './common'
 
 export function addBucket3rd({ pos, user, setUsers3rd }: IAddBucket) {
 	setUsers3rd!((prevUsers: IRadarUser[]) => {
-		
-    // 초과 방지
-		if (prevUsers.length >= 9 ) return prevUsers
+		// 초과 방지
+		if (prevUsers.length >= 9) return prevUsers
 
 		// 이미 존재하는 user인지 확인
 		const isUserExist = prevUsers.some((e) => e.userId === user.userId)
@@ -27,7 +26,6 @@ export function addBucket3rd({ pos, user, setUsers3rd }: IAddBucket) {
 		return prevUsers
 	})
 }
-
 
 export const user3rdPositioning = ({ setUsers3rd, user, radius, maxNum }: IUserPosition) => {
 	let prevUsers: IRadarUser[] = []

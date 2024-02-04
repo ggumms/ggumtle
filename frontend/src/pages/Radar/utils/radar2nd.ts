@@ -1,4 +1,4 @@
-import { IAddBucket, IRadarUser, IUserPosition } from '../types/bucket'
+import { IAddBucket, IRadarUser, IUserPosition } from '../types/radarUser'
 import { getCircleEdgePos } from './common'
 
 export function addBucket2nd({ pos, user, setUsers2nd }: IAddBucket) {
