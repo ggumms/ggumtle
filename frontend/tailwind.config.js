@@ -68,7 +68,7 @@ export default {
 				},
 				fadeIn: {
 					'0%': {
-						opacity: 0.5,
+						opacity: 0.8,
 						transform: 'scale(0.95)'
 					},
 					'70%': {

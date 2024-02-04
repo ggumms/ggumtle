@@ -56,7 +56,6 @@ export interface UserItemProps {
 	type: UserElemType
 	post_id?: string
 	handleOpenPreview: (userid: number) => void
-	// onClick: () => void
 }
 
 const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
@@ -65,7 +64,6 @@ const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
 		left: `${UserElementStyle[type].direction.left + user.pos.x}%`,
 		bottom: `${UserElementStyle[type].direction.bottom + user.pos.y}%`,
 	}
-	// handleOpenPreview
 	return (
 		<div
 			onClick={() => handleOpenPreview(user.userId)}

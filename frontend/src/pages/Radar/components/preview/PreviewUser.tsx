@@ -4,7 +4,6 @@ import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType, UserInfoType } from '../../../../interfaces'
 
 const PreviewUser = ({ userId }: { userId: number }) => {
-	console.log('userId: ', userId)
 	// 더미 데이터 (userId로 api 호출해서 얻어온 유저 정보)
 	const userInfo: UserInfoType = {
 		userId: 1,

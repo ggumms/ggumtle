@@ -42,9 +42,9 @@ const FollowingTab = () => {
 	const [refresh, setRefresh] = useState<boolean>(false)
 
 	const handleOpenPreview = (userId: number) => {
+		console.log("handleOpenPreview")
 		closePreview()
 		openPreview()
-		console.log('userId: ', userId)
 		// @TODO: userId로 user정보 호출 api
 		setUserInfo({
 			userId: 1,
@@ -62,20 +62,18 @@ const FollowingTab = () => {
 	}
 	// 첫 번째 레이더 (가장 안쪽)
 	useEffect(() => {
-		console.log('Inside useEffect1 - refresh:', refresh)
 		const radius = 19
 		const maxNum = 3
 		!isLoading &&
 			radar!.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
-						console.log('Calling user1stPositioning')
 						user1stPositioning({ setUsers1st, user, radius, maxNum })
 					},
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radar, setUsers1st, user1stPositioning])
+	}, [isLoading, refresh, radar])
 
 	// 두 번째 레이더
 	useEffect(() => {
