@@ -6,6 +6,8 @@ export const MAX_Y = window.innerHeight - 100 // 바텀시트가 최소로 내�
 export const PREVIEW_HEIGHT = window.innerHeight - 500 // 바텀시트의 세로 길이
 export const MAX_BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y // 바텀시트의 세로 길이
 
+type BottomSheetStateType = 'close' | 'preview' | 'maxup'
+
 interface BottomSheetMetrics {
 	sheetState: BottomSheetStateType
 	touchStart: {
@@ -19,13 +21,11 @@ interface BottomSheetMetrics {
 	isContentAreaTouched: boolean
 }
 
-type BottomSheetStateType = 'close' | 'preview' | 'maxup'
 
 export default function useBottomSheet() {
 	const sheet = useRef<HTMLDivElement>(null)
 	const content = useRef<HTMLDivElement>(null)
 	const [toggle, setToggle] = useState(false)
-	const [sheetState, setSheetState] = useState<BottomSheetStateType>('close')
 
 	const metrics = useRef<BottomSheetMetrics>({
 		sheetState: 'close',
