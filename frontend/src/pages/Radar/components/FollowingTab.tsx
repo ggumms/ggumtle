@@ -43,7 +43,6 @@ const FollowingTab = () => {
 
 	const handleOpenPreview = (userId: number) => {
 		console.log("handleOpenPreview")
-		closePreview()
 		openPreview()
 		// @TODO: userId로 user정보 호출 api
 		setUserInfo({

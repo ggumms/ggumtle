@@ -7,7 +7,7 @@ export const PREVIEW_HEIGHT = window.innerHeight - 500 // 바텀시트의 세로
 export const MAX_BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y // 바텀시트의 세로 길이
 
 interface BottomSheetMetrics {
-	sheetState: 'close' | 'preview' | 'maxup'
+	sheetState: BottomSheetStateType
 	touchStart: {
 		sheetY: number
 		touchY: number
@@ -19,13 +19,13 @@ interface BottomSheetMetrics {
 	isContentAreaTouched: boolean
 }
 
-// type BottomSheetStateType =
+type BottomSheetStateType = 'close' | 'preview' | 'maxup'
 
 export default function useBottomSheet() {
 	const sheet = useRef<HTMLDivElement>(null)
 	const content = useRef<HTMLDivElement>(null)
 	const [toggle, setToggle] = useState(false)
-	// const [sheetState, setSheetState] = useState<BottomSheetStateType>('close')
+	const [sheetState, setSheetState] = useState<BottomSheetStateType>('close')
 
 	const metrics = useRef<BottomSheetMetrics>({
 		sheetState: 'close',
@@ -41,20 +41,16 @@ export default function useBottomSheet() {
 	})
 
 	const openPreview = () => {
-		console.log('run open Preview', PREVIEW_HEIGHT)
 		if (sheet.current) {
-			console.log('True')
-			// 현재 위치에 따라 이동시키기
-			// sheet.current.style.setProperty('transform', 'translateY(500px)')
-			setToggle(true)
+			sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
+			setToggle(true);
 		}
 	}
 
 	const closePreview = () => {
-		console.log('closeToggle', toggle)
 		if (sheet.current) {
-			sheet.current.style.setProperty('transform', 'translateY(0)')
-			setToggle(false)
+			sheet.current!.style.setProperty('transform', `translateY(0px)`)
+			setToggle(false);
 		}
 	}
 
@@ -63,13 +59,13 @@ export default function useBottomSheet() {
 	}
 
 	useEffect(() => {
-		// if (sheet.current) {
-		// 	if (toggle) {
-		// 		sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
-		// 	} else {
-		// 		sheet.current!.style.setProperty('transform', 'translateY(0)')
-		// 	}
-		// }
+		if (sheet.current) {
+			if (toggle) {
+				sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
+			} else {
+				sheet.current!.style.setProperty('transform', 'translateY(0)')
+			}
+		}
 	}, [toggle])
 
 	useEffect(() => {
@@ -145,10 +141,8 @@ export default function useBottomSheet() {
 
 			if (sheet.current) {
 				if (currentSheetY !== MIN_Y) {
-					console.log('현재 바텀시트 위치는 ', metrics.current.touchStart.sheetY)
-					if (metrics.current.touchStart.sheetY === 550) { // preveiw 상태
-					// if (metrics.current.touchStart.sheetY ) {
-						// 2단 (1단은 이미 열린 상태)
+					// sheetState: preveiw 상태
+					if (metrics.current.touchStart.sheetY === 550) {
 						if (touchMove.movingDirection === 'down') {
 							sheet.current!.style.setProperty('transform', 'translateY(0)')
 							metrics.current.sheetState = 'close'
@@ -161,11 +155,11 @@ export default function useBottomSheet() {
 							console.log('end - preview - up', metrics.current.sheetState)
 						}
 					}
-					if (metrics.current.touchStart.sheetY > 600) { // close 상태
+					// sheetState: close 상태
+					if (metrics.current.touchStart.sheetY > 600) {
 						// 1단 (초기 상태)
 						if (touchMove.movingDirection === 'down') {
 							sheet.current!.style.setProperty('transform', 'translateY(20)')
-							metrics.current.sheetState = 'close'
 							console.log('end - close - down', metrics.current.sheetState)
 						}
 
@@ -175,17 +169,17 @@ export default function useBottomSheet() {
 							console.log('end - close - up', metrics.current.sheetState)
 						}
 					}
-					if (metrics.current.touchStart.sheetY === 0) { // maxup 상태
+					// sheetState: maxup 상태
+					if (metrics.current.touchStart.sheetY === 0) {
 						// 1단 (초기 상태)
 						if (touchMove.movingDirection === 'down') {
 							sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
-							metrics.current.sheetState = 'close'
+							metrics.current.sheetState = 'preview'
 							console.log('maxup to down', metrics.current.sheetState)
 						}
 
 						if (touchMove.movingDirection === 'up') {
 							sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
-							metrics.current.sheetState = 'preview'
 							console.log('maxup to up', metrics.current.sheetState)
 						}
 					}
