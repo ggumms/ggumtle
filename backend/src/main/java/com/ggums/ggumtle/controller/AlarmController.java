@@ -51,7 +51,7 @@ public class AlarmController {
     }
 
     @GetMapping("/")
-    public Response alarm(@AuthenticationPrincipal User user, @RequestParam Pageable pageable){
+    public Response alarm(@AuthenticationPrincipal User user, Pageable pageable){
         return new Response("alarm", alarmService.alarmList(user, pageable));
     }
 
