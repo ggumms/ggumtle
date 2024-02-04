@@ -89,7 +89,7 @@ public class AlarmHandler {
      * @param bucket alarmed bucket
      */
     public void createBucketAlarm(User receiver, User sender, AlarmType type, Bucket bucket){
-        if (!receiver.getAlarm() || bucket.getIsPrivate()) {
+        if (!receiver.getAlarm()) {
             return;
         }
         Alarm alarm = Alarm.builder()
@@ -112,7 +112,7 @@ public class AlarmHandler {
      * @param review alarmed review
      */
     public void createReviewAlarm(User receiver, User sender, AlarmType type, Review review){
-        if (!receiver.getAlarm() || review.getBucket().getIsPrivate()) {
+        if (!receiver.getAlarm()) {
             return;
         }
         Alarm alarm = Alarm.builder()
