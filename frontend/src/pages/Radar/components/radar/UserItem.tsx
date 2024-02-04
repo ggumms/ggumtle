@@ -74,7 +74,7 @@ const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
 		>
 			{/* @TODO: api 통신할 때에는 img 태그로 변경 후 실제 데이터 삽입하기
       <img src="" alt="" /> */}
-			<div className={`bg-green rounded-full ${UserElementStyle[type].style.size}`}></div>
+			<div className={`bg-green animate-fadeIn rounded-full ${UserElementStyle[type].style.size}`}></div>
 			<span className={`font-semibold ${UserElementStyle[type].style.text}`}>{user.userNickname}</span>
 		</div>
 	)
