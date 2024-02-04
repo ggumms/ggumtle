@@ -72,7 +72,7 @@ const FollowingTab = () => {
 						console.log('Calling user1stPositioning')
 						user1stPositioning({ setUsers1st, user, radius, maxNum })
 					},
-					100 * index + 100 * Math.random()
+					200 * index + 100 * Math.random()
 				)
 			})
 	}, [isLoading, refresh, radar, setUsers1st, user1stPositioning])
@@ -87,7 +87,7 @@ const FollowingTab = () => {
 					() => {
 						user2ndPositioning({ setUsers2nd, user, radius, maxNum })
 					},
-					100 * index + 100 * Math.random()
+					200 * index + 100 * Math.random()
 				)
 			})
 	}, [isLoading, refresh, radar])
@@ -102,7 +102,7 @@ const FollowingTab = () => {
 					() => {
 						user3rdPositioning({ setUsers3rd, user, radius, maxNum })
 					},
-					100 * index + 100 * Math.random()
+					200 * index + 100 * Math.random()
 				)
 			})
 	}, [isLoading, refresh, radar])
