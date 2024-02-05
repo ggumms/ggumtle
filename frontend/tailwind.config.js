@@ -35,6 +35,23 @@ export default {
 			},
 			colors: colorPalette,
 			keyframes: {
+				// radar: {
+				// 	'0%, 100%': {
+				// 		borderColor: '#FF98B7',
+				// 	},
+				// 	'20%': {
+				// 		borderColor: '#F7B578',
+				// 	},
+				// 	'40%': {
+				// 		borderColor: '#8DC788',
+				// 	},
+				// 	'60%': {
+				// 		borderColor: '#A4BCF6',
+				// 	},
+				// 	'80%': {
+				// 		borderColor: '#C39DF9',
+				// 	},
+				// },
 				radar: {
 					from: {
 						borderColor: '#c6c6c661',
@@ -55,6 +72,20 @@ export default {
 					'0%': { left: '100%', transform: 'translate(-100%, -50%)' },
 					'100%': { left: '50%', transform: 'translate(-50%, -50%)' },
 				},
+				fadeIn: {
+					'0%': {
+						opacity: 0.8,
+						transform: 'scale(0.95)'
+					},
+					'70%': {
+						opacity: 1,
+						transform: 'scale(1.1)'
+					},
+					'100%': {
+						opacity: 1,
+						transform: 'scale(1)'
+					}
+				},
 			},
 		},
 		// animation: slideLeft 2s ease-in-out infinite;
@@ -64,6 +95,7 @@ export default {
 			radar3: '1.5s linear 3s infinite alternate radar',
 			floating: '2.5s infinite ease-in-out floating',
 			sliceIn: '2s ease-in-out infinite',
+			fadeIn: '0.3s ease-in-out fadeIn',
 		},
 	},
 	plugins: [],

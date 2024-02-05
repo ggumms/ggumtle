@@ -1,97 +1,146 @@
 import { useEffect, useState } from 'react'
-import { bucketPositioning } from '../utils'
-import UserItem from './UserItem'
-import { IBucket } from '../types/bucket'
+import UserItem from './radar/UserItem'
+import ButtonArea from './ButtonArea'
+import PreviewBottomSheet from './preview/PreviewBottomSheet'
+import Radar from './radar/Radar'
+import { ProfileAvatar } from '../../../assets/svgs'
+import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
+import { getRadarUsers } from '../api'
+import { useQuery } from '@tanstack/react-query'
+import { user1stPositioning } from '../utils/radar1st'
+import { user2ndPositioning } from '../utils/radar2nd'
+import { user3rdPositioning } from '../utils/radar3rd'
+import { IRadarUser } from '../types/radarUser'
 
-// 더미 데이터
-const users1 = ['a', 'b', 'c', 'd', 'e', 'f']
-const users2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
-const users3 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'o', 'p', 'q']
+export interface IUserSimple {
+	userId: number
+	userProfileImage: string
+	userNickname: string
+}
 
-// 버킷들을 띄울 div 스타일 지정
-
-// @TODO: 추후 tailwind 코드로 수정하기 (translate 속성 유의)
-const bucketArea: {
-	position: 'absolute'
-	top: string
-	left: string
-	transform: string
-	width: string
-	aspectRatio: string
-} = {
-	position: 'absolute',
-	top: 'calc(50% - 20px)',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: '110%',
-	aspectRatio: '1 / 1',
+interface IRadarUserList {
+	circle1: IRadarUser[]
+	circle2: IRadarUser[]
+	circle3: IRadarUser[]
+	refresh: boolean
 }
 
 // @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
+// @TODO: 리렌더링 횟수 줄이기
 const FollowingTab = () => {
-	const [buckets, setBuckets] = useState<IBucket[]>([])
-
-	// @TODO: 추후 실제 데이터로 api 통신 시에 데이터 형식에 따라 코드 대폭 수정 예정
-	useEffect(() => {
-		console.log(buckets)
-		const radius = 16.5
-		const maxNum = 5
-		users1.forEach((user, index) => {
-			setTimeout(
-				() => {
-					bucketPositioning({ setBuckets, user, radius, maxNum })
-				},
-				100 * index + 50 * Math.random()
-			)
-		})
-	}, [])
-	useEffect(() => {
-		console.log(buckets)
-		const radius = 34
-		const maxNum = 10
-		users2.forEach((user, index) => {
-			setTimeout(
-				() => {
-					bucketPositioning({ setBuckets, user, radius, maxNum })
-				},
-				100 * index + 50 * Math.random()
-			)
-		})
-	}, [])
-	useEffect(() => {
-		console.log(buckets)
-		const radius = 50
-		const maxNum = 13
-		users3.forEach((user, index) => {
-			setTimeout(
-				() => {
-					bucketPositioning({ setBuckets, user, radius, maxNum })
-				},
-				100 * index + 50 * Math.random()
-			)
-		})
+	const { isLoading, data: radar } = useQuery<IRadarUserList>({
+		queryKey: ['radarUser'],
+		queryFn: getRadarUsers,
 	})
 
+	const [users1st, setUsers1st] = useState<IRadarUser[]>([])
+	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
+	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
+
+	const { sheet, content, openPreview, isMaxup, togglePreview } = useBottomSheet()
+	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
+	const [refresh, setRefresh] = useState<boolean>(false)
+
+	const handleOpenPreview = (userId: number) => {
+		openPreview()
+		// @TODO: userId로 user정보 호출 api
+		setUserInfo({
+			userId: 1,
+			userProfileImage: 'url',
+			userNickname: 'usung',
+		})
+	}
+
+	const refreshRadar = (state: boolean) => {
+		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
+		setUsers1st([])
+		setUsers2nd([])
+		setUsers3rd([])
+		setRefresh(state)
+	}
+	// 첫 번째 레이더 (가장 안쪽)
+	useEffect(() => {
+		const radius = 19
+		const maxNum = 3
+		!isLoading &&
+			radar!.circle1.forEach((user, index) => {
+				setTimeout(
+					() => {
+						user1stPositioning({ setUsers1st, user, radius, maxNum })
+					},
+					200 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading, refresh, radar])
+
+	// 두 번째 레이더
+	useEffect(() => {
+		const radius = 34
+		const maxNum = 6
+		!isLoading &&
+			radar!.circle2.forEach((user, index) => {
+				setTimeout(
+					() => {
+						user2ndPositioning({ setUsers2nd, user, radius, maxNum })
+					},
+					200 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading, refresh, radar])
+
+	// 세 번째 레이더
+	useEffect(() => {
+		const radius = 50
+		const maxNum = 9
+		!isLoading &&
+			radar!.circle3.forEach((user, index) => {
+				setTimeout(
+					() => {
+						user3rdPositioning({ setUsers3rd, user, radius, maxNum })
+					},
+					200 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading, refresh, radar])
+
 	return (
-		<div className="w-screen h-[calc(100vh-5rem)] flex justify-center items-center">
-			<div className="w-[110%] mt-10 animate-radar3 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center">
-				<div className="w-2/3 animate-radar2 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center">
-					<div className="w-1/2 animate-radar1 border border-[#c6c6c661] aspect-square rounded-full flex absolute items-center justify-center"></div>
+		<div>
+			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
+				<Radar>
+					<ProfileAvatar className="h-14 w-14" />
+				</Radar>
+
+				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
+					{users1st.map((user) => (
+						<UserItem
+							key={user.userId}
+							user={user}
+							type="first"
+							handleOpenPreview={handleOpenPreview}
+						/>
+					))}
+					{users2nd.map((user) => (
+						<UserItem
+							key={user.userId}
+							user={user}
+							type="second"
+							handleOpenPreview={handleOpenPreview}
+						/>
+					))}
+					{users3rd.map((user) => (
+						<UserItem
+							key={user.userId}
+							user={user}
+							type="third"
+							handleOpenPreview={handleOpenPreview}
+						/>
+					))}
 				</div>
 			</div>
 
-			<div className="mt-10" style={bucketArea}>
-				{buckets.map((item, index) => (
-					// @TODO: 레이더 라인별 UserItem 크기 조절
-					<UserItem
-						// key값 변경
-						key={index}
-						pos={item.pos}
-						// item={item.}
-						// onClick={() => navigate(`detail/${item.post_id}`)}
-					/>
-				))}
-			</div>
+			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
+			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
+			<PreviewBottomSheet userInfo={userInfo} togglePreview={togglePreview} isMaxup={isMaxup} sheet={sheet} content={content} />
 		</div>
 	)
 }
