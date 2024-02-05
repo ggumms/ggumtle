@@ -32,6 +32,10 @@ public class Timeline {
     @JoinColumn(name = "review_id")
     private Review review;
 
+    private Boolean isAchieved;
+
+    private Boolean isPrivate;
+
     @Column(nullable = false)
     private LocalDateTime createdDate;
 }

@@ -1,6 +1,5 @@
 package com.ggums.ggumtle.service;
 
-import com.ggums.ggumtle.dto.response.AlarmResponseDto;
 import com.ggums.ggumtle.dto.response.model.TimelineDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.CommentBucketRepository;
@@ -27,9 +26,9 @@ public class TimelineService {
     private final CommentBucketRepository commentBucketRepository;
     private final CommentReviewRepository commentReviewRepository;
 
-    public Page<TimelineDto> get(User user, Boolean doing, Boolean done, Boolean review, Pageable pageable) {
+    public Page<TimelineDto> get(User user, Long userId, Boolean doing, Boolean done, Boolean review, Pageable pageable) {
 
-        Page<Timeline> timelines = timelineRepository.get(user.getId(), doing, done, review, pageable);
+        Page<Timeline> timelines = timelineRepository.get(user.getId(), userId, doing, done, review, pageable);
         return timelines.map(this::convertToTimelineDto);
     }
 
@@ -54,7 +53,7 @@ public class TimelineService {
                     .title(bucket.getTitle())
                     .day(bucket.getAchievementDate() == null ?
                             ChronoUnit.DAYS.between(bucket.getCreatedDate(), LocalDateTime.now()) :
-                            ChronoUnit.DAYS.between(bucket.getCreatedDate(), bucket.getAchievementDate()))
+                            ChronoUnit.DAYS.between(bucket.getCreatedDate(), bucket.getAchievementDate().atStartOfDay()))
                     .color(bucket.getColor())
                     .images(images)
                     .categories(categories)
@@ -65,9 +64,8 @@ public class TimelineService {
         } else {
             List<String> images = new ArrayList<>();
             List<String> categories = new ArrayList<>();
+            bucket = review.getBucket();
 
-            // TODO : 리뷰는 사진이 없었나요? To. 인화
-            
             for (Interest interest : bucket.getBucketInterest()) {
                 categories.add(interest.getName());
             }
@@ -78,7 +76,7 @@ public class TimelineService {
                     .isAchieved(bucket.getAchievementDate() != null)
                     .title(review.getTitle())
                     .context(review.getContext())
-                    .day(ChronoUnit.DAYS.between(bucket.getCreatedDate(), bucket.getAchievementDate()))
+                    .day(ChronoUnit.DAYS.between(bucket.getCreatedDate(), bucket.getAchievementDate().atStartOfDay()))
                     .color(bucket.getColor())
                     .images(images)
                     .categories(categories)
