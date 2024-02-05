@@ -35,6 +35,9 @@ public class User extends BaseTime implements UserDetails {
 
     private LocalDate birthDate;
 
+    @Builder.Default
+    private Boolean alarm = true;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 

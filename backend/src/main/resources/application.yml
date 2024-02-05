@@ -7,14 +7,10 @@ spring:
     level:
       root: INFO
       web: DEBUG
-      com:
-        ggums:
-          ggumtle: DEBUG
+      com.ggums.ggumtle: DEBUG
       org.springframework.security: DEBUG
       org.springframework.web.cors: DEBUG
-      org:
-        hibernate:
-          sql: debug
+      org.hibernate.sql: DEBUG
 
 #          # "?"로 표시되던 파라미터 값이 무엇인지 알 수 있습니다. - inhwa
 #          type:
@@ -35,7 +31,6 @@ spring:
       ddl-auto: 
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
         default_batch_fetch_size: 1000
         format_sql: true
 #        show_sql: true  # DB로 날리는 쿼리를 출력합니다. - inhwa
@@ -58,6 +53,7 @@ spring:
       port: 6379
       host: localhost
       address: redis://127.0.0.1:6379
+      password: 1234
 
   # Java Mail Sender Setting
   mail:
@@ -89,5 +85,5 @@ springdoc:
     operations-sorter: alpha
     info:
       title: GGUMTLE API Server
-      description: NineToFive API Server
+      description: GGUMTLE GGUMTLE
       version: 0.0.1
