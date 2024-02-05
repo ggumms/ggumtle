@@ -6,6 +6,7 @@ import { PosType } from '../types/radarUser'
 import { useQuery } from '@tanstack/react-query'
 import { getRadarBuckets } from '../api'
 import { bucket1stPositioning } from '../utils/total/radar1st'
+import ButtonArea from './ButtonArea'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -28,8 +29,6 @@ const AllTab = () => {
 		queryKey: ['categories', ...categories],
 		queryFn: getRadarBuckets,
 	})
-
-	console.log('get', radar)
 
 	const [buckets1st, setBuckets1st] = useState<IRadarBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
@@ -95,36 +94,46 @@ const AllTab = () => {
 	}, [isLoading, refresh, radar])
 
 	return (
-		<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
-			<Radar>
-				<ProfileAvatar className="h-14 w-14" />
-			</Radar>
-			<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
-				{buckets1st.map((bucket) => (
-					<BucketItem
-						key={bucket.bucketId}
-						bucket={bucket}
-						type="first"
-						handleOpenPreview={handleOpenPreview}
-					/>
-				))}
-				{buckets2nd.map((bucket) => (
-					<BucketItem
-						key={bucket.bucketId}
-						bucket={bucket}
-						type="second"
-						handleOpenPreview={handleOpenPreview}
-					/>
-				))}
-				{buckets3rd.map((bucket) => (
-					<BucketItem
-						key={bucket.bucketId}
-						bucket={bucket}
-						type="third"
-						handleOpenPreview={handleOpenPreview}
-					/>
-				))}
+		<div>
+			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
+				<Radar>
+					<ProfileAvatar className="h-14 w-14" />
+				</Radar>
+				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
+					{buckets1st.map((bucket) => (
+						<BucketItem
+							key={bucket.bucketId}
+							bucket={bucket}
+							type="first"
+							handleOpenPreview={handleOpenPreview}
+						/>
+					))}
+					{buckets2nd.map((bucket) => (
+						<BucketItem
+							key={bucket.bucketId}
+							bucket={bucket}
+							type="second"
+							handleOpenPreview={handleOpenPreview}
+						/>
+					))}
+					{buckets3rd.map((bucket) => (
+						<BucketItem
+							key={bucket.bucketId}
+							bucket={bucket}
+							type="third"
+							handleOpenPreview={handleOpenPreview}
+						/>
+					))}
+				</div>
 			</div>
+			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
+			{/* <PreviewBottomSheet
+				userInfo={userInfo}
+				togglePreview={togglePreview}
+				isMaxup={isMaxup}
+				sheet={sheet}
+				content={content}
+			/> */}
 		</div>
 	)
 }
