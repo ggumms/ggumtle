@@ -14,7 +14,7 @@ export interface IRadarUser {
 	bucketAchievement?: boolean | null
 }
 
-export interface IAddBucket {
+export interface IAddUser {
 	pos: PosType
 	user: IRadarUser
 	setUsers1st?: (value: React.SetStateAction<IRadarUser[]>) => void

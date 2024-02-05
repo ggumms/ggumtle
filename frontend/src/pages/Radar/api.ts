@@ -15,3 +15,16 @@ export const getRadarUsers = async () => {
 		})
 		.then((response) => response.data.radar)
 }
+
+// @TODO: 카테고리 파라미터 추가하기
+export const getRadarBuckets = async () => {
+  return instance
+		.get('radar/total', {
+			headers: {
+        Accept: "application/json;charset=UTF-8",
+				Authorization: `Bearer ${import.meta.env.VITE_USER1_TOKEN}`,
+			},
+		})
+		.then((response) => response.data.radar)
+}
+

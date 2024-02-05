@@ -7,9 +7,9 @@ import { ProfileAvatar } from '../../../assets/svgs'
 import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
 import { getRadarUsers } from '../api'
 import { useQuery } from '@tanstack/react-query'
-import { user1stPositioning } from '../utils/radar1st'
-import { user2ndPositioning } from '../utils/radar2nd'
-import { user3rdPositioning } from '../utils/radar3rd'
+import { user1stPositioning } from '../utils/user/radar1st'
+import { user2ndPositioning } from '../utils/user/radar2nd'
+import { user3rdPositioning } from '../utils/user/radar3rd'
 import { IRadarUser } from '../types/radarUser'
 
 export interface IUserSimple {
@@ -140,7 +140,13 @@ const FollowingTab = () => {
 
 			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
-			<PreviewBottomSheet userInfo={userInfo} togglePreview={togglePreview} isMaxup={isMaxup} sheet={sheet} content={content} />
+			<PreviewBottomSheet
+				userInfo={userInfo}
+				togglePreview={togglePreview}
+				isMaxup={isMaxup}
+				sheet={sheet}
+				content={content}
+			/>
 		</div>
 	)
 }

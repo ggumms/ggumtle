@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ProfileAvatar } from '../../../assets/svgs'
 import Radar from './radar/Radar'
 import BucketItem from './radar/BucketItem'
 import { PosType } from '../types/radarUser'
+import { useQuery } from '@tanstack/react-query'
+import { getRadarBuckets } from '../api'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -20,6 +22,11 @@ interface IRadarBucketList {
 }
 
 const AllTab = () => {
+	const { isLoading, data: radar } = useQuery<IRadarBucketList>({
+		queryKey: ['radarBucket'],
+		queryFn: getRadarBuckets,
+	})
+
 	const [buckets1st, setBuckets1st] = useState<IRadarBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])
@@ -27,6 +34,22 @@ const AllTab = () => {
 	const handleOpenPreview = (bucketId: number) => {
 		console.log(bucketId)
 	}
+
+	// 첫 번째 레이더 (가장 안쪽)
+	useEffect(() => {
+		const radius = 19
+		const maxNum = 3
+		!isLoading &&
+			radar!.circle1.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+					},
+					200 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading, refresh, radar])
+
 	return (
 		<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 			<Radar>

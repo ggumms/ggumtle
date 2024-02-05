@@ -2,10 +2,10 @@ import { IRadarBucket } from '../../components/AllTab'
 import { IAddBucket, IBucketPosition } from '../../types/radarBucket'
 import { getCircleEdgePos } from '../common'
 
-export function addBucket1st({ pos, bucket, setBuckets1st }: IAddBucket) {
-	setBuckets1st!((prevBuckets: IRadarBucket[]) => {
+export function addBucket2nd({ pos, bucket, setBuckets2nd }: IAddBucket) {
+	setBuckets2nd!((prevBuckets: IRadarBucket[]) => {
 		// 초과 방지
-		if (prevBuckets.length >= 3) return prevBuckets
+		if (prevBuckets.length >= 6) return prevBuckets
 
 		// 이미 존재하는 bucket인지 확인
 		const isBucketExist = prevBuckets.some((e) => e.bucketId === bucket.bucketId)
@@ -29,23 +29,23 @@ export function addBucket1st({ pos, bucket, setBuckets1st }: IAddBucket) {
 	})
 }
 
-export const bucket1stPositioning = ({
-	setBuckets1st,
+export const bucket2ndPositioning = ({
+	setBuckets2nd,
 	bucket,
 	radius,
 	maxNum,
 }: IBucketPosition) => {
 	let prevBuckets: IRadarBucket[] = []
-	setBuckets1st!((prev) => {
+	setBuckets2nd!((prev) => {
 		prevBuckets = prev
 		return prev
 	})
 
-	if (prevBuckets.length >= 3) return
+	if (prevBuckets.length >= 6) return
 	// const radius = 16.5 // 16.5 | 34.5 | 50
 	const pos = getCircleEdgePos(radius)
 	if (prevBuckets.length === 0) {
-		return addBucket1st({ pos, bucket, setBuckets1st })
+		return addBucket2nd({ pos, bucket, setBuckets2nd })
 	} else {
 		// @TODO: 간혹 겹치는 요소 발생 오류 해결하기
 		const isInRange = prevBuckets.some((bucket) => {
@@ -55,13 +55,13 @@ export const bucket1stPositioning = ({
 			)
 
 			// 거리가 13 미만이면
-			return interDistance > 15
+			return interDistance > 13
 		})
 		if (isInRange) {
-			return addBucket1st({ pos, bucket, setBuckets1st })
+			return addBucket2nd({ pos, bucket, setBuckets2nd })
 		} else {
 			// 겹치면 다른 값으로 재귀 호출
-			bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+			bucket2ndPositioning({ setBuckets2nd, bucket, radius, maxNum })
 		}
 	}
 }
