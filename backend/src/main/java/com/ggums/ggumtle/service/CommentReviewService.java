@@ -6,6 +6,7 @@ import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
+import com.ggums.ggumtle.dto.response.model.CommentListDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.CommentReviewLikeRepository;
@@ -66,7 +67,7 @@ public class CommentReviewService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CommentResponseDto> commentList(User user, long reviewId, Pageable pageable) {
+    public CommentResponseDto commentList(User user, long reviewId, Pageable pageable) {
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
@@ -77,10 +78,10 @@ public class CommentReviewService {
         }
 
         Page<CommentReview> comments = commentReviewRepository.findByReview(review, pageable);
-        return comments.map(this::convertToCommentResponseDto);
+        return CommentResponseDto.builder().commentList(comments.map(this::convertToCommentResponseDto)).build();
     }
 
-    private CommentResponseDto convertToCommentResponseDto(CommentReview item) {
+    private CommentListDto convertToCommentResponseDto(CommentReview item) {
 
         User writer = item.getUser();
 
@@ -130,7 +131,7 @@ public class CommentReviewService {
             time = ChronoUnit.MINUTES.between(item.getCreatedDate(), LocalDateTime.now());
         }
 
-        return CommentResponseDto.builder()
+        return CommentListDto.builder()
                 .id(item.getId())
                 .context(item.getContext())
                 .writer(writerDto)
