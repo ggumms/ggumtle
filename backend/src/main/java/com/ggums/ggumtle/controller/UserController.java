@@ -95,12 +95,12 @@ public class UserController {
              @ApiResponse(responseCode = "200(삭제)", description = "팔로우 취소 성공",
                      content = @Content(schemaProperties = {
                              @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
-                             @SchemaProperty(name = "message", schema = @Schema(defaultValue = "서준호님이 조인화님을 구독 취소하였습니다.",description = "설정 성공 메세지"))
+                             @SchemaProperty(name = "message", schema = @Schema(defaultValue = "서준호님이 조인화님을 구독 취소하였습니다.",description = "삭제 성공 메세지"))
                      })),
              @ApiResponse(responseCode = "200(생성)", description = "팔로우 성공",
                      content = @Content(schemaProperties = {
                              @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
-                             @SchemaProperty(name = "message", schema = @Schema(defaultValue = "서준호님이 신창엽님을 구독하였습니다.",description = "삭제 성공 메세지"))
+                             @SchemaProperty(name = "message", schema = @Schema(defaultValue = "서준호님이 신창엽님을 구독하였습니다.",description = "설정 성공 메세지"))
                      }))
      })
      public Response followUser(@AuthenticationPrincipal User user, @RequestBody UserFollowRequestDto requestDto){
