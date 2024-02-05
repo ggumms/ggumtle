@@ -23,10 +23,13 @@ interface IRadarBucketList {
 }
 
 const AllTab = () => {
+	const categories: string[] = ['인간관계', '직장']
 	const { isLoading, data: radar } = useQuery<IRadarBucketList>({
-		queryKey: ['radarBucket'],
+		queryKey: ['categories', ...categories],
 		queryFn: getRadarBuckets,
 	})
+
+	console.log('get', radar)
 
 	const [buckets1st, setBuckets1st] = useState<IRadarBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
@@ -60,7 +63,7 @@ const AllTab = () => {
 				)
 			})
 	}, [isLoading, refresh, radar])
-	
+
 	// 두 번째 레이더
 	useEffect(() => {
 		const radius = 34
@@ -75,7 +78,7 @@ const AllTab = () => {
 				)
 			})
 	}, [isLoading, refresh, radar])
-	
+
 	// 세 번째 레이더
 	useEffect(() => {
 		const radius = 50
