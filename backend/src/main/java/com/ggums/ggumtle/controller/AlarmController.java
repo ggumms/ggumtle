@@ -108,4 +108,5 @@ public class AlarmController {
     public Response readAllAlarm(@AuthenticationPrincipal User user){
         return new Response("message", alarmService.readAllAlarm(user));
     }
+
 }
