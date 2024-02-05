@@ -1,10 +1,8 @@
-import { forwardRef } from 'react'
 import PreviewUser from './PreviewUser'
 import { IUserSimple } from '../FollowingTab'
 import { MAX_BOTTOM_SHEET_HEIGHT } from '../../../../hooks/usePreviewBottomSheet'
 import Header from '../../../../components/Header'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
-import { useNavigate } from 'react-router-dom'
 import { icons } from '../../../../constants/header-icons'
 import UserPage from '../../../UserPage'
 
@@ -18,7 +16,6 @@ interface UserInfoProp {
 
 const PreviewBottomSheet = (props: UserInfoProp) => {
 	const { userInfo, togglePreview, isMaxup, sheet, content } = props
-	const navigate = useNavigate()
 	const menu: IMenu = {
 		left: icons.BACK,
 		center: 'juno', // @TODO: 사용자 닉네임 넣기
@@ -33,9 +30,7 @@ const PreviewBottomSheet = (props: UserInfoProp) => {
 	}
 	return (
 		<div
-			// onClick={togglePreview}
 			ref={sheet}
-			// ref={previewRef}
 			style={{ height: `${MAX_BOTTOM_SHEET_HEIGHT}px` }}
 			className={`flex flex-col fixed top-[calc(100%-50px)] left-0 right-0 z-5 rounded-t-2xl shadow-2xl
 		bg-white transition-transform duration-500 ease-out overflow-scroll pb-20`}
@@ -53,7 +48,6 @@ const PreviewBottomSheet = (props: UserInfoProp) => {
 				</div>
 			) : (
 				<div className="px-5 py-2">
-					{/* <div ref={content} className="px-5 py-2"> */}
 					<PreviewUser userId={userInfo?.userId} />
 				</div>
 			)}

@@ -259,5 +259,5 @@ export default function useBottomSheet() {
 	// 	content.current!.addEventListener('touchstart', handleTouchStart)
 	// }, [])
 
-	return { sheet, content, openPreview, closePreview, togglePreview, isMaxup }
+	return { sheet, content, openPreview, togglePreview, isMaxup }
 }

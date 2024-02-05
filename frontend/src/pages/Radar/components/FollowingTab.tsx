@@ -37,7 +37,7 @@ const FollowingTab = () => {
 	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 
-	const { sheet, content, openPreview, closePreview, isMaxup, togglePreview } = useBottomSheet()
+	const { sheet, content, openPreview, isMaxup, togglePreview } = useBottomSheet()
 	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
 	const [refresh, setRefresh] = useState<boolean>(false)
 
@@ -141,7 +141,6 @@ const FollowingTab = () => {
 			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
 			<PreviewBottomSheet userInfo={userInfo} togglePreview={togglePreview} isMaxup={isMaxup} sheet={sheet} content={content} />
-			{/* {isMaxup && <UserPage />} */}
 		</div>
 	)
 }
