@@ -1,6 +1,7 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { getImageDeleteInfo } from './utils'
 
 interface ReactQuillProps {
 	value: string
@@ -13,8 +14,22 @@ const ReactQuillEditor = ({ value, setValue }: ReactQuillProps) => {
 	// ReactQuill 컴포넌트에서 Editor 정보를 받아오기 위해서 해당 ref가 필요
 	// ReactQuill 컴포넌트 타입을 사용
 	const reactQuillRef = useRef<ReactQuill>(null)
+	const [imageUrlList, setImageUrlList] = useState<ImageUrlType[]>([])
 
-	const handleImageUpload = (file: File): ImageUrlType | null => {
+	const editorDeltaInfo = reactQuillRef.current?.lastDeltaChangeSet?.ops
+
+	useEffect(() => {
+		const isImageOrTextDeleted = reactQuillRef.current?.lastDeltaChangeSet?.ops?.filter((item) => {
+			return item['delete'] === 1
+		})
+
+		if (isImageOrTextDeleted) {
+			deleteImage(imageUrlList, value)
+		}
+	}, [editorDeltaInfo])
+
+	// Todo: uploadImage 이름 변경 필요
+	const handleImageUpload = (file: File) => {
 		try {
 			console.log(file)
 			// // image Api로 url 정보 받아오기
@@ -38,12 +53,22 @@ const ReactQuillEditor = ({ value, setValue }: ReactQuillProps) => {
 				editor.setSelection(range.index + 1, 0)
 			}
 
-			return imgUrl
+			setImageUrlList((prev) => [...prev, imgUrl])
 		} catch (error) {
 			console.log(error)
 			return null
 		}
 	}
+	const deleteImage = async (imageUrlList: ImageUrlType[], currentQuillValue: string) => {
+		console.log('이미지 삭제!')
+
+		const { urlToDelete, deletedList } = getImageDeleteInfo(imageUrlList, currentQuillValue)
+
+		// Todo: 이미지 삭제 api로 대체 예정
+		console.log('deletedUrl', urlToDelete)
+		setImageUrlList(deletedList)
+	}
+
 	const imageHandler = () => {
 		const input = document.createElement('input')
 		input.setAttribute('type', 'file')
