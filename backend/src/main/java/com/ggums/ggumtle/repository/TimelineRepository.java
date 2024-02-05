@@ -6,8 +6,12 @@ import com.ggums.ggumtle.entity.Timeline;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface TimelineRepository extends JpaRepository<Timeline, Long>, TimelineCustomRepository {
+
+    Optional<Timeline> findByBucket(Bucket bucket);
     void deleteByBucket(Bucket bucket);
     void deleteByReview(Review review);
 }

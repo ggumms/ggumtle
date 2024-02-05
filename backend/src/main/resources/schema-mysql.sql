@@ -185,6 +185,8 @@ CREATE TABLE timeline
     `type`       ENUM('BUCKET', 'REVIEW'),
     bucket_id    BIGINT,
     review_id    BIGINT,
+    is_achieved   bit,
+    is_private   bit,
     created_date datetime(6) not null,
     primary key (id),
     foreign key (user_id) references `user` (id),

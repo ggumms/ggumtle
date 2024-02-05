@@ -8,5 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface TimelineCustomRepository {
 
     @Transactional(readOnly = true)
-    Page<Timeline> get(Long userId, Boolean doing, Boolean done, Boolean review, Pageable pageable);
+    Page<Timeline> get(Long currentUserId, Long userId, Boolean doing, Boolean done, Boolean review, Pageable pageable);
 }
