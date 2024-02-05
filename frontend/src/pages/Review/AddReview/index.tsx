@@ -7,6 +7,7 @@ import WithHeaderLayout from '../../../components/layout/WithHeaderLayout'
 
 import NavigateButton from '../../../components/NavigateButton'
 import TextEditor from './TextEditor'
+import QuickSaveButton from './QuickSaveButton'
 
 const AddReview = () => {
 	const [title, setTitle] = useState('')
@@ -28,9 +29,7 @@ const AddReview = () => {
 			<ReviewTitle title={title} setTitle={setTitle} />
 			<TextEditor value={reviewText} setValue={setReviewText} />
 			<div className="flex gap-3 pt-12 pb-12">
-				<NavigateButton path="/" isDisable={true}>
-					<p>데모 버튼 1</p>
-				</NavigateButton>
+				<QuickSaveButton />
 				<NavigateButton path="/" isDisable={false}>
 					<p>데모 버튼 2</p>
 				</NavigateButton>
