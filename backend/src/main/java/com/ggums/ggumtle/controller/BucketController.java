@@ -140,7 +140,7 @@ public class BucketController {
     }
 
     @PostMapping("/reaction/")
-    @Operation(summary = "후기 리액션 작성", description = "후기에 리액션을 답니다.")
+    @Operation(summary = "버킷 리액션 작성", description = "버킷에 리액션을 답니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "리액션 작성 성공",
                     content = @Content(schemaProperties = {
