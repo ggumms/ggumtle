@@ -58,4 +58,9 @@ public class UserController {
 //     public Response userStats(@PathVariable("user") Long userId){
 //         return new Response("userStats", userService.getUserStats(userId));
 //     }
+
+    @DeleteMapping
+    public Response deleteUser(@AuthenticationPrincipal User user) {
+         return new Response("message", userService.deleteUser(user));
+    }
 }

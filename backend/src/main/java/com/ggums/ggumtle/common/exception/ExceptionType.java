@@ -30,6 +30,7 @@ public enum ExceptionType {
     INVALID_LOGIN(401, "아이디 또는 비밀번호가 일치하지 않습니다."),
     ACCOUNT_LOCKED(403, "계정이 잠겨있습니다."),
     SELF_SUBSCRIPTION_ATTEMPTED(400, "자기 자신을 구독할 수 없습니다."),
+    ALREADY_WITHDRAWN_USER(409, "이미 탈퇴한 사용자입니다."),
 
     // bucket
     BUCKET_NOT_FOUND(404, "해당 버킷을 찾을 수 없습니다."),
