@@ -33,6 +33,7 @@ export const user1stPositioning = ({ setUsers1st, user, radius, maxNum }: IUserP
 		prevUsers = prev
 		return prev
 	})
+	console.log("first line", prevUsers.length)
 
 	if (prevUsers.length >= 3) return
 	// const radius = 16.5 // 16.5 | 34.5 | 50
@@ -42,6 +43,7 @@ export const user1stPositioning = ({ setUsers1st, user, radius, maxNum }: IUserP
 	} else {
 		// @TODO: 간혹 겹치는 요소 발생 오류 해결하기
 		const isInRange = prevUsers.some((user) => {
+			console.log("is In Range")
 			const interDistance = Math.sqrt(
 				(pos.x - user.pos.x) * (pos.x - user.pos.x) + (pos.y - user.pos.y) * (pos.y - user.pos.y)
 			)

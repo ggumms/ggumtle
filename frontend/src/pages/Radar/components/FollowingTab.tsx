@@ -11,6 +11,7 @@ import { user1stPositioning } from '../utils/radar1st'
 import { user2ndPositioning } from '../utils/radar2nd'
 import { user3rdPositioning } from '../utils/radar3rd'
 import { IRadarUser } from '../types/radarUser'
+import UserPage from '../../UserPage'
 
 export interface IUserSimple {
 	userId: number
@@ -37,12 +38,12 @@ const FollowingTab = () => {
 	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 
-	const { sheet, openPreview, closePreview, togglePreview } = useBottomSheet()
+	const { sheet, metrics, openPreview, closePreview, isMaxup, togglePreview } = useBottomSheet()
 	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
 	const [refresh, setRefresh] = useState<boolean>(false)
 
+
 	const handleOpenPreview = (userId: number) => {
-		console.log("handleOpenPreview")
 		openPreview()
 		// @TODO: userId로 user정보 호출 api
 		setUserInfo({
@@ -141,7 +142,8 @@ const FollowingTab = () => {
 
 			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
-			<PreviewBottomSheet ref={sheet} userInfo={userInfo} togglePreview={togglePreview} />
+			<PreviewBottomSheet ref={sheet} userInfo={userInfo} togglePreview={togglePreview} isMaxup={isMaxup} />
+			{/* {isMaxup && <UserPage />} */}
 		</div>
 	)
 }

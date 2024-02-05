@@ -26,7 +26,12 @@ export default function useBottomSheet() {
 	const sheet = useRef<HTMLDivElement>(null)
 	const content = useRef<HTMLDivElement>(null)
 	const [toggle, setToggle] = useState(false)
+	const [isMaxup, setIsMaxup] = useState<boolean>(false)
 
+	useEffect(() => {
+		console.log("?", isMaxup)
+	}, [isMaxup])
+	
 	const metrics = useRef<BottomSheetMetrics>({
 		sheetState: 'close',
 		touchStart: {
@@ -51,6 +56,7 @@ export default function useBottomSheet() {
 		if (sheet.current) {
 			sheet.current!.style.setProperty('transform', `translateY(0px)`)
 			setToggle(false);
+			setIsMaxup(false)
 		}
 	}
 
@@ -59,6 +65,7 @@ export default function useBottomSheet() {
 	}
 
 	useEffect(() => {
+		
 		if (sheet.current) {
 			if (toggle) {
 				sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
@@ -66,6 +73,8 @@ export default function useBottomSheet() {
 				sheet.current!.style.setProperty('transform', 'translateY(0)')
 			}
 		}
+		setIsMaxup(false)
+
 	}, [toggle])
 
 	useEffect(() => {
@@ -147,12 +156,14 @@ export default function useBottomSheet() {
 							sheet.current!.style.setProperty('transform', 'translateY(0)')
 							metrics.current.sheetState = 'close'
 							console.log('end - preview - down', metrics.current.sheetState)
+							setIsMaxup(false)
 						}
 
 						if (touchMove.movingDirection === 'up') {
 							sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
 							metrics.current.sheetState = 'maxup'
 							console.log('end - preview - up', metrics.current.sheetState)
+							setIsMaxup(true)
 						}
 					}
 					// sheetState: close 상태
@@ -176,6 +187,7 @@ export default function useBottomSheet() {
 							sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
 							metrics.current.sheetState = 'preview'
 							console.log('maxup to down', metrics.current.sheetState)
+							setIsMaxup(false)
 						}
 
 						if (touchMove.movingDirection === 'up') {
@@ -216,5 +228,5 @@ export default function useBottomSheet() {
 	// 	content.current!.addEventListener('touchstart', handleTouchStart)
 	// }, [])
 
-	return { sheet, content, openPreview, closePreview, togglePreview }
+	return { sheet, metrics, content, openPreview, closePreview, togglePreview, isMaxup }
 }
