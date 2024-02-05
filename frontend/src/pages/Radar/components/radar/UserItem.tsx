@@ -1,6 +1,6 @@
 import { IRadarUser } from "../../types/radarUser"
 
-export type UserElemType = 'first' | 'second' | 'third'
+export type RadarElemType = 'first' | 'second' | 'third'
 
 export interface IUserDirection {
 	left: number
@@ -53,8 +53,7 @@ const UserElementStyle: IUserElementStyle = {
 
 export interface UserItemProps {
 	user: IRadarUser
-	type: UserElemType
-	post_id?: string
+	type: RadarElemType
 	handleOpenPreview: (userid: number) => void
 }
 
