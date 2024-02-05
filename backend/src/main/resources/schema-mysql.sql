@@ -33,7 +33,7 @@ create table bucket
 ) engine=InnoDB;
 
 alter table `user` add constraint FKg5k0gvvnf1sijrmcnykg2rqdo
-    foreign key (rep_bucket_id) references bucket (id);
+    foreign key (rep_bucket_id) references bucket (id) ON DELETE SET NULL;
 
 alter table bucket add constraint FKql6bmsmds3jinwe5uvlwx11cs
     foreign key (user_id) references user (id);
@@ -52,7 +52,7 @@ create table bucket_interest
     bucket_id   bigint not null,
     interest_id bigint not null,
     primary key (bucket_id, interest_id),
-    foreign key (bucket_id) references bucket (id),
+    foreign key (bucket_id) references bucket (id) on delete cascade,
     foreign key (interest_id) references interest (id)
 ) engine=InnoDB;
 
@@ -65,7 +65,7 @@ create table bucket_reaction
     reaction  varchar(255),
     primary key (id),
     foreign key (user_id) references `user` (id),
-    foreign key (bucket_id) references bucket (id)
+    foreign key (bucket_id) references bucket (id) on delete cascade
 ) engine=InnoDB;
 
 
@@ -79,7 +79,7 @@ create table comment_bucket
     updated_date datetime(6) not null,
     primary key (id),
     foreign key (user_id) references `user` (id),
-    foreign key (bucket_id) references bucket (id)
+    foreign key (bucket_id) references bucket (id) on delete cascade
 ) engine=InnoDB;
 
 
@@ -90,7 +90,7 @@ create table comment_bucket_like
     comment_id bigint,
     primary key (id),
     foreign key (user_id) references `user` (id),
-    foreign key (comment_id) references comment_bucket (id)
+    foreign key (comment_id) references comment_bucket (id) on delete cascade
 ) engine=InnoDB;
 
 
@@ -103,7 +103,7 @@ create table review
     created_date datetime(6) not null,
     updated_date datetime(6) not null,
     primary key (id),
-    foreign key (bucket_id) references bucket (id)
+    foreign key (bucket_id) references bucket (id) on delete cascade
 ) engine=InnoDB;
 
 
@@ -116,7 +116,7 @@ create table comment_review
     created_date datetime(6) not null,
     updated_date datetime(6) not null,
     primary key (id),
-    foreign key (review_id) references review (id),
+    foreign key (review_id) references review (id) on delete cascade,
     foreign key (user_id) references `user` (id)
 ) engine=InnoDB;
 
@@ -127,7 +127,7 @@ create table comment_review_like
     comment_id bigint,
     user_id    bigint,
     primary key (id),
-    foreign key (comment_id) references comment_review (id),
+    foreign key (comment_id) references comment_review (id) on delete cascade,
     foreign key (user_id) references `user` (id)
 ) engine=InnoDB;
 
@@ -152,7 +152,7 @@ create table review_reaction
     reaction  varchar(255),
     primary key (id),
     foreign key (user_id) references `user` (id),
-    foreign key (review_id) references review (id)
+    foreign key (review_id) references review (id) on delete cascade
 ) engine=InnoDB;
 
 
@@ -173,10 +173,13 @@ CREATE TABLE alarm
     created_date DATETIME(6) NOT NULL,
     data_id      BIGINT,
     receiver_id  BIGINT NOT NULL,
-    sender_id    BIGINT NOT NULL,
+    sender_id    BIGINT,
     context      VARCHAR(1000),
-    type         ENUM('likeCommentBucket', 'remind', 'followBucket', 'follow', 'followBucketAchieve', 'commentBucket', 'join', 'likeCommentReview', 'followReview', 'followCommentReview', 'bucketReaction', 'reviewReaction')
+    `type`       ENUM('likeCommentBucket', 'remind', 'followBucket', 'follow', 'followBucketAchieve', 'commentBucket', 'join', 'likeCommentReview', 'followReview', 'followCommentReview', 'bucketReaction', 'reviewReaction'),
+    foreign key (receiver_id) references `user` (id),
+    foreign key (sender_id) references `user` (id)
 );
+
 
 CREATE TABLE timeline
 (
@@ -185,9 +188,11 @@ CREATE TABLE timeline
     `type`       ENUM('BUCKET', 'REVIEW'),
     bucket_id    BIGINT,
     review_id    BIGINT,
+    is_achieved  bit,
+    is_private   bit,
     created_date datetime(6) not null,
     primary key (id),
     foreign key (user_id) references `user` (id),
-    foreign key (bucket_id) references `bucket` (id),
-    foreign key (review_id) references `review` (id)
+    foreign key (bucket_id) references `bucket` (id) on delete cascade,
+    foreign key (review_id) references `review` (id) on delete cascade
 );
