@@ -27,6 +27,12 @@ export default {
 	content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
 	theme: {
 		extend: {
+			// css 가상 요소를 사용하기 위한 설정 추가
+			content: {
+				pictureImage: 'url("/src/assets/svgs/pictureImage.svg")',
+				calendarImage: 'url("/src/assets/svgs/calendarImage.svg")',
+				clockImage: 'url("/src/assets/svgs/clockImage.svg")',
+			},
 			colors: colorPalette,
 			keyframes: {
 				// radar: {
