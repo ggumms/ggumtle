@@ -12,7 +12,8 @@ const WithHeaderLayout = ({ headerMenu, headerFunc, children }: IWithHeaderLayou
 	return (
 		<div className="flex h-screen pt-16 ">
 			<Header menu={headerMenu} func={headerFunc} />
-			<section className="flex flex-col px-5 grow">{children}</section>
+			{/* 컨텐츠가 많아짐에 따라 width를 넘어가는 문제 해결을 위한 max-width 지정 */}
+			<section className="flex flex-col max-w-full px-5 grow">{children}</section>
 		</div>
 	)
 }

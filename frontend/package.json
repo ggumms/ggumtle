@@ -21,6 +21,7 @@
 		"@tiptap/pm": "^2.2.1",
 		"@tiptap/react": "^2.2.1",
 		"@tiptap/starter-kit": "^2.2.1",
+		"@types/quill": "^2.0.14",
 		"framer-motion": "^10.18.0",
 		"html-react-parser": "^5.1.1",
 		"immer": "^10.0.3",
