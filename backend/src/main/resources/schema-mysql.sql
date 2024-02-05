@@ -173,7 +173,7 @@ CREATE TABLE alarm
     created_date DATETIME(6) NOT NULL,
     data_id      BIGINT,
     receiver_id  BIGINT NOT NULL,
-    sender_id    BIGINT NOT NULL,
+    sender_id    BIGINT,
     context      VARCHAR(1000),
     type         ENUM('likeCommentBucket', 'remind', 'followBucket', 'follow', 'followBucketAchieve', 'commentBucket', 'join', 'likeCommentReview', 'followReview', 'followCommentReview', 'bucketReaction', 'reviewReaction')
 );

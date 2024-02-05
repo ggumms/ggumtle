@@ -39,7 +39,7 @@ public class GetBucketResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Schema(description = "버킷 달성 날짜", example = "2023-01-01", type = "string")
     private LocalDate achievementDate;
-    @ArraySchema(arraySchema = @Schema(description = "후기 카테고리", example = "[\"취업\",\"여행\", \"인간관계\"]"))
+    @ArraySchema(arraySchema = @Schema(description = "버킷 카테고리", example = "[\"취업\",\"여행\", \"인간관계\"]"))
     private List<String> category;
     @Schema(description = "비공개 여부", example = "false")
     private Boolean isPrivate;
