@@ -5,6 +5,7 @@ import BucketItem from './radar/BucketItem'
 import { PosType } from '../types/radarUser'
 import { useQuery } from '@tanstack/react-query'
 import { getRadarBuckets } from '../api'
+import { bucket1stPositioning } from '../utils/total/radar1st'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -31,8 +32,18 @@ const AllTab = () => {
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])
 
+	const [refresh, setRefresh] = useState<boolean>(false)
+
 	const handleOpenPreview = (bucketId: number) => {
 		console.log(bucketId)
+	}
+
+	const refreshRadar = (state: boolean) => {
+		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
+		setBuckets1st([])
+		setBuckets2nd([])
+		setBuckets3rd([])
+		setRefresh(state)
 	}
 
 	// 첫 번째 레이더 (가장 안쪽)
@@ -41,6 +52,36 @@ const AllTab = () => {
 		const maxNum = 3
 		!isLoading &&
 			radar!.circle1.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+					},
+					200 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading, refresh, radar])
+	
+	// 두 번째 레이더
+	useEffect(() => {
+		const radius = 34
+		const maxNum = 6
+		!isLoading &&
+			radar!.circle2.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+					},
+					200 * index + 100 * Math.random()
+				)
+			})
+	}, [isLoading, refresh, radar])
+	
+	// 세 번째 레이더
+	useEffect(() => {
+		const radius = 50
+		const maxNum = 9
+		!isLoading &&
+			radar!.circle3.forEach((bucket, index) => {
 				setTimeout(
 					() => {
 						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
