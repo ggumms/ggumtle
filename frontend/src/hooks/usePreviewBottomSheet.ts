@@ -115,24 +115,6 @@ export default function useBottomSheet() {
 				touchMove.movingDirection = 'up'
 			}
 
-			console.log(content.current)
-			if (content.current) {
-				if (sheet.current) {
-					console.log("isMaxup 사용자페이지 상태")
-					sheet.current.removeEventListener('touchstart', handleTouchStart)
-					sheet.current.removeEventListener('touchmove', handleTouchMove)
-					sheet.current.removeEventListener('touchend', handleTouchEnd)
-				}
-			}
-			
-			if (content.current === null) {
-				if (sheet.current) {
-					console.log("toggle 미리보기상태")
-					sheet.current.addEventListener('touchstart', handleTouchStart)
-					sheet.current.addEventListener('touchmove', handleTouchMove)
-					sheet.current.addEventListener('touchend', handleTouchEnd)
-				}
-			}
 			if (canUserMoveBottomSheet()) {
 				e.preventDefault()
 
