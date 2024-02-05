@@ -28,10 +28,11 @@ const ReactQuillEditor = ({ value, setValue }: ReactQuillProps) => {
 		}
 	}, [editorDeltaInfo])
 
-	// Todo: uploadImage 이름 변경 필요
-	const handleImageUpload = (file: File) => {
+	const uploadImage = (file: File) => {
 		try {
+			// ts 에러 방지를 위한 코드
 			console.log(file)
+
 			// // image Api로 url 정보 받아오기
 			// const res = await imageApi({ img: file })
 			// const imgUrl = res.data.imgUrl
@@ -80,7 +81,7 @@ const ReactQuillEditor = ({ value, setValue }: ReactQuillProps) => {
 			const file = input.files && input.files[0]
 
 			if (file) {
-				handleImageUpload(file)
+				uploadImage(file)
 			}
 		})
 	}
