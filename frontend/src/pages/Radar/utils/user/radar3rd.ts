@@ -1,7 +1,7 @@
-import { IAddBucket, IRadarUser, IUserPosition } from '../types/radarUser'
-import { getCircleEdgePos } from './common'
+import { IAddUser, IRadarUser, IUserPosition } from '../../types/radarUser'
+import { getCircleEdgePos } from '../common'
 
-export function addBucket3rd({ pos, user, setUsers3rd }: IAddBucket) {
+export function addUser3rd({ pos, user, setUsers3rd }: IAddUser) {
 	setUsers3rd!((prevUsers: IRadarUser[]) => {
 		// 초과 방지
 		if (prevUsers.length >= 9) return prevUsers
@@ -38,7 +38,7 @@ export const user3rdPositioning = ({ setUsers3rd, user, radius, maxNum }: IUserP
 	// const radius = 16.5 // 16.5 | 34.5 | 50
 	const pos = getCircleEdgePos(radius)
 	if (prevUsers.length === 0) {
-		return addBucket3rd({ pos, user, setUsers3rd })
+		return addUser3rd({ pos, user, setUsers3rd })
 	} else {
 		const isInRange = prevUsers.some((user) => {
 			const interDistance = Math.sqrt(
@@ -49,7 +49,7 @@ export const user3rdPositioning = ({ setUsers3rd, user, radius, maxNum }: IUserP
 			return interDistance < 13
 		})
 		if (!isInRange) {
-			return addBucket3rd({ pos, user, setUsers3rd })
+			return addUser3rd({ pos, user, setUsers3rd })
 		} else {
 			// console.log("recursive");
 			// 겹치면 다른 값으로 재귀 호출

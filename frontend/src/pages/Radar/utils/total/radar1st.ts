@@ -1,8 +1,7 @@
-import { IAddBucket, IRadarUser, IUserPosition } from '../types/radarUser'
-import { getCircleEdgePos } from './common'
+import { IRadarBucket } from "../../components/AllTab"
 
 export function addBucket1st({ pos, user, setUsers1st }: IAddBucket) {
-	setUsers1st!((prevUsers: IRadarUser[]) => {
+	setUsers1st!((prevUsers: IRadarBucket[]) => {
 		// 초과 방지
 		if (prevUsers.length >= 3) return prevUsers
 
