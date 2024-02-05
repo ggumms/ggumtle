@@ -10,7 +10,7 @@ public class UserListDto {
 
     @Schema(description = "사용자 id", example = "1")
     private Long userId;
-    @Schema(description = "프로필 이미지", example = "(호스트 서버 주소)/image/reviewImage/(이미지명).png")
+    @Schema(description = "프로필 이미지", example = "(호스트 서버 주소)/image/userProfile/(이미지명).png")
     private String userProfileImage;
     @Schema(description = "사용자 별명", example = "서준호")
     private String userNickname;
