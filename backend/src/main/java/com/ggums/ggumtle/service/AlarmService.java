@@ -81,8 +81,8 @@ public class AlarmService {
 
         return AlarmListDto.builder()
                 .alarmId(alarm.getId())
-                .sender(alarm.getSender().getUserNickname())
-                .senderProfileImage(alarm.getSender().getUserProfileImage())
+                .sender(alarm.getSender() != null ? alarm.getSender().getUserNickname() : null)
+                .senderProfileImage(alarm.getSender() != null ? alarm.getSender().getUserProfileImage() : null)
                 .timeUnit(timeUnit)
                 .time(time)
                 .isRead(alarm.getIsRead())

@@ -13,11 +13,7 @@ import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
-import com.ggums.ggumtle.repository.BucketRepository;
-import com.ggums.ggumtle.repository.FollowRepository;
-import com.ggums.ggumtle.repository.CommentReviewRepository;
-import com.ggums.ggumtle.repository.ReviewReactionRepository;
-import com.ggums.ggumtle.repository.ReviewRepository;
+import com.ggums.ggumtle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -45,6 +41,7 @@ public class ReviewService {
     private final BucketRepository bucketRepository;
     private final ReviewReactionRepository reviewReactionRepository;
     private final CommentReviewRepository commentReviewRepository;
+    private final TimelineRepository timelineRepository;
 
     @Value("${spring.web.baseUrl}")
     private String baseUrl;
@@ -74,6 +71,15 @@ public class ReviewService {
                 .build();
 
         Review savedReview = reviewRepository.save(review);
+
+        Timeline timeline = Timeline.builder()
+                .type(TimelineType.REVIEW)
+                .user(user)
+                .review(review)
+                .createdDate(savedReview.getCreatedDate())
+                .build();
+        timelineRepository.save(timeline);
+
         List<Follow> follows = followRepository.findByFollowee(user);
         if(!follows.isEmpty()){
             for (Follow follow : follows) {
@@ -210,6 +216,7 @@ public class ReviewService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
+        timelineRepository.deleteByReview(review);
         reviewRepository.delete(review);
 
         return "삭제를 완료하였습니다.";
@@ -218,6 +225,11 @@ public class ReviewService {
     public String postReviewReaction(User user, Long reviewId, ReviewReactionRequestDto requestDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
+
+        // 후기가 비공개인데 user가 후기의 주인이 아닌 경우 에러
+        if (review.getBucket().getIsPrivate() && !user.getId().equals(review.getBucket().getUser().getId())) {
+            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
 
         String reaction = requestDto.getReaction();
 

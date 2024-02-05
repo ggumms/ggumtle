@@ -25,7 +25,6 @@ public class Alarm {
     private User receiver;
 
     @ManyToOne
-    @NotNull
     @JoinColumn(name = "sender_id")
     private User sender;
 

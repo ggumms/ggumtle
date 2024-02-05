@@ -173,7 +173,21 @@ CREATE TABLE alarm
     created_date DATETIME(6) NOT NULL,
     data_id      BIGINT,
     receiver_id  BIGINT NOT NULL,
-    sender_id    BIGINT NOT NULL,
+    sender_id    BIGINT,
     context      VARCHAR(1000),
     type         ENUM('likeCommentBucket', 'remind', 'followBucket', 'follow', 'followBucketAchieve', 'commentBucket', 'join', 'likeCommentReview', 'followReview', 'followCommentReview', 'bucketReaction', 'reviewReaction')
+);
+
+CREATE TABLE timeline
+(
+    id           BIGINT NOT NULL AUTO_INCREMENT,
+    user_id      BIGINT NOT NULL,
+    `type`       ENUM('BUCKET', 'REVIEW'),
+    bucket_id    BIGINT,
+    review_id    BIGINT,
+    created_date datetime(6) not null,
+    primary key (id),
+    foreign key (user_id) references `user` (id),
+    foreign key (bucket_id) references `bucket` (id),
+    foreign key (review_id) references `review` (id)
 );

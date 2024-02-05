@@ -79,7 +79,7 @@ public class AlarmController {
                             @SchemaProperty(name = "alarm", schema = @Schema(implementation = AlarmResponseDto.class))
                     }))
     })
-    public Response alarm(@AuthenticationPrincipal User user, @RequestParam Pageable pageable){
+    public Response alarm(@AuthenticationPrincipal User user, Pageable pageable){
         return new Response("alarm", alarmService.alarmList(user, pageable));
     }
 

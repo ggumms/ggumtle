@@ -153,6 +153,11 @@ public class CommentReviewService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
+        // 후기가 비공개인데 user가 후기의 주인이 아닌 경우 예외 처리
+        if (comment.getReview().getBucket().getIsPrivate() && !user.getId().equals(comment.getReview().getBucket().getUser().getId())) {
+            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
+
         commentReviewRepository.delete(comment);
 
         // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
@@ -174,6 +179,11 @@ public class CommentReviewService {
         // 요청한 사용자와 댓글 작성자가 다르면 오류 반환
         if (!(comment.getUser().getId().equals(user.getId()))) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
+        // 후기가 비공개인데 user가 후기의 주인이 아닌 경우 예외 처리
+        if (comment.getReview().getBucket().getIsPrivate() && !user.getId().equals(comment.getReview().getBucket().getUser().getId())) {
+            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
         comment.update(requestDto.getContext());

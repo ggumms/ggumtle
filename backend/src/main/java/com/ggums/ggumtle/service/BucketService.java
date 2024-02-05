@@ -40,6 +40,7 @@ public class BucketService {
     private final BucketReactionRepository bucketReactionRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final ReviewRepository reviewRepository;
+    private final TimelineRepository timelineRepository;
 
     public Long postBucket(User user, PostBucketRequestDto requestDto){
         Set<Interest> interests = new HashSet<>();
@@ -72,6 +73,14 @@ public class BucketService {
 
         Bucket savedBucket = bucketRepository.save(bucket);
         bucketAlarm(user, bucket, AlarmType.followBucket);
+
+        Timeline timeline = Timeline.builder()
+                .type(TimelineType.BUCKET)
+                .user(user)
+                .bucket(bucket)
+                .createdDate(requestDto.getCreatedDate().atStartOfDay())
+                .build();
+        timelineRepository.save(timeline);
 
         return savedBucket.getId();
     }
@@ -175,6 +184,8 @@ public class BucketService {
         if (!user.getId().equals(bucket.getUser().getId())) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
+
+        timelineRepository.deleteByBucket(bucket);
 
         bucketRepository.delete(bucket);
 
@@ -287,6 +298,11 @@ public class BucketService {
     public String postBucketReaction(User user, PostBucketReactionRequestDto requestDto) {
         Bucket bucket = bucketRepository.findById(requestDto.getBucketId())
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        // 버킷이 비공개인데 user가 버킷의 주인이 아닌 경우 예외 처리
+        if (bucket.getIsPrivate() && !user.getId().equals(bucket.getUser().getId())) {
+            throw new CustomException(ExceptionType.BUCKET_NOT_VALID);
+        }
 
         Optional<BucketReaction> existingReaction = bucketReactionRepository
                 .findByBucketAndUser(bucket, user);
