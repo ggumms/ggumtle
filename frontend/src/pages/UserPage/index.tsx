@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import ProfileSection from './components/Profile/ProfileSection'
 import FeedSection from './components/Feed/FeedSection'
 
-const UserPage = ({ isForRdar }: { isForRadar: boolean }) => {
+const UserPage = ({ isForRadar }: { isForRadar: boolean }) => {
 	const navigate = useNavigate()
 	const menu: IMenu = {
 		left: icons.BACK,
@@ -19,7 +19,7 @@ const UserPage = ({ isForRdar }: { isForRadar: boolean }) => {
 	}
 	return (
 		<div className="z-30 bg-white">
-			{!isForRdar && <Header menu={menu} func={func} />}
+			{!isForRadar && <Header menu={menu} func={func} />}
 			<div className="mt-10 bg-lightGray">
 				<ProfileSection />
 				<FeedSection />

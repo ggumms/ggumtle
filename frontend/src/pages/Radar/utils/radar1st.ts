@@ -33,7 +33,6 @@ export const user1stPositioning = ({ setUsers1st, user, radius, maxNum }: IUserP
 		prevUsers = prev
 		return prev
 	})
-	console.log("first line", prevUsers.length)
 
 	if (prevUsers.length >= 3) return
 	// const radius = 16.5 // 16.5 | 34.5 | 50
@@ -43,11 +42,9 @@ export const user1stPositioning = ({ setUsers1st, user, radius, maxNum }: IUserP
 	} else {
 		// @TODO: 간혹 겹치는 요소 발생 오류 해결하기
 		const isInRange = prevUsers.some((user) => {
-			console.log("is In Range")
 			const interDistance = Math.sqrt(
 				(pos.x - user.pos.x) * (pos.x - user.pos.x) + (pos.y - user.pos.y) * (pos.y - user.pos.y)
 			)
-			console.log(interDistance)
 
 			// 거리가 13 미만이면
 			return interDistance > 15
@@ -55,7 +52,6 @@ export const user1stPositioning = ({ setUsers1st, user, radius, maxNum }: IUserP
 		if (isInRange) {
 			return addBucket1st({ pos, user, setUsers1st })
 		} else {
-			console.log('recursive')
 			// 겹치면 다른 값으로 재귀 호출
 			user1stPositioning({ setUsers1st, user, radius, maxNum })
 		}

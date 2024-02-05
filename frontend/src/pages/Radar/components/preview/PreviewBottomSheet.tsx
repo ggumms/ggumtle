@@ -12,9 +12,12 @@ interface UserInfoProp {
 	userInfo: IUserSimple | null
 	togglePreview: () => void
 	isMaxup: boolean
+	sheet: React.RefObject<HTMLDivElement>
+	content: React.RefObject<HTMLDivElement>
 }
-const PreviewBottomSheet = forwardRef<HTMLDivElement, UserInfoProp>((props, sheet) => {
-	const { userInfo, togglePreview, isMaxup } = props
+
+const PreviewBottomSheet = (props: UserInfoProp) => {
+	const { userInfo, togglePreview, isMaxup, sheet, content } = props
 	const navigate = useNavigate()
 	const menu: IMenu = {
 		left: icons.BACK,
@@ -24,29 +27,30 @@ const PreviewBottomSheet = forwardRef<HTMLDivElement, UserInfoProp>((props, shee
 
 	const func: IMenuFunc = {
 		left_func: () => {
-			navigate(-1)
-			// setIsMaxup(false)
+			togglePreview()
 		},
 		right_func: undefined,
 	}
 	return (
 		<div
-			onClick={togglePreview}
+			// onClick={togglePreview}
 			ref={sheet}
 			// ref={previewRef}
 			style={{ height: `${MAX_BOTTOM_SHEET_HEIGHT}px` }}
 			className={`flex flex-col fixed top-[calc(100%-50px)] left-0 right-0 z-5 rounded-t-2xl shadow-2xl
-		bg-white transition-transform duration-500 ease-out`}
+		bg-white transition-transform duration-500 ease-out overflow-scroll pb-20`}
 		>
 			{isMaxup ? (
 				<Header menu={menu} func={func} />
 			) : (
-				<div className="h-10 rounded-t-lg relative pt-5 pb-2">
+				<div onClick={togglePreview} className="h-10 rounded-t-lg relative pt-5 pb-2">
 					<div className="w-14 h-[5px] rounded-full bg-unActive m-auto" />
 				</div>
 			)}
 			{isMaxup ? (
-				<UserPage isForRadar={true} />
+				<div ref={content}>
+					<UserPage isForRadar={true} />
+				</div>
 			) : (
 				<div className="px-5 py-2">
 					{/* <div ref={content} className="px-5 py-2"> */}
@@ -55,6 +59,6 @@ const PreviewBottomSheet = forwardRef<HTMLDivElement, UserInfoProp>((props, shee
 			)}
 		</div>
 	)
-})
+}
 
 export default PreviewBottomSheet

@@ -21,17 +21,12 @@ interface BottomSheetMetrics {
 	isContentAreaTouched: boolean
 }
 
-
 export default function useBottomSheet() {
 	const sheet = useRef<HTMLDivElement>(null)
 	const content = useRef<HTMLDivElement>(null)
 	const [toggle, setToggle] = useState(false)
 	const [isMaxup, setIsMaxup] = useState<boolean>(false)
 
-	useEffect(() => {
-		console.log("?", isMaxup)
-	}, [isMaxup])
-	
 	const metrics = useRef<BottomSheetMetrics>({
 		sheetState: 'close',
 		touchStart: {
@@ -48,14 +43,14 @@ export default function useBottomSheet() {
 	const openPreview = () => {
 		if (sheet.current) {
 			sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
-			setToggle(true);
+			setToggle(true)
 		}
 	}
 
 	const closePreview = () => {
 		if (sheet.current) {
 			sheet.current!.style.setProperty('transform', `translateY(0px)`)
-			setToggle(false);
+			setToggle(false)
 			setIsMaxup(false)
 		}
 	}
@@ -65,7 +60,6 @@ export default function useBottomSheet() {
 	}
 
 	useEffect(() => {
-		
 		if (sheet.current) {
 			if (toggle) {
 				sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
@@ -74,7 +68,6 @@ export default function useBottomSheet() {
 			}
 		}
 		setIsMaxup(false)
-
 	}, [toggle])
 
 	useEffect(() => {
@@ -85,13 +78,14 @@ export default function useBottomSheet() {
 				return true
 			}
 
-			if (sheet.current && sheet.current!.getBoundingClientRect().y !== MIN_Y) {
+			if (sheet.current && sheet.current!.getBoundingClientRect().y < 0) {
 				return true
 			}
 
 			if (touchMove.movingDirection === 'down') {
 				return content.current!.scrollTop <= 0
 			}
+
 			return false
 		}
 
@@ -121,6 +115,24 @@ export default function useBottomSheet() {
 				touchMove.movingDirection = 'up'
 			}
 
+			console.log(content.current)
+			if (content.current) {
+				if (sheet.current) {
+					console.log("isMaxup 사용자페이지 상태")
+					sheet.current.removeEventListener('touchstart', handleTouchStart)
+					sheet.current.removeEventListener('touchmove', handleTouchMove)
+					sheet.current.removeEventListener('touchend', handleTouchEnd)
+				}
+			}
+			
+			if (content.current === null) {
+				if (sheet.current) {
+					console.log("toggle 미리보기상태")
+					sheet.current.addEventListener('touchstart', handleTouchStart)
+					sheet.current.addEventListener('touchmove', handleTouchMove)
+					sheet.current.addEventListener('touchend', handleTouchEnd)
+				}
+			}
 			if (canUserMoveBottomSheet()) {
 				e.preventDefault()
 
@@ -136,7 +148,8 @@ export default function useBottomSheet() {
 				}
 
 				sheet.current!.style.setProperty('transform', `translateY(${nextSheetY - MAX_Y}px)`)
-			} else {
+			}
+			if (!canUserMoveBottomSheet()) {
 				document.body.style.overflowY = 'hidden'
 			}
 		}
@@ -155,14 +168,15 @@ export default function useBottomSheet() {
 						if (touchMove.movingDirection === 'down') {
 							sheet.current!.style.setProperty('transform', 'translateY(0)')
 							metrics.current.sheetState = 'close'
-							console.log('end - preview - down', metrics.current.sheetState)
+
 							setIsMaxup(false)
+							setToggle(false)
 						}
 
 						if (touchMove.movingDirection === 'up') {
 							sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
 							metrics.current.sheetState = 'maxup'
-							console.log('end - preview - up', metrics.current.sheetState)
+
 							setIsMaxup(true)
 						}
 					}
@@ -171,13 +185,14 @@ export default function useBottomSheet() {
 						// 1단 (초기 상태)
 						if (touchMove.movingDirection === 'down') {
 							sheet.current!.style.setProperty('transform', 'translateY(20)')
-							console.log('end - close - down', metrics.current.sheetState)
+							setToggle(false)
 						}
-
+						
 						if (touchMove.movingDirection === 'up') {
 							sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
 							metrics.current.sheetState = 'preview'
-							console.log('end - close - up', metrics.current.sheetState)
+							setToggle(true)
+							setIsMaxup(false)
 						}
 					}
 					// sheetState: maxup 상태
@@ -186,13 +201,14 @@ export default function useBottomSheet() {
 						if (touchMove.movingDirection === 'down') {
 							sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
 							metrics.current.sheetState = 'preview'
-							console.log('maxup to down', metrics.current.sheetState)
+
 							setIsMaxup(false)
+							setToggle(true)
 						}
 
 						if (touchMove.movingDirection === 'up') {
 							sheet.current!.style.setProperty('transform', `translateY(${MIN_Y - MAX_Y}px)`)
-							console.log('maxup to up', metrics.current.sheetState)
+							setIsMaxup(true)
 						}
 					}
 				}
@@ -219,8 +235,23 @@ export default function useBottomSheet() {
 			sheet.current.addEventListener('touchmove', handleTouchMove)
 			sheet.current.addEventListener('touchend', handleTouchEnd)
 		}
-	}, [])
+	}, [isMaxup])
 
+	// content 영역을 터치하는 것을 기록합니다.
+	useEffect(() => {
+		const handleTouchStart = () => {
+			metrics.current.isContentAreaTouched = true
+		}
+		
+		if (content.current) {
+			content.current.addEventListener('touchstart', handleTouchStart)
+		}
+
+		return () =>
+			content.current
+				? content.current.removeEventListener('touchstart', handleTouchStart)
+				: undefined
+	})
 	// useEffect(() => {
 	// 	const handleTouchStart = () => {
 	// 		metrics.current!.isContentAreaTouched = true
@@ -228,5 +259,5 @@ export default function useBottomSheet() {
 	// 	content.current!.addEventListener('touchstart', handleTouchStart)
 	// }, [])
 
-	return { sheet, metrics, content, openPreview, closePreview, togglePreview, isMaxup }
+	return { sheet, content, openPreview, closePreview, togglePreview, isMaxup }
 }

@@ -51,7 +51,6 @@ export const user2ndPositioning = ({ setUsers2nd, user, radius, maxNum }: IUserP
 		if (!isInRange) {
 			return addBucket2nd({ pos, user, setUsers2nd })
 		} else {
-			// console.log("recursive");
 			// 겹치면 다른 값으로 재귀 호출
 			user2ndPositioning({ setUsers2nd, user, radius, maxNum })
 		}
