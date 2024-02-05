@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "4. 사용자 API", description = "비로그인 사용자(인증 X)와 관련된 API들 입니다")
+@Tag(name = "5. 사용자 API", description = "비로그인 사용자(인증 X)와 관련된 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")

@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 
-@Tag(name = "6. 알람", description = "알람과 관련된 API들 입니다")
+@Tag(name = "7. 알람", description = "알람과 관련된 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/alarm")
