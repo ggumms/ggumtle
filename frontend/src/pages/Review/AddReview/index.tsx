@@ -5,9 +5,9 @@ import { useRouter } from '../../../hooks/useRouter'
 import { IMenu, IMenuFunc } from '../../../interfaces'
 import WithHeaderLayout from '../../../components/layout/WithHeaderLayout'
 
-import NavigateButton from '../../../components/NavigateButton'
 import TextEditor from './TextEditor'
 import QuickSaveButton from './QuickSaveButton'
+import PostReviewButton from './PostReviewButton'
 
 const AddReview = () => {
 	const [title, setTitle] = useState('')
@@ -30,9 +30,7 @@ const AddReview = () => {
 			<TextEditor value={reviewText} setValue={setReviewText} />
 			<div className="flex gap-3 pt-12 pb-12">
 				<QuickSaveButton />
-				<NavigateButton path="/" isDisable={false}>
-					<p>데모 버튼 2</p>
-				</NavigateButton>
+				<PostReviewButton />
 			</div>
 		</WithHeaderLayout>
 	)
