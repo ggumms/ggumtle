@@ -19,9 +19,9 @@ const ReactQuillEditor = ({ value, setValue }: ReactQuillProps) => {
 	const editorDeltaInfo = reactQuillRef.current?.lastDeltaChangeSet?.ops
 
 	useEffect(() => {
-		const isImageOrTextDeleted = reactQuillRef.current?.lastDeltaChangeSet?.ops?.filter((item) => {
-			return item['delete'] === 1
-		})
+		const isImageOrTextDeleted = !!reactQuillRef.current?.lastDeltaChangeSet?.ops?.find(
+			(item) => 'delete' in item
+		)
 
 		if (isImageOrTextDeleted) {
 			deleteImage(imageUrlList, value)
