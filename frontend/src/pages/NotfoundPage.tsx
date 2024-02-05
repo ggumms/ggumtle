@@ -1,5 +1,4 @@
 // NotFoundPage.tsx
-import React from 'react'
 import { FaBan } from 'react-icons/fa'
 import { useRouter } from '../hooks/useRouter'
 

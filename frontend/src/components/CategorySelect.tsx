@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { useBucketStore } from '../store/bucketStore'
 import { isCategoryType } from '../utils/typeFilter'
 import { CategoryDataType, CategoryType } from '../interfaces'
