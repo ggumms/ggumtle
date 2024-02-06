@@ -72,7 +72,7 @@ spring:
   web:
     baseUrl: http://localhost:8081
 
-  # Kakao oauth
+  # Kakao, google oauth
   security:
     oauth2:
       client:
@@ -87,12 +87,26 @@ spring:
               - profile_nickname
               - profile_image
               - account_email
+          google:
+            client-id: 437109759271-sfaobp93ep5da5dc27srfpq66mc1tdn1.apps.googleusercontent.com
+            scope:
+              - openid
+              - profile
+              - email
+            redirect-uri: http://localhost:5173
+            client-authentication-method: basic
+            authorization-grant-type: authorization_code
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
 
 # Swagger
 springdoc:

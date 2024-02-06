@@ -27,13 +27,13 @@ public class OAuthController {
         return new Response("message", kakaoService.kakaoJoin(requestDto));
     }
 
-    @GetMapping("/google")
-    public Response googleLogin(){
-        return new Response("", null);
+    @GetMapping("/google/{authenticationCode}")
+    public Response googleLogin(HttpServletResponse response, @PathVariable String authenticationCode){
+        return new Response("loginData", googleService.googleLogin(response, authenticationCode));
     }
 
     @PostMapping("/google")
-    public Response googleJoin(){
-        return new Response("", null);
+    public Response googleJoin(@Valid @RequestBody OAuthJoinRequestDto requestDto){
+        return new Response("message", googleService.googleJoin(requestDto));
     }
 }
