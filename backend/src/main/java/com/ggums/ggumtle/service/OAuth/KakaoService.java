@@ -2,15 +2,21 @@ package com.ggums.ggumtle.service.OAuth;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ggums.ggumtle.common.exception.CustomException;
+import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.common.handler.TransactionHandler;
 import com.ggums.ggumtle.common.jwt.JwtTokenManager;
+import com.ggums.ggumtle.common.redis.RedisLockRepository;
+import com.ggums.ggumtle.dto.request.OAuthJoinRequestDto;
 import com.ggums.ggumtle.dto.response.OAuthLoginResponseDto;
 import com.ggums.ggumtle.dto.response.model.OAuthUserInfo;
 import com.ggums.ggumtle.entity.Authentication;
+import com.ggums.ggumtle.entity.Interest;
 import com.ggums.ggumtle.entity.OAuthLoginStatus;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.repository.AuthenticationRepository;
+import com.ggums.ggumtle.repository.InterestRepository;
 import com.ggums.ggumtle.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,6 +31,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -43,9 +51,12 @@ public class KakaoService {
     private String redirectUri;
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final UserRepository userRepository;
     private final AuthenticationRepository authenticationRepository;
+    private final RedisLockRepository redisLockRepository;
+    private final TransactionHandler transactionHandler;
+    private final InterestRepository interestRepository;
     private final JwtTokenManager jwtTokenManager;
+    private final UserRepository userRepository;
 
     public OAuthLoginResponseDto kakaoLogin(HttpServletResponse response, String authorizationCode){
         Token token = getToken(authorizationCode);
@@ -68,6 +79,55 @@ public class KakaoService {
                 .userProfile(oAuthUserInfo.getUserProfile())
                 .userNickname(oAuthUserInfo.getUserNickname())
                 .build();
+    }
+
+    public String kakaoJoin(OAuthJoinRequestDto requestDto){
+
+        Token token = getToken(requestDto.getAuthorizationCode());
+        OAuthUserInfo oAuthUserInfo = fetchUserInfo(token.getAccessToken());
+
+        if(!oAuthUserInfo.getUserEmail().equals(requestDto.getUserEmail())){
+            throw new CustomException(ExceptionType.OAUTH_AUTHORIZATION_CODE_INVALID);
+        }
+
+        User user = User.builder()
+                .birthDate(requestDto.getBirthDate())
+                .gender(requestDto.getGender())
+                .build();
+
+        String lockKey = "user_nickname_lock";
+        redisLockRepository.runOnLock(lockKey, () -> {
+            transactionHandler.runOnWriteTransaction(() -> {
+                Optional<User> userNicknameCheck = userRepository.findByUserNickname(requestDto.getUserNickname());
+                if(userNicknameCheck.isPresent()) {
+                    throw new CustomException(ExceptionType.NICKNAME_DUPLICATE);
+                }
+                user.setUserNickname(requestDto.getUserNickname());
+                userRepository.save(user);
+                return null;
+            });
+            return null;
+        });
+
+        Set<Interest> updatedInterests = requestDto.getCategory().stream()
+                .map(interestName -> interestRepository.findByName(interestName)
+                        .orElseGet(() -> {
+                            Interest newInterest = new Interest();
+                            newInterest.setName(interestName);
+                            return interestRepository.save(newInterest);
+                        }))
+                .collect(Collectors.toSet());
+        user.setUserInterest(updatedInterests);
+
+        Authentication authentication = Authentication.builder()
+                .userKakao(oAuthUserInfo.getUserEmail())
+                .build();
+
+        user.setAuthentication(authentication);
+
+        userRepository.save(user);
+
+        return "카카오 회원가입이 완료되었습니다.";
     }
 
     private Token getToken(String authorizationCode) {

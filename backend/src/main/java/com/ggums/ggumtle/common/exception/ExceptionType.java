@@ -31,6 +31,9 @@ public enum ExceptionType {
     ACCOUNT_LOCKED(403, "계정이 잠겨있습니다."),
     SELF_SUBSCRIPTION_ATTEMPTED(400, "자기 자신을 구독할 수 없습니다."),
 
+    // oauth
+    OAUTH_AUTHORIZATION_CODE_INVALID(400,"인가코드가 유효하지 않습니다."),
+
     // bucket
     BUCKET_NOT_FOUND(404, "해당 버킷을 찾을 수 없습니다."),
     BUCKET_NOT_VALID(400, "버킷이 비공개입니다."),

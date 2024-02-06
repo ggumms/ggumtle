@@ -12,6 +12,7 @@ public class Authentication {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "authentication")
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String userEmail;

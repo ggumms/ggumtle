@@ -29,6 +29,10 @@ public class User extends BaseTime implements UserDetails {
     @JoinColumn(name = "rep_bucket_id")
     private Bucket repBucket;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "authentication_id")
+    private Authentication authentication;
+
     private String userNickname;
 
     private String userProfileImage;
