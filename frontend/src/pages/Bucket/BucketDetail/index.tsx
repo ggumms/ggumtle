@@ -10,6 +10,7 @@ import ShareButton from '../../../components/ShareButton'
 import AchieveDreamButton from './AcheiveDreamButton'
 import WriteReviewButton from './WriteReviewButton'
 import { useParams } from 'react-router-dom'
+import Reaction from './Reaction'
 
 const userInfo: UserInfoType = {
 	userId: 1,
@@ -93,6 +94,7 @@ const BucketDetail = () => {
 						? bucketId && <AchieveDreamButton id={bucketId} />
 						: bucketId && <WriteReviewButton id={bucketId} />}
 				</div>
+				<Reaction />
 			</WithHeaderLayout>
 		</>
 	)
