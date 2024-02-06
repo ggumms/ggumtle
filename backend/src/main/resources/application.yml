@@ -89,6 +89,7 @@ spring:
               - account_email
           google:
             client-id: 437109759271-sfaobp93ep5da5dc27srfpq66mc1tdn1.apps.googleusercontent.com
+            client-secret: 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
             scope:
               - openid
               - profile

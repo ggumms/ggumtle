@@ -48,6 +48,8 @@ public class GoogleService {
     private String googleUserInfoUri;
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+    private String clientSecret;
     @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
     private String redirectUri;
 
@@ -130,6 +132,7 @@ public class GoogleService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", clientId);
+        params.add("client_secret", clientSecret);
         params.add("redirect_uri", redirectUri);
         params.add("code", authorizationCode);
 
