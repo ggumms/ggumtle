@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { DummyUser1 } from '../../../../assets/svgs'
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType, ColorType } from '../../../../interfaces'

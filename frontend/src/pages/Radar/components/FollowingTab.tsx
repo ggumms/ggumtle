@@ -5,7 +5,7 @@ import PreviewBottomSheet from './preview/PreviewBottomSheet'
 import Radar from './radar/Radar'
 import { ProfileAvatar } from '../../../assets/svgs'
 import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
-import { getPreviewUser, getRadarUsers } from '../api'
+import { getRadarUsers } from '../api'
 import { useQuery } from '@tanstack/react-query'
 import { user1stPositioning } from '../utils/user/radar1st'
 import { user2ndPositioning } from '../utils/user/radar2nd'
@@ -38,12 +38,13 @@ const FollowingTab = () => {
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 
 	const { sheet, content, openPreview, isMaxup, togglePreview } = useBottomSheet()
-	const [userId, setUserId] = useState<number>(null)
+	const [userId, setUserId] = useState<number | null>(null)
 	const [refresh, setRefresh] = useState<boolean>(false)
 
 	const handleOpenPreview = (userId: number) => {
 		openPreview()
 		setUserId(userId)
+		console.log('onclick!! userId: ', userId)
 	}
 
 	const refreshRadar = (state: boolean) => {
@@ -58,7 +59,8 @@ const FollowingTab = () => {
 		const radius = 19
 		const maxNum = 3
 		!isLoading &&
-			radar!.circle1.forEach((user, index) => {
+			radar &&
+			radar.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
 						user1stPositioning({ setUsers1st, user, radius, maxNum })
@@ -73,9 +75,11 @@ const FollowingTab = () => {
 		const radius = 34
 		const maxNum = 6
 		!isLoading &&
-			radar!.circle2.forEach((user, index) => {
+			radar &&
+			radar.circle2.forEach((user, index) => {
 				setTimeout(
 					() => {
+						console.log('settimeout: ', user)
 						user2ndPositioning({ setUsers2nd, user, radius, maxNum })
 					},
 					200 * index + 100 * Math.random()
@@ -88,7 +92,8 @@ const FollowingTab = () => {
 		const radius = 50
 		const maxNum = 9
 		!isLoading &&
-			radar!.circle3.forEach((user, index) => {
+			radar &&
+			radar.circle3.forEach((user, index) => {
 				setTimeout(
 					() => {
 						user3rdPositioning({ setUsers3rd, user, radius, maxNum })

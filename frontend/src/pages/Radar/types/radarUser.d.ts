@@ -17,15 +17,15 @@ export interface IRadarUser {
 export interface IAddUser {
 	pos: PosType
 	user: IRadarUser
-	setUsers1st?: (value: React.SetStateAction<IRadarUser[]>) => void
-	setUsers2nd?: (value: React.SetStateAction<IRadarUser[]>) => void
-	setUsers3rd?: (value: React.SetStateAction<IRadarUser[]>) => void
+	setUsers1st?: React.Dispatch<React.SetStateAction<IRadarUser[]>>
+	setUsers2nd?: React.Dispatch<React.SetStateAction<IRadarUser[]>>
+	setUsers3rd?: React.Dispatch<React.SetStateAction<IRadarUser[]>>
 }
 
 export interface IUserPosition {
-	setUsers1st?: (value: React.SetStateAction<IRadarUser[]>) => void
-	setUsers2nd?: (value: React.SetStateAction<IRadarUser[]>) => void
-	setUsers3rd?: (value: React.SetStateAction<IRadarUser[]>) => void
+	setUsers1st?: React.Dispatch<React.SetStateAction<IRadarUser[]>>
+	setUsers2nd?: React.Dispatch<React.SetStateAction<IRadarUser[]>>
+	setUsers3rd?: React.Dispatch<React.SetStateAction<IRadarUser[]>>
 	user: IRadarUser
 	radius: number
 	maxNum: number

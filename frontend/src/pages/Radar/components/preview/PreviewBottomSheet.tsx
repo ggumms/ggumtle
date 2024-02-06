@@ -1,5 +1,4 @@
 import PreviewUser from './PreviewUser'
-import { IUserSimple } from '../FollowingTab'
 import { MAX_BOTTOM_SHEET_HEIGHT } from '../../../../hooks/usePreviewBottomSheet'
 import Header from '../../../../components/Header'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
@@ -7,7 +6,7 @@ import { icons } from '../../../../constants/header-icons'
 import UserPage from '../../../UserPage'
 
 interface UserInfoProp {
-	userId: number
+	userId: number | null
 	togglePreview: () => void
 	isMaxup: boolean
 	sheet: React.RefObject<HTMLDivElement>
@@ -46,7 +45,12 @@ const PreviewBottomSheet = (props: UserInfoProp) => {
 				<div ref={content}>
 					<UserPage isForRadar={true} />
 				</div>
+			) : userId ? (
+				<div className="px-5 py-2">
+					<PreviewUser userId={userId} />
+				</div>
 			) : (
+				// @TODO: userId가 없을 경우 (유저를 클릭하지 않았을 경우 보여줄 컴포넌트 만들기)
 				<div className="px-5 py-2">
 					<PreviewUser userId={userId} />
 				</div>
