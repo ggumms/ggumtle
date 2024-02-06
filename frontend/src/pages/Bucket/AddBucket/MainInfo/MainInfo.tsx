@@ -5,7 +5,7 @@ import MainNextButton from './components/MainNextButton'
 
 const MainInfo = () => {
 	return (
-		<section className="flex flex-col pt-12 pb-12">
+		<section className="flex flex-col pt-12 pb-12 grow">
 			<SelectBucketColor />
 			<fieldset className="flex flex-col gap-6 mb-16 mt-14">
 				<Title />

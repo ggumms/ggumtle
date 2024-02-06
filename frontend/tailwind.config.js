@@ -7,6 +7,7 @@ const colorPalette = {
 	lightGray: '#F6F6F6',
 	subText: '#ACADAD',
 	inputBg: '#F8F8F8',
+	disabled: '#737373',
 
 	// Main Colors
 	green: '#52A88C',

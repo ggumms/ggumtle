@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 import MultiPageLayout from '../../../components/layout/MutiPageLayout/MultiPageLayout'
 import { addBucketHeaderList } from '../../../router'
 import { useBucketStore } from '../../../store/bucketStore'
-import Header from '../../../components/Header'
 import { icons } from './../../../constants/header-icons'
 import { IMenu, IMenuFunc } from '../../../interfaces'
 import { useRouter } from '../../../hooks/useRouter'
+import WithHeaderLayout from '../../../components/layout/WithHeaderLayout'
 
 const AddBucket = () => {
 	const { resetCategory, resetBucketColor } = useBucketStore()
@@ -28,10 +28,9 @@ const AddBucket = () => {
 	}, [resetCategory])
 
 	return (
-		<div className="flex flex-col h-screen px-5 pt-16 pb-12">
-			<Header menu={headerMenu} func={headerFunc} />
+		<WithHeaderLayout headerMenu={headerMenu} headerFunc={headerFunc}>
 			<MultiPageLayout headerData={addBucketHeaderList} hasIcon={false} />
-		</div>
+		</WithHeaderLayout>
 	)
 }
 
