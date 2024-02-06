@@ -108,7 +108,7 @@ const FollowingTab = () => {
 			<BackDots />
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
-					<Link to="/mypage" className="z-50 ">
+					<Link to="/mypage" className="">
 						<ProfileAvatar className="h-14 w-14" />
 					</Link>
 				</Radar>

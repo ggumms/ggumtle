@@ -27,6 +27,10 @@ const UserBottomSheet = (props: UserBottomSheetProp) => {
 		},
 		right_func: undefined,
 	}
+
+	const handleTogglePreview = () => {
+		userId && togglePreview()
+	}
 	return (
 		<div
 			ref={sheet}
@@ -37,7 +41,7 @@ const UserBottomSheet = (props: UserBottomSheetProp) => {
 			{isMaxup ? (
 				<Header menu={menu} func={func} />
 			) : (
-				<div onClick={togglePreview} className="h-10 rounded-t-lg relative pt-5 pb-2">
+				<div onClick={handleTogglePreview} className="h-10 rounded-t-lg relative pt-5 pb-2">
 					<div className="w-14 h-[5px] rounded-full bg-unActive m-auto" />
 				</div>
 			)}
@@ -45,16 +49,12 @@ const UserBottomSheet = (props: UserBottomSheetProp) => {
 				<div ref={content}>
 					<UserPage isForRadar={true} />
 				</div>
-			) : userId ? (
-				<div className="px-5 py-2">
-					<PreviewUser userId={userId} />
-				</div>
 			) : (
-				<div className="px-5 py-2 text-point1">
-					{/* @TODO: userId가 없을 경우 (유저를 클릭하지 않았을 경우 보여줄 컴포넌트 만들기) */}
-					다른 사용자를 눌러보세요 <br />
-					유저를 클릭하지 않았을 경우 뭐라고 표시하면 좋을까요
-				</div>
+				userId && (
+					<div className="px-5 py-2">
+						<PreviewUser userId={userId} />
+					</div>
+				)
 			)}
 		</div>
 	)
