@@ -5,6 +5,7 @@ import Header from '../../../../components/Header'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
 import { icons } from '../../../../constants/header-icons'
 import UserPage from '../../../UserPage'
+import RadarCategory from '../RadarCategory'
 
 interface UserInfoProp {
 	userInfo: IUserSimple | null
@@ -48,7 +49,9 @@ const PreviewBottomSheet = (props: UserInfoProp) => {
 				</div>
 			) : (
 				<div className="px-5 py-2">
-					<PreviewUser userId={userInfo?.userId} />
+					{/* <PreviewUser userId={userInfo?.userId} /> */}
+					{/* 테스트용 코드 */}
+					<RadarCategory />
 				</div>
 			)}
 		</div>

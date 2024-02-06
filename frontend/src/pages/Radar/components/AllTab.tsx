@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getRadarBuckets } from '../api'
 import { bucket1stPositioning } from '../utils/total/radar1st'
 import ButtonArea from './ButtonArea'
+import RadarCategory from './RadarCategory'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -126,6 +127,8 @@ const AllTab = () => {
 					))}
 				</div>
 			</div>
+
+			
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
 			{/* <PreviewBottomSheet
 				userInfo={userInfo}
