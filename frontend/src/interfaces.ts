@@ -93,3 +93,21 @@ export interface IOtherUserInfo {
 }
 
 export type UserInfoType = IMyUserInfo | IOtherUserInfo
+
+export interface IBucketInfo {
+	writerId: number
+	reviewId: number | null
+	title: string
+	timeCapsule: string | null
+	bucketPicture: string | null
+	color: string
+	reminderDate: null | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
+	latitude: number
+	longitude: number
+	address: string
+	dayCount: number
+	achievementDate: string | null
+	category: CategoryType[]
+	isPrivate: boolean
+	createdDate: string
+}
