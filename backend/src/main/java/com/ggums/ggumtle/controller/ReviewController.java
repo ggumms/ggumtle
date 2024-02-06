@@ -7,6 +7,7 @@ import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
 import com.ggums.ggumtle.dto.response.ReviewReactionResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
+import com.ggums.ggumtle.dto.response.ReviewBriefResponseDto;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,6 +72,19 @@ public class ReviewController {
     })
     public Response getReview(@AuthenticationPrincipal User user, @PathVariable Long reviewId) {
         return new Response("review", reviewService.getReview(user, reviewId));
+    }
+
+    @GetMapping("/brief/{bucketId}")
+    @Operation(summary = "후기 간단 정보 조회", description = "후기 신규 작성 또는 임시저장 후기 수정을 위해 주어진 버킷 id의 후기 정보를 반환합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "후기 간단 정보 조희 성공",
+                    content = @Content(schemaProperties = {
+                            @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
+                            @SchemaProperty(name = "review", schema = @Schema(implementation = ReviewBriefResponseDto.class))
+                    }))
+    })
+    public Response getReviewBrief(@AuthenticationPrincipal User user, @PathVariable Long bucketId) {
+        return new Response("reviewBrief", reviewService.getReviewBrief(user, bucketId));
     }
 
     @PutMapping("/{reviewId}")

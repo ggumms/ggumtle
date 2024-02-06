@@ -7,6 +7,7 @@ import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.PutReviewRequestDto;
 import com.ggums.ggumtle.dto.request.ReviewReactionRequestDto;
 import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
+import com.ggums.ggumtle.dto.response.ReviewBriefResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewReactionResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
@@ -129,6 +130,37 @@ public class ReviewService {
         } catch (IOException e) {
             // transferTo()에서 IOE 발생할 수 있음
             throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public ReviewBriefResponseDto getReviewBrief(User user, Long bucketId) {
+        Bucket bucket = bucketRepository.findById(bucketId)
+                .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        // 버킷이 비공개인데 user가 버킷의 주인이 아닌 경우 에러
+        if (bucket.getIsPrivate() && !user.getId().equals(bucket.getUser().getId())) {
+            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
+
+        Optional<Review> reviewOpt = reviewRepository.findByBucket(bucket);
+
+        if (reviewOpt.isPresent()) {
+            Review review = reviewOpt.get();
+            if (review.getIsPosted()) {
+                throw new CustomException(ExceptionType.REVIEW_ALREADY_EXISTS);
+            }
+            return ReviewBriefResponseDto.builder()
+                    .hasTemp(true)
+                    .title(review.getTitle())
+                    .context(review.getContext())
+                    .build();
+        } else {
+            return ReviewBriefResponseDto.builder()
+                    .hasTemp(false)
+                    .title(null)
+                    .context(null)
+                    .build();
         }
     }
 
