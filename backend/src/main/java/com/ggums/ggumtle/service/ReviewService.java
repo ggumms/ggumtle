@@ -54,6 +54,11 @@ public class ReviewService {
         Bucket bucket = bucketRepository.findById(requestDto.getBucketId())
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
 
+        // 아직 달성하지 않은 버킷에 대해서는 후기를 작성할 수 없다.
+        if (bucket.getAchievementDate() == null) {
+            throw new CustomException(ExceptionType.BUCKET_NOT_ACHIEVED);
+        }
+
         // 버킷의 주인만 후기를 작성할 수 있다.
         if (!bucket.getUser().getId().equals(user.getId())) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);

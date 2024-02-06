@@ -35,6 +35,7 @@ public enum ExceptionType {
     // bucket
     BUCKET_NOT_FOUND(404, "해당 버킷을 찾을 수 없습니다."),
     BUCKET_NOT_VALID(400, "버킷이 비공개입니다."),
+    BUCKET_NOT_ACHIEVED(403, "미달성한 버킷입니다."),
     BUCKET_ALREADY_ACHIEVED(403, "이미 달성한 버킷입니다."),
     FILE_DELETION_FAILED(500, "파일 삭제에 실패했습니다."),
     DIRECTORY_CREATION_FAILED(500, "디렉토리 생성에 실패했습니다."),
