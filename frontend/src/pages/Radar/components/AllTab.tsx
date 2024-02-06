@@ -7,8 +7,9 @@ import { useQuery } from '@tanstack/react-query'
 import { getRadarBuckets } from '../api'
 import { bucket1stPositioning } from '../utils/total/radar1st'
 import ButtonArea from './ButtonArea'
-import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
 import BucketBottomSheet from './bottomSheet/BucketBottomSheet'
+import useBucketBottomSheet from '../../../hooks/useBucketBottomSheet'
+import { useRadarCategoryStore } from '../../../store/radarCategoryStore'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -26,25 +27,38 @@ interface IRadarBucketList {
 }
 
 const AllTab = () => {
-	const categories: string[] = ['인간관계', '여행']
-	const { isLoading, data: radarBucket } = useQuery<IRadarBucketList>({
-		queryKey: ['categories', categories.join(',')],
-		queryFn: getRadarBuckets,
-	})
+	const { selectedCategory } = useRadarCategoryStore()
 
-	const { sheet, content, openPreview, isMaxup, togglePreview } = useBottomSheet()
+	const { sheet, content, openPreview, closePreview, isMaxup, togglePreview } = useBucketBottomSheet()
 	const [buckets1st, setBuckets1st] = useState<IRadarBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])
 
 	const [bucketId, setBucketId] = useState<number | null>(null)
 	const [refresh, setRefresh] = useState<boolean>(false)
+	const [categories, setCategories] = useState('')
 
 	const handleOpenPreview = (bucketId: number) => {
 		console.log('handleOpenPreview', bucketId)
 		openPreview()
 		setBucketId(bucketId)
 	}
+
+	const handleSubmitCategories = () => {
+		setCategories(
+			Object.entries(selectedCategory)
+				.filter(([, value]) => value)
+				.map(([key]) => key)
+				.join(',')
+		)
+		closePreview()
+	}
+	const { isLoading, data: radarBucket } = useQuery<IRadarBucketList>({
+		queryKey: ['categories', categories],
+		queryFn: getRadarBuckets,
+	})
+
+	console.log(categories, radarBucket)
 
 	const refreshRadar = (state: boolean) => {
 		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
@@ -139,7 +153,9 @@ const AllTab = () => {
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
 			<BucketBottomSheet
 				bucketId={bucketId}
+				setBucketId={setBucketId}
 				togglePreview={togglePreview}
+				handleSubmitCategories={handleSubmitCategories}
 				isMaxup={isMaxup}
 				sheet={sheet}
 				content={content}
