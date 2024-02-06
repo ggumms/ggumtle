@@ -5,6 +5,7 @@ import { IRadarItemDirection, RadarElemType } from './UserItem'
 
 export interface IBucketStyle {
 	size: string
+	text: string
 }
 
 export interface IBucketItemStyle {
@@ -17,15 +18,17 @@ const BucketItemStyle: IBucketItemStyle = {
 	first: {
 		style: {
 			size: 'w-14 h-14',
+			text: 'text-xs',
 		},
 		direction: {
 			left: 45,
-			bottom: 42,
+			bottom: 40,
 		},
 	},
 	second: {
 		style: {
 			size: 'w-12 h-12',
+			text: 'text-[10px]',
 		},
 		direction: {
 			left: 45,
@@ -35,6 +38,7 @@ const BucketItemStyle: IBucketItemStyle = {
 	third: {
 		style: {
 			size: 'w-10 h-10',
+			text: 'text-[8px]',
 		},
 		direction: {
 			left: 46,
@@ -59,10 +63,17 @@ const BucketItem = ({ bucket, type, handleOpenPreview }: BucketItemProps) => {
 			className="inline-flex flex-col items-center animate-floating"
 			style={itemStyle}
 		>
-			<div className={`${BucketItemStyle[type].style.size} rounded-2xl overflow-hidden animate-fadeIn`}>
+			<div
+				className={`${BucketItemStyle[type].style.size} rounded-2xl overflow-hidden animate-fadeIn`}
+			>
 				{/* <img src={bucket.bucketPicture} alt="" className="w-full h-full object-cover" /> */}
 				<img src="/public/dummy.PNG" alt="" className="w-full h-full object-cover" />
 			</div>
+			<p
+				className={`${BucketItemStyle[type].style.text} ${BucketItemStyle[type].style.size} whitespace-nowrap overflow-hidden text-ellipsis`}
+			>
+				{bucket.title}
+			</p>
 		</div>
 	)
 }
