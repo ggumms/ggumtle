@@ -29,7 +29,7 @@ public class OAuthController {
 
     @GetMapping("/google/{authenticationCode}")
     public Response googleLogin(HttpServletResponse response, @PathVariable String authenticationCode){
-        return new Response("loginData", googleService.googleLogin(response, authenticationCode));
+        return new Response("login", googleService.googleLogin(response, authenticationCode));
     }
 
     @PostMapping("/google")
