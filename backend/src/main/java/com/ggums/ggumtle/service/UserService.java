@@ -38,6 +38,11 @@ public class UserService {
     private final BucketRepository bucketRepository;
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
+    private final ReviewReactionRepository reviewReactionRepository;
+    private final BucketReactionRepository bucketReactionRepository;
+    private final CommentBucketRepository commentBucketRepository;
+    private final CommentReviewRepository commentReviewRepository;
+    private final AlarmRepository alarmRepository;
     private final ImageHandler imageHandler;
     private final AlarmHandler alarmHandler;
 
@@ -290,4 +295,26 @@ public class UserService {
                 .build();
     }
 
+    public String deleteUser(User userDetails) {
+        User user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
+
+        if (user.getDeletedDate() != null) {
+            throw new CustomException(ExceptionType.ALREADY_WITHDRAWN_USER);
+        }
+
+        user.setRepBucket(null);
+        user.setDeletedDate(LocalDateTime.now());
+
+        bucketRepository.deleteAllByUser(user);
+        followRepository.deleteAllByUser(user);
+        reviewReactionRepository.deleteAllByUser(user);
+        bucketReactionRepository.deleteAllByUser(user);
+        commentBucketRepository.deleteAllByUser(user);
+        commentReviewRepository.deleteAllByUser(user);
+        alarmRepository.deleteAllByUser(user);
+        user.getUserInterest().clear();
+
+        return "사용자 탈퇴 및 관련 데이터 삭제 처리되었습니다.";
+    }
 }
