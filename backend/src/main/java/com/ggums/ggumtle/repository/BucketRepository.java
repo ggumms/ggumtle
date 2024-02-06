@@ -4,6 +4,7 @@ import com.ggums.ggumtle.entity.Bucket;
 import com.ggums.ggumtle.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -36,4 +37,8 @@ public interface BucketRepository extends JpaRepository<Bucket, Long> {
     @Modifying
     @Query("delete from Bucket b where b.user = :user")
     void deleteAllByUser(@Param("user") User user);
+
+    @EntityGraph(attributePaths = {"user"})
+    @Query(value = "SELECT b FROM Bucket b")
+    List<Bucket> findAllWithUser();
 }

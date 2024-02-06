@@ -5,8 +5,12 @@ services:
     image: $REGISTRY/ggumtle-frontend:$TAG
     ports:
       - "80:80"
+      - "443:443"
     volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
       - $HOME/ggumtle/frontend:/app/dist/data
+      - /home/ubuntu/nginx/sites/sites-enabled:/etc/nginx/sites-enabled
     restart: unless-stopped
 
   ggumtle-backend:

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { bgColorClass } from '../constants/dynamicClass'
 import { useRouter } from '../hooks/useRouter'
 

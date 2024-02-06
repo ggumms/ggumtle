@@ -21,14 +21,15 @@ public class TimelineController {
 
     private final TimelineService timelineService;
 
-    @Operation(summary = "타임라인 조회 - 작업중!!!", description = "미달성, 달성, 후기에 맞는 타임라인을 반환해줍니다.")
+    @Operation(summary = "타임라인 조회", description = "미달성, 달성, 후기에 맞는 타임라인을 반환해줍니다.")
     @GetMapping("/")
     public Response get(@AuthenticationPrincipal User user,
+                        @RequestParam Long userId,
                         @RequestParam Boolean doing,
                         @RequestParam Boolean done,
                         @RequestParam Boolean review,
                         Pageable pageable) throws Exception {
 
-        return new Response("timeline", timelineService.get(user, doing, done, review, pageable));
+        return new Response("timeline", timelineService.get(user, userId, doing, done, review, pageable));
     }
 }

@@ -76,6 +76,7 @@ public class ReviewService {
                 .type(TimelineType.REVIEW)
                 .user(user)
                 .review(review)
+                .isPrivate(bucket.getIsPrivate())
                 .createdDate(savedReview.getCreatedDate())
                 .build();
         timelineRepository.save(timeline);

@@ -1,6 +1,7 @@
 import { RouterProvider } from 'react-router-dom'
 import router from './router'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 function App() {
 	const theme = createTheme({
@@ -23,6 +24,7 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<RouterProvider router={router} />
+			<ReactQueryDevtools />
 		</ThemeProvider>
 	)
 }

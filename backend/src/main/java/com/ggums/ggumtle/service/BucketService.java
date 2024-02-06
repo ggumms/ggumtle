@@ -78,6 +78,8 @@ public class BucketService {
                 .type(TimelineType.BUCKET)
                 .user(user)
                 .bucket(bucket)
+                .isAchieved(Boolean.FALSE)
+                .isPrivate(requestDto.getIsPrivate())
                 .createdDate(requestDto.getCreatedDate().atStartOfDay())
                 .build();
         timelineRepository.save(timeline);
@@ -195,6 +197,9 @@ public class BucketService {
     public String achieveBucket(User user, Long bucketId){
         Bucket bucket = bucketRepository.findById(bucketId)
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        timelineRepository.findByBucket(bucket).ifPresent(timeline ->
+                timeline.setIsAchieved(Boolean.TRUE));
 
         if (!user.getId().equals(bucket.getUser().getId())) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
