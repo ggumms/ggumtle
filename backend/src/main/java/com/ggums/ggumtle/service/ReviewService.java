@@ -162,7 +162,7 @@ public class ReviewService {
 
         // 버킷의 주인이 아닌 경우 조회 불가능
         if (!bucket.getUser().getId().equals(user.getId())) {
-            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
         Optional<Review> reviewOpt = reviewRepository.findByBucket(bucket);
