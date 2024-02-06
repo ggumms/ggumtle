@@ -19,9 +19,8 @@ export const getRadarUsers = async () => {
 
 // @TODO: 카테고리 파라미터 추가하기
 export const getRadarBuckets = async ({ queryKey }: QueryFunctionContext) => {
-	const [_, categories] = queryKey
+	const [, categories] = queryKey
 
-	console.log(categories)
 	return instance
 		.get('radar/total', {
 			headers: {

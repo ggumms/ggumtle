@@ -30,7 +30,6 @@ const AllTab = () => {
 		queryFn: getRadarBuckets,
 	})
 
-	console.log(radar)
 	const [buckets1st, setBuckets1st] = useState<IRadarBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])
