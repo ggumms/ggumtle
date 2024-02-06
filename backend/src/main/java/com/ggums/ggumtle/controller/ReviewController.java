@@ -32,17 +32,17 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping
-    @Operation(summary = "후기 생성", description = "해당 버킷과 연관된 후기를 생성합니다.")
+    @GetMapping("/brief/{bucketId}")
+    @Operation(summary = "후기 간단 정보 조회", description = "주어진 버킷 id의 임시저장한 후기 존재 여부, 존재할 경우 제목과 내용을 반환합니다.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "후기 생성 성공",
+            @ApiResponse(responseCode = "200", description = "후기 간단 정보 조희 성공",
                     content = @Content(schemaProperties = {
                             @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
-                            @SchemaProperty(name = "reviewId", schema = @Schema(type = "int", example = "1",description = "생성된 후기 id"))
+                            @SchemaProperty(name = "review", schema = @Schema(implementation = ReviewBriefResponseDto.class))
                     }))
     })
-    public Response postReview(@AuthenticationPrincipal User user, @Valid @RequestBody PostReviewRequestDto requestDto) {
-        return new Response("reviewId", reviewService.postReview(user, requestDto));
+    public Response getReviewBrief(@AuthenticationPrincipal User user, @PathVariable Long bucketId) {
+        return new Response("reviewBrief", reviewService.getReviewBrief(user, bucketId));
     }
 
     @PostMapping("/image")
@@ -61,6 +61,20 @@ public class ReviewController {
         return new Response("imageUrl", reviewService.postImage(image));
     }
 
+
+    @PostMapping
+    @Operation(summary = "후기 생성", description = "해당 버킷과 연관된 후기를 생성합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "후기 생성 성공",
+                    content = @Content(schemaProperties = {
+                            @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
+                            @SchemaProperty(name = "reviewId", schema = @Schema(type = "int", example = "1",description = "생성된 후기 id"))
+                    }))
+    })
+    public Response postReview(@AuthenticationPrincipal User user, @Valid @RequestBody PostReviewRequestDto requestDto) {
+        return new Response("reviewId", reviewService.postReview(user, requestDto));
+    }
+
     @GetMapping("/{reviewId}")
     @Operation(summary = "후기 조회", description = "주어진 id의 후기 상세 정보를 반환합니다.")
     @ApiResponses({
@@ -72,19 +86,6 @@ public class ReviewController {
     })
     public Response getReview(@AuthenticationPrincipal User user, @PathVariable Long reviewId) {
         return new Response("review", reviewService.getReview(user, reviewId));
-    }
-
-    @GetMapping("/brief/{bucketId}")
-    @Operation(summary = "후기 간단 정보 조회", description = "후기 신규 작성 또는 임시저장 후기 수정을 위해 주어진 버킷 id의 후기 정보를 반환합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "후기 간단 정보 조희 성공",
-                    content = @Content(schemaProperties = {
-                            @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
-                            @SchemaProperty(name = "review", schema = @Schema(implementation = ReviewBriefResponseDto.class))
-                    }))
-    })
-    public Response getReviewBrief(@AuthenticationPrincipal User user, @PathVariable Long bucketId) {
-        return new Response("reviewBrief", reviewService.getReviewBrief(user, bucketId));
     }
 
     @PutMapping("/{reviewId}")
