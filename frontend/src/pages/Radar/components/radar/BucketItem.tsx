@@ -20,7 +20,7 @@ const BucketItemStyle: IBucketItemStyle = {
 		},
 		direction: {
 			left: 45,
-			bottom: 40,
+			bottom: 42,
 		},
 	},
 	second: {
@@ -59,7 +59,7 @@ const BucketItem = ({ bucket, type, handleOpenPreview }: BucketItemProps) => {
 			className="inline-flex flex-col items-center animate-floating"
 			style={itemStyle}
 		>
-			<div className={`${BucketItemStyle[type].style.size} rounded-2xl overflow-hidden`}>
+			<div className={`${BucketItemStyle[type].style.size} rounded-2xl overflow-hidden animate-fadeIn`}>
 				{/* <img src={bucket.bucketPicture} alt="" className="w-full h-full object-cover" /> */}
 				<img src="/public/dummy.PNG" alt="" className="w-full h-full object-cover" />
 			</div>

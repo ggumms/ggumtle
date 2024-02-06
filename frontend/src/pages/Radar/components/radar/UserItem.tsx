@@ -63,13 +63,16 @@ const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
 		left: `${UserItemStyle[type].direction.left + user.pos.x}%`,
 		bottom: `${UserItemStyle[type].direction.bottom + user.pos.y}%`,
 	}
+	console.log
 	return (
 		<div
 			onClick={() => handleOpenPreview(user.userId)}
 			className="inline-flex flex-col items-center animate-floating"
 			style={itemStyle}
 		>
-			<div className={`${UserItemStyle[type].style.size} rounded-full overflow-hidden`}>
+			<div
+				className={`${UserItemStyle[type].style.size} rounded-full overflow-hidden animate-fadeIn`}
+			>
 				<img src={user.userProfileImage} alt="" className="w-full h-full object-cover" />
 			</div>
 			<span className={`font-semibold ${UserItemStyle[type].style.text}`}>{user.userNickname}</span>
