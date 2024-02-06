@@ -3,6 +3,7 @@ import WithHeaderLayout from '../../../components/layout/WithHeaderLayout'
 import { icons } from '../../../constants/header-icons'
 import { useRouter } from '../../../hooks/useRouter'
 import { IMenu, IMenuFunc, UserInfoType } from '../../../interfaces'
+import BucketInfo from './BucketInfo'
 
 const userInfo: UserInfoType = {
 	userId: 1,
@@ -34,6 +35,7 @@ const BucketDetail = () => {
 	return (
 		<>
 			<WithHeaderLayout headerMenu={headerMenu} headerFunc={headerFunc}>
+				<BucketInfo />
 				<UserProfile type="detail" userInfo={userInfo} />
 			</WithHeaderLayout>
 		</>
