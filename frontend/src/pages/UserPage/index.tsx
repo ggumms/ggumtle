@@ -20,7 +20,7 @@ const UserPage = ({ isForRadar }: { isForRadar: boolean }) => {
 	return (
 		<div className="z-30 bg-white">
 			{!isForRadar && <Header menu={menu} func={func} />}
-			<div className="mt-10 bg-lightGray">
+			<div className="mt-16 bg-lightGray">
 				<ProfileSection />
 				<FeedSection />
 			</div>
