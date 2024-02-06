@@ -1,44 +1,69 @@
+import { useQuery } from '@tanstack/react-query'
 import { DummyUser1 } from '../../../../assets/svgs'
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
-import { CategoryType, UserInfoType } from '../../../../interfaces'
-
+import { CategoryType, ColorType } from '../../../../interfaces'
+import { getPreviewUser } from '../../api'
+import { Skeleton } from '@mui/material'
+interface IPreviewUser {
+	userId: number
+	userProfileImage: string
+	userNickname: string
+	category: CategoryType[]
+	bucketId: number
+	bucketTitle: string
+	dayCount: number
+	color: ColorType
+	isAchieved: boolean
+	owner: boolean
+	isFollowing: boolean
+}
 const PreviewUser = ({ userId }: { userId: number }) => {
-	// 더미 데이터 (userId로 api 호출해서 얻어온 유저 정보)
-	const userInfo: UserInfoType = {
-		userId: 1,
-		userProfileImage: 'url',
-		userNickname: 'junho',
-		category: ['인간관계', '여행', '직장'],
-		bucketId: 2,
-		bucketTitle: '구독자 100만명 달성하기',
-		dayCount: 14,
-		color: 'mint',
-		isAchieved: true,
-		owner: true,
-		isFollowing: null,
-	}
-
-	const { bucketTitle, color, dayCount } = userInfo
+	const { isLoading, data: userInfo } = useQuery<IPreviewUser>({
+		queryKey: ['previewUser', userId],
+		queryFn: getPreviewUser,
+		enabled: !!userId,
+	})
+	console.log(userInfo)
 	const category: CategoryType[] = ['연애', '언어', '환경']
-	const username: string = 'want_u.u'
 
 	return (
 		<div className="w-full flex items-center justify-around">
 			<div className="flex flex-col items-center justify-center w-2/5">
-				{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
-				<DummyUser1 />
-				<p className="font-semibold text-point1">{username}</p>
+				{isLoading ? (
+					<Skeleton variant="circular" width={60} height={60} />
+				) : (
+					<div className="w-16 h-16 rounded-full overflow-hidden">
+						<img src={userInfo?.userProfileImage} alt="" className="w-full h-full object-cover" />
+					</div>
+				)}
+				<p className="font-semibold text-point1">{userInfo?.userNickname}</p>
 			</div>
 			<div className="w-full px-2">
 				{/* @TODO: 대표버킷 없을 경우 처리 */}
-
-				<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
-
+				{isLoading ? (
+					<div>
+						<Skeleton variant="text" height={40} width={'90%'} />
+						<Skeleton variant="text" height={20} width={'80%'} />
+					</div>
+				) : (
+					userInfo && (
+						<ProfileBucket
+							isLoading={isLoading}
+							title={userInfo.bucketTitle}
+							color={userInfo.color}
+							dayCount={userInfo.dayCount}
+							isLock={null}
+						/>
+					)
+				)}
 				<div className="bg-white">
-					{category.map((cate, index) => (
-						<InterestTag tag={cate} key={index} />
-					))}
+					{isLoading ? (
+						<Skeleton variant="text" height={20} width={'50%'} />
+					) : (
+						// userInfo?.category.map((cate, index) => (
+						category.map((cate, index) => <InterestTag tag={cate} key={index} />)
+					)}
 				</div>
 			</div>
 		</div>

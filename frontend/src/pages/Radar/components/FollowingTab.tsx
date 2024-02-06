@@ -5,7 +5,7 @@ import PreviewBottomSheet from './preview/PreviewBottomSheet'
 import Radar from './radar/Radar'
 import { ProfileAvatar } from '../../../assets/svgs'
 import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
-import { getRadarUsers } from '../api'
+import { getPreviewUser, getRadarUsers } from '../api'
 import { useQuery } from '@tanstack/react-query'
 import { user1stPositioning } from '../utils/user/radar1st'
 import { user2ndPositioning } from '../utils/user/radar2nd'
@@ -38,17 +38,12 @@ const FollowingTab = () => {
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 
 	const { sheet, content, openPreview, isMaxup, togglePreview } = useBottomSheet()
-	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
+	const [userId, setUserId] = useState<number>(null)
 	const [refresh, setRefresh] = useState<boolean>(false)
 
 	const handleOpenPreview = (userId: number) => {
 		openPreview()
-		// @TODO: userId로 user정보 호출 api
-		setUserInfo({
-			userId: 1,
-			userProfileImage: 'url',
-			userNickname: 'usung',
-		})
+		setUserId(userId)
 	}
 
 	const refreshRadar = (state: boolean) => {
@@ -141,7 +136,7 @@ const FollowingTab = () => {
 			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
 			<PreviewBottomSheet
-				userInfo={userInfo}
+				userId={userId}
 				togglePreview={togglePreview}
 				isMaxup={isMaxup}
 				sheet={sheet}

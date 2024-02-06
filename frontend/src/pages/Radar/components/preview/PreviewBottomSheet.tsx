@@ -5,10 +5,9 @@ import Header from '../../../../components/Header'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
 import { icons } from '../../../../constants/header-icons'
 import UserPage from '../../../UserPage'
-import RadarCategory from '../RadarCategory'
 
 interface UserInfoProp {
-	userInfo: IUserSimple | null
+	userId: number
 	togglePreview: () => void
 	isMaxup: boolean
 	sheet: React.RefObject<HTMLDivElement>
@@ -16,7 +15,7 @@ interface UserInfoProp {
 }
 
 const PreviewBottomSheet = (props: UserInfoProp) => {
-	const { userInfo, togglePreview, isMaxup, sheet, content } = props
+	const { userId, togglePreview, isMaxup, sheet, content } = props
 	const menu: IMenu = {
 		left: icons.BACK,
 		center: 'juno', // @TODO: 사용자 닉네임 넣기
@@ -49,9 +48,7 @@ const PreviewBottomSheet = (props: UserInfoProp) => {
 				</div>
 			) : (
 				<div className="px-5 py-2">
-					{/* <PreviewUser userId={userInfo?.userId} /> */}
-					{/* 테스트용 코드 */}
-					<RadarCategory />
+					<PreviewUser userId={userId} />
 				</div>
 			)}
 		</div>
