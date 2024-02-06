@@ -1,5 +1,6 @@
 package com.ggums.ggumtle.service;
 
+import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
@@ -12,11 +13,7 @@ import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
 import com.ggums.ggumtle.dto.response.model.ReviewSearchListDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
-import com.ggums.ggumtle.repository.BucketRepository;
-import com.ggums.ggumtle.repository.FollowRepository;
-import com.ggums.ggumtle.repository.CommentReviewRepository;
-import com.ggums.ggumtle.repository.ReviewReactionRepository;
-import com.ggums.ggumtle.repository.ReviewRepository;
+import com.ggums.ggumtle.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -34,6 +31,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ReviewService {
 
@@ -43,6 +41,7 @@ public class ReviewService {
     private final BucketRepository bucketRepository;
     private final ReviewReactionRepository reviewReactionRepository;
     private final CommentReviewRepository commentReviewRepository;
+    private final TimelineRepository timelineRepository;
 
     @Value("${spring.web.baseUrl}")
     private String baseUrl;
@@ -50,11 +49,15 @@ public class ReviewService {
     private final String basicDir = Paths.get(System.getProperty("user.dir")).getParent().toString();
     private final String uploadDir = Paths.get(basicDir, "image", "reviewImage").toString();
 
-    @Transactional
     public Long postReview(User user, PostReviewRequestDto requestDto) {
 
         Bucket bucket = bucketRepository.findById(requestDto.getBucketId())
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        // 아직 달성하지 않은 버킷에 대해서는 후기를 작성할 수 없다.
+        if (bucket.getAchievementDate() == null) {
+            throw new CustomException(ExceptionType.BUCKET_NOT_ACHIEVED);
+        }
 
         // 버킷의 주인만 후기를 작성할 수 있다.
         if (!bucket.getUser().getId().equals(user.getId())) {
@@ -73,6 +76,16 @@ public class ReviewService {
                 .build();
 
         Review savedReview = reviewRepository.save(review);
+
+        Timeline timeline = Timeline.builder()
+                .type(TimelineType.REVIEW)
+                .user(user)
+                .review(review)
+                .isPrivate(bucket.getIsPrivate())
+                .createdDate(savedReview.getCreatedDate())
+                .build();
+        timelineRepository.save(timeline);
+
         List<Follow> follows = followRepository.findByFollowee(user);
         if(!follows.isEmpty()){
             for (Follow follow : follows) {
@@ -119,7 +132,6 @@ public class ReviewService {
         }
     }
 
-    @Transactional(readOnly = true)
     public ReviewResponseDto getReview(User user, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
@@ -163,6 +175,14 @@ public class ReviewService {
                 .bucketAchievement(isRepBucketAchieved)
                 .build();
 
+        // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, writer);
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(currentScore + Score.READ);
+        }
+
         return ReviewResponseDto.builder()
                 .writer(writerDto)
                 .bucketId(bucket.getId())
@@ -176,7 +196,6 @@ public class ReviewService {
                 .build();
     }
 
-    @Transactional
     public Long putReview(User user, Long reviewId, PutReviewRequestDto requestDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
@@ -194,7 +213,6 @@ public class ReviewService {
         return review.getId();
     }
 
-    @Transactional
     public String deleteReview(User user, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
@@ -204,21 +222,28 @@ public class ReviewService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
+        timelineRepository.deleteByReview(review);
         reviewRepository.delete(review);
 
         return "삭제를 완료하였습니다.";
     }
 
-    @Transactional
     public String postReviewReaction(User user, Long reviewId, ReviewReactionRequestDto requestDto) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
+
+        // 후기가 비공개인데 user가 후기의 주인이 아닌 경우 에러
+        if (review.getBucket().getIsPrivate() && !user.getId().equals(review.getBucket().getUser().getId())) {
+            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
 
         String reaction = requestDto.getReaction();
 
         List<ReviewReaction> myReviewReactions = review.getReviewReactions().stream()
                 .filter(reviewReaction -> reviewReaction.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());
+
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, review.getBucket().getUser());
 
         // [POST] 해당 후기에 남긴 리액션이 없는 경우
         if (myReviewReactions.isEmpty()) {
@@ -228,8 +253,16 @@ public class ReviewService {
                     .reaction(reaction)
                     .build();
             reviewReactionRepository.save(newReviewReaction);
-            review.getReviewReactions().add(newReviewReaction);
+
+            // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(currentScore + Score.REACTION);
+            }
+
             alarmHandler.createReviewAlarm(review.getBucket().getUser(), user, AlarmType.reviewReaction, review);
+
             return reaction;
         }
         // 해당 후기에 이미 남긴 리액션이 있는 경우
@@ -238,7 +271,15 @@ public class ReviewService {
 
             // [DELETE] 해당 리액션을 취소하려는 경우
             if (reaction.equals(myReviewReaction.getReaction())) {
-                reviewReactionRepository.delete(myReviewReaction);
+                review.getReviewReactions().remove(myReviewReaction);
+
+                // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+                if (followOpt.isPresent()) {
+                    Follow follow = followOpt.get();
+                    Long currentScore = follow.getScore();
+                    follow.setScore(Math.max(currentScore - Score.REACTION, 0L));
+                }
+
                 return null;
             }
             // [PUT] 해당 리액션을 수정하려는 경우

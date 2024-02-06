@@ -1,13 +1,16 @@
 package com.ggums.ggumtle.service;
 
+import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.CommentRequestDto;
 import com.ggums.ggumtle.dto.response.CommentResponseDto;
+import com.ggums.ggumtle.dto.response.model.CommentListDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.CommentReviewLikeRepository;
+import com.ggums.ggumtle.repository.FollowRepository;
 import com.ggums.ggumtle.repository.ReviewRepository;
 import com.ggums.ggumtle.repository.CommentReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ public class CommentReviewService {
     private final ReviewRepository reviewRepository;
     private final CommentReviewRepository commentReviewRepository;
     private final CommentReviewLikeRepository commentReviewLikeRepository;
+    private final FollowRepository followRepository;
 
 
     public String commentCreate(User user, long reviewId, CommentRequestDto requestDto) {
@@ -48,12 +52,22 @@ public class CommentReviewService {
                 .build();
 
         commentReviewRepository.save(commentReview);
+
+        // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, review.getBucket().getUser());
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(currentScore + Score.COMMENT);
+        }
+
         alarmHandler.createReviewAlarm(review.getBucket().getUser(), user, AlarmType.followCommentReview, review);
+
         return "댓글이 생성되었습니다.";
     }
 
     @Transactional(readOnly = true)
-    public Page<CommentResponseDto> commentList(User user, long reviewId, Pageable pageable) {
+    public CommentResponseDto commentList(User user, long reviewId, Pageable pageable) {
 
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
@@ -64,10 +78,10 @@ public class CommentReviewService {
         }
 
         Page<CommentReview> comments = commentReviewRepository.findByReview(review, pageable);
-        return comments.map(this::convertToCommentResponseDto);
+        return CommentResponseDto.builder().commentList(comments.map(this::convertToCommentResponseDto)).build();
     }
 
-    private CommentResponseDto convertToCommentResponseDto(CommentReview item) {
+    private CommentListDto convertToCommentResponseDto(CommentReview item) {
 
         User writer = item.getUser();
 
@@ -117,7 +131,7 @@ public class CommentReviewService {
             time = ChronoUnit.MINUTES.between(item.getCreatedDate(), LocalDateTime.now());
         }
 
-        return CommentResponseDto.builder()
+        return CommentListDto.builder()
                 .id(item.getId())
                 .context(item.getContext())
                 .writer(writerDto)
@@ -139,7 +153,21 @@ public class CommentReviewService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
+        // 후기가 비공개인데 user가 후기의 주인이 아닌 경우 예외 처리
+        if (comment.getReview().getBucket().getIsPrivate() && !user.getId().equals(comment.getReview().getBucket().getUser().getId())) {
+            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
+
         commentReviewRepository.delete(comment);
+
+        // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, comment.getReview().getBucket().getUser());
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(Math.max(currentScore - Score.COMMENT, 0L));
+        }
+
         return "댓글이 삭제되었습니다.";
     }
 
@@ -151,6 +179,11 @@ public class CommentReviewService {
         // 요청한 사용자와 댓글 작성자가 다르면 오류 반환
         if (!(comment.getUser().getId().equals(user.getId()))) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
+        // 후기가 비공개인데 user가 후기의 주인이 아닌 경우 예외 처리
+        if (comment.getReview().getBucket().getIsPrivate() && !user.getId().equals(comment.getReview().getBucket().getUser().getId())) {
+            throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
         comment.update(requestDto.getContext());
@@ -172,9 +205,19 @@ public class CommentReviewService {
         Optional<CommentReviewLike> like = commentReviewLikeRepository
                 .findByCommentReviewAndUser(commentReview, user);
 
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, commentReview.getUser());
+
 //      만약에 해당 유저가 이미 좋아요를 눌렀다면 좋아요 취소
         if (like.isPresent()) {
             commentReviewLikeRepository.delete(like.get());
+
+            // user가 댓글 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(Math.max(currentScore - Score.COMMENT_LIKE, 0L));
+            }
+
             return "좋아요가 취소되었습니다.";
         }
         // 아니면 좋아요 추가
@@ -185,7 +228,16 @@ public class CommentReviewService {
                     .build();
 
             commentReviewLikeRepository.save(newLike);
+
+            // user가 댓글 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(currentScore + Score.COMMENT_LIKE);
+            }
+
             alarmHandler.createReviewAlarm(commentReview.getUser(), user, AlarmType.likeCommentReview, commentReview.getReview());
+
             return "좋아요가 생성되었습니다.";
         }
     }

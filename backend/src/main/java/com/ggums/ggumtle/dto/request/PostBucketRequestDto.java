@@ -1,9 +1,12 @@
 package com.ggums.ggumtle.dto.request;
 
+import com.ggums.ggumtle.entity.ReminderDate;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -15,6 +18,9 @@ public class PostBucketRequestDto {
     @Schema(example = "20만이 되면 얼마나 좋을까.. 나는야 뽀시래기.. 20만이 되어도 초심을 잃지 말고 그때의 감사한 마음을 담아 구독자분들께 그대로 돌려드리자.")
     @Size(max = 1000, message = "타임캡슐 크기를 초과하였습니다.")
     private String timeCapsule;
+
+    @Schema(example = "twoWeeks")
+    private ReminderDate reminderDate;
 
     @Schema(example = "23.452")
     private Double latitude;
@@ -34,4 +40,8 @@ public class PostBucketRequestDto {
 
     @Schema(example = "false")
     private Boolean isPrivate;
+
+    @Schema(example = "2023-07-05")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate createdDate;
 }

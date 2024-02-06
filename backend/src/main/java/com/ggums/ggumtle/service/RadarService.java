@@ -57,8 +57,9 @@ public class RadarService {
         List<RadarBucketDto> bucketList2 = new ArrayList<>();    // 2 circle (4)
         List<RadarBucketDto> bucketList3 = new ArrayList<>();    // 3 circle (5)
 
+        int size = allList.size();
         int idx = 0;
-        while (idx < 12) {
+        while (idx < 12 && idx < size) {
             if (idx < 3) bucketList1.add(allList.get(idx));
             else if (idx < 7) bucketList2.add(allList.get(idx));
             else bucketList3.add(allList.get(idx));

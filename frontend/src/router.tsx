@@ -4,7 +4,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import LoginPage from './pages/auth/LoginPage'
 import FollowingTab from './pages/Radar/components/FollowingTab'
 import AllTab from './pages/Radar/components/AllTab'
-import Radar from './pages/Radar/Radar'
+import Radar from './pages/Radar'
 import AlarmPage from './pages/Radar/components/AlarmPage'
 import SearchPage from './pages/Search/SearchPage'
 import UserSearch from './pages/Search/components/UserSearch'
@@ -16,11 +16,10 @@ import AddBucket from './pages/Bucket/AddBucket'
 import MainInfo from './pages/Bucket/AddBucket/MainInfo/MainInfo'
 import CategoryInfo from './pages/Bucket/AddBucket/CategoryInfo/CategoryInfo'
 import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
-import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo'
+import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
 import NotFoundPage from './pages/NotfoundPage'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
-import Test from './utils/Test'
 import AddReview from './pages/Review/AddReview'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
@@ -120,7 +119,6 @@ const routerData: RouterElement[] = [
 	{ path: '/bucket/achieve', element: <AchieveBucket />, label: '' },
 	{ path: '/review/write', element: <AddReview />, label: '리뷰작성' },
 	{ path: '*', element: <NotFoundPage />, label: '' },
-	{ path: '/test', element: <Test />, label: '' },
 ]
 
 const router: RemixRouter = createBrowserRouter(

@@ -1,5 +1,6 @@
 package com.ggums.ggumtle.service;
 
+import com.ggums.ggumtle.common.constant.Score;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
@@ -39,6 +40,7 @@ public class BucketService {
     private final BucketReactionRepository bucketReactionRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final ReviewRepository reviewRepository;
+    private final TimelineRepository timelineRepository;
 
     public Long postBucket(User user, PostBucketRequestDto requestDto){
         Set<Interest> interests = new HashSet<>();
@@ -59,21 +61,32 @@ public class BucketService {
                 .user(user)
                 .title(requestDto.getTitle())
                 .timeCapsule(requestDto.getTimeCapsule())
+                .reminderDate(requestDto.getReminderDate())
                 .latitude(requestDto.getLatitude())
                 .longitude(requestDto.getLongitude())
                 .color(requestDto.getColor())
                 .address(requestDto.getAddress())
                 .bucketInterest(interests)
                 .isPrivate(requestDto.getIsPrivate())
+                .createdDate(requestDto.getCreatedDate().atStartOfDay())
                 .build();
 
         Bucket savedBucket = bucketRepository.save(bucket);
         bucketAlarm(user, bucket, AlarmType.followBucket);
 
+        Timeline timeline = Timeline.builder()
+                .type(TimelineType.BUCKET)
+                .user(user)
+                .bucket(bucket)
+                .isAchieved(Boolean.FALSE)
+                .isPrivate(requestDto.getIsPrivate())
+                .createdDate(requestDto.getCreatedDate().atStartOfDay())
+                .build();
+        timelineRepository.save(timeline);
+
         return savedBucket.getId();
     }
 
-    @Transactional(readOnly = true)
     public GetBucketResponseDto getBucket(User user, Long bucketId){
         Bucket bucket = bucketRepository.findById(bucketId)
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
@@ -93,6 +106,15 @@ public class BucketService {
             timeCapsule = bucket.getTimeCapsule();
         }
 
+        // user가 버킷 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+        User writer = bucket.getUser();
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, writer);
+        if (followOpt.isPresent()) {
+            Follow follow = followOpt.get();
+            Long currentScore = follow.getScore();
+            follow.setScore(currentScore + Score.READ);
+        }
+
         return GetBucketResponseDto.builder()
                 .writerId(bucket.getUser().getId())
                 .reviewId(reviewId)
@@ -100,16 +122,17 @@ public class BucketService {
                 .timeCapsule(timeCapsule)
                 .bucketPicture(bucket.getBucketPicture())
                 .color(bucket.getColor())
+                .reminderDate(bucket.getReminderDate())
                 .latitude(bucket.getLatitude())
                 .longitude(bucket.getLongitude())
                 .address(bucket.getAddress())
                 .dayCount(ChronoUnit.DAYS.between(bucket.getCreatedDate(), LocalDateTime.now()))
-                .writeDate(bucket.getCreatedDate())
                 .achievementDate(bucket.getAchievementDate())
                 .category(bucket.getBucketInterest().stream()
                         .map(Interest::getName)
                         .collect(Collectors.toCollection(ArrayList::new)))
                 .isPrivate(bucket.getIsPrivate())
+                .createdDate(bucket.getCreatedDate().toLocalDate())
                 .build();
     }
 
@@ -122,10 +145,12 @@ public class BucketService {
         }
 
         if (requestDto.getTitle() != null) bucket.setTitle(requestDto.getTitle());
+        if (requestDto.getReminderDate() != null) bucket.setReminderDate(requestDto.getReminderDate());
         if (requestDto.getLatitude() != null) bucket.setLatitude(requestDto.getLatitude());
         if (requestDto.getLongitude() != null) bucket.setLongitude(requestDto.getLongitude());
         if (requestDto.getColor() != null) bucket.setColor(requestDto.getColor());
         if (requestDto.getAddress() != null) bucket.setAddress(requestDto.getAddress());
+        if (requestDto.getCreatedDate() != null) bucket.setCreatedDate(requestDto.getCreatedDate().atStartOfDay());
 
         if (requestDto.getCategory() != null) {
             Set<Interest> updatedInterests = requestDto.getCategory().stream()
@@ -162,6 +187,8 @@ public class BucketService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
+        timelineRepository.deleteByBucket(bucket);
+
         bucketRepository.delete(bucket);
 
         return "삭제를 완료하였습니다.";
@@ -170,6 +197,9 @@ public class BucketService {
     public String achieveBucket(User user, Long bucketId){
         Bucket bucket = bucketRepository.findById(bucketId)
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        timelineRepository.findByBucket(bucket).ifPresent(timeline ->
+                timeline.setIsAchieved(Boolean.TRUE));
 
         if (!user.getId().equals(bucket.getUser().getId())) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
@@ -225,6 +255,7 @@ public class BucketService {
                 .commentCount(commentCount)
                 .color(bucket.getColor())
                 .isAchieved(isAchieved)
+                .createdDate(bucket.getCreatedDate().toLocalDate())
                 .build();
     }
 
@@ -273,19 +304,44 @@ public class BucketService {
         Bucket bucket = bucketRepository.findById(requestDto.getBucketId())
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
 
+        // 버킷이 비공개인데 user가 버킷의 주인이 아닌 경우 예외 처리
+        if (bucket.getIsPrivate() && !user.getId().equals(bucket.getUser().getId())) {
+            throw new CustomException(ExceptionType.BUCKET_NOT_VALID);
+        }
+
         Optional<BucketReaction> existingReaction = bucketReactionRepository
                 .findByBucketAndUser(bucket, user);
+
+        Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, bucket.getUser());
 
         BucketReaction reaction;
         if (existingReaction.isPresent()) {
             reaction = existingReaction.get();
             reaction.setReaction(requestDto.getUserReaction());
+
+            if (requestDto.getUserReaction() == null) {
+                // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
+                if (followOpt.isPresent()) {
+                    Follow follow = followOpt.get();
+                    Long currentScore = follow.getScore();
+                    follow.setScore(Math.max(currentScore - Score.REACTION, 0L));
+                }
+            }
+
         } else {
             reaction = BucketReaction.builder()
                     .bucket(bucket)
                     .user(user)
                     .reaction(requestDto.getUserReaction())
                     .build();
+
+            // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
+            if (followOpt.isPresent()) {
+                Follow follow = followOpt.get();
+                Long currentScore = follow.getScore();
+                follow.setScore(currentScore + Score.REACTION);
+            }
+
             if(!user.getId().equals(bucket.getUser().getId())){
                 alarmHandler.createBucketAlarm(bucket.getUser(), user, AlarmType.bucketReaction, bucket);
             }

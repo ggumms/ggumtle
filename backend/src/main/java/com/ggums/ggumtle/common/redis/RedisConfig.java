@@ -24,6 +24,9 @@ public class RedisConfig {
     @Value("${spring.data.redis.address}")
     private String address;
 
+    @Value("${spring.data.redis.password}")
+    private String password;
+
     @Bean
     public RedisConnectionFactory lettuceConnectionFactory(){
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
@@ -44,7 +47,8 @@ public class RedisConfig {
     public RedissonClient redissonClient() {
         Config config = new Config();
         config.useSingleServer()
-                .setAddress(address);
+                .setAddress(address)
+                .setPassword(password);
 
         return Redisson.create(config);
     }

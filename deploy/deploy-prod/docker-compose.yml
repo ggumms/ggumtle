@@ -5,8 +5,12 @@ services:
     image: $REGISTRY/ggumtle-frontend:$TAG
     ports:
       - "80:80"
+      - "443:443"
     volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt
       - $HOME/ggumtle/frontend:/app/dist/data
+      - /home/ubuntu/nginx/sites/sites-enabled:/etc/nginx/sites-enabled
     restart: unless-stopped
 
   ggumtle-backend:
@@ -14,7 +18,8 @@ services:
     ports:
       - "8081:8081"
     volumes:
-      - $HOME/ggumtle/backend/logs:/logs
+      - $HOME/ggumtle/backend/logs:/app/logs
+      - $HOME/ggumtle/image:/image
     environment:
       - SPRING_PROFILES_ACTIVE=prod
     restart: unless-stopped
