@@ -6,6 +6,10 @@ import { IBucketInfo, IMenu, IMenuFunc, UserInfoType } from '../../../interfaces
 import LocationInfo from './LocationInfo'
 import BucketInfo from './BucketInfo'
 import InterestTag from './InterestTag'
+import ShareButton from '../../../components/ShareButton'
+import AchieveDreamButton from './AcheiveDreamButton'
+import WriteReviewButton from './WriteReviewButton'
+import { useParams } from 'react-router-dom'
 
 const userInfo: UserInfoType = {
 	userId: 1,
@@ -34,6 +38,7 @@ const bucketInfo: IBucketInfo = {
 	longitude: 143.213,
 	address: '용산 파크랜드',
 	dayCount: 369,
+	// achievementDate: null,
 	achievementDate: '2023-01-01',
 	category: ['취미', '여행', '휴식'],
 	isPrivate: false,
@@ -42,6 +47,13 @@ const bucketInfo: IBucketInfo = {
 
 const BucketDetail = () => {
 	const { goBack } = useRouter()
+	const { bucketId } = useParams()
+
+	// bucketId Path variable로 Number 값이 아닌 값이 들어오면 이전 페이지로 이동
+	if (isNaN(Number(bucketId))) {
+		goBack()
+		return
+	}
 
 	const handleLeftFunc = () => {
 		goBack()
@@ -75,6 +87,12 @@ const BucketDetail = () => {
 						<InterestTag tag={category} key={index} />
 					))}
 				</ul>
+				<div className="flex gap-3">
+					<ShareButton />
+					{bucketInfo.achievementDate === null
+						? bucketId && <AchieveDreamButton id={bucketId} />
+						: bucketId && <WriteReviewButton id={bucketId} />}
+				</div>
 			</WithHeaderLayout>
 		</>
 	)
