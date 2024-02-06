@@ -24,12 +24,13 @@ interface IRadarBucketList {
 }
 
 const AllTab = () => {
-	const categories: string[] = ['인간관계', '직장']
+	const categories: string[] = ['인간관계', '여행']
 	const { isLoading, data: radar } = useQuery<IRadarBucketList>({
-		queryKey: ['categories', ...categories],
+		queryKey: ['categories', categories.join(',')],
 		queryFn: getRadarBuckets,
 	})
 
+	console.log(radar)
 	const [buckets1st, setBuckets1st] = useState<IRadarBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])

@@ -21,6 +21,7 @@ export const getRadarUsers = async () => {
 export const getRadarBuckets = async ({ queryKey }: QueryFunctionContext) => {
 	const [_, categories] = queryKey
 
+	console.log(categories)
 	return instance
 		.get('radar/total', {
 			headers: {
