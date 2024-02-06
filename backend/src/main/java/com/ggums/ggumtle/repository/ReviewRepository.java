@@ -21,4 +21,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             (@Param("keyword") String keyword, Pageable pageable);
 
     Optional<Review> findByBucket(Bucket bucket);
+
+    Optional<Review> findByBucketAndIsPostedTrue(Bucket bucket);
 }

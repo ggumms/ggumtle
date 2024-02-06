@@ -96,7 +96,7 @@ public class BucketService {
         }
 
         Long reviewId = null;
-        Optional<Review> review = reviewRepository.findByBucket(bucket);
+        Optional<Review> review = reviewRepository.findByBucketAndIsPostedTrue(bucket);
         if (review.isPresent()) {
             reviewId = review.get().getId();
         }
