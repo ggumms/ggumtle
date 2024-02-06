@@ -14,7 +14,6 @@ instance.interceptors.request.use(
 		return config
 	},
 	(error) => {
-		console.log(error, 'helo')
 		return Promise.reject(error)
 	}
 )
@@ -23,9 +22,13 @@ export const getRadarUsers = async () => {
 	return instance.get('radar/following').then((response) => response.data.radar)
 }
 
-export const getPreviewUser = async ({ queryKey }: QueryFunctionContext) => {
+export const getUserPreview = async ({ queryKey }: QueryFunctionContext) => {
 	const [, userId] = queryKey
 	return instance.get(`user/${userId}`).then((response) => response.data.userInfo)
+}
+export const getBucketPreview = async ({ queryKey }: QueryFunctionContext) => {
+	const [, bucketId] = queryKey
+	return instance.get(`bucket/info/${bucketId}`).then((response) => response.data.bucketInfo)
 }
 
 // @TODO: 카테고리 파라미터 추가하기
