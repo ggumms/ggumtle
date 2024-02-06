@@ -10,6 +10,7 @@ import ButtonArea from './ButtonArea'
 import BucketBottomSheet from './bottomSheet/BucketBottomSheet'
 import useBucketBottomSheet from '../../../hooks/useBucketBottomSheet'
 import { useRadarCategoryStore } from '../../../store/radarCategoryStore'
+import BackDots from './radar/BackDots'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -118,6 +119,7 @@ const AllTab = () => {
 
 	return (
 		<div>
+			<BackDots />
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
 					<ProfileAvatar className="h-14 w-14" />

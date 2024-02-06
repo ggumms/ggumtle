@@ -12,6 +12,7 @@ import { IRadarUser } from '../types/radarUser'
 import UserBottomSheet from './bottomSheet/UserBottomSheet'
 import useUserBottomSheet from '../../../hooks/useUserBottomSheet'
 import { Link } from 'react-router-dom'
+import BackDots from './radar/BackDots'
 
 export interface IUserSimple {
 	userId: number
@@ -104,6 +105,7 @@ const FollowingTab = () => {
 
 	return (
 		<div>
+			<BackDots />
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
 					<Link to="/mypage" className="z-50 ">
