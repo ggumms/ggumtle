@@ -11,6 +11,7 @@ import { user3rdPositioning } from '../utils/user/radar3rd'
 import { IRadarUser } from '../types/radarUser'
 import UserBottomSheet from './bottomSheet/UserBottomSheet'
 import useUserBottomSheet from '../../../hooks/useUserBottomSheet'
+import { Link } from 'react-router-dom'
 
 export interface IUserSimple {
 	userId: number
@@ -105,7 +106,9 @@ const FollowingTab = () => {
 		<div>
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
-					<ProfileAvatar className="h-14 w-14" />
+					<Link to="/mypage" className="z-50 ">
+						<ProfileAvatar className="h-14 w-14" />
+					</Link>
 				</Radar>
 
 				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
