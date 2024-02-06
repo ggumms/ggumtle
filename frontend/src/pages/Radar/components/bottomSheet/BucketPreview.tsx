@@ -29,17 +29,22 @@ const BucketPreview = ({ bucketId }: { bucketId: number }) => {
 		enabled: !!bucketId,
 	})
 	console.log('api get: ', bucketInfo)
+	console.log('api get: ', bucketInfo?.bucketPicture)
 	const category: CategoryType[] = ['연애', '언어', '환경']
 
 	return (
-		<div className="w-full flex items-center justify-around">
+		<div className="w-full flex items-center justify-around min-h-28">
 			<div className="flex flex-col items-center justify-center w-2/5">
 				{isLoading ? (
 					<Skeleton variant="rectangular" width={65} height={65} />
 				) : (
 					bucketInfo && (
 						<div className="w-16 h-16 rounded-2xl overflow-hidden">
-							<img src={bucketInfo?.bucketPicture} alt="" className="w-full h-full object-cover" />
+							<img
+								src={`${import.meta.env.VITE_BASE_URL}/image/bucketProfile/${bucketInfo.bucketPicture}`}
+								alt=""
+								className="w-full h-full object-cover"
+							/>
 						</div>
 					)
 				)}

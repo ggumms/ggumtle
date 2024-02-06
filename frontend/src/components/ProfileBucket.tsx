@@ -22,7 +22,7 @@ const ProfileBucket = ({ isLoading, title, color, dayCount, isLock }: BucketInfo
 				) : title ? (
 					<p className="text-xs font-light">
 						를 마음에 품은지
-						<span className={textColorClass[color!]}>
+						<span className={textColorClass[color]}>
 							<span className="text-base font-semibold">{dayCount}</span>일
 						</span>
 						째
@@ -32,7 +32,7 @@ const ProfileBucket = ({ isLoading, title, color, dayCount, isLock }: BucketInfo
 				)}
 			</div>
 			<div className="flex flex-col items-end justify-center">
-				<div className={`w-6 h-6 rounded-full ${bgColorClass[color!]}`}></div>
+				<div className={`w-6 h-6 rounded-full ${bgColorClass[color]}`}></div>
 				<div className={isLock ? 'pt-2' : 'hidden'}>
 					<FaLock />
 				</div>

@@ -3,7 +3,6 @@ import UserItem from './radar/UserItem'
 import ButtonArea from './ButtonArea'
 import Radar from './radar/Radar'
 import { ProfileAvatar } from '../../../assets/svgs'
-import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
 import { getRadarUsers } from '../api'
 import { useQuery } from '@tanstack/react-query'
 import { user1stPositioning } from '../utils/user/radar1st'
@@ -11,6 +10,7 @@ import { user2ndPositioning } from '../utils/user/radar2nd'
 import { user3rdPositioning } from '../utils/user/radar3rd'
 import { IRadarUser } from '../types/radarUser'
 import UserBottomSheet from './bottomSheet/UserBottomSheet'
+import useUserBottomSheet from '../../../hooks/useUserBottomSheet'
 
 export interface IUserSimple {
 	userId: number
@@ -37,7 +37,7 @@ const FollowingTab = () => {
 	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 
-	const { sheet, content, openPreview, isMaxup, togglePreview } = useBottomSheet()
+	const { sheet, content, openPreview, isMaxup, togglePreview } = useUserBottomSheet()
 	const [userId, setUserId] = useState<number | null>(null)
 	const [refresh, setRefresh] = useState<boolean>(false)
 
