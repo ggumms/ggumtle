@@ -160,8 +160,8 @@ public class ReviewService {
         Bucket bucket = bucketRepository.findById(bucketId)
                 .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
 
-        // 버킷이 비공개인데 user가 버킷의 주인이 아닌 경우 에러
-        if (bucket.getIsPrivate() && !user.getId().equals(bucket.getUser().getId())) {
+        // 버킷의 주인이 아닌 경우 조회 불가능
+        if (!bucket.getUser().getId().equals(user.getId())) {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
