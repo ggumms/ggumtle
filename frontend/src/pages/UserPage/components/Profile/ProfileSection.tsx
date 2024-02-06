@@ -23,7 +23,7 @@ const ProfileSection = () => {
 	const { bucketTitle, color, dayCount } = userInfo
 	const category: CategoryType[] = ['연애', '언어', '환경']
 	return (
-		<div className="bg-white px-5 pb-4">
+		<div className="bg-white px-5 pt-2 pb-4">
 			<div className="flex items-center justify-around">
 				<div className="flex flex-col items-center justify-center w-2/5">
 					{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
