@@ -7,7 +7,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getRadarBuckets } from '../api'
 import { bucket1stPositioning } from '../utils/total/radar1st'
 import ButtonArea from './ButtonArea'
-import RadarCategory from './RadarCategory'
+import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
+import BucketBottomSheet from './bottomSheet/BucketBottomSheet'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -26,19 +27,23 @@ interface IRadarBucketList {
 
 const AllTab = () => {
 	const categories: string[] = ['인간관계', '여행']
-	const { isLoading, data: radar } = useQuery<IRadarBucketList>({
+	const { isLoading, data: radarBucket } = useQuery<IRadarBucketList>({
 		queryKey: ['categories', categories.join(',')],
 		queryFn: getRadarBuckets,
 	})
 
+	const { sheet, content, openPreview, isMaxup, togglePreview } = useBottomSheet()
 	const [buckets1st, setBuckets1st] = useState<IRadarBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])
 
+	const [bucketId, setBucketId] = useState<number | null>(null)
 	const [refresh, setRefresh] = useState<boolean>(false)
 
 	const handleOpenPreview = (bucketId: number) => {
-		console.log(bucketId)
+		console.log('handleOpenPreview', bucketId)
+		openPreview()
+		setBucketId(bucketId)
 	}
 
 	const refreshRadar = (state: boolean) => {
@@ -54,7 +59,8 @@ const AllTab = () => {
 		const radius = 19
 		const maxNum = 3
 		!isLoading &&
-			radar!.circle1.forEach((bucket, index) => {
+			radarBucket?.circle1 &&
+			radarBucket.circle1.forEach((bucket, index) => {
 				setTimeout(
 					() => {
 						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
@@ -62,14 +68,15 @@ const AllTab = () => {
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radar])
+	}, [isLoading, refresh, radarBucket])
 
 	// 두 번째 레이더
 	useEffect(() => {
 		const radius = 34
 		const maxNum = 6
 		!isLoading &&
-			radar!.circle2.forEach((bucket, index) => {
+			radarBucket &&
+			radarBucket.circle2.forEach((bucket, index) => {
 				setTimeout(
 					() => {
 						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
@@ -77,14 +84,15 @@ const AllTab = () => {
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radar])
+	}, [isLoading, refresh, radarBucket])
 
 	// 세 번째 레이더
 	useEffect(() => {
 		const radius = 50
 		const maxNum = 9
 		!isLoading &&
-			radar!.circle3.forEach((bucket, index) => {
+			radarBucket &&
+			radarBucket.circle3.forEach((bucket, index) => {
 				setTimeout(
 					() => {
 						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
@@ -92,7 +100,7 @@ const AllTab = () => {
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radar])
+	}, [isLoading, refresh, radarBucket])
 
 	return (
 		<div>
@@ -128,15 +136,14 @@ const AllTab = () => {
 				</div>
 			</div>
 
-			
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
-			{/* <PreviewBottomSheet
-				userInfo={userInfo}
+			<BucketBottomSheet
+				bucketId={bucketId}
 				togglePreview={togglePreview}
 				isMaxup={isMaxup}
 				sheet={sheet}
 				content={content}
-			/> */}
+			/>
 		</div>
 	)
 }

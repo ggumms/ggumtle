@@ -34,15 +34,12 @@ export const user2ndPositioning = ({ setUsers2nd, user, radius, maxNum }: IUserP
 		return prev
 	})
 
-	console.log("user2ndPositioning", user)
 	if (prevUsers.length >= 6) return
 	// const radius = 16.5 // 16.5 | 34.5 | 50
 	const pos = getCircleEdgePos(radius)
 	if (prevUsers.length === 0) {
-		console.log("length === 0", user)
 		return addUser2nd({ pos, user, setUsers2nd })
 	} else {
-		console.log("else", user)
 		const isInRange = prevUsers.some((user) => {
 			const interDistance = Math.sqrt(
 				(pos.x - user.pos.x) * (pos.x - user.pos.x) + (pos.y - user.pos.y) * (pos.y - user.pos.y)

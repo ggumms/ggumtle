@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import UserItem from './radar/UserItem'
 import ButtonArea from './ButtonArea'
-import PreviewBottomSheet from './preview/PreviewBottomSheet'
 import Radar from './radar/Radar'
 import { ProfileAvatar } from '../../../assets/svgs'
 import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
@@ -11,6 +10,7 @@ import { user1stPositioning } from '../utils/user/radar1st'
 import { user2ndPositioning } from '../utils/user/radar2nd'
 import { user3rdPositioning } from '../utils/user/radar3rd'
 import { IRadarUser } from '../types/radarUser'
+import UserBottomSheet from './bottomSheet/UserBottomSheet'
 
 export interface IUserSimple {
 	userId: number
@@ -44,7 +44,6 @@ const FollowingTab = () => {
 	const handleOpenPreview = (userId: number) => {
 		openPreview()
 		setUserId(userId)
-		console.log('onclick!! userId: ', userId)
 	}
 
 	const refreshRadar = (state: boolean) => {
@@ -79,7 +78,6 @@ const FollowingTab = () => {
 			radar.circle2.forEach((user, index) => {
 				setTimeout(
 					() => {
-						console.log('settimeout: ', user)
 						user2ndPositioning({ setUsers2nd, user, radius, maxNum })
 					},
 					200 * index + 100 * Math.random()
@@ -140,7 +138,7 @@ const FollowingTab = () => {
 
 			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
-			<PreviewBottomSheet
+			<UserBottomSheet
 				userId={userId}
 				togglePreview={togglePreview}
 				isMaxup={isMaxup}

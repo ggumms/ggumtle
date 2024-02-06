@@ -4,7 +4,7 @@ import { useRadarCategoryStore } from '../../../store/radarCategoryStore'
 import { bgColorClass, borderColorClass } from '../../../constants/dynamicClass'
 import { CategoryType } from '../../../interfaces'
 
-const RadarCategory = () => {
+const RadarCategoryItems = () => {
 	const { selectedCategory, addCategory, removeCategory } = useRadarCategoryStore()
 	const handleCategorySelect = (event: React.MouseEvent<HTMLLIElement>) => {
 		const selectedName = event.currentTarget.dataset.name as CategoryType
@@ -42,4 +42,4 @@ const RadarCategory = () => {
 	)
 }
 
-export default RadarCategory
+export default RadarCategoryItems
