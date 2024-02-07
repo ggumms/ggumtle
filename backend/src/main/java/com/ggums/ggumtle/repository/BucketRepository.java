@@ -29,6 +29,7 @@ public interface BucketRepository extends JpaRepository<Bucket, Long> {
             "JOIN bucket_interest bi ON b.id = bi.bucket_id \n" +
             "JOIN interest i ON bi.interest_id = i.id \n" +
             "WHERE i.name IN :categories\n" +
+            "AND b.is_private = false\n" +
             "GROUP BY b.id\n" +
             "ORDER BY rand()\n" +
             "LIMIT 12;", nativeQuery = true)
