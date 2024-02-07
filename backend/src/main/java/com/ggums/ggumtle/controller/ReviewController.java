@@ -88,7 +88,7 @@ public class ReviewController {
         return new Response("review", reviewService.getReview(user, reviewId));
     }
 
-    @PutMapping("/{reviewId}")
+    @PutMapping()
     @Operation(summary = "후기 수정", description = "주어진 id의 후기를 수정합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "후기 수정 성공",
@@ -97,8 +97,8 @@ public class ReviewController {
                             @SchemaProperty(name = "reviewId", schema = @Schema(type = "int", example = "1",description = "수정된 후기 id"))
                     }))
     })
-    public Response putReview(@AuthenticationPrincipal User user, @PathVariable Long reviewId, @Valid @RequestBody PutReviewRequestDto requestDto) {
-        return new Response("reviewId", reviewService.putReview(user, reviewId, requestDto));
+    public Response putReview(@AuthenticationPrincipal User user, @Valid @RequestBody PutReviewRequestDto requestDto) {
+        return new Response("reviewId", reviewService.putReview(user, requestDto));
     }
 
     @DeleteMapping("/{reviewId}")

@@ -254,14 +254,18 @@ public class ReviewService {
                 .build();
     }
 
-    public Long putReview(User user, Long reviewId, PutReviewRequestDto requestDto) {
-        Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
+    public Long putReview(User user, PutReviewRequestDto requestDto) {
 
-        // 후기의 작성자만 후기를 수정할 수 있다.
-        if (!review.getBucket().getUser().getId().equals(user.getId())) {
+        Bucket bucket = bucketRepository.findById(requestDto.getBucketId())
+                .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        // 버킷의 주인만 후기를 수정할 수 있다.
+        if (!bucket.getUser().getId().equals(user.getId())) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
+
+        Review review = reviewRepository.findByBucket(bucket)
+                .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
 
         // 임시저장 상태인 후기는 예외 처리
         if (!review.getIsPosted()) {
