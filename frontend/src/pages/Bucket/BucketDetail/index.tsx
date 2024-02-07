@@ -11,6 +11,7 @@ import AchieveDreamButton from './AcheiveDreamButton'
 import WriteReviewButton from './WriteReviewButton'
 import { useParams } from 'react-router-dom'
 import Reaction from './Reaction'
+import CommentList from './Comment/CommentList'
 
 const userInfo: UserInfoType = {
 	userId: 1,
@@ -95,6 +96,7 @@ const BucketDetail = () => {
 						: bucketId && <WriteReviewButton id={bucketId} />}
 				</div>
 				<Reaction />
+				<CommentList />
 			</WithHeaderLayout>
 		</>
 	)
