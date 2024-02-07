@@ -1,29 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
-import { CategoryType, ColorType } from '../../../../interfaces'
-import { getUserPreview } from '../../api'
+import { CategoryType } from '../../../../interfaces'
 import { Skeleton } from '@mui/material'
-interface IUserInfo {
-	userId: number
-	userProfileImage: string
-	userNickname: string
-	category: CategoryType[]
-	bucketId: number
-	bucketTitle: string
-	dayCount: number
-	color: ColorType
-	isAchieved: boolean
-	owner: boolean
-	isFollowing: boolean
+import { IUserInfo } from '../../types/bottomSheet'
+
+interface UserPreviewProp {
+	isLoading: boolean
+	userInfo: IUserInfo | undefined
 }
-const UserPreview = ({ userId }: { userId: number }) => {
-	console.log(userId)
-	const { isLoading, data: userInfo } = useQuery<IUserInfo>({
-		queryKey: ['previewUser', userId],
-		queryFn: getUserPreview,
-		enabled: !!userId,
-	})
+const UserPreview = ({ isLoading, userInfo }: UserPreviewProp) => {
 	const category: CategoryType[] = ['연애', '언어', '환경']
 
 	return (

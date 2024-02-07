@@ -32,10 +32,12 @@ const ProfileBucket = ({ isLoading, title, color, dayCount, isLock }: BucketInfo
 				)}
 			</div>
 			<div className="flex flex-col items-end justify-center">
-				<div className={`w-6 h-6 rounded-full ${bgColorClass[color]}`}></div>
-				<div className={isLock ? 'pt-2' : 'hidden'}>
-					<FaLock />
-				</div>
+				{!isLoading && <div className={`w-6 h-6 rounded-full ${bgColorClass[color]}`}></div>}
+				{!isLoading && (
+					<div className={isLock ? 'pt-2' : 'hidden'}>
+						<FaLock />
+					</div>
+				)}
 			</div>
 		</div>
 	)

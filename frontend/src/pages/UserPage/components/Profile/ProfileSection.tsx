@@ -1,12 +1,11 @@
-import { DummyUser1 } from '../../../../assets/svgs'
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
-import { CategoryType, UserInfoType } from '../../../../interfaces'
+import { IUserInfo } from '../../../Radar/types/bottomSheet'
 import FollowButtons from './FollowButtons'
 import NumInfo from './NumInfo'
 
-const ProfileSection = () => {
-	const userInfo: UserInfoType = {
+const ProfileSection = ({ isLoading, userInfo }: { isLoading: boolean; userInfo: IUserInfo }) => {
+	const userInfoTest: IUserInfo = {
 		userId: 1,
 		userProfileImage: 'url',
 		userNickname: 'junho',
@@ -17,43 +16,47 @@ const ProfileSection = () => {
 		color: 'mint',
 		isAchieved: true,
 		owner: true,
-		isFollowing: null,
+		isFollowing: false,
 	}
 
-	const { bucketTitle, color, dayCount } = userInfo
-	const category: CategoryType[] = ['연애', '언어', '환경']
-	const hasTitleBucket = bucketTitle && color && dayCount
+	console.log('[ProfileSection]', userInfo)
+	const { userId, userProfileImage, bucketTitle, userNickname, color, dayCount, category } = userInfo
+	// const hasTitleBucket = bucketTitle && color && dayCount
 
 	return (
 		<div className="bg-white px-5 pt-2 pb-4">
-			<div className="flex items-center justify-around">
-				<div className="flex flex-col items-center justify-center w-2/5">
+			<section className="flex items-center justify-around">
+				<fieldset className="flex flex-col items-center justify-center w-2/5">
 					{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
-					<DummyUser1 />
-					<p className="font-semibold text-point1">juno</p>
-				</div>
-				<div className="w-full px-2">
+					{/* <DummyUser1 /> */}
+					<div className="w-16 h-16 rounded-full overflow-hidden">
+						<img src={userProfileImage} alt="" />
+					</div>
+					<p className="font-semibold text-point1">{userNickname}</p>
+				</fieldset>
+
+				<fieldset className="w-full px-2">
 					{/* @TODO: 대표버킷 없을 경우 처리 */}
-					{hasTitleBucket && (
-						<ProfileBucket
-							isLoading={false}
-							title={bucketTitle}
-							color={color}
-							dayCount={dayCount}
-							isLock={null}
-						/>
-					)}
+					{/* {hasTitleBucket && ( */}
+					<ProfileBucket
+						isLoading={false}
+						title={bucketTitle}
+						color={color}
+						dayCount={dayCount}
+						isLock={null}
+					/>
+					{/* )} */}
 					<div className="bg-white">
-						{category.map((cate, index) => (
-							<InterestTag tag={cate} key={index} />
+						{category.map((cate) => (
+							<InterestTag tag={cate} key={cate} />
 						))}
 					</div>
-				</div>
-			</div>
-			<div>
-				<NumInfo />
+				</fieldset>
+			</section>
+			<section>
+				<NumInfo userId={userId}/>
 				<FollowButtons />
-			</div>
+			</section>
 		</div>
 	)
 }
