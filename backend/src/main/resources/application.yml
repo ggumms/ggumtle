@@ -23,8 +23,8 @@ spring:
   # jwt setting
   jwt:
     secret:
-      access: bucket_access_token
-      refresh: bucket_refresh_token
+      access: R0dVTVNnZ3VtdGxlQWNjZXNzVG9rZW5Gb3JTZWNyZXRLZXk=
+      refresh: R0dVTVNnZ3VtdGxlUmVmcmVzaFRva2VuRm9yU2VjcmV0S2V5
       develop_dummy_1: bmluZXRvZml2ZeyEnOykgO2YuA
       develop_dummy_2: bmluZXRvZml2ZeyLoOywveyXvQ
       develop_dummy_3: bmluZXRvZml2ZeydtOyasOyEsQ

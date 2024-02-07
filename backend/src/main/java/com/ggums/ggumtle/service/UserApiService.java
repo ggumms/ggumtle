@@ -14,8 +14,10 @@ import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.repository.AuthenticationRepository;
 import com.ggums.ggumtle.repository.InterestRepository;
 import com.ggums.ggumtle.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -163,7 +166,7 @@ public class UserApiService {
         String lockKey = "user_nickname_lock";
         redisLockRepository.runOnLock(lockKey, () -> {
             transactionHandler.runOnWriteTransaction(() -> {
-                if (Objects.equals(redisTemplate.opsForValue().get("nickname_cache:" + requestDto.getUserNickname()), email)){
+                if (!Objects.equals(redisTemplate.opsForValue().get("nickname_cache:" + requestDto.getUserNickname()), email)){
                     throw new CustomException(ExceptionType.NICKNAME_UNAUTHORIZED);
                 }
                 user.setUserNickname(requestDto.getUserNickname());
@@ -187,6 +190,8 @@ public class UserApiService {
                 .userEmail(requestDto.getUserEmail())
                 .userEmailPassword(passwordEncoder.encode(requestDto.getUserPassword()))
                 .build();
+
+        authenticationRepository.save(authentication);
 
         user.setAuthentication(authentication);
 
@@ -405,7 +410,7 @@ public class UserApiService {
         String upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
         String numbers = "0123456789";
-        String specialCharacters = "!@#$%^&*()_+{}\\[\\]:;<>,.?~\\/-";
+        String specialCharacters = "!@#$%^&*()_+{}[]:;<>,.?~/-";
         String combinedChars = upperCaseLetters + lowerCaseLetters + numbers + specialCharacters;
         SecureRandom random = new SecureRandom();
         StringBuilder sb = new StringBuilder(length);

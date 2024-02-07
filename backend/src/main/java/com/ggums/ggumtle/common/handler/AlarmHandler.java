@@ -65,7 +65,7 @@ public class AlarmHandler {
                 .receiver(receiver)
                 .sender(sender)
                 .type(type)
-                .dataId(sender.getId())
+                .dataId(sender != null ? sender.getId() : null)
                 .build();
         alarmRepository.save(alarm);
         sendEventToUser(receiver.getId());

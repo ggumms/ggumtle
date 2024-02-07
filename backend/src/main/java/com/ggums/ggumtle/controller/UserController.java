@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -149,5 +150,10 @@ public class UserController {
     @DeleteMapping
     public Response deleteUser(@AuthenticationPrincipal User user) {
         return new Response("message", userService.deleteUser(user));
+    }
+
+    @PostMapping("/logout")
+    public Response logout(@AuthenticationPrincipal User user, HttpServletResponse response) {
+         return new Response("message", userService.logout(user, response));
     }
 }
