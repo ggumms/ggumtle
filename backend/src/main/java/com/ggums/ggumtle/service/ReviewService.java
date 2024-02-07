@@ -7,6 +7,7 @@ import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.dto.request.PutReviewRequestDto;
 import com.ggums.ggumtle.dto.request.ReviewReactionRequestDto;
 import com.ggums.ggumtle.dto.request.PostReviewRequestDto;
+import com.ggums.ggumtle.dto.response.ReviewBriefResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewReactionResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewResponseDto;
 import com.ggums.ggumtle.dto.response.ReviewSearchResponseDto;
@@ -26,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -64,37 +66,58 @@ public class ReviewService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
-        // 버킷에 이미 달린 후기가 있는 경우 에러
-        if (reviewRepository.findByBucket(bucket).isPresent()) {
-            throw new CustomException(ExceptionType.REVIEW_ALREADY_EXISTS);
-        }
+        Optional<Review> reviewOpt = reviewRepository.findByBucket(bucket);
+        Review review;
 
-        Review review = Review.builder()
-                .bucket(bucket)
-                .title(requestDto.getTitle())
-                .context(requestDto.getContext())
-                .build();
+        // 후기를 최초 작성하는 경우
+        if (reviewOpt.isEmpty()) {
+            review = Review.builder()
+                    .bucket(bucket)
+                    .title(requestDto.getTitle())
+                    .context(requestDto.getContext())
+                    .isPosted(requestDto.getIsPosted())
+                    .build();
+        }
+        // 임시저장된 것을 이어서 쓰는 경우
+        else {
+            review = reviewOpt.get();
+
+            // 이미 후기가 게시된 경우 예외 처리
+            if (review.getIsPosted()) {
+                throw new CustomException(ExceptionType.REVIEW_ALREADY_POSTED);
+            }
+
+            review.setTitle(requestDto.getTitle());
+            review.setContext(requestDto.getContext());
+            review.setIsPosted(requestDto.getIsPosted());
+        }
 
         Review savedReview = reviewRepository.save(review);
 
-        Timeline timeline = Timeline.builder()
-                .type(TimelineType.REVIEW)
-                .user(user)
-                .review(review)
-                .isPrivate(bucket.getIsPrivate())
-                .createdDate(savedReview.getCreatedDate())
-                .build();
-        timelineRepository.save(timeline);
+        // 게시하는 경우
+        if (requestDto.getIsPosted()) {
+            savedReview.setCreatedDate(LocalDateTime.now());
 
-        List<Follow> follows = followRepository.findByFollowee(user);
-        if(!follows.isEmpty()){
-            for (Follow follow : follows) {
-                User follower = follow.getFollower();
-                if(follower.getAlarm()){
-                    alarmHandler.createReviewAlarm(follower, user, AlarmType.followReview, review);
+            Timeline timeline = Timeline.builder()
+                    .type(TimelineType.REVIEW)
+                    .user(user)
+                    .review(review)
+                    .isPrivate(bucket.getIsPrivate())
+                    .createdDate(savedReview.getCreatedDate())
+                    .build();
+            timelineRepository.save(timeline);
+
+            List<Follow> follows = followRepository.findByFollowee(user);
+            if(!follows.isEmpty()){
+                for (Follow follow : follows) {
+                    User follower = follow.getFollower();
+                    if(follower.getAlarm()){
+                        alarmHandler.createReviewAlarm(follower, user, AlarmType.followReview, review);
+                    }
                 }
             }
         }
+
         return savedReview.getId();
     }
 
@@ -132,6 +155,37 @@ public class ReviewService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public ReviewBriefResponseDto getReviewBrief(User user, Long bucketId) {
+        Bucket bucket = bucketRepository.findById(bucketId)
+                .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        // 버킷의 주인이 아닌 경우 조회 불가능
+        if (!bucket.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
+        Optional<Review> reviewOpt = reviewRepository.findByBucket(bucket);
+
+        if (reviewOpt.isPresent()) {
+            Review review = reviewOpt.get();
+            if (review.getIsPosted()) {
+                throw new CustomException(ExceptionType.REVIEW_ALREADY_POSTED);
+            }
+            return ReviewBriefResponseDto.builder()
+                    .hasTemp(true)
+                    .title(review.getTitle())
+                    .context(review.getContext())
+                    .build();
+        } else {
+            return ReviewBriefResponseDto.builder()
+                    .hasTemp(false)
+                    .title(null)
+                    .context(null)
+                    .build();
+        }
+    }
+
     public ReviewResponseDto getReview(User user, Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
@@ -142,6 +196,10 @@ public class ReviewService {
         // 후기 조회 불가능한 경우 : 버킷 비공개 && 본인의 버킷(후기)이 아님
         if (bucket.getIsPrivate() && !writer.getId().equals(user.getId())) {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
+
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
         }
 
         Bucket repBucket = writer.getRepBucket();
@@ -196,13 +254,22 @@ public class ReviewService {
                 .build();
     }
 
-    public Long putReview(User user, Long reviewId, PutReviewRequestDto requestDto) {
-        Review review = reviewRepository.findById(reviewId)
+    public Long putReview(User user, PutReviewRequestDto requestDto) {
+
+        Bucket bucket = bucketRepository.findById(requestDto.getBucketId())
+                .orElseThrow(() -> new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+
+        // 버킷의 주인만 후기를 수정할 수 있다.
+        if (!bucket.getUser().getId().equals(user.getId())) {
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
+        Review review = reviewRepository.findByBucket(bucket)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
 
-        // 후기의 작성자만 후기를 수정할 수 있다.
-        if (!review.getBucket().getUser().getId().equals(user.getId())) {
-            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        // 임시저장 상태인 후기는 예외 처리
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
         }
 
         review.setTitle(requestDto.getTitle());
@@ -235,6 +302,10 @@ public class ReviewService {
         // 후기가 비공개인데 user가 후기의 주인이 아닌 경우 에러
         if (review.getBucket().getIsPrivate() && !user.getId().equals(review.getBucket().getUser().getId())) {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
+
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
         }
 
         String reaction = requestDto.getReaction();
@@ -301,6 +372,10 @@ public class ReviewService {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
+        }
+
         List<ReviewReaction> reactionList = review.getReviewReactions();
         Map<String, Integer> reactionCounts = new HashMap<>();
         String myReaction = null;
@@ -321,7 +396,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewSearchResponseDto searchReview(String keyword, Pageable pageable) {
-        Page<Review> reviews = reviewRepository.findByTitleContainingOrContextContainingAndIsPrivateIsFalse(keyword, pageable);
+        Page<Review> reviews = reviewRepository.findByTitleContainingOrContextContainingAndIsPrivateIsFalseAndIsPostedIsTrue(keyword, pageable);
         Page<ReviewSearchListDto> searchList = reviews.map(this::convertToReviewSearchListDto);
         return ReviewSearchResponseDto.builder()
                 .searchList(searchList)
