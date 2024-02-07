@@ -58,6 +58,7 @@ const profileStyle: IProfileStyle = {
 	},
 }
 
+// Todo : title, color, id 있을 경우에만 버킷 정보 띄워주기 + 스타일 조정하기
 const UserProfile = ({ type = 'comment', userInfo }: IUserProfileProps) => {
 	return (
 		<section className="inline-block">
@@ -73,23 +74,24 @@ const UserProfile = ({ type = 'comment', userInfo }: IUserProfileProps) => {
 					<p className={`font-bold ${profileStyle[type].nameTextSize}`}>{userInfo.userNickname}</p>
 					<Link to={'/bucket/1'} className="flex items-center">
 						<p
-							className={`inline-block  leading-none ${profileStyle[type].bucketTextSize} ${userInfo.isAchieved ? textColorClass[userInfo.color] : 'text-point1'} ${profileStyle[type].bucketTitleLeftMargin}`}
+							className={`inline-block  leading-none ${profileStyle[type].bucketTextSize} ${userInfo.isAchieved && userInfo.color ? textColorClass[userInfo.color] : 'text-point1'} ${profileStyle[type].bucketTitleLeftMargin}`}
 						>
 							{userInfo.bucketTitle}
 						</p>
-						{userInfo.isAchieved ? (
-							<SquareCheck
-								className={`inline-block ${fillColorClass[userInfo.color]} ${profileStyle[type].achieveIconWidth} ${profileStyle[type].achieveIconHeight} `}
-							/>
-						) : (
-							<Ggumtle
-								color={userInfo.color}
-								speed={10}
-								width={profileStyle[type].achieveIconWidth}
-								height={profileStyle[type].achieveIconHeight}
-								explanation={`${userInfo.userNickname}님의 버킷이 꿈틀거리고 있어요!`}
-							/>
-						)}
+						{userInfo.bucketTitle &&
+							(userInfo.isAchieved ? (
+								<SquareCheck
+									className={`inline-block ${userInfo.color && fillColorClass[userInfo.color]} ${profileStyle[type].achieveIconWidth} ${profileStyle[type].achieveIconHeight} `}
+								/>
+							) : (
+								<Ggumtle
+									color={userInfo.color ?? 'transparent'}
+									speed={10}
+									width={profileStyle[type].achieveIconWidth}
+									height={profileStyle[type].achieveIconHeight}
+									explanation={`${userInfo.userNickname}님의 버킷이 꿈틀거리고 있어요!`}
+								/>
+							))}
 					</Link>
 				</div>
 			</Link>

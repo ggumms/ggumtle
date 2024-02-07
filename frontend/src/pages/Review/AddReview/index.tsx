@@ -9,6 +9,7 @@ import TextEditor from './TextEditor'
 import QuickSaveButton from './QuickSaveButton'
 import PostReviewButton from './PostReviewButton'
 
+// Todo : url을 통해서 현재 버킷 정보를 확인하고 해당 버킷이 사용자의 버킷인지 확인 필요 -> 사용자의 버킷이 아니라면 메인 페이지로 인동
 const AddReview = () => {
 	const [title, setTitle] = useState('')
 	const [reviewText, setReviewText] = useState('')

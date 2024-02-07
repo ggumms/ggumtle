@@ -22,6 +22,8 @@ const ProfileSection = () => {
 
 	const { bucketTitle, color, dayCount } = userInfo
 	const category: CategoryType[] = ['연애', '언어', '환경']
+	const hasTitleBucket = bucketTitle && color && dayCount
+
 	return (
 		<div className="bg-white px-5 pt-2 pb-4">
 			<div className="flex items-center justify-around">
@@ -32,7 +34,15 @@ const ProfileSection = () => {
 				</div>
 				<div className="w-full px-2">
 					{/* @TODO: 대표버킷 없을 경우 처리 */}
-					<ProfileBucket isLoading={false} title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+					{hasTitleBucket && (
+						<ProfileBucket
+							isLoading={false}
+							title={bucketTitle}
+							color={color}
+							dayCount={dayCount}
+							isLock={null}
+						/>
+					)}
 					<div className="bg-white">
 						{category.map((cate, index) => (
 							<InterestTag tag={cate} key={index} />
