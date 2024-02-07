@@ -26,7 +26,7 @@ const UserItemStyle: IUserItemStyle = {
 		},
 		direction: {
 			left: 45,
-			bottom: 40,
+			bottom: 35,
 		},
 	},
 	second: {
@@ -36,7 +36,7 @@ const UserItemStyle: IUserItemStyle = {
 		},
 		direction: {
 			left: 45,
-			bottom: 40,
+			bottom: 38,
 		},
 	},
 	third: {
@@ -45,8 +45,8 @@ const UserItemStyle: IUserItemStyle = {
 			text: 'text-xs',
 		},
 		direction: {
-			left: 46,
-			bottom: 42,
+			left: 45,
+			bottom: 40,
 		},
 	},
 }
