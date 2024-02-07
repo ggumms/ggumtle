@@ -2,9 +2,8 @@ import { useRef, useEffect, useState } from 'react'
 
 export const MIN_Y = -50 // 바텀시트가 최대로 높이 올라갔을 때의 y 값
 export const MAX_Y = window.innerHeight - 100 // 바텀시트가 최소로 내려갔을 때의 y 값
-// export const PREVIEW_HEIGHT = window.innerHeight/100 * 30 // 바텀시트의 세로 길이
-export const PREVIEW_HEIGHT = window.innerHeight - 500 // 바텀시트의 세로 길이
-export const MAX_BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y // 바텀시트의 세로 길이
+export const PREVIEW_HEIGHT = 480
+export const MAX_BOTTOM_SHEET_HEIGHT = window.innerHeight - MIN_Y
 
 type BottomSheetStateType = 'close' | 'preview' | 'maxup'
 
@@ -21,7 +20,7 @@ interface BottomSheetMetrics {
 	isContentAreaTouched: boolean
 }
 
-export default function useBottomSheet() {
+export default function useBucketBottomSheet() {
 	const sheet = useRef<HTMLDivElement>(null)
 	const content = useRef<HTMLDivElement>(null)
 	const [toggle, setToggle] = useState(false)
@@ -42,7 +41,7 @@ export default function useBottomSheet() {
 
 	const openPreview = () => {
 		if (sheet.current) {
-			sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
+			sheet.current!.style.setProperty('transform', `translateY(${PREVIEW_HEIGHT - MAX_Y}px)`)
 			setToggle(true)
 		}
 	}
@@ -62,7 +61,7 @@ export default function useBottomSheet() {
 	useEffect(() => {
 		if (sheet.current) {
 			if (toggle) {
-				sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
+				sheet.current!.style.setProperty('transform', `translateY(${PREVIEW_HEIGHT - MAX_Y}px)`)
 			} else {
 				sheet.current!.style.setProperty('transform', 'translateY(0)')
 			}
@@ -169,9 +168,12 @@ export default function useBottomSheet() {
 							sheet.current!.style.setProperty('transform', 'translateY(20)')
 							setToggle(false)
 						}
-						
+
 						if (touchMove.movingDirection === 'up') {
-							sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
+							sheet.current!.style.setProperty(
+								'transform',
+								`translateY(${PREVIEW_HEIGHT - MAX_Y}px)`
+							)
 							metrics.current.sheetState = 'preview'
 							setToggle(true)
 							setIsMaxup(false)
@@ -181,7 +183,10 @@ export default function useBottomSheet() {
 					if (metrics.current.touchStart.sheetY === 0) {
 						// 1단 (초기 상태)
 						if (touchMove.movingDirection === 'down') {
-							sheet.current!.style.setProperty('transform', `translateY(${500 - MAX_Y}px)`)
+							sheet.current!.style.setProperty(
+								'transform',
+								`translateY(${PREVIEW_HEIGHT - MAX_Y}px)`
+							)
 							metrics.current.sheetState = 'preview'
 
 							setIsMaxup(false)
@@ -224,7 +229,7 @@ export default function useBottomSheet() {
 		const handleTouchStart = () => {
 			metrics.current.isContentAreaTouched = true
 		}
-		
+
 		if (content.current) {
 			content.current.addEventListener('touchstart', handleTouchStart)
 		}
@@ -234,12 +239,6 @@ export default function useBottomSheet() {
 				? content.current.removeEventListener('touchstart', handleTouchStart)
 				: undefined
 	})
-	// useEffect(() => {
-	// 	const handleTouchStart = () => {
-	// 		metrics.current!.isContentAreaTouched = true
-	// 	}
-	// 	content.current!.addEventListener('touchstart', handleTouchStart)
-	// }, [])
 
-	return { sheet, content, openPreview, togglePreview, isMaxup }
+	return { sheet, content, openPreview, closePreview, togglePreview, isMaxup }
 }

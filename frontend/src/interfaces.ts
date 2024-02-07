@@ -2,16 +2,16 @@ import { MouseEventHandler, ReactNode } from 'react'
 
 export interface IBucketWide {
 	title: string
-	color: string
+	color: ColorType
 	dDay: number
 	isLock: boolean
 }
 
 export interface BucketInfoProps {
-	// bucketInfo: IBucketWide
-	title: string
-	color: string
-	dayCount: number
+	isLoading: boolean | null
+	title: string | null
+	color: ColorType
+	dayCount: number | null
 	isLock: boolean | null
 }
 

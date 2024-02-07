@@ -1,8 +1,8 @@
-import { IRadarUser } from "../../types/radarUser"
+import { IRadarUser } from '../../types/radarUser'
 
-export type UserElemType = 'first' | 'second' | 'third'
+export type RadarElemType = 'first' | 'second' | 'third'
 
-export interface IUserDirection {
+export interface IRadarItemDirection {
 	left: number
 	bottom: number
 }
@@ -12,13 +12,13 @@ export interface IUserStyle {
 	text: string
 }
 
-export interface IUserElementStyle {
-	first: { style: IUserStyle; direction: IUserDirection }
-	second: { style: IUserStyle; direction: IUserDirection }
-	third: { style: IUserStyle; direction: IUserDirection }
+export interface IUserItemStyle {
+	first: { style: IUserStyle; direction: IRadarItemDirection }
+	second: { style: IUserStyle; direction: IRadarItemDirection }
+	third: { style: IUserStyle; direction: IRadarItemDirection }
 }
 
-const UserElementStyle: IUserElementStyle = {
+const UserItemStyle: IUserItemStyle = {
 	first: {
 		style: {
 			size: 'w-14 h-14',
@@ -53,27 +53,29 @@ const UserElementStyle: IUserElementStyle = {
 
 export interface UserItemProps {
 	user: IRadarUser
-	type: UserElemType
-	post_id?: string
+	type: RadarElemType
 	handleOpenPreview: (userid: number) => void
 }
 
 const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
 	const itemStyle: { position: 'absolute'; left: string; bottom: string } = {
 		position: 'absolute',
-		left: `${UserElementStyle[type].direction.left + user.pos.x}%`,
-		bottom: `${UserElementStyle[type].direction.bottom + user.pos.y}%`,
+		left: `${UserItemStyle[type].direction.left + user.pos.x}%`,
+		bottom: `${UserItemStyle[type].direction.bottom + user.pos.y}%`,
 	}
+	console.log
 	return (
 		<div
 			onClick={() => handleOpenPreview(user.userId)}
 			className="inline-flex flex-col items-center animate-floating"
 			style={itemStyle}
 		>
-			{/* @TODO: api 통신할 때에는 img 태그로 변경 후 실제 데이터 삽입하기
-      <img src="" alt="" /> */}
-			<div className={`bg-green animate-fadeIn rounded-full ${UserElementStyle[type].style.size}`}></div>
-			<span className={`font-semibold ${UserElementStyle[type].style.text}`}>{user.userNickname}</span>
+			<div
+				className={`${UserItemStyle[type].style.size} rounded-full overflow-hidden animate-fadeIn`}
+			>
+				<img src={user.userProfileImage} alt="" className="w-full h-full object-cover" />
+			</div>
+			<span className={`font-semibold ${UserItemStyle[type].style.text}`}>{user.userNickname}</span>
 		</div>
 	)
 }

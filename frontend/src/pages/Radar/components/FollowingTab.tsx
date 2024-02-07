@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
 import UserItem from './radar/UserItem'
 import ButtonArea from './ButtonArea'
-import PreviewBottomSheet from './preview/PreviewBottomSheet'
 import Radar from './radar/Radar'
 import { ProfileAvatar } from '../../../assets/svgs'
-import useBottomSheet from '../../../hooks/usePreviewBottomSheet'
 import { getRadarUsers } from '../api'
 import { useQuery } from '@tanstack/react-query'
-import { user1stPositioning } from '../utils/radar1st'
-import { user2ndPositioning } from '../utils/radar2nd'
-import { user3rdPositioning } from '../utils/radar3rd'
+import { user1stPositioning } from '../utils/user/radar1st'
+import { user2ndPositioning } from '../utils/user/radar2nd'
+import { user3rdPositioning } from '../utils/user/radar3rd'
 import { IRadarUser } from '../types/radarUser'
+import UserBottomSheet from './bottomSheet/UserBottomSheet'
+import useUserBottomSheet from '../../../hooks/useUserBottomSheet'
+import { Link } from 'react-router-dom'
+import BackDots from './radar/BackDots'
 
 export interface IUserSimple {
 	userId: number
@@ -37,18 +39,13 @@ const FollowingTab = () => {
 	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 
-	const { sheet, content, openPreview, isMaxup, togglePreview } = useBottomSheet()
-	const [userInfo, setUserInfo] = useState<IUserSimple | null>(null)
+	const { sheet, content, openPreview, isMaxup, togglePreview } = useUserBottomSheet()
+	const [userId, setUserId] = useState<number | null>(null)
 	const [refresh, setRefresh] = useState<boolean>(false)
 
 	const handleOpenPreview = (userId: number) => {
 		openPreview()
-		// @TODO: userId로 user정보 호출 api
-		setUserInfo({
-			userId: 1,
-			userProfileImage: 'url',
-			userNickname: 'usung',
-		})
+		setUserId(userId)
 	}
 
 	const refreshRadar = (state: boolean) => {
@@ -63,7 +60,8 @@ const FollowingTab = () => {
 		const radius = 19
 		const maxNum = 3
 		!isLoading &&
-			radar!.circle1.forEach((user, index) => {
+			radar &&
+			radar.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
 						user1stPositioning({ setUsers1st, user, radius, maxNum })
@@ -78,7 +76,8 @@ const FollowingTab = () => {
 		const radius = 34
 		const maxNum = 6
 		!isLoading &&
-			radar!.circle2.forEach((user, index) => {
+			radar &&
+			radar.circle2.forEach((user, index) => {
 				setTimeout(
 					() => {
 						user2ndPositioning({ setUsers2nd, user, radius, maxNum })
@@ -93,7 +92,8 @@ const FollowingTab = () => {
 		const radius = 50
 		const maxNum = 9
 		!isLoading &&
-			radar!.circle3.forEach((user, index) => {
+			radar &&
+			radar.circle3.forEach((user, index) => {
 				setTimeout(
 					() => {
 						user3rdPositioning({ setUsers3rd, user, radius, maxNum })
@@ -105,9 +105,12 @@ const FollowingTab = () => {
 
 	return (
 		<div>
+			<BackDots />
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
-					<ProfileAvatar className="h-14 w-14" />
+					<Link to="/mypage" className="">
+						<ProfileAvatar className="h-14 w-14" />
+					</Link>
 				</Radar>
 
 				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
@@ -140,7 +143,13 @@ const FollowingTab = () => {
 
 			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
 			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
-			<PreviewBottomSheet userInfo={userInfo} togglePreview={togglePreview} isMaxup={isMaxup} sheet={sheet} content={content} />
+			<UserBottomSheet
+				userId={userId}
+				togglePreview={togglePreview}
+				isMaxup={isMaxup}
+				sheet={sheet}
+				content={content}
+			/>
 		</div>
 	)
 }

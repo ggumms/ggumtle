@@ -1,21 +1,20 @@
-import PreviewUser from './PreviewUser'
-import { IUserSimple } from '../FollowingTab'
-import { MAX_BOTTOM_SHEET_HEIGHT } from '../../../../hooks/usePreviewBottomSheet'
+import PreviewUser from './UserPreview'
+import { MAX_BOTTOM_SHEET_HEIGHT } from '../../../../hooks/useUserBottomSheet'
 import Header from '../../../../components/Header'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
 import { icons } from '../../../../constants/header-icons'
 import UserPage from '../../../UserPage'
 
-interface UserInfoProp {
-	userInfo: IUserSimple | null
+interface UserBottomSheetProp {
+	userId: number | null
 	togglePreview: () => void
 	isMaxup: boolean
 	sheet: React.RefObject<HTMLDivElement>
 	content: React.RefObject<HTMLDivElement>
 }
 
-const PreviewBottomSheet = (props: UserInfoProp) => {
-	const { userInfo, togglePreview, isMaxup, sheet, content } = props
+const UserBottomSheet = (props: UserBottomSheetProp) => {
+	const { userId, togglePreview, isMaxup, sheet, content } = props
 	const menu: IMenu = {
 		left: icons.BACK,
 		center: 'juno', // @TODO: 사용자 닉네임 넣기
@@ -28,6 +27,10 @@ const PreviewBottomSheet = (props: UserInfoProp) => {
 		},
 		right_func: undefined,
 	}
+
+	const handleTogglePreview = () => {
+		userId && togglePreview()
+	}
 	return (
 		<div
 			ref={sheet}
@@ -38,7 +41,7 @@ const PreviewBottomSheet = (props: UserInfoProp) => {
 			{isMaxup ? (
 				<Header menu={menu} func={func} />
 			) : (
-				<div onClick={togglePreview} className="h-10 rounded-t-lg relative pt-5 pb-2">
+				<div onClick={handleTogglePreview} className="h-10 rounded-t-lg relative pt-5 pb-2">
 					<div className="w-14 h-[5px] rounded-full bg-unActive m-auto" />
 				</div>
 			)}
@@ -47,12 +50,14 @@ const PreviewBottomSheet = (props: UserInfoProp) => {
 					<UserPage isForRadar={true} />
 				</div>
 			) : (
-				<div className="px-5 py-2">
-					<PreviewUser userId={userInfo?.userId} />
-				</div>
+				userId && (
+					<div className="px-5 py-2">
+						<PreviewUser userId={userId} />
+					</div>
+				)
 			)}
 		</div>
 	)
 }
 
-export default PreviewBottomSheet
+export default UserBottomSheet
