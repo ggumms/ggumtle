@@ -19,7 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "8. 후기 댓글", description = "후기 하위 댓글과 관련된 API들 입니다")
+@Tag(name = "9. 후기 댓글", description = "후기 하위 댓글과 관련된 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comment/review")

@@ -9,7 +9,7 @@ interface MultiPageLayoutProps {
 
 const MultiPageLayout = ({ headerData, hasIcon }: MultiPageLayoutProps) => {
 	return (
-		<div className="flex flex-col grow">
+		<div className={`flex flex-col grow ${hasIcon && 'pt-[10px]'}`}>
 			<NavigationHeader headerData={headerData} hasIcon={hasIcon} />
 			<Outlet />
 		</div>

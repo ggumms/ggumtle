@@ -26,7 +26,7 @@ public class UserInfoResponseDto {
     @Schema(description = "경과 날짜", example = "369")
     private Long dayCount;
     @Schema(description = "대표버킷 색상", example = "null", nullable = true)
-    private String color;
+    private String bucketColor;
     @Schema(description = "대표버킷 달성 여부", example = "null", nullable = true)
     private Boolean isAchieved;
     @Schema(description = "현재 접속한 계정과 요청한 계정 일치 여부", example = "false")

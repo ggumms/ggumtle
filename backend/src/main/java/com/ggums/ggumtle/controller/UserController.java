@@ -22,7 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "5. 사용자", description = "사용자 정보 관련 API들 입니다")
+@Tag(name = "6. 사용자", description = "사용자 정보 관련 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -45,7 +45,7 @@ public class UserController {
          return new Response("message", userService.updateUser(user, userImage, requestDto));
      }
 
-     @GetMapping("/{user}")
+     @GetMapping("/{userId}")
      @Operation(summary = "사용자 조회", description = "주어진 id의 사용자 상세 정보를 반환합니다.")
      @ApiResponses({
              @ApiResponse(responseCode = "200", description = "사용자 조희 성공",
@@ -133,7 +133,7 @@ public class UserController {
          return new Response("followerList", userService.userFollowerList(userId, pageable));
      }
 
-     @GetMapping("/stats/{user}")
+     @GetMapping("/stats/{userId}")
      @Operation(summary = "사용자 상태 조회", description = "사용자 페이지 헤더 정보 (팔로워 수, 팔로잉 수, 달성률)을 조회합니다.")
      @ApiResponses({
              @ApiResponse(responseCode = "200", description = "사용자 상태 조회 성공",

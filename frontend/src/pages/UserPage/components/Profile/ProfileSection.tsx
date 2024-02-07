@@ -25,7 +25,7 @@ const ProfileSection = () => {
 	const hasTitleBucket = bucketTitle && color && dayCount
 
 	return (
-		<div className="bg-white px-5 py-4">
+		<div className="bg-white px-5 pt-2 pb-4">
 			<div className="flex items-center justify-around">
 				<div className="flex flex-col items-center justify-center w-2/5">
 					{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
@@ -35,7 +35,13 @@ const ProfileSection = () => {
 				<div className="w-full px-2">
 					{/* @TODO: 대표버킷 없을 경우 처리 */}
 					{hasTitleBucket && (
-						<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+						<ProfileBucket
+							isLoading={false}
+							title={bucketTitle}
+							color={color}
+							dayCount={dayCount}
+							isLock={null}
+						/>
 					)}
 					<div className="bg-white">
 						{category.map((cate, index) => (

@@ -20,6 +20,13 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.util.Date;
 
+/**
+ * @author 404-not-foundl
+ * @since 2023-12-14
+ * @version spring security 6.1.5
+ * @version spring boot 3.1.6
+ * @version java 17
+ */
 @Component
 @Slf4j
 @RequiredArgsConstructor

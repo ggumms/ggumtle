@@ -2,6 +2,7 @@ package com.ggums.ggumtle.controller;
 
 import com.ggums.ggumtle.common.response.Response;
 import com.ggums.ggumtle.service.UserApiService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "4. 사용자 API", description = "비로그인 사용자(인증 X)와 관련된 API들 입니다")
+@Tag(name = "5. 사용자 API", description = "비로그인 사용자(인증 X)와 관련된 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -23,6 +24,7 @@ public class UserApiController {
     private final UserApiService userApiService;
 
     @GetMapping("/nickname/{nickname}")
+    @Operation(summary = "닉네임 중복 확인", description = "중복되는 닉네임이 이미 있는지 조회합니다")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "닉네임 중복 확인 성공",
                     content = @Content(schemaProperties = {

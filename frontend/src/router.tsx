@@ -91,8 +91,8 @@ const routerData: RouterElement[] = [
 		],
 	},
 	{
-		path: '/user/:userId',
-		element: <UserPage />,
+		path: '/mypage',
+		element: <UserPage isForRadar={false} />,
 		label: '',
 	},
 	{ path: '/bucket/:bucketId', element: <BucketDetail />, label: '' },

@@ -1,10 +1,10 @@
-import { IAddBucket, IRadarUser, IUserPosition } from '../types/radarUser'
-import { getCircleEdgePos } from './common'
+import { IAddUser, IRadarUser, IUserPosition } from '../../types/radarUser'
+import { getCircleEdgePos } from '../common'
 
-export function addBucket1st({ pos, user, setUsers1st }: IAddBucket) {
-	setUsers1st!((prevUsers: IRadarUser[]) => {
+export function addUser3rd({ pos, user, setUsers3rd }: IAddUser) {
+	setUsers3rd!((prevUsers: IRadarUser[]) => {
 		// 초과 방지
-		if (prevUsers.length >= 3) return prevUsers
+		if (prevUsers.length >= 9) return prevUsers
 
 		// 이미 존재하는 user인지 확인
 		const isUserExist = prevUsers.some((e) => e.userId === user.userId)
@@ -27,33 +27,33 @@ export function addBucket1st({ pos, user, setUsers1st }: IAddBucket) {
 	})
 }
 
-export const user1stPositioning = ({ setUsers1st, user, radius, maxNum }: IUserPosition) => {
+export const user3rdPositioning = ({ setUsers3rd, user, radius, maxNum }: IUserPosition) => {
 	let prevUsers: IRadarUser[] = []
-	setUsers1st!((prev) => {
+	setUsers3rd!((prev) => {
 		prevUsers = prev
 		return prev
 	})
 
-	if (prevUsers.length >= 3) return
+	if (prevUsers.length >= 9) return
 	// const radius = 16.5 // 16.5 | 34.5 | 50
 	const pos = getCircleEdgePos(radius)
 	if (prevUsers.length === 0) {
-		return addBucket1st({ pos, user, setUsers1st })
+		return addUser3rd({ pos, user, setUsers3rd })
 	} else {
-		// @TODO: 간혹 겹치는 요소 발생 오류 해결하기
 		const isInRange = prevUsers.some((user) => {
 			const interDistance = Math.sqrt(
 				(pos.x - user.pos.x) * (pos.x - user.pos.x) + (pos.y - user.pos.y) * (pos.y - user.pos.y)
 			)
 
 			// 거리가 13 미만이면
-			return interDistance > 15
+			return interDistance < 13
 		})
-		if (isInRange) {
-			return addBucket1st({ pos, user, setUsers1st })
+		if (!isInRange) {
+			return addUser3rd({ pos, user, setUsers3rd })
 		} else {
+			// console.log("recursive");
 			// 겹치면 다른 값으로 재귀 호출
-			user1stPositioning({ setUsers1st, user, radius, maxNum })
+			user3rdPositioning({ setUsers3rd, user, radius, maxNum })
 		}
 	}
 }

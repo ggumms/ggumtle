@@ -16,5 +16,5 @@ public class ReviewReactionResponseDto {
     @Schema(description = "리액션 종류 및 개수")
     private Map<String, Integer> reactionCounts;
     @Schema(description = "요청한 사용자의 리액션", example = "멋져요", nullable = true)
-    private String myReaction;
+    private String userReaction;
 }

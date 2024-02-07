@@ -17,6 +17,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author 404-not-foundl
+ * @since 2023-12-14
+ * @version spring security 6.1.5
+ * @version spring boot 3.1.6
+ * @version java 17
+ */
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity

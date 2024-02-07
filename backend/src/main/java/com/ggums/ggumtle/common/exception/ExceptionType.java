@@ -32,6 +32,9 @@ public enum ExceptionType {
     SELF_SUBSCRIPTION_ATTEMPTED(400, "자기 자신을 구독할 수 없습니다."),
     ALREADY_WITHDRAWN_USER(409, "이미 탈퇴한 사용자입니다."),
 
+    // oauth
+    OAUTH_AUTHORIZATION_CODE_INVALID(400,"인가코드가 유효하지 않습니다."),
+
     // bucket
     BUCKET_NOT_FOUND(404, "해당 버킷을 찾을 수 없습니다."),
     BUCKET_NOT_VALID(400, "버킷이 비공개입니다."),
@@ -46,7 +49,8 @@ public enum ExceptionType {
     REVIEW_NOT_FOUND(404, "해당 후기를 찾을 수 없습니다."),
     REVIEW_NOT_VALID(400, "후기가 비공개입니다."),
     IMAGE_NOT_FOUND(404, "해당 이미지를 찾을 수 없습니다."),
-    REVIEW_ALREADY_EXISTS(409, "해당 버킷의 리뷰가 이미 존재합니다."),
+    REVIEW_ALREADY_POSTED(409, "해당 버킷의 후기가 이미 존재합니다."),
+    TEMPORARY_REVIEW(400, "해당 후기가 임시저장 상태입니다."),
 
     // comment
     COMMENT_NOT_FOUND(404, "댓글을 찾을 수 없습니다."),

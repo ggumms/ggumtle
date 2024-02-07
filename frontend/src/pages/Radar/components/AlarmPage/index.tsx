@@ -151,7 +151,7 @@ const AlarmPage = () => {
 	return (
 		<div className="w-full">
 			<Header menu={menu} func={func} />
-			<div className="h-screen pt-10 flex flex-col">
+			<div className="h-screen mt-16 flex flex-col">
 				{notifications.length &&
 					notifications.map((alarm: IAlarm) => <AlarmItem alarm={alarm} key={alarm.alarmId} />)}
 				<div className="fixed bottom-2 w-full flex justify-center">

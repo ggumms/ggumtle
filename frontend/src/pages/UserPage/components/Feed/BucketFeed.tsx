@@ -39,7 +39,13 @@ const BucketFeed = () => {
 
 			{/* 버킷 */}
 			{hasTitleBucket && (
-				<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+				<ProfileBucket
+					isLoading={false}
+					title={bucketTitle}
+					color={color}
+					dayCount={dayCount}
+					isLock={null}
+				/>
 			)}
 
 			{/* 태그 */}

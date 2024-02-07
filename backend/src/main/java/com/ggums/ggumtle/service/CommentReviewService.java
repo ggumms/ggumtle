@@ -45,6 +45,10 @@ public class CommentReviewService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
+        }
+
         CommentReview commentReview = CommentReview.builder()
                 .user(user)
                 .review(review)
@@ -77,6 +81,10 @@ public class CommentReviewService {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
 
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
+        }
+
         Page<CommentReview> comments = commentReviewRepository.findByReview(review, pageable);
         return CommentResponseDto.builder().commentList(comments.map(this::convertToCommentResponseDto)).build();
     }
@@ -104,7 +112,7 @@ public class CommentReviewService {
                 .bucketId(repBucketId)
                 .bucketTitle(repBucketTitle)
                 .bucketColor(repBucketColor)
-                .bucketAchievement(isRepBucketAchieved)
+                .isAchieved(isRepBucketAchieved)
                 .build();
 
 
@@ -158,6 +166,10 @@ public class CommentReviewService {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
+        if (!comment.getReview().getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
+        }
+
         commentReviewRepository.delete(comment);
 
         // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 감소
@@ -186,6 +198,10 @@ public class CommentReviewService {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
+        if (!comment.getReview().getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
+        }
+
         comment.update(requestDto.getContext());
         return "댓글이 수정되었습니다.";
     }
@@ -198,6 +214,10 @@ public class CommentReviewService {
         // 후기의 작성자가 아닌 경우 해당 후기에 달린 댓글에 좋아요를 누를 수 없다.
         if (!commentReview.getReview().getBucket().getUser().getId().equals(user.getId())) {
             throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+
+        if (!commentReview.getReview().getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
         }
 
         //todo 좋아요 확장 시, 사용자 validation 변경 필요

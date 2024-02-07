@@ -7,6 +7,9 @@ import lombok.Getter;
 @Getter
 public class PutReviewRequestDto {
 
+    @Schema(description = "연관된 버킷 id", example = "1")
+    private Long bucketId;
+
     @Schema(description = "수정 제목", example = "버킷 1의 후기 수정")
     @Size(max = 100, message = "제목 크기를 초과하였습니다.")
     private String title;

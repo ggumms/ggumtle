@@ -11,5 +11,6 @@ public class PostBucketReactionRequestDto {
     private Long bucketId;
 
     @Size(max = 255, message = "리액션 크기를 초과하였습니다.")
+    @Schema(example = "멋져요")
     private String userReaction;
 }

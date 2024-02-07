@@ -15,4 +15,7 @@ public class PostReviewRequestDto {
 
     @Schema(description = "후기 내용", example = "<p>구독자들 짱 많아요!</p>")
     private String context;
+
+    @Schema(description = "게시 여부 (임시저장인 경우 false)", example = "true")
+    private Boolean isPosted;
 }
