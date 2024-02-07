@@ -22,6 +22,7 @@ const PreviewUser = ({ userId }: { userId: number }) => {
 	const { bucketTitle, color, dayCount } = userInfo
 	const category: CategoryType[] = ['연애', '언어', '환경']
 	const username: string = 'want_u.u'
+	const hasTitleBucket = bucketTitle && color && dayCount
 
 	return (
 		<div className="w-full flex items-center justify-around">
@@ -32,8 +33,9 @@ const PreviewUser = ({ userId }: { userId: number }) => {
 			</div>
 			<div className="w-full px-2">
 				{/* @TODO: 대표버킷 없을 경우 처리 */}
-
-				<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+				{hasTitleBucket && (
+					<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+				)}
 
 				<div className="bg-white">
 					{category.map((cate, index) => (

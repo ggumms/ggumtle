@@ -28,6 +28,8 @@ const BucketFeed = () => {
 	const location = true
 	const reactionCnt = 28
 	const commentCnt = 12
+	const hasTitleBucket = bucketTitle && color && dayCount
+
 	return (
 		<div className="bg-white px-4 py-2">
 			{/* 작성자 프로필 정보 */}
@@ -36,7 +38,9 @@ const BucketFeed = () => {
 			</div>
 
 			{/* 버킷 */}
-			<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+			{hasTitleBucket && (
+				<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+			)}
 
 			{/* 태그 */}
 			<div className="bg-white">
