@@ -36,7 +36,7 @@ const BucketFeed = () => {
 			</div>
 
 			{/* 버킷 */}
-			<ProfileBucket title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
+			<ProfileBucket isLoading={false} title={bucketTitle} color={color} dayCount={dayCount} isLock={null} />
 
 			{/* 태그 */}
 			<div className="bg-white">
