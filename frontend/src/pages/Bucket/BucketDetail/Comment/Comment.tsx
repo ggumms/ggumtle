@@ -1,6 +1,7 @@
 import UserProfile from '../../../../components/UserProfile'
 import { ICommentItem, TimeUnitType } from '../../../../interfaces'
 import ActiveLikeButton from './ActiveLikeButton'
+import ShowMoreButton from './ShowMoreButton'
 import UnActiveLikeButton from './UnActiveLikeButton'
 
 const getTime = (time: number, timeUnit: TimeUnitType): string => {
@@ -34,6 +35,7 @@ const Comment = ({ commentInfo }: ICommentProps) => {
 
 			<ActiveLikeButton />
 			<UnActiveLikeButton />
+			<ShowMoreButton />
 		</div>
 	)
 }
