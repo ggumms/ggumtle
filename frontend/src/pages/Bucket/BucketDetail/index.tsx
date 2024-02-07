@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom'
 import Reaction from './Reaction'
 import CommentList from './Comment/CommentList'
 import CommentInput from './Comment/CommentInput'
+import { useState } from 'react'
 
 const userInfo: UserInfoType = {
 	userId: 1,
@@ -49,6 +50,8 @@ const bucketInfo: IBucketInfo = {
 }
 
 const BucketDetail = () => {
+	const [isInputShown, setIsInputShown] = useState(false)
+	const [isInputFocused, setIsInputFocused] = useState(false)
 	const { goBack } = useRouter()
 	const { bucketId } = useParams()
 
@@ -97,9 +100,9 @@ const BucketDetail = () => {
 						: bucketId && <WriteReviewButton id={bucketId} />}
 				</div>
 				<Reaction />
-				<CommentList />
+				<CommentList isInputFocused={isInputFocused} setIsInputShown={setIsInputShown} />
 			</WithHeaderLayout>
-			<CommentInput />
+			{isInputShown && <CommentInput setIsInputFocused={setIsInputFocused} />}
 		</>
 	)
 }

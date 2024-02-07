@@ -1,5 +1,7 @@
 import Comment from './Comment'
 import { ICommentItem } from '../../../../interfaces'
+import { useEffect, useRef } from 'react'
+import { useCommentStore } from '../../../../store/detailStore'
 
 const commentInfo = {
 	totalPages: 0,
@@ -87,13 +89,49 @@ const commentInfo = {
 	last: true,
 	empty: true,
 }
+interface ICommentListProps {
+	isInputFocused: boolean
+	setIsInputShown: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 // Todo : Api 데이터 타입 지정 후 as 삭제 예정
-const CommentList = () => {
+const CommentList = ({ isInputFocused, setIsInputShown }: ICommentListProps) => {
+	const { commentText } = useCommentStore()
+	const targetRef = useRef<HTMLUListElement>(null)
+
+	// 전역 이벤트 핸들러에서 closure 때문에 최신 state 값을 못 가져오는 문제 해결을 위한 useEffect
+	useEffect(() => {
+		window.addEventListener('scroll', checkTargetIsShown)
+		checkTargetIsShown() // 초기 로드 시에도 위치 확인
+
+		return () => {
+			window.removeEventListener('scroll', checkTargetIsShown)
+		}
+	}, [commentText, isInputFocused])
+
+	const checkTargetIsShown = () => {
+		if (targetRef.current) {
+			const targetLocationInfo = targetRef.current.getBoundingClientRect()
+			const isVisible = targetLocationInfo.top < window.innerHeight
+
+			// 타겟이 보일 때 -> 항상 input이 보이도록 설정
+			if (isVisible === true) {
+				setIsInputShown(true)
+				return
+			}
+			if (isVisible === false && commentText.length === 0 && !isInputFocused) {
+				setIsInputShown(false)
+				return
+			}
+		}
+	}
+
 	return (
-		<ul>
-			{commentInfo.content.map((comment) => (
-				<Comment commentInfo={comment as ICommentItem} />
+		<ul ref={targetRef}>
+			{commentInfo.content.map((comment, index) => (
+				<li key={index}>
+					<Comment commentInfo={comment as ICommentItem} />
+				</li>
 			))}
 		</ul>
 	)
