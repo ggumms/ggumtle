@@ -172,7 +172,7 @@ public class ReviewService {
                 .bucketId(repBucketId)
                 .bucketTitle(repBucketTitle)
                 .bucketColor(repBucketColor)
-                .bucketAchievement(isRepBucketAchieved)
+                .isAchieved(isRepBucketAchieved)
                 .build();
 
         // user가 후기 작성자(writer)를 팔로우하고 있는 경우 user -> writer 친밀도 증가
@@ -315,7 +315,7 @@ public class ReviewService {
 
         return ReviewReactionResponseDto.builder()
                 .reactionCounts(reactionCounts)
-                .myReaction(myReaction)
+                .userReaction(myReaction)
                 .build();
     }
 
