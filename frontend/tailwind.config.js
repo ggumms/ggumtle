@@ -34,6 +34,7 @@ export default {
 				pictureImage: 'url("/src/assets/svgs/pictureImage.svg")',
 				calendarImage: 'url("/src/assets/svgs/calendarImage.svg")',
 				clockImage: 'url("/src/assets/svgs/clockImage.svg")',
+				likeImage: 'url("/src/assets/svgs/heart.svg")',
 			},
 			colors: colorPalette,
 			keyframes: {

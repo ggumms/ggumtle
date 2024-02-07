@@ -1,5 +1,7 @@
 import UserProfile from '../../../../components/UserProfile'
 import { ICommentItem, TimeUnitType } from '../../../../interfaces'
+import ActiveLikeButton from './ActiveLikeButton'
+import UnActiveLikeButton from './UnActiveLikeButton'
 
 const getTime = (time: number, timeUnit: TimeUnitType): string => {
 	switch (timeUnit) {
@@ -24,11 +26,14 @@ interface ICommentProps {
 
 const Comment = ({ commentInfo }: ICommentProps) => {
 	return (
-		<div className="flex flex-col">
+		<div className="relative flex flex-col">
 			{/* //Todo: comment 유저로 정보 변경 필요 */}
 			<UserProfile type="comment" userInfo={commentInfo.writer} />
 			<p className="text-[10px] ml-11">{getTime(commentInfo.time, commentInfo.timeUnit)}</p>
 			<p className="text-xs ml-11">{commentInfo.context}</p>
+
+			<ActiveLikeButton />
+			<UnActiveLikeButton />
 		</div>
 	)
 }

@@ -13,3 +13,6 @@ export { ReactComponent as Clock } from './clockImage.svg'
 export { ReactComponent as WantToDo } from './wantTodo.svg'
 export { ReactComponent as Underpin } from './underpin.svg'
 export { ReactComponent as Cool } from './cool.svg'
+
+// comment
+export { ReactComponent as EmptyLike } from './heart.svg'
