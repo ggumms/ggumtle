@@ -190,16 +190,16 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new CustomException(ExceptionType.REVIEW_NOT_FOUND));
 
-        if (!review.getIsPosted()) {
-            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
-        }
-
         Bucket bucket = review.getBucket();
         User writer = bucket.getUser();
 
         // 후기 조회 불가능한 경우 : 버킷 비공개 && 본인의 버킷(후기)이 아님
         if (bucket.getIsPrivate() && !writer.getId().equals(user.getId())) {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
+        }
+
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
         }
 
         Bucket repBucket = writer.getRepBucket();
@@ -304,6 +304,10 @@ public class ReviewService {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
+        }
+
         String reaction = requestDto.getReaction();
 
         List<ReviewReaction> myReviewReactions = review.getReviewReactions().stream()
@@ -368,6 +372,10 @@ public class ReviewService {
             throw new CustomException(ExceptionType.REVIEW_NOT_VALID);
         }
 
+        if (!review.getIsPosted()) {
+            throw new CustomException(ExceptionType.TEMPORARY_REVIEW);
+        }
+
         List<ReviewReaction> reactionList = review.getReviewReactions();
         Map<String, Integer> reactionCounts = new HashMap<>();
         String myReaction = null;
@@ -388,7 +396,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewSearchResponseDto searchReview(String keyword, Pageable pageable) {
-        Page<Review> reviews = reviewRepository.findByTitleContainingOrContextContainingAndIsPrivateIsFalse(keyword, pageable);
+        Page<Review> reviews = reviewRepository.findByTitleContainingOrContextContainingAndIsPrivateIsFalseAndIsPostedIsTrue(keyword, pageable);
         Page<ReviewSearchListDto> searchList = reviews.map(this::convertToReviewSearchListDto);
         return ReviewSearchResponseDto.builder()
                 .searchList(searchList)
