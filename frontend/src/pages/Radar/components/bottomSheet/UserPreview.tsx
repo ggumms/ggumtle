@@ -18,6 +18,7 @@ interface IUserInfo {
 	isFollowing: boolean
 }
 const UserPreview = ({ userId }: { userId: number }) => {
+	console.log(userId)
 	const { isLoading, data: userInfo } = useQuery<IUserInfo>({
 		queryKey: ['previewUser', userId],
 		queryFn: getUserPreview,
