@@ -53,7 +53,7 @@ public class BucketController {
                             @SchemaProperty(name = "bucketInfo", schema = @Schema(implementation = GetBucketResponseDto.class))
                     }))
     })
-    @GetMapping("/info/{bucket}")
+    @GetMapping("/info/{bucketId}")
     public Response getBucket(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucketId){
         return new Response("bucketInfo", bucketService.getBucket(user, bucketId));
     }
@@ -79,12 +79,12 @@ public class BucketController {
                             @SchemaProperty(name = "message", schema = @Schema(defaultValue = "삭제를 완료하였습니다.", description = "삭제 성공 메세지"))
                     }))
     })
-    @DeleteMapping("/{bucket}")
+    @DeleteMapping("/{bucketId}")
     public Response deleteBucket(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucket_id){
         return new Response("message", bucketService.deleteBucket(user, bucket_id));
     }
 
-    @PatchMapping("/{bucket}")
+    @PatchMapping("/{bucketId}")
     @Operation(summary = "버킷 달성일 등록", description = "주어진 id의 버킷 달성일을 금일로 등록합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "버킷 달성일 등록 성공",
@@ -110,7 +110,7 @@ public class BucketController {
         return new Response("bucketSearchList", bucketService.searchBuckets(word, pageable));
     }
 
-    @PostMapping("/image/{bucket}")
+    @PostMapping("/image/{bucketId}")
     @Operation(summary = "버킷 이미지 등록", description = "버킷 이미지를 등록합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "이미지 저장 성공",
@@ -126,7 +126,7 @@ public class BucketController {
         return new Response("bucketImageUrl", bucketService.bucketImage(user, bucketId, bucketImage));
     }
 
-    @GetMapping("/reaction/{bucket}")
+    @GetMapping("/reaction/{bucketId}")
     @Operation(summary = "버킷 리액션 조회", description = "버킷에 달린 리액션을 반환합니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "리액션 조회 성공",
