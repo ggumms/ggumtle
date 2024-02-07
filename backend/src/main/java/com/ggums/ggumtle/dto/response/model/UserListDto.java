@@ -23,5 +23,5 @@ public class UserListDto {
     @Schema(description = "대표버킷 색상", example = "null", nullable = true)
     private String bucketColor;
     @Schema(description = "대표버킷 달성 여부", example = "null", nullable = true)
-    private Boolean bucketAchievement;
+    private Boolean isAchieved;
 }

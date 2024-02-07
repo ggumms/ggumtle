@@ -22,7 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "5. 사용자", description = "사용자 정보 관련 API들 입니다")
+@Tag(name = "6. 사용자", description = "사용자 정보 관련 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")

@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 
-@Tag(name = "6. 알람", description = "알람과 관련된 API들 입니다")
+@Tag(name = "7. 알람", description = "알람과 관련된 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/alarm")
@@ -58,9 +58,9 @@ public class AlarmController {
     }
 
     @GetMapping("/count")
-    @Operation(summary = "알람 개수 반환", description = "안 읽은 알람의 개수를 반환합니다")
+    @Operation(summary = "알람 개수 조회", description = "안 읽은 알람의 개수를 반환합니다")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "버킷 생성 성공",
+            @ApiResponse(responseCode = "200", description = "조회 성공",
                     content = @Content(schemaProperties = {
                             @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
                             @SchemaProperty(name = "alarmCount", schema = @Schema(type = "int", example = "5",description = "알람 개수"))
@@ -71,9 +71,9 @@ public class AlarmController {
     }
 
     @GetMapping("/")
-    @Operation(summary = "알람 리스트 반환", description = "알람 내역을 반환합니다")
+    @Operation(summary = "알람 조회", description = "전체 알람 내역을 반환합니다")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "버킷 생성 성공",
+            @ApiResponse(responseCode = "200", description = "조회 성공",
                     content = @Content(schemaProperties = {
                             @SchemaProperty(name = "result", schema = @Schema(defaultValue = "ok", description = "요청 성공")),
                             @SchemaProperty(name = "alarm", schema = @Schema(implementation = AlarmResponseDto.class))

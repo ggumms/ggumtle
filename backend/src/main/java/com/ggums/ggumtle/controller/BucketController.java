@@ -24,7 +24,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "2. 버킷", description = "버킷과 관련된 API들 입니다")
+@Tag(name = "3. 버킷", description = "버킷과 관련된 API들 입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/bucket")
@@ -140,7 +140,7 @@ public class BucketController {
     }
 
     @PostMapping("/reaction/")
-    @Operation(summary = "후기 리액션 작성", description = "후기에 리액션을 답니다.")
+    @Operation(summary = "버킷 리액션 작성", description = "버킷에 리액션을 답니다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "리액션 작성 성공",
                     content = @Content(schemaProperties = {
