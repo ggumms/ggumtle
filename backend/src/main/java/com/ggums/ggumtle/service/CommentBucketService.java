@@ -104,7 +104,7 @@ public class CommentBucketService {
                 .bucketId(repBucketId)
                 .bucketTitle(repBucketTitle)
                 .bucketColor(repBucketColor)
-                .bucketAchievement(isRepBucketAchieved)
+                .isAchieved(isRepBucketAchieved)
                 .build();
 
         String timeUnit;

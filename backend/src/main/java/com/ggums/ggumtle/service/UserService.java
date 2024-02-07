@@ -111,7 +111,7 @@ public class UserService {
                 .bucketId(bucket != null ? bucket.getId() : null)
                 .bucketTitle(bucket != null ? bucket.getTitle() : null)
                 .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) : null)
-                .color(bucket != null ? bucket.getColor() : null)
+                .bucketColor(bucket != null ? bucket.getColor() : null)
                 .isAchieved(isAchieved)
                 .owner(currentUser.getId().equals(userId))
                 .isFollowing(followStatus)
@@ -192,7 +192,7 @@ public class UserService {
                 .bucketId(bucketId)
                 .bucketTitle(bucketTitle)
                 .bucketColor(bucketColor)
-                .bucketAchievement(isAchieved)
+                .isAchieved(isAchieved)
                 .build();
     }
 
@@ -265,7 +265,7 @@ public class UserService {
                 .bucketId(bucketId)
                 .bucketTitle(bucketTitle)
                 .bucketColor(bucketColor)
-                .bucketAchievement(isAchieved)
+                .isAchieved(isAchieved)
                 .build();
     }
 

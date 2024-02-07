@@ -104,7 +104,7 @@ public class CommentReviewService {
                 .bucketId(repBucketId)
                 .bucketTitle(repBucketTitle)
                 .bucketColor(repBucketColor)
-                .bucketAchievement(isRepBucketAchieved)
+                .isAchieved(isRepBucketAchieved)
                 .build();
 
 
