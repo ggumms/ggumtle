@@ -54,7 +54,7 @@ public class UserController {
                              @SchemaProperty(name = "userInfo", schema = @Schema(implementation = UserInfoResponseDto.class))
                      }))
      })
-     public Response userInfo(@AuthenticationPrincipal User user, @PathVariable("user") Long userId){
+     public Response userInfo(@AuthenticationPrincipal User user, @PathVariable("userId") Long userId){
          return new Response("userInfo", userService.userInfo(user, userId));
      }
 
