@@ -29,6 +29,8 @@ public class Review extends BaseTime {
     @Column(columnDefinition = "LONGTEXT")
     private String context;
 
+    private Boolean isPosted;
+
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ReviewReaction> reviewReactions = new ArrayList<>();
 }

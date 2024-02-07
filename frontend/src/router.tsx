@@ -116,8 +116,8 @@ const routerData: RouterElement[] = [
 			{ path: 'additional', element: <AdditionalInfo />, label: '추가정보' },
 		],
 	},
-	{ path: '/bucket/achieve', element: <AchieveBucket />, label: '' },
-	{ path: '/review/write', element: <AddReview />, label: '리뷰작성' },
+	{ path: '/bucket/achieve/:bucketId', element: <AchieveBucket />, label: '리뷰달성' },
+	{ path: '/review/write/:bucketId', element: <AddReview />, label: '리뷰작성' },
 	{ path: '*', element: <NotFoundPage />, label: '' },
 ]
 
