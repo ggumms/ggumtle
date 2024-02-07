@@ -1,4 +1,5 @@
-const FollowButtons = () => {
+const FollowButtons = ({ userId }: { userId: number }) => {
+	
 	const handleFollowButton = () => {
 		console.log('click follow')
 	}

@@ -54,8 +54,8 @@ const ProfileSection = ({ isLoading, userInfo }: { isLoading: boolean; userInfo:
 				</fieldset>
 			</section>
 			<section>
-				<NumInfo userId={userId}/>
-				<FollowButtons />
+				<NumInfo userId={userId} />
+				<FollowButtons userId={userId} />
 			</section>
 		</div>
 	)
