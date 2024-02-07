@@ -65,34 +65,33 @@ export type CategoryDataType = Record<CategoryType, ColorType>
 
 export type selectedInfoType = Record<CategoryType, boolean>
 
-export interface IMyUserInfo {
+export interface IBaseUserInfo {
 	userId: number
-	userProfileImage: string
+	userProfileImage: string | null
 	userNickname: string
-	category: CategoryType[]
-	bucketId: number | null
-	bucketTitle: string
-	dayCount: number
-	color: ColorType
-	isAchieved: boolean
-	owner: true
-	isFollowing: null
+	isFollowing: boolean | null
 }
-export interface IOtherUserInfo {
-	userId: number
-	userProfileImage: string
-	userNickname: string
-	category: CategoryType[]
+export interface ITitleBucket {
 	bucketId: number | null
-	bucketTitle: string
-	dayCount: number
-	color: ColorType
+	bucketTitle: string | null
+	color: ColorType | null
 	isAchieved: boolean
-	owner: false
-	isFollowing: boolean
+	dayCount?: number
 }
 
-export type UserInfoType = IMyUserInfo | IOtherUserInfo
+export interface IMyUserInfo extends IBaseUserInfo, ITitleBucket {
+	category: CategoryType[]
+	owner: true
+}
+
+export interface IOtherUserInfo extends IBaseUserInfo, ITitleBucket {
+	category: CategoryType[]
+	owner: false
+}
+
+export interface IProfileUserInfo extends IBaseUserInfo, ITitleBucket {}
+
+export type UserInfoType = IMyUserInfo | IOtherUserInfo | IProfileUserInfo
 
 export interface IBucketInfo {
 	writerId: number
@@ -110,4 +109,17 @@ export interface IBucketInfo {
 	category: CategoryType[]
 	isPrivate: boolean
 	createdDate: string
+}
+
+export type TimeUnitType = 'min' | 'hour' | 'day' | 'month' | 'year'
+
+export interface ICommentItem {
+	id: number
+	context: string
+	writer: IProfileUserInfo
+	numberOfLikes: number
+	timeUnit: TimeUnitType
+	time: number
+	createdDate: string
+	updatedDate: string
 }
