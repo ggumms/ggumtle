@@ -12,6 +12,7 @@ import WriteReviewButton from './WriteReviewButton'
 import { useParams } from 'react-router-dom'
 import Reaction from './Reaction'
 import CommentList from './Comment/CommentList'
+import CommentInput from './Comment/CommentInput'
 
 const userInfo: UserInfoType = {
 	userId: 1,
@@ -98,6 +99,7 @@ const BucketDetail = () => {
 				<Reaction />
 				<CommentList />
 			</WithHeaderLayout>
+			<CommentInput />
 		</>
 	)
 }
