@@ -15,17 +15,20 @@ const NavigationHeader = ({ headerData, hasIcon }: NavigationHeaderProps) => {
 	const { currentPath } = useRouter()
 
 	useEffect(() => {
-		headerData.forEach((item, index) => {
-			if (currentPath.includes(item.path)) {
-				setSelectedIndex(index)
-			}
-		})
-
 		// bucket/write/{children}으로 안들어왔을 경우
 		if (selectedIndex === undefined) {
 			setSelectedIndex(0)
 			return
 		}
+	}, [selectedIndex])
+
+	useEffect(() => {
+		headerData.forEach((item, index) => {
+			if (currentPath.includes(item.path)) {
+				console.log(currentPath + ' ' + item.path)
+				setSelectedIndex(index)
+			}
+		})
 	}, [currentPath])
 
 	return (
@@ -33,7 +36,7 @@ const NavigationHeader = ({ headerData, hasIcon }: NavigationHeaderProps) => {
 			<ul className={`flex gap-[2px]`}>
 				{headerData.map((headerItem, index) => {
 					return (
-						<li key={`hedaer-${index}`} className={`w-16 relative`}>
+						<li key={`header-${index}`} className={`w-16 relative`}>
 							<NavLink
 								to={headerItem.path}
 								// Todo : 삭제 예정
