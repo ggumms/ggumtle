@@ -64,6 +64,7 @@ const FollowingTab = () => {
 			radar.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
+						console.log(user)
 						user1stPositioning({ setUsers1st, user, radius, maxNum })
 					},
 					200 * index + 100 * Math.random()

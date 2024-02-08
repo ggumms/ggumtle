@@ -1,15 +1,15 @@
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
-import { CategoryType } from '../../../../interfaces'
 import { Skeleton } from '@mui/material'
-import { IUserInfo } from '../../types/bottomSheet'
+import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 
-interface UserPreviewProp {
-	isLoading: boolean
-	userInfo: IUserInfo | undefined
-}
-const UserPreview = ({ isLoading, userInfo }: UserPreviewProp) => {
-	const category: CategoryType[] = ['연애', '언어', '환경']
+// interface UserPreviewProp {
+// 	isLoading: boolean
+// 	userInfo: IUserInfo | undefined
+// }
+const UserPreview = ({ userId }: { userId: number }) => {
+	const { isLoading, userInfo } = useUserInfoQuery(userId)
+	// const category: CategoryType[] = ['연애', '언어', '환경']
 
 	return (
 		<div className="w-full flex items-center justify-around">
@@ -17,11 +17,15 @@ const UserPreview = ({ isLoading, userInfo }: UserPreviewProp) => {
 				{isLoading ? (
 					<Skeleton variant="circular" width={60} height={60} />
 				) : (
-					<div className="w-16 h-16 rounded-full overflow-hidden">
-						<img src={userInfo?.userProfileImage} alt="" className="w-full h-full object-cover" />
-					</div>
+					userInfo && (
+						<div className="w-16 h-16 rounded-full overflow-hidden">
+							<img src={userInfo.userProfileImage} alt="" className="w-full h-full object-cover" />
+						</div>
+					)
 				)}
-				<p className="font-semibold text-point1">{userInfo?.userNickname}</p>
+				{!isLoading && userInfo && (
+					<p className="font-semibold text-point1">{userInfo.userNickname}</p>
+				)}
 			</div>
 			<div className="w-full px-2">
 				{/* @TODO: 대표버킷 없을 경우 처리 */}
@@ -45,8 +49,8 @@ const UserPreview = ({ isLoading, userInfo }: UserPreviewProp) => {
 					{isLoading ? (
 						<Skeleton variant="text" height={20} width={'50%'} />
 					) : (
-						// userInfo?.category.map((cate, index) => (
-						category.map((cate, index) => <InterestTag tag={cate} key={index} />)
+						userInfo &&
+						userInfo.category.map((cate, index) => <InterestTag tag={cate} key={index} />)
 					)}
 				</div>
 			</div>

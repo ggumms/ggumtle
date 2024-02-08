@@ -4,16 +4,18 @@ import { icons } from '../../constants/header-icons'
 import { useNavigate } from 'react-router-dom'
 import ProfileSection from './components/Profile/ProfileSection'
 import FeedSection from './components/Feed/FeedSection'
-import { IUserInfo } from '../Radar/types/bottomSheet'
+import { useUserInfoQuery } from '../../hooks/useUserInfo'
 
 interface UserPageProp {
-	isLoading: boolean
-	userInfo: IUserInfo | undefined
+	userId: number
 	isForRadar: boolean
 }
-const UserPage = ({ isLoading, userInfo, isForRadar }: UserPageProp) => {
+const UserPage = ({ userId, isForRadar }: UserPageProp) => {
 	const navigate = useNavigate()
+	
+	const {isLoading, userInfo} = useUserInfoQuery(userId)
 	console.log('[userpage]', userInfo)
+
 	const menu: IMenu = {
 		left: icons.BACK,
 		center: 'junooo is my name', // @TODO: 사용자 닉네임 넣기

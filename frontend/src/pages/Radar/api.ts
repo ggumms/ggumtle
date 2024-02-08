@@ -9,7 +9,7 @@ export const getRadarUsers = async () => {
 	}
 }
 
-export const getUserPreview = async ({ queryKey }: QueryFunctionContext) => {
+export const getUserInfo = async ({ queryKey }: QueryFunctionContext) => {
 	const [, userId] = queryKey
 	try {
 		return await instance.get(`user/${userId}`).then((response) => response.data.userInfo)

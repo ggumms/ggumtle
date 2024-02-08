@@ -4,23 +4,22 @@ import Header from '../../../../components/Header'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
 import { icons } from '../../../../constants/header-icons'
 import UserPage from '../../../UserPage'
-import { useQuery } from '@tanstack/react-query'
-import { IUserInfo, UserBottomSheetProp } from '../../types/bottomSheet'
-import { getUserPreview } from '../../api'
+import { UserBottomSheetProp } from '../../types/bottomSheet'
 import { Skeleton } from '@mui/material'
+import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 
 const UserBottomSheet = (props: UserBottomSheetProp) => {
 	const { userId, togglePreview, isMaxup, sheet, content } = props
 
-	const { isLoading, data: userInfo } = useQuery<IUserInfo>({
-		queryKey: ['previewUser', userId],
-		queryFn: getUserPreview,
-		enabled: !!userId,
-	})
+	const { isLoading, userInfo } = useUserInfoQuery(userId!)
 
 	const menu: IMenu = {
 		left: icons.BACK,
-		center: !isLoading ? userInfo?.userNickname : <Skeleton variant="text" height={40} width={100} />, // @TODO: 사용자 닉네임 넣기
+		center: !isLoading ? (
+			userInfo?.userNickname
+		) : (
+			<Skeleton variant="text" height={40} width={100} />
+		), // @TODO: 사용자 닉네임 넣기
 		right: icons.HAMBERGER,
 	}
 
@@ -48,17 +47,17 @@ const UserBottomSheet = (props: UserBottomSheetProp) => {
 					<div className="w-14 h-[5px] rounded-full bg-unActive m-auto" />
 				</div>
 			)}
-			{isMaxup ? (
-				<div ref={content}>
-					<UserPage isLoading={isLoading} userInfo={userInfo} isForRadar={true} />
-				</div>
-			) : (
-				userId && (
-					<div className="px-5 py-2">
-						<PreviewUser isLoading={isLoading} userInfo={userInfo} />
-					</div>
-				)
-			)}
+			{isMaxup
+				? userId && (
+						<div ref={content}>
+							<UserPage userId={userId} isForRadar={true} />
+						</div>
+					)
+				: userId && (
+						<div className="px-5 py-2">
+							<PreviewUser userId={userId} />
+						</div>
+					)}
 		</div>
 	)
 }
