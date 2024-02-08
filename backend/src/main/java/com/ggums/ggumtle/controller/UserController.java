@@ -1,6 +1,7 @@
 package com.ggums.ggumtle.controller;
 
 import com.ggums.ggumtle.common.response.Response;
+import com.ggums.ggumtle.dto.request.PasswordChangeRequestDto;
 import com.ggums.ggumtle.dto.request.UserFollowRequestDto;
 import com.ggums.ggumtle.dto.request.UserUpdateRequestDto;
 import com.ggums.ggumtle.dto.response.UserInfoResponseDto;
@@ -155,5 +156,10 @@ public class UserController {
     @PostMapping("/logout")
     public Response logout(@AuthenticationPrincipal User user, HttpServletResponse response) {
          return new Response("message", userService.logout(user, response));
+    }
+
+    @PatchMapping("/password")
+    public Response passwordChange(@AuthenticationPrincipal User user, PasswordChangeRequestDto requestDto){
+         return new Response("message", userService.passwordChange(user, requestDto));
     }
 }

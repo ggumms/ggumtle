@@ -7,6 +7,7 @@ import com.ggums.ggumtle.common.jwt.JwtTokenManager;
 import com.ggums.ggumtle.common.redis.RedisLockRepository;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.dto.request.PasswordChangeRequestDto;
 import com.ggums.ggumtle.dto.request.UserFollowRequestDto;
 import com.ggums.ggumtle.dto.request.UserUpdateRequestDto;
 import com.ggums.ggumtle.dto.response.UserInfoResponseDto;
@@ -44,6 +45,7 @@ public class UserService {
     private final BucketReactionRepository bucketReactionRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final CommentReviewRepository commentReviewRepository;
+    private final AuthenticationRepository authenticationRepository;
     private final AlarmRepository alarmRepository;
     private final JwtTokenManager jwtTokenManager;
     private final ImageHandler imageHandler;
@@ -326,5 +328,21 @@ public class UserService {
         jwtTokenManager.logoutToken(user.getUsername(), response);
 
         return "로그아웃 성공";
+    }
+
+    public String passwordChange(User user, PasswordChangeRequestDto requestDto){
+
+        if (user.getAuthentication().getUserEmail() == null){
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+        if (!user.getAuthentication().getUserEmailPassword().equals(requestDto.getUserPassword())){
+            throw new CustomException(ExceptionType.INVALID_LOGIN);
+        }
+
+        Authentication authentication = user.getAuthentication();
+        authentication.setUserEmailPassword(requestDto.getChangedPassword());
+        authenticationRepository.save(authentication);
+
+        return "비밀번호 변경이 완료되었습니다.";
     }
 }
