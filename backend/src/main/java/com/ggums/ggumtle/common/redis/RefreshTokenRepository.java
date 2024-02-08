@@ -15,7 +15,7 @@ public class RefreshTokenRepository {
     private final ValueOperations<String, Object> valueOperations;
 
     public void saveRefreshToken(String userId, String refreshToken, long duration) {
-        valueOperations.set(userId, refreshToken, duration, TimeUnit.SECONDS);
+        valueOperations.set("refreshToken:" + userId, refreshToken, duration, TimeUnit.SECONDS);
     }
 
     public String findRefreshTokenByUserId(String userId) {

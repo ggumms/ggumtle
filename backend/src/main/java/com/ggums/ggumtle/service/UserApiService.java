@@ -271,12 +271,8 @@ public class UserApiService {
 
         Authentication authentication = authenticationRepository.findByUserEmail(email)
                 .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
-        if (authentication.getUser().getDeletedDate() == null){
+        if (authentication.getUser().getDeletedDate() != null){
             throw new CustomException(ExceptionType.NOT_FOUND_USER);
-        }
-
-        if(Boolean.FALSE.equals(redisTemplate.hasKey(sendPwdReqCntKey))){
-            throw new CustomException(ExceptionType.EMAIL_REQUEST_LIMIT_EXCEEDED);
         }
 
         String requestCountStr = redisTemplate.opsForValue().get(sendPwdReqCntKey);
