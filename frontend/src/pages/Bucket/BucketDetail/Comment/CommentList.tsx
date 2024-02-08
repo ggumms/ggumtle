@@ -1,7 +1,7 @@
 import Comment from './Comment'
 import { ICommentItem } from '../../../../interfaces'
-import { useEffect, useRef } from 'react'
-import { useCommentStore } from '../../../../store/detailStore'
+import { useEffect, useRef, useState } from 'react'
+import { useCommentStore, useDetailPageTypeStore } from '../../../../store/detailStore'
 
 const commentInfo = {
 	totalPages: 0,
@@ -28,7 +28,7 @@ const commentInfo = {
 			updatedDate: '2023-12-29 10:34',
 		},
 		{
-			id: 1,
+			id: 2,
 			context: '10만이 엊그제 같은데... 벌써 20만이라니...',
 			writer: {
 				userId: 1,
@@ -47,7 +47,7 @@ const commentInfo = {
 			updatedDate: '2023-12-29 10:34',
 		},
 		{
-			id: 1,
+			id: 3,
 			context: '10만이 엊그제 같은데... 벌써 20만이라니...',
 			writer: {
 				userId: 1,
@@ -97,6 +97,8 @@ interface ICommentListProps {
 // Todo : Api 데이터 타입 지정 후 as 삭제 예정
 const CommentList = ({ isInputFocused, setIsInputShown }: ICommentListProps) => {
 	const { commentText } = useCommentStore()
+	const { pageType } = useDetailPageTypeStore()
+	const [selectedId, setSelectedId] = useState<null | number>(null)
 	const targetRef = useRef<HTMLUListElement>(null)
 
 	// 전역 이벤트 핸들러에서 closure 때문에 최신 state 값을 못 가져오는 문제 해결을 위한 useEffect
@@ -129,8 +131,12 @@ const CommentList = ({ isInputFocused, setIsInputShown }: ICommentListProps) => 
 	return (
 		<ul ref={targetRef}>
 			{commentInfo.content.map((comment, index) => (
-				<li key={index}>
-					<Comment commentInfo={comment as ICommentItem} />
+				<li key={`comment-${index}`}>
+					<Comment
+						commentInfo={comment as ICommentItem}
+						type={comment.id === selectedId && pageType === 'editComment' ? 'edit' : 'read'}
+						setSelectedId={setSelectedId}
+					/>
 				</li>
 			))}
 		</ul>

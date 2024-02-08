@@ -1,9 +1,12 @@
 import { Menu, Transition } from '@headlessui/react'
 import { AiOutlineMore } from 'react-icons/ai'
+import { useDetailPageTypeStore } from '../../../../store/detailStore'
 
 const ShowMoreButton = () => {
+	const { setPageType } = useDetailPageTypeStore()
+
 	const handleClickModifyButton = () => {
-		// Todo : 수정 모드로 변경
+		setPageType('editComment')
 	}
 	const handleClickDeleteButton = () => {
 		// Todo : 삭제 요청 Api 적용

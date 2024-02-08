@@ -42,11 +42,11 @@ const Reaction = () => {
 	const getReactionIcon = (reactionType: ReactionType) => {
 		switch (reactionType) {
 			case '멋져요':
-				return <Cool className="mb-1 w-8 h-8" />
+				return <Cool className="w-8 h-8 mb-1" />
 			case '나도할래':
-				return <WantToDo className="mb-1 w-8 h-8" />
+				return <WantToDo className="w-8 h-8 mb-1" />
 			case '응원해요':
-				return <Underpin className="mb-1 w-8 h-8" />
+				return <Underpin className="w-8 h-8 mb-1" />
 		}
 	}
 
@@ -74,7 +74,7 @@ const Reaction = () => {
 							className={`${activeReaction === reaction && textColorClass[activeColor]} inline-flex flex-col items-center`}
 						>
 							{getReactionIcon(reaction as ReactionType)}
-							<p className="text-xs font-bold mb-2">{reaction}</p>
+							<p className="mb-2 text-xs font-bold">{reaction}</p>
 							<p className="text-sm font-bold">{reactionInfo[reaction as ReactionType] ?? 0}</p>
 						</li>
 					))}
