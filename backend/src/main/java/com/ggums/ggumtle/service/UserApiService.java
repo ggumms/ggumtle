@@ -132,7 +132,7 @@ public class UserApiService {
 
     @Transactional
     public String joinVerificationEmail(EmailVerificationRequestDto requestDto){
-        String email = requestDto.getEmail();
+        String email = requestDto.getUserEmail();
         String emailVerificationCode = "email_join_authentication_code:" + email;
         String verifyAttemptKey = "email_join_authentication_code_attempt:";
 
@@ -315,7 +315,7 @@ public class UserApiService {
     @Transactional
     public String findVerificationEmail(EmailVerificationRequestDto requestDto){
 
-        String email = requestDto.getEmail();
+        String email = requestDto.getUserEmail();
 
         if(Boolean.TRUE.equals(redisTemplate.hasKey("outsidePasswordChange:" + email))){
             throw new CustomException(ExceptionType.OUTSIDE_PASSWORD_CHANGE_REQUEST_LIMIT_EXCEEDED);
