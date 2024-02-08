@@ -142,7 +142,7 @@ public class UserController {
                              @SchemaProperty(name = "userStats", schema = @Schema(implementation = UserStatsResponseDto.class))
                      }))
      })
-     public Response userStats(@PathVariable("user") Long userId){
+     public Response userStats(@PathVariable("userId") Long userId){
          return new Response("userStats", userService.getUserStats(userId));
      }
 
