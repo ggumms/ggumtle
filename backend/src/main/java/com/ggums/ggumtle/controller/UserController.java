@@ -159,7 +159,7 @@ public class UserController {
     }
 
     @PatchMapping("/password")
-    public Response passwordChange(@AuthenticationPrincipal User user, PasswordChangeRequestDto requestDto){
+    public Response passwordChange(@AuthenticationPrincipal User user, @Valid @RequestBody PasswordChangeRequestDto requestDto){
          return new Response("message", userService.passwordChange(user, requestDto));
     }
 }

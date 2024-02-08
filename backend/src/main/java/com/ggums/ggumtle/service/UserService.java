@@ -20,6 +20,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,6 +51,7 @@ public class UserService {
     private final JwtTokenManager jwtTokenManager;
     private final ImageHandler imageHandler;
     private final AlarmHandler alarmHandler;
+    private final PasswordEncoder passwordEncoder;
 
     public String updateUser(User user, MultipartFile userImage, UserUpdateRequestDto requestDto){
 
@@ -335,12 +337,12 @@ public class UserService {
         if (user.getAuthentication().getUserEmail() == null){
             throw new CustomException(ExceptionType.NOT_VALID_USER);
         }
-        if (!user.getAuthentication().getUserEmailPassword().equals(requestDto.getUserPassword())){
+        if (!passwordEncoder.matches(requestDto.getUserPassword(), user.getAuthentication().getUserEmailPassword())){
             throw new CustomException(ExceptionType.INVALID_LOGIN);
         }
 
         Authentication authentication = user.getAuthentication();
-        authentication.setUserEmailPassword(requestDto.getChangedPassword());
+        authentication.setUserEmailPassword(passwordEncoder.encode(requestDto.getChangedPassword()));
         authenticationRepository.save(authentication);
 
         return "비밀번호 변경이 완료되었습니다.";
