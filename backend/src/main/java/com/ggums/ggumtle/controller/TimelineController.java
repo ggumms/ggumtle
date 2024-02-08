@@ -16,13 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "2. 타임라인 관리")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(path = "/timeline")
 public class TimelineController {
 
     private final TimelineService timelineService;
 
     @Operation(summary = "타임라인 조회", description = "미달성, 달성, 후기에 맞는 타임라인을 반환해줍니다.")
-    @GetMapping("/")
+    @GetMapping("/timeline")
     public Response get(@AuthenticationPrincipal User user,
                         @RequestParam Long userId,
                         @RequestParam Boolean doing,
