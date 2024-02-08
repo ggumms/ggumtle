@@ -27,8 +27,8 @@ export const isCommentUserType = (
 
 export const isMyUserType = (
 	userInfo: IMyUserInfo | IOtherUserInfo | IProfileUserInfo
-): userInfo is IProfileUserInfo => {
-	return !(
+): userInfo is IMyUserInfo => {
+	return (
 		'owner' in userInfo &&
 		'category' in userInfo &&
 		userInfo.owner === true &&
@@ -38,8 +38,8 @@ export const isMyUserType = (
 
 export const isOtherUserType = (
 	userInfo: IMyUserInfo | IOtherUserInfo | IProfileUserInfo
-): userInfo is IProfileUserInfo => {
-	return !(
+): userInfo is IOtherUserInfo => {
+	return (
 		'owner' in userInfo &&
 		'category' in userInfo &&
 		userInfo.owner === false &&
