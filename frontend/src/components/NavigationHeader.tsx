@@ -39,8 +39,6 @@ const NavigationHeader = ({ headerData, hasIcon }: NavigationHeaderProps) => {
 						<li key={`header-${index}`} className={`w-16 relative`}>
 							<NavLink
 								to={headerItem.path}
-								// Todo : 삭제 예정
-								data-id={index}
 								className={
 									'inline-block w-full text-center py-2' +
 									(selectedIndex === index ? ' text-[#454645] font-[700]' : ' text-[#D9D9D9]   ')
