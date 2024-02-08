@@ -31,7 +31,7 @@ const UserPage = ({ userId, isForRadar }: UserPageProp) => {
 		<div className="z-35 bg-white">
 			{!isForRadar && <Header menu={menu} func={func} />}
 			<div className="mt-14 bg-lightGray">
-				<ProfileSection isLoading={isLoading} userInfo={userInfo!} />
+				<ProfileSection isLoading={isLoading} userInfo={userInfo} />
 				<FeedSection />
 			</div>
 		</div>

@@ -20,7 +20,7 @@ const ProfileSection = ({ isLoading, userInfo }: { isLoading: boolean; userInfo:
 	}
 
 	console.log('[ProfileSection]', userInfo)
-	const { userId, userProfileImage, bucketTitle, userNickname, color, dayCount, category } = userInfo
+	// const { userId, userProfileImage, bucketTitle, userNickname, color, dayCount, category } = userInfo
 	// const hasTitleBucket = bucketTitle && color && dayCount
 
 	return (
@@ -29,33 +29,41 @@ const ProfileSection = ({ isLoading, userInfo }: { isLoading: boolean; userInfo:
 				<fieldset className="flex flex-col items-center justify-center w-2/5">
 					{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
 					{/* <DummyUser1 /> */}
-					<div className="w-16 h-16 rounded-full overflow-hidden">
-						<img src={userProfileImage} alt="" />
-					</div>
-					<p className="font-semibold text-point1">{userNickname}</p>
+					{!isLoading && userInfo && (
+						<div className="w-16 h-16 rounded-full overflow-hidden">
+							<img src={userInfo.userProfileImage} alt="" />
+						</div>
+					)}
+					{!isLoading && userInfo && (
+						<p className="font-semibold text-point1">{userInfo.userNickname}</p>
+					)}
 				</fieldset>
 
 				<fieldset className="w-full px-2">
 					{/* @TODO: 대표버킷 없을 경우 처리 */}
 					{/* {hasTitleBucket && ( */}
-					<ProfileBucket
-						isLoading={false}
-						title={bucketTitle}
-						color={color}
-						dayCount={dayCount}
-						isLock={null}
-					/>
+					{!isLoading && userInfo && (
+						<ProfileBucket
+							isLoading={false}
+							title={userInfo.bucketTitle}
+							color={userInfo.color}
+							dayCount={userInfo.dayCount}
+							isLock={null}
+						/>
+					)}
 					{/* )} */}
-					<div className="bg-white">
-						{category.map((cate) => (
-							<InterestTag tag={cate} key={cate} />
-						))}
-					</div>
+					{!isLoading && userInfo && (
+						<div className="bg-white">
+							{userInfo.category.map((cate) => (
+								<InterestTag tag={cate} key={cate} />
+							))}
+						</div>
+					)}
 				</fieldset>
 			</section>
 			<section>
-				<NumInfo userId={userId} />
-				<FollowButtons userId={userId} />
+				{!isLoading && userInfo && <NumInfo userId={userInfo.userId} />}
+				{!isLoading && userInfo && <FollowButtons userId={userInfo.userId} />}
 			</section>
 		</div>
 	)

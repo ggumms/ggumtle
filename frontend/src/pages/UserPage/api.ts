@@ -4,7 +4,7 @@ import { instance } from '../../api'
 export const getUserStats = async ({ queryKey }: QueryFunctionContext) => {
 	const [, userId] = queryKey
 	try {
-		return await instance.get(`user/stats/${userId}`).then((response) => response.data)
+		return await instance.get(`user/stats/${userId}`).then((response) => response.data.userStats)
 	} catch (error) {
 		console.log(error)
 	}
