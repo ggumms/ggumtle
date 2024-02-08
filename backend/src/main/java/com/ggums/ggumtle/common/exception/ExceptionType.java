@@ -21,6 +21,7 @@ public enum ExceptionType {
     EMAIL_REQUEST_LIMIT_EXCEEDED(429, "이메일 요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요."),
     PASSWORD_REQUEST_LIMIT_EXCEEDED(429, "비밀번호 요청 한도를 초과하였습니다."),
     AUTHENTICATION_REQUEST_LIMIT_EXCEEDED(429, "인증요청 한도를 초과하였습니다."),
+    OUTSIDE_PASSWORD_CHANGE_REQUEST_LIMIT_EXCEEDED(429, "서버 밖 비밀번호 변경 요청 한도를 초과하였습니다."),
     VERIFICATION_CODE_EXPIRED(400, "인증 코드가 만료되었습니다. 새로운 코드를 요청해주세요."),
     VERIFICATION_CODE_MISMATCH(400, "인증 코드가 일치하지 않습니다. 다시 시도해주세요."),
     VERIFICATION_CODE_NOT_FOUND(400, "인증 코드를 찾을 수 없습니다. 다시 시도하거나 새로운 코드를 요청해주세요."),

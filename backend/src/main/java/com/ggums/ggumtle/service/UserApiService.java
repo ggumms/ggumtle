@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class UserApiService {
 
@@ -57,11 +56,13 @@ public class UserApiService {
     private final String EMAIL_LIMIT_TIME_KEY="email_authentication_code:";
 
 
+    @Transactional(readOnly = true)
     public Boolean isNicknameDuplicate(String nickname){
         Optional<User> user = userRepository.findByUserNickname(nickname);
         return user.isPresent();
     }
 
+    @Transactional
     public boolean nicknameCacheSave(NicknameCacheSaveRequestDto requestDto){
 
         if (Boolean.FALSE.equals(redisTemplate.hasKey("email_join_authorized:" + requestDto.getUserEmail()))){
@@ -91,6 +92,7 @@ public class UserApiService {
         return result.get();
     }
 
+    @Transactional
     public String sendJoinVerificationEmail(EmailAuthenticationRequestDto requestDto){
         String email = requestDto.getUserEmail();
         if(authenticationRepository.findByUserEmail(email).isPresent()){
@@ -128,6 +130,7 @@ public class UserApiService {
         return "인증 이메일을 발송하였습니다.";
     }
 
+    @Transactional
     public String joinVerificationEmail(EmailVerificationRequestDto requestDto){
         String email = requestDto.getEmail();
         String emailVerificationCode = "email_join_authentication_code:" + email;
@@ -150,6 +153,7 @@ public class UserApiService {
         }
     }
 
+    @Transactional
     public String emailJoin(HttpServletResponse response, EmailJoinRequestDto requestDto){
 
         String email = requestDto.getUserEmail();
@@ -220,6 +224,7 @@ public class UserApiService {
         if(!passwordEncoder.matches(password, authentication.getUserEmailPassword())){
             if(authentication.getFailedLoginAttempts() < 5){
                 authentication.setFailedLoginAttempts(authentication.getFailedLoginAttempts() + 1);
+                authenticationRepository.save(authentication);
             }
             if(authentication.getFailedLoginAttempts() >= 5){
                 authentication.setFailedLoginAttempts(0);
@@ -256,8 +261,14 @@ public class UserApiService {
         return "로그인 성공";
     }
 
+    @Transactional
     public String sendFindVerificationEmail(EmailAuthenticationRequestDto requestDto){
         String email = requestDto.getUserEmail();
+
+        if(Boolean.TRUE.equals(redisTemplate.hasKey("outsidePasswordChange:" + email))){
+            throw new CustomException(ExceptionType.OUTSIDE_PASSWORD_CHANGE_REQUEST_LIMIT_EXCEEDED);
+        }
+
         if(authenticationRepository.findByUserEmail(email).isEmpty()){
             throw new CustomException(ExceptionType.NOT_FOUND_USER);
         }
@@ -276,14 +287,13 @@ public class UserApiService {
         }
 
         String requestCountStr = redisTemplate.opsForValue().get(sendPwdReqCntKey);
-        if (requestCountStr != null) {
-            int requestCount = Integer.parseInt(requestCountStr);
-            if (requestCount >= 3) {
-                throw new CustomException(ExceptionType.EMAIL_REQUEST_LIMIT_EXCEEDED);
-            }
-        } else {
-            requestCountStr = "1";
+        int requestCount = requestCountStr != null ? Integer.parseInt(requestCountStr) : 0;
+        if (requestCount >= 3) {
+            throw new CustomException(ExceptionType.EMAIL_REQUEST_LIMIT_EXCEEDED);
         }
+
+        // Increment and update request count
+        redisTemplate.opsForValue().set(sendPwdReqCntKey, String.valueOf(++requestCount), 1, TimeUnit.DAYS);
 
         // getting verification code
         String code = getAuthenticationCode(CHANGE_PWD_AUTH, email, 3);
@@ -294,19 +304,22 @@ public class UserApiService {
                         "please ignore this email or contact us for assistance.\n\n" +
                         "Note: You are allowed to reset your password only once per day. " +
                         "When the code is verified, your account would be able to request new password for 1 hour" +
-                        "Also, email notifications are limited to a maximum of 3 per day. This is request number " + Integer.parseInt(requestCountStr) + " of 3 today.\n\n" +
+                        "Also, email notifications are limited to a maximum of 3 per day. This is request number " + requestCount + " of 3 today.\n\n" +
                         "Best regards,\n" +
                         "The GGUMMS Team");
-
-        updateChangePwdReqCnt(email);
 
         return "비밀번호를 재발급하였습니다.";
     }
 
+
+    @Transactional
     public String findVerificationEmail(EmailVerificationRequestDto requestDto){
 
         String email = requestDto.getEmail();
 
+        if(Boolean.TRUE.equals(redisTemplate.hasKey("outsidePasswordChange:" + email))){
+            throw new CustomException(ExceptionType.OUTSIDE_PASSWORD_CHANGE_REQUEST_LIMIT_EXCEEDED);
+        }
         if (Boolean.FALSE.equals(redisTemplate.hasKey(CHANGE_PWD_AUTH + email))){
             throw new CustomException(ExceptionType.VERIFICATION_CODE_EXPIRED);
         }
@@ -319,9 +332,13 @@ public class UserApiService {
         return "비밀번호 변경이 허용이 되었습니다.";
     }
 
+    @Transactional
     public String sendNewPasswordToEmail(EmailAuthenticationRequestDto requestDto){
         String email = requestDto.getUserEmail();
 
+        if(Boolean.TRUE.equals(redisTemplate.hasKey("outsidePasswordChange:" + email))){
+            throw new CustomException(ExceptionType.OUTSIDE_PASSWORD_CHANGE_REQUEST_LIMIT_EXCEEDED);
+        }
         Authentication authentication = authenticationRepository.findByUserEmail(email)
                 .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
         if(Boolean.FALSE.equals(redisTemplate.hasKey("passwordChangeAuthorized:" + email))){
@@ -329,9 +346,9 @@ public class UserApiService {
         }
 
         String code = generateVerificationCode(10);
-        authentication.setUserEmailPassword(code);
+        authentication.setUserEmailPassword(passwordEncoder.encode(code));
         authenticationRepository.save(authentication);
-        sendEmail(email, "GGUMMS :: Password Successfully Reset",
+        sendEmail(email, "GGUMMTLE :: Password Successfully Reset",
                 "Dear User,\n\n" +
                         "Your GGUMTLE account password has been successfully reset.\n" +
                         "You can now log in to your account using your new password.\n\n" +
@@ -340,6 +357,8 @@ public class UserApiService {
                         "New Password : " + code + "\n\n" +
                         "Best regards,\n" +
                         "The GGUMMS Team");
+
+        redisTemplate.opsForValue().set("outsidePasswordChange:" + email, email, 1, TimeUnit.DAYS);
 
         return "비밀번호 변경 완료.";
     }

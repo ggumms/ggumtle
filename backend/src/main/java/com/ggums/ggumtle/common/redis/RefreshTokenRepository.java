@@ -19,7 +19,7 @@ public class RefreshTokenRepository {
     }
 
     public String findRefreshTokenByUserId(String userId) {
-        return (String) valueOperations.get(userId);
+        return (String) valueOperations.get("refreshToken:" + userId);
     }
 
     public void deleteRefreshToken(String userId) {
