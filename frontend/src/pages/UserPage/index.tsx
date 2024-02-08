@@ -2,8 +2,8 @@ import Header from '../../components/Header'
 import { IMenu, IMenuFunc } from '../../interfaces'
 import { icons } from '../../constants/header-icons'
 import { useNavigate } from 'react-router-dom'
-import ProfileSection from './components/Profile/ProfileSection'
-import FeedSection from './components/Feed/FeedSection'
+import ProfileSection from './components/ProfileSection'
+import FeedSection from './components/FeedSection'
 import { useUserInfoQuery } from '../../hooks/useUserInfo'
 
 interface UserPageProp {
@@ -13,7 +13,7 @@ interface UserPageProp {
 const UserPage = ({ userId, isForRadar }: UserPageProp) => {
 	const navigate = useNavigate()
 	
-	const {isLoading, userInfo} = useUserInfoQuery(userId)
+	const {userInfo} = useUserInfoQuery(userId)
 	console.log('[userpage]', userInfo)
 
 	const menu: IMenu = {
@@ -31,7 +31,7 @@ const UserPage = ({ userId, isForRadar }: UserPageProp) => {
 		<div className="z-35 bg-white">
 			{!isForRadar && <Header menu={menu} func={func} />}
 			<div className="mt-14 bg-lightGray">
-				<ProfileSection isLoading={isLoading} userInfo={userInfo} />
+				<ProfileSection userId={userId} />
 				<FeedSection />
 			</div>
 		</div>

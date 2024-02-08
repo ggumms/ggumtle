@@ -10,7 +10,16 @@ export const getUserStats = async ({ queryKey }: QueryFunctionContext) => {
 	}
 }
 
-export const putFollow = async ({ queryKey }: QueryFunctionContext) => {
+// export const putFollow = async ({ queryKey }: QueryFunctionContext) => {
+// 	const [, userId] = queryKey
+// 	return await instance.get(`user/stats/${userId}`).then((response) => response.data)
+// }
+
+export const getTimeline = async ({ queryKey }: QueryFunctionContext) => {
 	const [, userId] = queryKey
-	return await instance.get(`user/stats/${userId}`).then((response) => response.data)
+	try {
+		return await instance.get(`user/stats/${userId}`).then((response) => response.data.userStats)
+	} catch (error) {
+		console.log(error)
+	}
 }

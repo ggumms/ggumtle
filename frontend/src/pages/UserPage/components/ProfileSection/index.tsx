@@ -1,24 +1,12 @@
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
-import { IUserInfo } from '../../../Radar/types/bottomSheet'
+import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 import FollowButtons from './FollowButtons'
 import NumInfo from './NumInfo'
 
-const ProfileSection = ({ isLoading, userInfo }: { isLoading: boolean; userInfo: IUserInfo }) => {
-	const userInfoTest: IUserInfo = {
-		userId: 1,
-		userProfileImage: 'url',
-		userNickname: 'junho',
-		category: ['인간관계', '여행', '직장'],
-		bucketId: 2,
-		bucketTitle: '구독자 100만명 달성하기',
-		dayCount: 14,
-		color: 'mint',
-		isAchieved: true,
-		owner: true,
-		isFollowing: false,
-	}
+const ProfileSection = ({ userId }: { userId: number }) => {
 
+	const { isLoading, userInfo } = useUserInfoQuery(userId!)
 	console.log('[ProfileSection]', userInfo)
 	// const { userId, userProfileImage, bucketTitle, userNickname, color, dayCount, category } = userInfo
 	// const hasTitleBucket = bucketTitle && color && dayCount
