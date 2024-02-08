@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,6 +57,7 @@ public class KakaoService {
     private final RedisLockRepository redisLockRepository;
     private final TransactionHandler transactionHandler;
     private final InterestRepository interestRepository;
+    private final StringRedisTemplate redisTemplate;
     private final JwtTokenManager jwtTokenManager;
     private final UserRepository userRepository;
 
@@ -82,6 +85,7 @@ public class KakaoService {
     }
 
     public String kakaoJoin(OAuthJoinRequestDto requestDto){
+        String email = requestDto.getUserEmail();
 
         Token token = getToken(requestDto.getAuthorizationCode());
         OAuthUserInfo oAuthUserInfo = fetchUserInfo(token.getAccessToken());
@@ -98,9 +102,8 @@ public class KakaoService {
         String lockKey = "user_nickname_lock";
         redisLockRepository.runOnLock(lockKey, () -> {
             transactionHandler.runOnWriteTransaction(() -> {
-                Optional<User> userNicknameCheck = userRepository.findByUserNickname(requestDto.getUserNickname());
-                if(userNicknameCheck.isPresent()) {
-                    throw new CustomException(ExceptionType.NICKNAME_DUPLICATE);
+                if (Objects.equals(redisTemplate.opsForValue().get("nickname_cache:" + requestDto.getUserNickname()), email)){
+                    throw new CustomException(ExceptionType.NICKNAME_UNAUTHORIZED);
                 }
                 user.setUserNickname(requestDto.getUserNickname());
                 userRepository.save(user);

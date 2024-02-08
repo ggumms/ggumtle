@@ -3,9 +3,11 @@ package com.ggums.ggumtle.service;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.common.handler.ImageHandler;
 import com.ggums.ggumtle.common.handler.TransactionHandler;
+import com.ggums.ggumtle.common.jwt.JwtTokenManager;
 import com.ggums.ggumtle.common.redis.RedisLockRepository;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.dto.request.PasswordChangeRequestDto;
 import com.ggums.ggumtle.dto.request.UserFollowRequestDto;
 import com.ggums.ggumtle.dto.request.UserUpdateRequestDto;
 import com.ggums.ggumtle.dto.response.UserInfoResponseDto;
@@ -14,9 +16,11 @@ import com.ggums.ggumtle.dto.response.UserStatsResponseDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.*;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,9 +46,12 @@ public class UserService {
     private final BucketReactionRepository bucketReactionRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final CommentReviewRepository commentReviewRepository;
+    private final AuthenticationRepository authenticationRepository;
     private final AlarmRepository alarmRepository;
+    private final JwtTokenManager jwtTokenManager;
     private final ImageHandler imageHandler;
     private final AlarmHandler alarmHandler;
+    private final PasswordEncoder passwordEncoder;
 
     public String updateUser(User user, MultipartFile userImage, UserUpdateRequestDto requestDto){
 
@@ -316,5 +323,28 @@ public class UserService {
         user.getUserInterest().clear();
 
         return "사용자 탈퇴 및 관련 데이터 삭제 처리되었습니다.";
+    }
+
+    public String logout(User user, HttpServletResponse response){
+
+        jwtTokenManager.logoutToken(user.getUsername(), response);
+
+        return "로그아웃 성공";
+    }
+
+    public String passwordChange(User user, PasswordChangeRequestDto requestDto){
+
+        if (user.getAuthentication().getUserEmail() == null){
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+        if (!passwordEncoder.matches(requestDto.getUserPassword(), user.getAuthentication().getUserEmailPassword())){
+            throw new CustomException(ExceptionType.INVALID_LOGIN);
+        }
+
+        Authentication authentication = user.getAuthentication();
+        authentication.setUserEmailPassword(passwordEncoder.encode(requestDto.getChangedPassword()));
+        authenticationRepository.save(authentication);
+
+        return "비밀번호 변경이 완료되었습니다.";
     }
 }

@@ -29,7 +29,7 @@ public class User extends BaseTime implements UserDetails {
     @JoinColumn(name = "rep_bucket_id")
     private Bucket repBucket;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "authentication_id")
     private Authentication authentication;
 
