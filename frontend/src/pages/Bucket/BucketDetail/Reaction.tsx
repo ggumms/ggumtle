@@ -69,7 +69,7 @@ const Reaction = () => {
 					Object.keys(reactionInfo).map((reaction, index) => (
 						<li
 							data-reaction={reaction}
-							key={index}
+							key={`reaction-${index}`}
 							onClick={handleClickReaction}
 							className={`${activeReaction === reaction && textColorClass[activeColor]} inline-flex flex-col items-center`}
 						>

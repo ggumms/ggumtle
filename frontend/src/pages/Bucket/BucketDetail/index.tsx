@@ -90,7 +90,7 @@ const BucketDetail = () => {
 				{/* 태그 */}
 				<ul className="bg-white">
 					{bucketInfo.category.map((category, index) => (
-						<InterestTag tag={category} key={index} />
+						<InterestTag tag={category} key={`category-${index}`} />
 					))}
 				</ul>
 				<div className="flex gap-3">
