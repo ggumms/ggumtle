@@ -54,7 +54,9 @@ export interface IIsPrivateSlice {
 }
 
 // :: Reaction
-type ReactionType = '멋져요' | '응원해요' | '나도할래'
-type ReactionCountType = {
-	[key in ReactionType]: number
+export type ReactionType = '멋져요' | '응원해요' | '나도할래'
+export type ReactionCountType = Record<ReactionType, number>
+export interface IReactionInfo {
+	userReaction: ReactionType
+	reactionCounts: ReactionCountType
 }
