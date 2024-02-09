@@ -7,7 +7,6 @@ import com.ggums.ggumtle.dto.request.UpdateBucketRequestDto;
 import com.ggums.ggumtle.dto.response.BucketSearchResponseDto;
 import com.ggums.ggumtle.dto.response.GetBucketReactionResponseDto;
 import com.ggums.ggumtle.dto.response.GetBucketResponseDto;
-import com.ggums.ggumtle.dto.response.ReviewResponseDto;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.service.BucketService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +53,7 @@ public class BucketController {
                     }))
     })
     @GetMapping("/info/{bucketId}")
-    public Response getBucket(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucketId){
+    public Response getBucket(@AuthenticationPrincipal User user, @PathVariable("bucketId") Long bucketId){
         return new Response("bucketInfo", bucketService.getBucket(user, bucketId));
     }
 
@@ -80,7 +79,7 @@ public class BucketController {
                     }))
     })
     @DeleteMapping("/{bucketId}")
-    public Response deleteBucket(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucket_id){
+    public Response deleteBucket(@AuthenticationPrincipal User user, @PathVariable("bucketId") Long bucket_id){
         return new Response("message", bucketService.deleteBucket(user, bucket_id));
     }
 
@@ -93,7 +92,7 @@ public class BucketController {
                             @SchemaProperty(name = "message", schema = @Schema(defaultValue = "버킷 달성일이 등록되었습니다.", description = "달성일 등록 성공 메세지"))
                     }))
     })
-    public Response achieveBucket(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucket_id){
+    public Response achieveBucket(@AuthenticationPrincipal User user, @PathVariable("bucketId") Long bucket_id){
         return new Response("message", bucketService.achieveBucket(user, bucket_id));
     }
 
@@ -122,7 +121,7 @@ public class BucketController {
                                             description = "이미지 URL"))
                     }))
     })
-    public Response bucketImage(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucketId, @RequestParam("bucketImage") MultipartFile bucketImage){
+    public Response bucketImage(@AuthenticationPrincipal User user, @PathVariable("bucketId") Long bucketId, @RequestParam("bucketImage") MultipartFile bucketImage){
         return new Response("bucketImageUrl", bucketService.bucketImage(user, bucketId, bucketImage));
     }
 
@@ -135,7 +134,7 @@ public class BucketController {
                             @SchemaProperty(name = "bucketReaction", schema = @Schema(implementation = GetBucketReactionResponseDto.class)),
                     }))
     })
-    public Response getBucketReaction(@AuthenticationPrincipal User user, @PathVariable("bucket") Long bucketId){
+    public Response getBucketReaction(@AuthenticationPrincipal User user, @PathVariable("bucketId") Long bucketId){
         return new Response("bucketReaction", bucketService.getBucketReaction(user, bucketId));
     }
 
