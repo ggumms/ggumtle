@@ -1,14 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Cool, Underpin, WantToDo } from '../../../assets/svgs'
 import { textColorClass } from '../../../constants/dynamicClass'
-
-type ReactionType = '멋져요' | '응원해요' | '나도할래'
-type ReactionCountType = {
-	[key in ReactionType]: number
-}
-const isReactionType = (reaction: string): reaction is ReactionType => {
-	return reaction === '멋져요' || reaction === '응원해요' || reaction === '나도할래'
-}
+import { ReactionCountType, ReactionType } from '../../../types/bucket'
+import { isReactionType } from '../../../utils/typeFilter'
 
 const Reaction = () => {
 	const [activeReaction, setActiveReaction] = useState<ReactionType | null>(null)

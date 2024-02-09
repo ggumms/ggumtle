@@ -52,3 +52,9 @@ export interface IIsPrivateSlice {
 	changeIsPrivate: (privateValue: boolean) => void
 	resetIsPrivate: () => void
 }
+
+// :: Reaction
+type ReactionType = '멋져요' | '응원해요' | '나도할래'
+type ReactionCountType = {
+	[key in ReactionType]: number
+}
