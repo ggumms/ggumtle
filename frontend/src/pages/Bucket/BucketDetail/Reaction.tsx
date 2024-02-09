@@ -1,36 +1,46 @@
 import { useEffect, useState } from 'react'
-import { Cool, Underpin, WantToDo } from '../../../assets/svgs'
-import { textColorClass } from '../../../constants/dynamicClass'
-import { ReactionCountType, ReactionType } from '../../../types/bucket'
+import { useQuery } from '@tanstack/react-query'
+
+import { getBucketReaction } from './api'
+import { IReactionInfo, ReactionCountType, ReactionType } from '../../../types/bucket'
 import { isReactionType } from '../../../utils/typeFilter'
 
-const Reaction = () => {
+import { Cool, Underpin, WantToDo } from '../../../assets/svgs'
+import { textColorClass } from '../../../constants/dynamicClass'
+
+interface IReactionProps {
+	id: string
+}
+const defaultReactionInfo: ReactionCountType = { 멋져요: 0, 응원해요: 0, 나도할래: 0 }
+
+const Reaction = ({ id }: IReactionProps) => {
 	const [activeReaction, setActiveReaction] = useState<ReactionType | null>(null)
 	const [reactionInfo, setReactionInfo] = useState<ReactionCountType>()
-	const activeColor = 'green'
+	const activeColor = 'green' // active된 Reaction의 색상을 변수로 지정해둔 것
 
-	// Todo: Api 데이터로 변경 필요 + 전역 state로 관리 예정
+	// id별로 cachepool을 관리하기 위해선 id가 필요하다.
+	const { isLoading, data: bucketReaction } = useQuery<IReactionInfo>({
+		queryKey: ['bucketReaction', id],
+		queryFn: getBucketReaction,
+	})
+
+	// Todo: 전역 state로 관리 예정
 	useEffect(() => {
-		createReactionData()
-	}, [])
+		bucketReaction && createReactionData(bucketReaction)
+	}, [isLoading, bucketReaction])
 
-	// Api dummy data
-	const createReactionData = async () => {
-		// Todo : addtionalProp1이 '멋져요' 이렇게 오는게 맞는지 확인해보고 map 이용해서 코드 수정 하기
-		// Todo : Api 연동 이후 as 키워드 삭제 예정
-		const { userReaction, reactionCounts } = await {
-			userReaction: '멋져요',
-			reactionCounts: {
-				멋져요: 201,
-				응원해요: 99,
-				나도할래: 21,
-			},
-		}
+	const createReactionData = async (bucketReaction: IReactionInfo) => {
+		const { userReaction, reactionCounts } = bucketReaction
 
-		if (isReactionType(userReaction)) {
-			setActiveReaction(userReaction)
-			setReactionInfo(reactionCounts)
-		}
+		const currentReactionInfo = { ...defaultReactionInfo }
+		Object.keys(reactionCounts).forEach((reactionType) => {
+			if (isReactionType(reactionType)) {
+				currentReactionInfo[reactionType] = reactionCounts[reactionType]
+			}
+		})
+
+		setActiveReaction(userReaction)
+		setReactionInfo(currentReactionInfo)
 	}
 
 	const getReactionIcon = (reactionType: ReactionType) => {
@@ -44,6 +54,7 @@ const Reaction = () => {
 		}
 	}
 
+	// :: Event handler
 	const handleClickReaction = async (event: React.MouseEvent<HTMLLIElement>) => {
 		const reactionType = event.currentTarget.dataset.reaction
 
@@ -55,6 +66,9 @@ const Reaction = () => {
 		}
 	}
 
+	if (isLoading) {
+		return <></>
+	}
 	return (
 		// WithHeader 레이아웃을 살리기 위해서 absolute 적용, 더 좋은 방법 있으면 개선 예정
 		<div className="relative mb-28">
