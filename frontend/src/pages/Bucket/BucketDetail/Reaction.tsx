@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import { getBucketReaction } from './api'
+import { getBucketReaction, postBucketReaction } from './api'
 import { IReactionInfo, ReactionCountType, ReactionType } from '../../../types/bucket'
 import { isReactionType } from '../../../utils/typeFilter'
 
@@ -20,7 +20,7 @@ const Reaction = ({ id }: IReactionProps) => {
 
 	// id별로 cachepool을 관리하기 위해선 id가 필요하다.
 	const { isLoading, data: bucketReaction } = useQuery<IReactionInfo>({
-		queryKey: ['bucketReaction', id],
+		queryKey: ['bucketReaction', id, activeReaction],
 		queryFn: getBucketReaction,
 	})
 
@@ -58,17 +58,12 @@ const Reaction = ({ id }: IReactionProps) => {
 	const handleClickReaction = async (event: React.MouseEvent<HTMLLIElement>) => {
 		const reactionType = event.currentTarget.dataset.reaction
 
-		// Todo : Api 통신 연결 성공 시 아래 코드 수행하도록 수정 필요
-		const postReactionRes = await 'success'
-
-		if (postReactionRes === 'success' && reactionType && isReactionType(reactionType)) {
-			setActiveReaction(reactionType)
+		if (reactionType && isReactionType(reactionType)) {
+			const postReactionRes = await postBucketReaction(id, reactionType)
+			postReactionRes === 'success' && setActiveReaction(reactionType)
 		}
 	}
 
-	if (isLoading) {
-		return <></>
-	}
 	return (
 		// WithHeader 레이아웃을 살리기 위해서 absolute 적용, 더 좋은 방법 있으면 개선 예정
 		<div className="relative mb-28">
@@ -83,7 +78,9 @@ const Reaction = ({ id }: IReactionProps) => {
 						>
 							{getReactionIcon(reaction as ReactionType)}
 							<p className="mb-2 text-xs font-bold">{reaction}</p>
-							<p className="text-sm font-bold">{reactionInfo[reaction as ReactionType] ?? 0}</p>
+							{!isLoading && (
+								<p className="text-sm font-bold">{reactionInfo[reaction as ReactionType]}</p>
+							)}
 						</li>
 					))}
 			</ul>
