@@ -14,6 +14,8 @@ import Reaction from './Reaction'
 import CommentList from './Comment/CommentList'
 import CommentInput from './Comment/CommentInput'
 import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { getBucketInfo } from './api'
 
 const userInfo: UserInfoType = {
 	userId: 1,
@@ -29,25 +31,25 @@ const userInfo: UserInfoType = {
 	isFollowing: null,
 }
 
-const bucketInfo: IBucketInfo = {
-	writerId: 1,
-	reviewId: 1,
-	title: '구독자분들과 팬미팅 진행하기',
-	timeCapsule:
-		'20만이 되면 얼마나 좋을까.. 나는야 뽀시래기.. 20만이 되어도 초심을 잃지 말고 그때의 감사한 마음을 담아 구독자분들께 그대로 돌려드리자.',
-	bucketPicture: '/public/dummy.PNG',
-	color: 'dream green',
-	reminderDate: 'twoWeeks',
-	latitude: 23.452,
-	longitude: 143.213,
-	address: '용산 파크랜드',
-	dayCount: 369,
-	// achievementDate: null,
-	achievementDate: '2023-01-01',
-	category: ['취미', '여행', '휴식'],
-	isPrivate: false,
-	createdDate: '2023-07-05',
-}
+// const bucketInfo: IBucketInfo = {
+// 	writerId: 1,
+// 	reviewId: 1,
+// 	title: '구독자분들과 팬미팅 진행하기',
+// 	timeCapsule:
+// 		'20만이 되면 얼마나 좋을까.. 나는야 뽀시래기.. 20만이 되어도 초심을 잃지 말고 그때의 감사한 마음을 담아 구독자분들께 그대로 돌려드리자.',
+// 	bucketPicture: '/public/dummy.PNG',
+// 	color: 'dream green',
+// 	reminderDate: 'twoWeeks',
+// 	latitude: 23.452,
+// 	longitude: 143.213,
+// 	address: '용산 파크랜드',
+// 	dayCount: 369,
+// 	// achievementDate: null,
+// 	achievementDate: '2023-01-01',
+// 	category: ['취미', '여행', '휴식'],
+// 	isPrivate: false,
+// 	createdDate: '2023-07-05',
+// }
 
 const BucketDetail = () => {
 	const [isInputShown, setIsInputShown] = useState(false)
@@ -55,12 +57,19 @@ const BucketDetail = () => {
 	const { goBack } = useRouter()
 	const { bucketId } = useParams()
 
+	// bucketId별로 cachepool을 관리하기 위해선 bucketId가 필요하다.
+	const { isLoading, data: bucketInfo } = useQuery<IBucketInfo>({
+		queryKey: ['bucketInfo', bucketId],
+		queryFn: getBucketInfo,
+	})
+
 	// bucketId Path variable로 Number 값이 아닌 값이 들어오면 이전 페이지로 이동
 	if (isNaN(Number(bucketId))) {
 		goBack()
 		return
 	}
 
+	// :: Header
 	const handleLeftFunc = () => {
 		goBack()
 	}
@@ -71,6 +80,9 @@ const BucketDetail = () => {
 	}
 	const headerFunc: IMenuFunc = { left_func: handleLeftFunc, right_func: undefined }
 
+	if (isLoading) {
+		return <></>
+	}
 	return (
 		<>
 			<WithHeaderLayout headerMenu={headerMenu} headerFunc={headerFunc}>
