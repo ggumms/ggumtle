@@ -115,6 +115,11 @@ public class BucketService {
             follow.setScore(currentScore + Score.READ);
         }
 
+        LocalDateTime endTime = LocalDateTime.now();
+        if (bucket.getAchievementDate() != null) {
+            endTime = bucket.getAchievementDate().atStartOfDay();
+        }
+
         return GetBucketResponseDto.builder()
                 .writerId(bucket.getUser().getId())
                 .reviewId(reviewId)
@@ -126,7 +131,7 @@ public class BucketService {
                 .latitude(bucket.getLatitude())
                 .longitude(bucket.getLongitude())
                 .address(bucket.getAddress())
-                .dayCount(ChronoUnit.DAYS.between(bucket.getCreatedDate(), LocalDateTime.now()))
+                .dayCount(ChronoUnit.DAYS.between(bucket.getCreatedDate(), endTime))
                 .achievementDate(bucket.getAchievementDate())
                 .category(bucket.getBucketInterest().stream()
                         .map(Interest::getName)
@@ -237,10 +242,10 @@ public class BucketService {
     }
 
     private BucketSearchListDto convertToBucketSearchListDto(Bucket bucket) {
-        LocalDateTime dateTime = bucket.getCreatedDate();
+        LocalDateTime endTime = LocalDateTime.now();
         boolean isAchieved = false;
         if(bucket.getAchievementDate() != null){
-            dateTime = bucket.getAchievementDate().atStartOfDay();
+            endTime = bucket.getAchievementDate().atStartOfDay();
             isAchieved = true;
         }
 
@@ -249,7 +254,7 @@ public class BucketService {
         return BucketSearchListDto.builder()
                 .bucketId(bucket.getId())
                 .title(bucket.getTitle())
-                .dayCount(ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()))
+                .dayCount(ChronoUnit.DAYS.between(bucket.getCreatedDate(), endTime))
                 .category(bucket.getBucketInterest().stream().map(Interest::getName).collect(Collectors.toList()))
                 .reactionCount(bucket.getBucketReactions().size())
                 .commentCount(commentCount)
