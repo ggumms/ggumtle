@@ -19,7 +19,7 @@ import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
 import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
 import NotFoundPage from './pages/NotfoundPage'
-import AchieveBucket from './pages/Bucket/AchieveBucket'
+import AchieveBucket from './pages/AchieveBuckekt'
 import AddReview from './pages/Review/AddReview'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
