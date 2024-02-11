@@ -14,21 +14,12 @@ export interface IProfileBucketStyle {
 	checkSize: string
 }
 export interface IProfileStyle {
-	search: IProfileBucketStyle
 	profile: IProfileBucketStyle
 	bucketDetail: IProfileBucketStyle
 	reviewDetail: IProfileBucketStyle
 }
 
 const profileStyle: IProfileStyle = {
-	search: {
-		titleText: 'text-sm font-semibold',
-		subText: 'text-xs font-light',
-		dayText: 'text-base font-semibold',
-		ggumtleSize: 25,
-		padding: 'py-0',
-		checkSize: '1.2rem',
-	},
 	profile: {
 		titleText: 'text-sm font-semibold',
 		subText: 'text-xs font-light',
@@ -55,7 +46,7 @@ const profileStyle: IProfileStyle = {
 	},
 }
 const ProfileBucket = ({
-	type = 'search',
+	type = 'profile',
 	isLoading,
 	title,
 	color,

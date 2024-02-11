@@ -14,7 +14,7 @@ const SearchButton = () => {
 	return (
 		<Link
 			to="/search"
-			className="bg-point1 w-14 h-14 rounded-full flex justify-center items-center"
+			className="bg-point1 w-14 h-14 rounded-full flex justify-center items-center z-30"
 			style={itemStyle}
 		>
 			<FiSearch size="2rem" color="white" />

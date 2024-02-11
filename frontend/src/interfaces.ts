@@ -8,7 +8,7 @@ export interface IBucketWide {
 }
 
 export interface BucketInfoProps {
-	type: 'search' | 'profile' | 'bucketDetail' | 'reviewDetail'
+	type: 'profile' | 'bucketDetail' | 'reviewDetail'
 	isLoading: boolean | null
 	title: string | null
 	color: ColorType
