@@ -79,14 +79,18 @@ public class RadarService {
 
         List<UserListDto> allList = new ArrayList<>();
 
+        System.out.println("===============");
+
         for (Follow follow : followeeList) {
             User followee = follow.getFollowee();
             allList.add(UserListDto.builder()
-                    .userId(follow.getId())
+                    .userId(followee.getId())
                     .userNickname(followee.getUserNickname())
                     .userProfileImage(followee.getUserProfileImage())
                     .build());
         }
+
+        System.out.println("총 팔로잉하는 사람의 수 : " + allList.size());
 
         List<UserListDto> userList1 = new ArrayList<>();    // 1 circle (3)
         List<UserListDto> userList2 = new ArrayList<>();    // 2 circle (4)
@@ -102,12 +106,15 @@ public class RadarService {
             }
         } else {
             int idx = 0;
-            int circle1Idx = (int) (size * (float) (3 / 12));
-            int circle2Idx = (int) (size * (float) (7 / 12));
+            int circle1Idx = (int) (size * ((float) 3 / 12));
+            int circle2Idx = (int) (size * ((float) 7 / 12));
             int circle3Idx = size - 1;
             boolean[] visited = new boolean[size];
+            System.out.println("circle1Idx = " + circle1Idx);
+            System.out.println("circle2Idx = " + circle2Idx);
+            System.out.println("circle3Idx = " + circle3Idx);
 
-            while (idx < size) {
+            while (idx < 12) {
                 int randomIdx = (int) (Math.random() * 100);
                 if (idx < 3) {
                     if (visited[randomIdx % circle1Idx]) continue;
