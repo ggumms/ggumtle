@@ -4,7 +4,7 @@ import { CategoryType, UserInfoType } from '../../../../interfaces'
 import LocationInfo from './LocationInfo'
 import TotalReaction from './TotalReaction'
 import TotalComment from './TotalComment'
-import UserProfile from '../../../../components/UserProfile'
+import UserProfile from '../../../../components/UserProfile/UserProfile'
 import FeedShare from '../../utils/FeedShare'
 
 // 하나의 피드 (버킷)

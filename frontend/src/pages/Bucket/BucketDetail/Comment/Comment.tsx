@@ -1,5 +1,5 @@
 import { ChangeEvent, MouseEvent, useState } from 'react'
-import UserProfile from '../../../../components/UserProfile'
+import UserProfile from '../../../../components/UserProfile/UserProfile'
 import { ICommentItem, TimeUnitType } from '../../../../interfaces'
 import ActiveLikeButton from './ActiveLikeButton'
 import ShowMoreButton from './ShowMoreButton'

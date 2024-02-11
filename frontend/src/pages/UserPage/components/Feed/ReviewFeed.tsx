@@ -1,6 +1,6 @@
 import { FiShare } from 'react-icons/fi'
 import { SquareCheck } from '../../../../assets/svgs'
-import UserProfile, { IProfileStyle } from '../../../../components/UserProfile'
+import UserProfile, { IProfileStyle } from '../../../../components/UserProfile/UserProfile'
 import { fillColorClass } from '../../../../constants/dynamicClass'
 import { UserInfoType } from '../../../../interfaces'
 import TotalComment from './TotalComment'
@@ -54,11 +54,11 @@ const ReviewFeed = () => {
 		isFollowing: null,
 	}
 
-  // 더미 데이터
+	// 더미 데이터
 	const photo = true
 	const title = '20만 첫 팬미팅!'
 	const color = 'yellow'
-  const reactionCnt = 29
+	const reactionCnt = 29
 	const commentCnt = 94
 
 	return (
@@ -74,7 +74,7 @@ const ReviewFeed = () => {
 				/>
 			</div>
 
-      {/* 옵셔널한 정보 (이미지) */}
+			{/* 옵셔널한 정보 (이미지) */}
 			{photo && (
 				<img
 					src="/public/duli.png
