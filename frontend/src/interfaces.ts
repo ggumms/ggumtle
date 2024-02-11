@@ -74,7 +74,7 @@ export interface IBaseUserInfo {
 export interface ITitleBucket {
 	bucketId: number | null
 	bucketTitle: string | null
-	color: ColorType | null
+	bucketColor: ColorType | null
 	isAchieved: boolean
 	dayCount?: number
 }
@@ -99,7 +99,7 @@ export interface IBucketInfo {
 	title: string
 	timeCapsule: string | null
 	bucketPicture: string | null
-	color: string
+	color: ColorType
 	reminderDate: null | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
 	latitude: number
 	longitude: number
@@ -122,4 +122,9 @@ export interface ICommentItem {
 	time: number
 	createdDate: string
 	updatedDate: string
+}
+
+export interface IBucketDetailInfo {
+	bucketInfo: IBucketInfo
+	userInfo: UserInfoType
 }
