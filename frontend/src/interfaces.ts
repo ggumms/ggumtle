@@ -8,11 +8,13 @@ export interface IBucketWide {
 }
 
 export interface BucketInfoProps {
+	type: 'search' | 'profile' | 'bucketDetail' | 'reviewDetail'
 	isLoading: boolean | null
 	title: string | null
 	color: ColorType
 	dayCount: number | null
 	isLock: boolean | null
+	isDone: boolean | null
 }
 
 // 헤더 아이콘 type

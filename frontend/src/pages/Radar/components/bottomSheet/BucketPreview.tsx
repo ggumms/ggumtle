@@ -59,11 +59,13 @@ const BucketPreview = ({ bucketId }: { bucketId: number }) => {
 				) : (
 					bucketInfo && (
 						<ProfileBucket
+							type="profile"
 							isLoading={isLoading}
 							title={bucketInfo.title}
 							color={bucketInfo.color}
 							dayCount={bucketInfo.dayCount}
 							isLock={null}
+							isDone={false}
 						/>
 					)
 				)}
