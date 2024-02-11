@@ -33,6 +33,7 @@ public enum ExceptionType {
     ACCOUNT_LOCKED(403, "계정이 잠겨있습니다."),
     SELF_SUBSCRIPTION_ATTEMPTED(400, "자기 자신을 구독할 수 없습니다."),
     ALREADY_WITHDRAWN_USER(409, "이미 탈퇴한 사용자입니다."),
+    ALREADY_FOLLOWING(409, "이미 팔로우 하고있는 사용자입니다."),
 
     // authentication
     OAUTH_AUTHORIZATION_CODE_INVALID(400,"인가코드가 유효하지 않습니다."),
