@@ -1,4 +1,5 @@
 import { FiSearch } from 'react-icons/fi'
+import { Link } from 'react-router-dom'
 
 const SearchButton = () => {
 	const angle = 5.3
@@ -11,13 +12,13 @@ const SearchButton = () => {
 		bottom: `${45 + y}%`,
 	}
 	return (
-		<div
-			onClick={() => console.log('helo')}
-			className="bg-point1 w-14 h-14 rounded-full flex justify-center items-center"
+		<Link
+			to="/search"
+			className="bg-point1 z-30 w-14 h-14 rounded-full flex justify-center items-center"
 			style={itemStyle}
 		>
 			<FiSearch size="2rem" color="white" />
-		</div>
+		</Link>
 	)
 }
 

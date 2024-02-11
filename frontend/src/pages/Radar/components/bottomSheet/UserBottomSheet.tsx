@@ -35,7 +35,7 @@ const UserBottomSheet = (props: UserBottomSheetProp) => {
 		<div
 			ref={sheet}
 			style={{ height: `${MAX_BOTTOM_SHEET_HEIGHT}px` }}
-			className={`flex flex-col fixed top-[calc(100%-50px)] left-0 right-0 z-5 rounded-t-2xl shadow-2xl
+			className={`flex flex-col fixed top-[calc(100%-50px)] left-0 right-0 z-30 rounded-t-2xl shadow-2xl
 		bg-white transition-transform duration-500 ease-out overflow-scroll pb-20`}
 		>
 			{isMaxup ? (
