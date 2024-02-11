@@ -7,6 +7,7 @@ import { isReactionType } from '../../../utils/typeFilter'
 
 import { Cool, Underpin, WantToDo } from '../../../assets/svgs'
 import { textColorClass } from '../../../constants/dynamicClass'
+import { Skeleton } from '@mui/material'
 
 interface IReactionProps {
 	id: string
@@ -78,7 +79,9 @@ const Reaction = ({ id }: IReactionProps) => {
 						>
 							{getReactionIcon(reaction as ReactionType)}
 							<p className="mb-2 text-xs font-bold">{reaction}</p>
-							{!isLoading && (
+							{isLoading ? (
+								<Skeleton variant="text" width={'8px'} height={'1.25rem'} />
+							) : (
 								<p className="text-sm font-bold">{reactionInfo[reaction as ReactionType]}</p>
 							)}
 						</li>
