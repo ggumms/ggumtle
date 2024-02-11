@@ -216,7 +216,7 @@ public class ReviewService {
 
         LocalDate createdDate = bucket.getCreatedDate().toLocalDate();
         LocalDate achievementDate = bucket.getAchievementDate();
-        long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
+        long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate) + 1;
 
         List<String> categories = new ArrayList<>();
         for (Interest interest : bucket.getBucketInterest()) {
@@ -411,7 +411,7 @@ public class ReviewService {
 
         LocalDate createdDate = bucket.getCreatedDate().toLocalDate();
         LocalDate achievementDate = bucket.getAchievementDate();
-        long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate);
+        long daysSinceDream = ChronoUnit.DAYS.between(createdDate, achievementDate) + 1;
 
         return ReviewSearchListDto.builder()
                 .reviewId(review.getId())

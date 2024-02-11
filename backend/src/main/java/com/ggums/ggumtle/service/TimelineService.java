@@ -52,8 +52,8 @@ public class TimelineService {
                     .isAchieved(bucket.getAchievementDate() != null)
                     .title(bucket.getTitle())
                     .day(bucket.getAchievementDate() == null ?
-                            ChronoUnit.DAYS.between(bucket.getCreatedDate(), LocalDateTime.now()) :
-                            ChronoUnit.DAYS.between(bucket.getCreatedDate(), bucket.getAchievementDate().atStartOfDay()))
+                            ChronoUnit.DAYS.between(bucket.getCreatedDate(), LocalDateTime.now()) + 1 :
+                            ChronoUnit.DAYS.between(bucket.getCreatedDate(), bucket.getAchievementDate().atStartOfDay()) + 1)
                     .color(bucket.getColor())
                     .images(images)
                     .categories(categories)
@@ -76,7 +76,7 @@ public class TimelineService {
                     .isAchieved(bucket.getAchievementDate() != null)
                     .title(review.getTitle())
                     .context(review.getContext())
-                    .day(ChronoUnit.DAYS.between(bucket.getCreatedDate(), bucket.getAchievementDate().atStartOfDay()))
+                    .day(ChronoUnit.DAYS.between(bucket.getCreatedDate(), bucket.getAchievementDate().atStartOfDay()) + 1)
                     .color(bucket.getColor())
                     .images(images)
                     .categories(categories)

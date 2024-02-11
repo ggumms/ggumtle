@@ -122,7 +122,7 @@ public class UserService {
                 .category(user.getUserInterest().stream().map(Interest::getName).collect(Collectors.toList()))
                 .bucketId(bucket != null ? bucket.getId() : null)
                 .bucketTitle(bucket != null ? bucket.getTitle() : null)
-                .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) : null)
+                .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) + 1 : null)
                 .bucketColor(bucket != null ? bucket.getColor() : null)
                 .isAchieved(isAchieved)
                 .owner(currentUser.getId().equals(userId))
