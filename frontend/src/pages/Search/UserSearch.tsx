@@ -1,5 +1,5 @@
-import ProfileBucket from '../../components/ProfileBucket'
 import { UserInfoType } from '../../interfaces'
+import SearchUserItem from './components/SearchUserItem'
 
 const UserSearch = () => {
 	const userInfo: UserInfoType = {
@@ -16,18 +16,11 @@ const UserSearch = () => {
 		isFollowing: null,
 	}
 	return (
-		<div className='h-screen px-4'>
-			User Search Tab
-			<ProfileBucket
-				type="profile"
-				isLoading={false}
-				title={userInfo.bucketTitle}
-				color={userInfo.color!}
-				dayCount={userInfo.dayCount!}
-				isLock={false}
-				isDone={userInfo.isAchieved}
-				// isDone={false}
-			/>
+		<div className="h-screen px-4">
+			<SearchUserItem />
+			<SearchUserItem />
+			<SearchUserItem />
+			<SearchUserItem />
 		</div>
 	)
 }
