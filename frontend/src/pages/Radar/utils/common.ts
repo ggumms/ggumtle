@@ -1,4 +1,4 @@
-export function getCircleEdgePos(radius: number) {
+export const getCircleEdgePos = (radius: number) => {
 	const angle = Math.random() * 2 * Math.PI
 	const x = radius * Math.cos(angle)
 	const y = radius * Math.sin(angle)

@@ -1,4 +1,4 @@
-import { IRadarBucket } from "../components/AllTab"
+import { IRadarBucket } from '../AllTab'
 
 export interface IAddBucket {
 	pos: PosType
