@@ -13,7 +13,6 @@ import UserBottomSheet from './components/bottomSheet/UserBottomSheet'
 import useUserBottomSheet from '../../hooks/useUserBottomSheet'
 import { Link } from 'react-router-dom'
 import BackDots from './components/radar/BackDots'
-import SearchButton from '../Search/components/SearchButton'
 
 export interface IUserSimple {
 	userId: number
@@ -75,7 +74,7 @@ const FollowingTab = () => {
 	// 두 번째 레이더
 	useEffect(() => {
 		const radius = 34
-		const maxNum = 6
+		const maxNum = 5
 		!isLoading &&
 			radar &&
 			radar.circle2.forEach((user, index) => {
@@ -91,7 +90,7 @@ const FollowingTab = () => {
 	// 세 번째 레이더
 	useEffect(() => {
 		const radius = 50
-		const maxNum = 9
+		const maxNum = 7
 		!isLoading &&
 			radar &&
 			radar.circle3.forEach((user, index) => {
@@ -112,7 +111,6 @@ const FollowingTab = () => {
 					<Link to="/mypage">
 						<ProfileAvatar className="h-14 w-14" />
 					</Link>
-					<SearchButton />
 				</Radar>
 
 				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">

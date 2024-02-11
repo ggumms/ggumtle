@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import SearchButton from '../../../Search/components/SearchButton'
 
 const Radar = ({ children }: { children: ReactNode }) => {
 	return (
@@ -8,6 +9,7 @@ const Radar = ({ children }: { children: ReactNode }) => {
 					{children}
 				</div>
 			</div>
+			<SearchButton />
 		</div>
 	)
 }

@@ -66,8 +66,6 @@ export interface UserItemProps {
 }
 
 const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
-	console.log('[userItem]', user)
-
 	const randomProfile = [
 		<DummyUser1 className={`${UserItemStyle[type].style.size}`} />,
 		<DummyUser2 className={`${UserItemStyle[type].style.size}`} />,
@@ -81,7 +79,6 @@ const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
 		left: `${UserItemStyle[type].direction.left + user.pos.x}%`,
 		bottom: `${UserItemStyle[type].direction.bottom + user.pos.y}%`,
 	}
-	console.log
 	return (
 		<div
 			onClick={() => handleOpenPreview(user.userId)}

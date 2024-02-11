@@ -1,5 +1,5 @@
 import { IAddUser, IRadarUser, IUserPosition } from '../../types/radarUser'
-import { getCircleEdgePos } from '../common'
+import { getThirdCircleEdgePos } from '../common'
 
 export function addUser3rd({ pos, user, setUsers3rd }: IAddUser) {
 	setUsers3rd!((prevUsers: IRadarUser[]) => {
@@ -36,7 +36,7 @@ export const user3rdPositioning = ({ setUsers3rd, user, radius, maxNum }: IUserP
 
 	if (prevUsers.length >= 9) return
 	// const radius = 16.5 // 16.5 | 34.5 | 50
-	const pos = getCircleEdgePos(radius)
+	const pos = getThirdCircleEdgePos(radius)
 	if (prevUsers.length === 0) {
 		return addUser3rd({ pos, user, setUsers3rd })
 	} else {
