@@ -35,6 +35,8 @@ const FollowingTab = () => {
 		queryFn: getRadarUsers,
 	})
 
+	console.log('[Radar]', radar)
+
 	const [users1st, setUsers1st] = useState<IRadarUser[]>([])
 	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
@@ -109,7 +111,7 @@ const FollowingTab = () => {
 			<BackDots />
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
-					<Link to="/mypage" className='z-30'>
+					<Link to="/mypage" className="z-30">
 						<ProfileAvatar className="h-14 w-14" />
 					</Link>
 				</Radar>

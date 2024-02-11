@@ -58,8 +58,8 @@ export default {
 						borderColor: '#c6c6c661',
 					},
 					to: {
-						// borderColor: '#F7B578',
-						borderColor: '#4646467a',
+						borderColor: '#F7B578',
+						// borderColor: '#4646467a',
 					},
 				},
 				floating: {

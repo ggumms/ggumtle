@@ -9,11 +9,6 @@ export const getUserStats = async ({ queryKey }: QueryFunctionContext) => {
 		.catch((e) => console.log(e))
 }
 
-// export const putFollow = async ({ queryKey }: QueryFunctionContext) => {
-// 	const [, userId] = queryKey
-// 	return await instance.get(`user/stats/${userId}`).then((response) => response.data)
-// }
-
 export const getTimeline = async ({ queryKey }: QueryFunctionContext) => {
 	const [, userId, doing, done, review, page, size] = queryKey
 	return await instance
@@ -29,4 +24,21 @@ export const getTimeline = async ({ queryKey }: QueryFunctionContext) => {
 		})
 		.then((response) => response.data.timeline)
 		.catch((e) => console.log(e))
+}
+
+interface IFollow {
+	userId: number
+	isFollowing: boolean
+}
+export const updateFollow = async ({ userId, isFollowing }: IFollow) => {
+	// const [, userId, isFollow] = queryKey
+	return await instance
+		.put('user/follow', {
+			isFollowing: isFollowing ? false : true,
+			followee: userId,
+		})
+		.then((response) => {
+			response.data
+			console.log('response.data', response.data)
+		})
 }
