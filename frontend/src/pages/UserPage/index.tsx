@@ -4,7 +4,6 @@ import { icons } from '../../constants/header-icons'
 import { useNavigate } from 'react-router-dom'
 import ProfileSection from './components/ProfileSection'
 import FeedSection from './components/FeedSection'
-import { useUserInfoQuery } from '../../hooks/useUserInfo'
 
 interface UserPageProp {
 	userId: number
@@ -12,9 +11,6 @@ interface UserPageProp {
 }
 const UserPage = ({ userId, isForRadar }: UserPageProp) => {
 	const navigate = useNavigate()
-	
-	const {userInfo} = useUserInfoQuery(userId)
-	console.log('[userpage]', userInfo)
 
 	const menu: IMenu = {
 		left: icons.BACK,
@@ -32,7 +28,7 @@ const UserPage = ({ userId, isForRadar }: UserPageProp) => {
 			{!isForRadar && <Header menu={menu} func={func} />}
 			<div className="mt-14 bg-lightGray">
 				<ProfileSection userId={userId} />
-				<FeedSection />
+				<FeedSection userId={userId} />
 			</div>
 		</div>
 	)

@@ -63,13 +63,12 @@ const UserProfile = ({ type = 'comment', userInfo }: IUserProfileProps) => {
 	return (
 		<section className="inline-block">
 			<Link to={'/user/1'} className="inline-flex">
-				<img
-					src={'/defaultProfile.svg'}
-					// src={userInfo.userProfileImage}
-					alt="유저 프로필 이미지"
-					className={`${profileStyle[type].profileSize} ${profileStyle[type].profileRightMargin}`}
-				/>
-
+				{userInfo.userProfileImage && (
+					<img
+						src={userInfo.userProfileImage}
+						className={`${profileStyle[type].profileSize} ${profileStyle[type].profileRightMargin}`}
+					/>
+				)}
 				<div className="relative flex flex-col self-end justify-center">
 					<p className={`font-bold ${profileStyle[type].nameTextSize}`}>{userInfo.userNickname}</p>
 					<Link to={'/bucket/1'} className="flex items-center">
