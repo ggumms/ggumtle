@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.server.authorization.AuthorizationWebFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -217,20 +218,32 @@ public class UserService {
 
         Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, followee);
 
+        // 언팔 요청인 경우
         if(!requestDto.getIsFollowing()){
+
             followOpt.ifPresent(followRepository::delete);
+
             return user.getUserNickname() + "님이 " + followee.getUserNickname() + "님을 구독 취소하였습니다.";
+        }// 팔로우 요청인 경우
+        else{
+
+            // 삭제는 ifPresent가 걸려있어 에러 안 던져도 상관없음
+            // 대신 생성은 잘못된 요청을 보낼 수도 있응게 걸러주는게 맞지 않을까
+
+            if (followOpt.isPresent()) {
+                throw new CustomException(ExceptionType.ALREADY_FOLLOWING);
+            }
+
+            Follow follow = followOpt.orElseGet(() -> Follow.builder()
+                    .follower(user)
+                    .followee(followee)
+                    .build());
+           followRepository.save(follow);
+           alarmHandler.createUserAlarm(followee, user, AlarmType.follow);
+
+            return user.getUserNickname() + "님이 " + followee.getUserNickname() + "님을 구독하였습니다.";
         }
 
-        Follow follow = followOpt.orElseGet(() -> Follow.builder()
-                .follower(user)
-                .followee(followee)
-                .build());
-
-       followRepository.save(follow);
-       alarmHandler.createUserAlarm(followee, user, AlarmType.follow);
-
-        return user.getUserNickname() + "님이 " + followee.getUserNickname() + "님을 구독하였습니다.";
     }
 
     // users who userId follows
