@@ -1,22 +1,25 @@
-import UserProfile from '../../../components/UserProfile/UserProfile'
+import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Skeleton } from '@mui/material'
+
 import WithHeaderLayout from '../../../components/layout/WithHeaderLayout'
-import { icons } from '../../../constants/header-icons'
-import { useRouter } from '../../../hooks/useRouter'
-import { IBucketDetailInfo, IMenu, IMenuFunc } from '../../../interfaces'
 import BucketInfo from './BucketInfo'
 import InterestTag from './InterestTag'
+import UserProfile from '../../../components/UserProfile/UserProfile'
 import ShareButton from '../../../components/ShareButton'
 import AchieveDreamButton from './AcheiveDreamButton'
 import WriteReviewButton from './WriteReviewButton'
-import { useParams } from 'react-router-dom'
+import DetailLocation from './DetailLocation'
 import Reaction from './Reaction'
 import CommentList from './Comment/CommentList'
 import CommentInput from './Comment/CommentInput'
-import { useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+
+import { useRouter } from '../../../hooks/useRouter'
 import { getBucketDetailInfo } from './api'
-import DetailLocation from './DetailLocation'
-import { Skeleton } from '@mui/material'
+
+import { IBucketDetailInfo, IMenu, IMenuFunc } from '../../../interfaces'
+import { icons } from '../../../constants/header-icons'
 
 const BucketDetail = () => {
 	const [isInputShown, setIsInputShown] = useState(false)
@@ -39,7 +42,6 @@ const BucketDetail = () => {
 		queryKey: ['bucketInfo', bucketId],
 		queryFn: getBucketDetailInfo,
 	})
-	console.log('isLoading', isLoading, bucketDetailInfo)
 
 	// :: Header
 	const handleLeftFunc = () => {
@@ -52,13 +54,13 @@ const BucketDetail = () => {
 	}
 	const headerFunc: IMenuFunc = { left_func: handleLeftFunc, right_func: undefined }
 
+	// :: Rendering
 	return (
 		<>
 			<WithHeaderLayout headerMenu={headerMenu} headerFunc={headerFunc}>
 				<BucketInfo
 					isLoading={isLoading}
 					title={bucketDetailInfo?.bucketInfo.title}
-					// title={undefined}
 					color={bucketDetailInfo?.bucketInfo.color}
 					dayCount={bucketDetailInfo?.bucketInfo.dayCount}
 					isPrivate={bucketDetailInfo?.bucketInfo.isPrivate}
@@ -66,12 +68,7 @@ const BucketDetail = () => {
 				<UserProfile type="detail" isLoading={isLoading} userInfo={bucketDetailInfo?.userInfo} />
 				{/* 옵셔널한 정보들 (장소, 사진) */}
 				{isLoading || bucketDetailInfo === undefined ? (
-					<Skeleton
-						variant="rectangular"
-						width={'100%'}
-						height={'16rem'}
-						// className="rounded-md"
-					/>
+					<Skeleton variant="rectangular" width={'100%'} height={'16rem'} />
 				) : (
 					bucketDetailInfo.bucketInfo.bucketPicture && (
 						<img
