@@ -28,6 +28,10 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 	}, [lastElementInView, hasNextPage, commentListData, fetchNextPage])
 
 	useEffect(() => {
+		if (pageType !== 'read') {
+			setIsInputShown(false)
+			return
+		}
 		// 타겟이 보일 때 -> 항상 input이 보이도록 설정
 		if (listInView === true) {
 			setIsInputShown(true)
@@ -37,7 +41,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 			setIsInputShown(false)
 			return
 		}
-	}, [listInView, commentText, isInputFocused])
+	}, [listInView, commentText, isInputFocused, pageType])
 
 	if (isError) {
 		return <></>
