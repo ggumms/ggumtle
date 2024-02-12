@@ -28,8 +28,6 @@ const BucketPreview = ({ bucketId }: { bucketId: number }) => {
 		queryFn: getBucketPreview,
 		enabled: !!bucketId,
 	})
-	console.log('api get: ', bucketInfo)
-	console.log('api get: ', bucketInfo?.bucketPicture)
 	const category: CategoryType[] = ['연애', '언어', '환경']
 
 	return (
