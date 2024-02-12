@@ -2,8 +2,8 @@ import { DummyUser1 } from '../../../../assets/svgs'
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType, UserInfoType } from '../../../../interfaces'
-import FollowButtons from './FollowButtons'
-import NumInfo from './NumInfo'
+import FollowButtons from '../ProfileSection/FollowButtons'
+import NumInfo from '../ProfileSection/NumInfo'
 
 const ProfileSection = () => {
 	const userInfo: UserInfoType = {
@@ -53,8 +53,8 @@ const ProfileSection = () => {
 				</div>
 			</div>
 			<div>
-				<NumInfo />
-				<FollowButtons />
+				<NumInfo userId={userInfo.userId} />
+				<FollowButtons userId={userInfo.userId} />
 			</div>
 		</div>
 	)

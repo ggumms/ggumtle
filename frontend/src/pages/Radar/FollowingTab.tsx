@@ -35,6 +35,8 @@ const FollowingTab = () => {
 		queryFn: getRadarUsers,
 	})
 
+	console.log('[Radar]', radar)
+
 	const [users1st, setUsers1st] = useState<IRadarUser[]>([])
 	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
@@ -64,6 +66,7 @@ const FollowingTab = () => {
 			radar.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
+						console.log(user)
 						user1stPositioning({ setUsers1st, user, radius, maxNum })
 					},
 					200 * index + 100 * Math.random()

@@ -24,7 +24,7 @@ interface IBucketInfo {
 }
 const BucketPreview = ({ bucketId }: { bucketId: number }) => {
 	const { isLoading, data: bucketInfo } = useQuery<IBucketInfo>({
-		queryKey: ['previewUser', bucketId],
+		queryKey: ['previewBucket', bucketId],
 		queryFn: getBucketPreview,
 		enabled: !!bucketId,
 	})
