@@ -79,3 +79,13 @@ export const getBucketCommentList = async ({
 	// console.log(commentRes.data.bucketCommentList.commentList)
 	return commentRes.data.bucketCommentList.commentList
 }
+
+// :: LikeButton
+interface IPostLikeRes {
+	result: string
+	message: string
+}
+export const postLikeStatus = async (commentId: number): Promise<'success' | 'fail'> => {
+	const LikeRes = await instance.put<IPostLikeRes>(`comment/bucket/like/${commentId}`)
+	return LikeRes.data.result === 'ok' ? 'success' : 'fail'
+}

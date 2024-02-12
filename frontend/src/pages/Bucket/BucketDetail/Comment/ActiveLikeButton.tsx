@@ -1,8 +1,14 @@
 import { EmptyLike } from '../../../../assets/svgs'
 
-const ActiveLikeButton = () => {
+interface IActiveLikeButtonProps {
+	handleClick: () => Promise<void>
+}
+const ActiveLikeButton = ({ handleClick }: IActiveLikeButtonProps) => {
 	return (
-		<button className="absolute right-0 inline-block translate-y-1/2 bottom-1/2">
+		<button
+			onClick={handleClick}
+			className="absolute right-0 inline-block translate-y-1/2 bottom-1/2"
+		>
 			<img src="/defaultProfile.svg" alt="좋아요 활성화 아이콘" className="w-4 h-4 " />
 			<EmptyLike
 				fill="red"

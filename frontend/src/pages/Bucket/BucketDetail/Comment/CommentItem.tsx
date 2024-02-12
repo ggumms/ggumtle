@@ -1,9 +1,8 @@
 import { ChangeEvent, MouseEvent, useState } from 'react'
 
 import UserProfile from '../../../../components/UserProfile/UserProfile'
-import ActiveLikeButton from './ActiveLikeButton'
 import ShowMoreButton from './ShowMoreButton'
-import UnActiveLikeButton from './UnActiveLikeButton'
+import LikeButton from './LikeButton'
 
 import { useDetailPageTypeStore } from '../../../../store/detailStore'
 import { ICommentItem, TimeUnitType } from '../../../../interfaces'
@@ -75,9 +74,7 @@ const CommentItem = ({ commentInfo, type, setSelectedId }: ICommentItemProps) =>
 					</div>
 				</div>
 			)}
-
-			<ActiveLikeButton />
-			<UnActiveLikeButton />
+			<LikeButton commentId={commentInfo.id} likeStatus={commentInfo.numberOfLikes > 0} />
 			<ShowMoreButton />
 		</div>
 	)
