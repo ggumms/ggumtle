@@ -48,11 +48,13 @@ const UserPreview = ({ userId }: { userId: number }) => {
 				) : (
 					userInfo && (
 						<ProfileBucket
+							type="profile"
 							isLoading={isLoading}
 							title={userInfo.bucketTitle}
 							color={userInfo.color}
 							dayCount={userInfo.dayCount}
 							isLock={null}
+							isDone={userInfo.isAchieved}
 						/>
 					)
 				)}

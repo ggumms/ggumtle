@@ -1,3 +1,11 @@
+import {
+	DummyUser1,
+	DummyUser2,
+	DummyUser3,
+	DummyUser4,
+	DummyUser5,
+	DummyUser6,
+} from '../../../../assets/svgs'
 import { IRadarUser } from '../../types/radarUser'
 
 export type RadarElemType = 'first' | 'second' | 'third'
@@ -58,12 +66,19 @@ export interface UserItemProps {
 }
 
 const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
+	const randomProfile = [
+		<DummyUser1 className={`${UserItemStyle[type].style.size}`} />,
+		<DummyUser2 className={`${UserItemStyle[type].style.size}`} />,
+		<DummyUser3 className={`${UserItemStyle[type].style.size}`} />,
+		<DummyUser4 className={`${UserItemStyle[type].style.size}`} />,
+		<DummyUser5 className={`${UserItemStyle[type].style.size}`} />,
+		<DummyUser6 className={`${UserItemStyle[type].style.size}`} />,
+	]
 	const itemStyle: { position: 'absolute'; left: string; bottom: string } = {
 		position: 'absolute',
 		left: `${UserItemStyle[type].direction.left + user.pos.x}%`,
 		bottom: `${UserItemStyle[type].direction.bottom + user.pos.y}%`,
 	}
-	console.log
 	return (
 		<div
 			onClick={() => handleOpenPreview(user.userId)}
@@ -73,7 +88,11 @@ const UserItem = ({ user, type, handleOpenPreview }: UserItemProps) => {
 			<div
 				className={`${UserItemStyle[type].style.size} rounded-full overflow-hidden animate-fadeIn`}
 			>
-				<img src={user.userProfileImage} alt="" className="w-full h-full object-cover" />
+				{user.userProfileImage ? (
+					<img src={user.userProfileImage} alt="" className="w-full h-full object-cover" />
+				) : (
+					randomProfile[user.userId % 6]
+				)}
 			</div>
 			<span className={`font-semibold ${UserItemStyle[type].style.text}`}>{user.userNickname}</span>
 		</div>

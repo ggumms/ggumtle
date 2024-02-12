@@ -18,7 +18,7 @@ const UserPage = ({ isForRadar }: { isForRadar: boolean }) => {
 		right_func: undefined,
 	}
 	return (
-		<div className="z-35 bg-white">
+		<div className="bg-white">
 			{!isForRadar && <Header menu={menu} func={func} />}
 			<div className="mt-14 bg-lightGray">
 				<ProfileSection />

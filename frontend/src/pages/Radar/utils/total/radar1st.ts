@@ -1,4 +1,4 @@
-import { IRadarBucket } from '../../components/AllTab'
+import { IRadarBucket } from '../../AllTab'
 import { IAddBucket, IBucketPosition } from '../../types/radarBucket'
 import { getCircleEdgePos } from '../common'
 

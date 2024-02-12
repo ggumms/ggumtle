@@ -40,11 +40,13 @@ const BucketFeed = () => {
 			{/* 버킷 */}
 			{hasTitleBucket && (
 				<ProfileBucket
+					type="profile"
 					isLoading={false}
 					title={bucketTitle}
 					color={color}
 					dayCount={dayCount}
 					isLock={null}
+					isDone={false}
 				/>
 			)}
 
