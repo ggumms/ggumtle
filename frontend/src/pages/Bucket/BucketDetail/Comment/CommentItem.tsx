@@ -5,6 +5,7 @@ import ShowMoreButton from './ShowMoreButton'
 import LikeButton from './LikeButton'
 
 import { useDetailPageTypeStore } from '../../../../store/detailStore'
+import { putBucketComment } from '../api'
 import { ICommentItem, TimeUnitType } from '../../../../interfaces'
 
 const getTime = (time: number, timeUnit: TimeUnitType): string => {
@@ -50,16 +51,18 @@ const CommentItem = ({ commentInfo, type, setSelectedId }: ICommentItemProps) =>
 		setEditText('')
 		setPageType('read')
 	}
-	const handleCompleteEdit = () => {
-		// Todo: 댓글 수정 Api 적용 예정
-		setPageType('read')
+	const handleCompleteEdit = async () => {
+		const modifyRes = await putBucketComment(commentInfo.id, editText)
+		if (modifyRes === 'success') {
+			setPageType('read')
+		}
 	}
 	return (
 		<div onClick={handleClickComment} data-id={commentInfo.id} className="relative flex flex-col">
 			<UserProfile type="comment" userInfo={commentInfo.writer} isLoading={false} />
 			<p className="text-[10px] ml-11">{getTime(commentInfo.time, commentInfo.timeUnit)}</p>
 			{type === 'read' ? (
-				<p className="text-xs ml-11">{commentInfo.context}</p>
+				<p className="text-xs ml-11">{editText}</p>
 			) : (
 				<div className="border-[1px] rounded-md border-gray ml-11 mr-7 mt-1 p-2">
 					<textarea

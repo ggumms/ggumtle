@@ -101,6 +101,18 @@ export const deleteBucketComment = async (id: number): Promise<'success' | 'fail
 	const commentRes = await instance.delete<IDeleteCommentRes>(`comment/bucket/${id}`)
 	return commentRes.data.result === 'ok' ? 'success' : 'fail'
 }
+// - Put Request
+interface IPutCommentRes {
+	result: string
+	message: string
+}
+export const putBucketComment = async (
+	id: number,
+	context: string
+): Promise<'success' | 'fail'> => {
+	const commentRes = await instance.put<IPutCommentRes>(`comment/bucket/${id}`, { context })
+	return commentRes.data.result === 'ok' ? 'success' : 'fail'
+}
 
 // :: LikeButton
 interface IPostLikeRes {
