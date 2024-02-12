@@ -1,8 +1,8 @@
 import { IoCheckbox } from 'react-icons/io5'
 import { textColorClass } from '../../../constants/dynamicClass'
-import TotalReaction from '../../UserPage/components/Feed/TotalReaction'
-import TotalComment from '../../UserPage/components/Feed/TotalComment'
 import FeedShare from '../../UserPage/utils/FeedShare'
+import TotalReaction from '../../UserPage/components/FeedSection/TotalReaction'
+import TotalComment from '../../UserPage/components/FeedSection/TotalComment'
 
 const SearchReviewItem = () => {
 	const bucketTitle = '유튜브 구독자 100만 달성하기'

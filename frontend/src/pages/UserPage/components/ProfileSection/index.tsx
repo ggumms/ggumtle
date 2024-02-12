@@ -5,7 +5,6 @@ import FollowButtons from './FollowButtons'
 import NumInfo from './NumInfo'
 
 const ProfileSection = ({ userId }: { userId: number }) => {
-
 	const { isLoading, userInfo } = useUserInfoQuery(userId!)
 	console.log('[ProfileSection]', userInfo)
 	// const { userId, userProfileImage, bucketTitle, userNickname, color, dayCount, category } = userInfo
@@ -32,11 +31,13 @@ const ProfileSection = ({ userId }: { userId: number }) => {
 					{/* {hasTitleBucket && ( */}
 					{!isLoading && userInfo && (
 						<ProfileBucket
+							type="profile"
 							isLoading={false}
 							title={userInfo.bucketTitle}
 							color={userInfo.color}
 							dayCount={userInfo.dayCount}
 							isLock={null}
+							isDone={false}
 						/>
 					)}
 					{/* )} */}

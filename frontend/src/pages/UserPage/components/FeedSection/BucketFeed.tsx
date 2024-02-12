@@ -41,11 +41,13 @@ const BucketFeed = ({ userId, bucket }: { userId: number; bucket: IFeed }) => {
 			{/* 버킷 */}
 			{
 				<ProfileBucket
+					type="profile"
 					isLoading={false}
 					title={bucket.title}
 					color={bucket.color}
 					dayCount={bucket.day}
 					isLock={null}
+					isDone={bucket.isAchieved}
 				/>
 			}
 

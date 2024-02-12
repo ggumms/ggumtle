@@ -1,8 +1,8 @@
 import InterestTag from '../../../components/InterestTag'
 import ProfileBucket from '../../../components/ProfileBucket'
 import { UserInfoType } from '../../../interfaces'
-import TotalComment from '../../UserPage/components/Feed/TotalComment'
-import TotalReaction from '../../UserPage/components/Feed/TotalReaction'
+import TotalComment from '../../UserPage/components/FeedSection/TotalComment'
+import TotalReaction from '../../UserPage/components/FeedSection/TotalReaction'
 import FeedShare from '../../UserPage/utils/FeedShare'
 const SearchBucketItem = () => {
 	const userInfo: UserInfoType = {
