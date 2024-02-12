@@ -44,7 +44,7 @@ const ReviewSearch = () => {
 				{searching ? (
 					<LoadingReview />
 				) : reviewList.length ? (
-					reviewList.map((review) => <SearchReviewItem review={review} />)
+					reviewList.map((review) => <SearchReviewItem review={review} key={review.reviewId} />)
 				) : null}
 			</section>
 		</div>

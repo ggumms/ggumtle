@@ -43,7 +43,7 @@ const BucketSearch = () => {
 				{searching ? (
 					<LoadingBucket />
 				) : bucketList.length ? (
-					bucketList.map((bucket) => <SearchBucketItem bucket={bucket} />)
+					bucketList.map((bucket) => <SearchBucketItem bucket={bucket} key={bucket.bucketId} />)
 				) : null}
 			</section>
 		</div>

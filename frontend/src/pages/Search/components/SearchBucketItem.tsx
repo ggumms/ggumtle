@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import InterestTag from '../../../components/InterestTag'
 import ProfileBucket from '../../../components/ProfileBucket'
 import { IBucketSearch } from '../../../store/searchBucketStore'
@@ -7,7 +8,7 @@ import FeedShare from '../../UserPage/utils/FeedShare'
 
 const SearchBucketItem = ({bucket}: {bucket: IBucketSearch}) => {
 	return (
-		<div className="bg-white px-5 py-2 flex flex-col gap-1">
+		<Link to={`/bucket/${bucket.bucketId}`} className="bg-white px-5 py-2 flex flex-col gap-1">
 			<ProfileBucket /* 버킷 정보 */
 				type="profile"
 				isLoading={false}
@@ -29,7 +30,7 @@ const SearchBucketItem = ({bucket}: {bucket: IBucketSearch}) => {
 				</div>
 				<FeedShare />
 			</fieldset>
-		</div>
+		</Link>
 	)
 }
 
