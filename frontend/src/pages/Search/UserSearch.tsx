@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useSearchUserStore } from '../../store/searchUserStore'
 import SearchUserItem from './components/SearchUserItem'
-import LoadingUser from './components/LoadingUser'
+import LoadingUser from './components/skeleton/LoadingUser'
 import SearchBar from './components/SearchBar'
 import { useSearchUser } from '../../hooks/searchHooks'
 
@@ -35,13 +35,15 @@ const UserSearch = () => {
 	}
 
 	return (
-		<div className="h-screen px-4 w-full">
+		<div className="w-full">
 			<SearchBar input={input} setInput={setInput} onClickHandler={handleInputChange} />
-			{searching ? (
-				<LoadingUser />
-			) : userList.length ? (
-				userList.map((user) => <SearchUserItem user={user} key={user.userId} />)
-			) : null}
+			<section className="flex flex-col px-4">
+				{searching ? (
+					<LoadingUser />
+				) : userList.length ? (
+					userList.map((user) => <SearchUserItem user={user} key={user.userId} />)
+				) : null}
+			</section>
 		</div>
 	)
 }

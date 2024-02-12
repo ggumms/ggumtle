@@ -4,7 +4,6 @@ import { icons } from '../../constants/header-icons'
 import Header from '../../components/Header'
 import { searchHeaderList } from '../../router'
 import SearchNavHeader from './components/SearchNavHeader'
-import SearchBar from './components/SearchBar'
 
 const SearchPage = () => {
 	const navigate = useNavigate()
@@ -24,7 +23,6 @@ const SearchPage = () => {
 		<div>
 			<Header menu={menu} func={func} />
 			<section className="pt-16">
-				<SearchBar />
 				<SearchNavHeader headerData={searchHeaderList} />
 				<Outlet />
 			</section>

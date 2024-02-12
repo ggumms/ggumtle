@@ -12,7 +12,7 @@ const SearchBar = ({ input, setInput, onClickHandler }: SearchBarProp) => {
 	}
 
 	return (
-		<div className="flex w-full items-center">
+		<div className="flex w-full items-center px-4 pb-4">
 			<div className="flex w-11/12 mr-2 items-center">
 				<FiSearch size="1.5rem" color="#707070" className="absolute left-6" />
 				<input
