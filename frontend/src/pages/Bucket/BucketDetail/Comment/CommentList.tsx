@@ -1,11 +1,10 @@
 import Comment from './Comment'
 import { ICommentItem } from '../../../../interfaces'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useCommentStore, useDetailPageTypeStore } from '../../../../store/detailStore'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { getBucketCommentList } from '../api'
 import { Skeleton } from '@mui/material'
 import { useInView } from 'react-intersection-observer'
+import useInfiniteCommentList from '../../../../hooks/useInfiniteCommentList'
 
 interface ICommentListProps {
 	isInputFocused: boolean
@@ -19,25 +18,10 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 	const { pageType } = useDetailPageTypeStore()
 	const [selectedId, setSelectedId] = useState<null | number>(null)
 	const { ref, inView } = useInView()
-
 	const targetRef = useRef<HTMLUListElement>(null)
 
-	const { data, hasNextPage, fetchNextPage, isFetchingNextPage, status } = useInfiniteQuery({
-		queryKey: ['comments', id],
-		queryFn: getBucketCommentList,
-		initialPageParam: 0,
-		getNextPageParam: (lastPageInfo) => (lastPageInfo.last ? null : lastPageInfo.number + 1),
-	})
-
-	const commentListData = useMemo(() => {
-		let result: ICommentItem[] = []
-		if (data) {
-			data.pages.forEach((pageInfo) => {
-				result = [...result, ...pageInfo.content]
-			})
-		}
-		return result
-	}, [data])
+	const { commentListData, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
+		useInfiniteCommentList(id)
 
 	useEffect(() => {
 		if (inView && hasNextPage) {
@@ -76,9 +60,12 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 		}
 	}
 
+	if (isError) {
+		return <></>
+	}
 	return (
 		<>
-			{status === 'pending' ? (
+			{isLoading ? (
 				<>{/* Skeleton UI 작성 */}</>
 			) : (
 				<ul ref={targetRef}>
