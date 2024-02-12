@@ -32,7 +32,6 @@ const FeedSection = ({ userId }: { userId: number }) => {
 		queryFn: getTimeline,
 	})
 
-	console.log('[Timeline]', timeline)
 	return (
 		<div>
 			{/* @TODO: 토글 컴포넌트로 따로 분리하기 start---- */}

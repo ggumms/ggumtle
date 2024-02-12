@@ -1,34 +1,33 @@
-import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
 import { FiSearch } from 'react-icons/fi'
 import { IoIosCloseCircle } from 'react-icons/io'
-import { getUserSearch } from '../api'
 
-const SearchBar = () => {
-	const [input, setInput] = useState('')
-	const { data } = useQuery({
-		queryKey: ['userSearch', input, 0, 20],
-		queryFn: getUserSearch,
-	})
-	console.log('[SearchBar]', data)
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setInput(event.target.value)
+interface SearchBarProp {
+	input: string
+	setInput: React.Dispatch<React.SetStateAction<string>>
+	onClickHandler: (event: React.ChangeEvent<HTMLInputElement>) => void
+}
+const SearchBar = ({ input, setInput, onClickHandler }: SearchBarProp) => {
+	const handleDeleteClick = () => {
+		setInput('')
 	}
-	useEffect(() => {
-		console.log(input)
-	}, [input])
+
 	return (
-		<div className="flex w-full items-center px-4">
+		<div className="flex w-full items-center px-4 pb-4">
 			<div className="flex w-11/12 mr-2 items-center">
-				<FiSearch size="1.5rem" color="#707070" className="absolute left-7" />
+				<FiSearch size="1.5rem" color="#707070" className="absolute left-6" />
 				<input
 					type="text"
-					placeholder="검색"
-					onChange={handleInputChange}
 					value={input}
+					placeholder="검색"
+					onChange={onClickHandler}
 					className="w-full pl-10 py-2 px-4 focus:outline-none bg-[#F6F6F6] rounded-md"
 				/>
-				<IoIosCloseCircle size="1.5rem" className="absolute right-14" color="#ACADAD" />
+				<IoIosCloseCircle
+					onClick={handleDeleteClick}
+					size="1.5rem"
+					className="absolute right-16"
+					color="#ACADAD"
+				/>
 			</div>
 			<button className="w-1/12 text-sm text-point1">취소</button>
 		</div>

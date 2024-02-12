@@ -35,8 +35,6 @@ const FollowingTab = () => {
 		queryFn: getRadarUsers,
 	})
 
-	console.log('[Radar]', radar)
-
 	const [users1st, setUsers1st] = useState<IRadarUser[]>([])
 	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
 	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])

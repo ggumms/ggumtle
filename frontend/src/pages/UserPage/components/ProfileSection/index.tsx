@@ -6,7 +6,6 @@ import NumInfo from './NumInfo'
 
 const ProfileSection = ({ userId }: { userId: number }) => {
 	const { isLoading, userInfo } = useUserInfoQuery(userId!)
-	console.log('[ProfileSection]', userInfo)
 	// const { userId, userProfileImage, bucketTitle, userNickname, color, dayCount, category } = userInfo
 	// const hasTitleBucket = bucketTitle && color && dayCount
 
