@@ -1,6 +1,6 @@
 import Comment from './Comment'
 import { ICommentItem } from '../../../../interfaces'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCommentStore, useDetailPageTypeStore } from '../../../../store/detailStore'
 import { Skeleton } from '@mui/material'
 import { useInView } from 'react-intersection-observer'
@@ -17,48 +17,29 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 	const { commentText } = useCommentStore()
 	const { pageType } = useDetailPageTypeStore()
 	const [selectedId, setSelectedId] = useState<null | number>(null)
-	const { ref, inView } = useInView()
-	const targetRef = useRef<HTMLUListElement>(null)
+	const { ref: lastElementRef, inView: lastElementInView } = useInView()
+	const { ref: listRef, inView: listInView } = useInView()
 
 	const { commentListData, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
 		useInfiniteCommentList(id)
 
 	useEffect(() => {
-		if (inView && hasNextPage) {
+		if (lastElementInView && hasNextPage) {
 			fetchNextPage()
 		}
-	}, [inView, hasNextPage])
+	}, [lastElementInView, hasNextPage])
 
-	// 전역 이벤트 핸들러에서 closure 때문에 최신 state 값을 못 가져오는 문제 해결을 위한 useEffect
 	useEffect(() => {
-		window.addEventListener('scroll', checkTargetIsShown)
-
-		// 초기 로드 시에도 위치 확인
-		checkTargetIsShown()
-
-		return () => {
-			window.removeEventListener('scroll', checkTargetIsShown)
+		// 타겟이 보일 때 -> 항상 input이 보이도록 설정
+		if (listInView === true) {
+			setIsInputShown(true)
+			return
 		}
-	}, [commentText, isInputFocused])
-
-	// Todo : 매개변수로 commentText, isInputFocused 받아서 처리하도록 refactoring -> 테스트하면서 closure 문제 맞는지 확인 한번 더 해보기
-	// Todo : pageType이 읽기 모드(read)일 때만 input창 뜨도록 수정하기
-	const checkTargetIsShown = () => {
-		if (targetRef.current) {
-			const targetLocationInfo = targetRef.current.getBoundingClientRect()
-			const isVisible = targetLocationInfo.top < window.innerHeight
-
-			// 타겟이 보일 때 -> 항상 input이 보이도록 설정
-			if (isVisible === true) {
-				setIsInputShown(true)
-				return
-			}
-			if (isVisible === false && commentText.length === 0 && !isInputFocused) {
-				setIsInputShown(false)
-				return
-			}
+		if (listInView === false && commentText.length === 0 && !isInputFocused) {
+			setIsInputShown(false)
+			return
 		}
-	}
+	}, [listInView, commentText, isInputFocused])
 
 	if (isError) {
 		return <></>
@@ -68,7 +49,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 			{isLoading ? (
 				<>{/* Skeleton UI 작성 */}</>
 			) : (
-				<ul ref={targetRef}>
+				<ul ref={listRef}>
 					{commentListData.map((comment, index) => (
 						<li key={`comment-${index}`}>
 							<Comment
@@ -80,7 +61,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 					))}
 				</ul>
 			)}
-			{isFetchingNextPage ? <Skeleton /> : <div ref={ref}></div>}
+			{isFetchingNextPage ? <Skeleton /> : <div ref={lastElementRef}></div>}
 		</>
 	)
 }
