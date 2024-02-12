@@ -1,14 +1,18 @@
-import { ChangeEvent, useRef } from 'react'
+import { ChangeEvent, KeyboardEvent, useRef } from 'react'
 import { useCommentStore } from '../../../../store/detailStore'
+import { postBucketComment } from '../api'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface ICommentInput {
+	bucketId: string
 	setIsInputFocused: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 // Todo: Pwa 환경에서 해당 컴포넌트가 언마운트 될때 키보드가 내려가는지 확인 필요
-const CommentInput = ({ setIsInputFocused }: ICommentInput) => {
+const CommentInput = ({ bucketId, setIsInputFocused }: ICommentInput) => {
 	const { commentText, setCommentText } = useCommentStore()
 	const inputRef = useRef<HTMLInputElement>(null)
+	const queryClient = useQueryClient() // QueryClient 인스턴스 사용
 
 	const handleCommentChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const text = event.currentTarget.value
@@ -19,6 +23,23 @@ const CommentInput = ({ setIsInputFocused }: ICommentInput) => {
 	}
 	const handleBlurInput = () => {
 		setIsInputFocused(false)
+	}
+	const handlePressEnter = async (event: KeyboardEvent<HTMLInputElement>) => {
+		if (event.key !== 'Enter') {
+			return
+		}
+		const commentRes = await postBucketComment(bucketId, commentText)
+		if (commentRes === 'success') {
+			setCommentText('')
+			queryClient.refetchQueries({ queryKey: ['commentList', bucketId] })
+		}
+	}
+	const handleSubmitComment = async () => {
+		const commentRes = await postBucketComment(bucketId, commentText)
+		if (commentRes === 'success') {
+			setCommentText('')
+			queryClient.refetchQueries({ queryKey: ['commentList', bucketId] })
+		}
 	}
 
 	return (
@@ -33,8 +54,13 @@ const CommentInput = ({ setIsInputFocused }: ICommentInput) => {
 				onFocus={handleFocusInput}
 				onBlur={handleBlurInput}
 				className="px-3 grow focus:outline-none"
+				onKeyDown={handlePressEnter}
 			/>
-			<button type="button" className={`${commentText ? 'text-point1' : 'text-gray'}`}>
+			<button
+				type="button"
+				onClick={handleSubmitComment}
+				className={`${commentText ? 'text-point1' : 'text-gray'}`}
+			>
 				등록
 			</button>
 		</div>

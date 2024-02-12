@@ -11,7 +11,6 @@ interface ICommentListProps {
 	id: string
 }
 
-// Todo : Api 데이터 타입 지정 후 as 삭제 예정
 const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps) => {
 	const { commentText } = useCommentStore()
 	const { pageType } = useDetailPageTypeStore()
@@ -26,7 +25,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 		if (lastElementInView && hasNextPage) {
 			fetchNextPage()
 		}
-	}, [lastElementInView, hasNextPage])
+	}, [lastElementInView, hasNextPage, commentListData])
 
 	useEffect(() => {
 		// 타겟이 보일 때 -> 항상 input이 보이도록 설정

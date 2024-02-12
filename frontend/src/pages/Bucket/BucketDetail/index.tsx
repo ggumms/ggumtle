@@ -113,7 +113,9 @@ const BucketDetail = () => {
 					</>
 				)}
 			</WithHeaderLayout>
-			{isInputShown && <CommentInput setIsInputFocused={setIsInputFocused} />}
+			{isInputShown && bucketId && (
+				<CommentInput bucketId={bucketId} setIsInputFocused={setIsInputFocused} />
+			)}
 		</>
 	)
 }

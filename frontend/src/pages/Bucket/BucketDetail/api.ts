@@ -76,15 +76,28 @@ export const getBucketCommentList = async ({
 	const commentRes = await instance.get<IGetCommentRes>(
 		`comment/bucket/${id}?page=${pageParam}&size=${fetchSize}`
 	)
-	// console.log(commentRes.data.bucketCommentList.commentList)
+
+	console.log('comment list 받아오기!!')
 	return commentRes.data.bucketCommentList.commentList
 }
-
+// - Post Request
+interface IPostCommentRes {
+	result: string
+	message: string
+}
+export const postBucketComment = async (
+	id: string,
+	context: string
+): Promise<'success' | 'fail'> => {
+	const commentRes = await instance.post<IPostCommentRes>(`comment/bucket/${id}`, { context })
+	return commentRes.data.result === 'ok' ? 'success' : 'fail'
+}
 // :: LikeButton
 interface IPostLikeRes {
 	result: string
 	message: string
 }
+// Todo : postBucketLikeStatus 이름 변경 필요, LikeRes 소문자로 변경하기
 export const postLikeStatus = async (commentId: number): Promise<'success' | 'fail'> => {
 	const LikeRes = await instance.put<IPostLikeRes>(`comment/bucket/like/${commentId}`)
 	return LikeRes.data.result === 'ok' ? 'success' : 'fail'
