@@ -22,7 +22,7 @@ const SearchBucketItem = () => {
 	const reactionCnt = 40
 	const commentCnt = 23
 	return (
-		<div className="bg-white px-4 py-2 flex flex-col gap-1">
+		<div className="bg-white px-5 py-2 flex flex-col gap-1">
 			<ProfileBucket /* 버킷 정보 */
 				type="profile"
 				isLoading={false}
