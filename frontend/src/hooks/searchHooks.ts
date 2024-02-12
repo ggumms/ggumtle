@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getBucketSearch, getUserSearch } from '../pages/Search/api'
+import { getBucketSearch, getReviewSearch, getUserSearch } from '../pages/Search/api'
 
 export const useSearchUser = (word: string) => {
 	return useQuery({
@@ -15,6 +15,15 @@ export const useSearchBucket = (word: string) => {
 	return useQuery({
 		queryKey: ['searchBucket', word, 0, 20],
 		queryFn: getBucketSearch,
+		enabled: !!word,
+		staleTime: 500,
+	})
+}
+
+export const useSearchReview = (word: string) => {
+	return useQuery({
+		queryKey: ['searchReview', word, 0, 20],
+		queryFn: getReviewSearch,
 		enabled: !!word,
 		staleTime: 500,
 	})
