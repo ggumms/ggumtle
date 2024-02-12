@@ -1,5 +1,4 @@
-import Comment from './Comment'
-import { ICommentItem } from '../../../../interfaces'
+import CommentItem from './CommentItem'
 import { useEffect, useState } from 'react'
 import { useCommentStore, useDetailPageTypeStore } from '../../../../store/detailStore'
 import { Skeleton } from '@mui/material'
@@ -52,8 +51,8 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 				<ul ref={listRef}>
 					{commentListData.map((comment, index) => (
 						<li key={`comment-${index}`}>
-							<Comment
-								commentInfo={comment as ICommentItem}
+							<CommentItem
+								commentInfo={comment}
 								type={comment.id === selectedId && pageType === 'editComment' ? 'edit' : 'read'}
 								setSelectedId={setSelectedId}
 							/>

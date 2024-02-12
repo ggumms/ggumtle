@@ -1,10 +1,12 @@
 import { ChangeEvent, MouseEvent, useState } from 'react'
+
 import UserProfile from '../../../../components/UserProfile/UserProfile'
-import { ICommentItem, TimeUnitType } from '../../../../interfaces'
 import ActiveLikeButton from './ActiveLikeButton'
 import ShowMoreButton from './ShowMoreButton'
 import UnActiveLikeButton from './UnActiveLikeButton'
+
 import { useDetailPageTypeStore } from '../../../../store/detailStore'
+import { ICommentItem, TimeUnitType } from '../../../../interfaces'
 
 const getTime = (time: number, timeUnit: TimeUnitType): string => {
 	switch (timeUnit) {
@@ -23,19 +25,18 @@ const getTime = (time: number, timeUnit: TimeUnitType): string => {
 	}
 }
 
-interface ICommentProps {
+interface ICommentItemProps {
 	commentInfo: ICommentItem
 	type: 'read' | 'edit'
 	setSelectedId: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-const Comment = ({ commentInfo, type, setSelectedId }: ICommentProps) => {
+const CommentItem = ({ commentInfo, type, setSelectedId }: ICommentItemProps) => {
 	const { setPageType } = useDetailPageTypeStore()
-	const [editText, setEditText] = useState('')
+	const [editText, setEditText] = useState(commentInfo.context)
 
 	// handler about Comment
-	// Todo: handleChangeCommit으로 함수명 변경, edit 관련 함수가 너무 많아서 이름을 명시적으로 변경
-	const handleEditComment = (event: ChangeEvent<HTMLTextAreaElement>) => {
+	const handleChangeCommit = (event: ChangeEvent<HTMLTextAreaElement>) => {
 		const inputText = event.currentTarget.value
 		setEditText(inputText)
 	}
@@ -56,7 +57,6 @@ const Comment = ({ commentInfo, type, setSelectedId }: ICommentProps) => {
 	}
 	return (
 		<div onClick={handleClickComment} data-id={commentInfo.id} className="relative flex flex-col">
-			{/* //Todo: comment 유저로 정보 변경 필요 */}
 			<UserProfile type="comment" userInfo={commentInfo.writer} isLoading={false} />
 			<p className="text-[10px] ml-11">{getTime(commentInfo.time, commentInfo.timeUnit)}</p>
 			{type === 'read' ? (
@@ -66,7 +66,7 @@ const Comment = ({ commentInfo, type, setSelectedId }: ICommentProps) => {
 					<textarea
 						placeholder={commentInfo.context}
 						value={editText}
-						onChange={handleEditComment}
+						onChange={handleChangeCommit}
 						className="w-full text-sm resize-none focus:outline-none"
 					/>
 					<div className="flex justify-end gap-3 text-point1">
@@ -83,4 +83,4 @@ const Comment = ({ commentInfo, type, setSelectedId }: ICommentProps) => {
 	)
 }
 
-export default Comment
+export default CommentItem
