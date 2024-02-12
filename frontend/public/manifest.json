@@ -3,8 +3,8 @@
 	"short_name": "ggummtle",
 	"start_url": "",
 	"display": "standalone",
-	"background_color": "#F8F7DA",
-	"theme_color": "#52A88C",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff",
 	"description": "꿈의 틀을 그리다",
 	"icons": [
 		{
