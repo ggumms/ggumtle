@@ -1,4 +1,4 @@
-import { ChangeEvent, MouseEvent, useState } from 'react'
+import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 
 import UserProfile from '../../../../components/UserProfile/UserProfile'
 import ShowMoreButton from './ShowMoreButton'
@@ -28,12 +28,19 @@ const getTime = (time: number, timeUnit: TimeUnitType): string => {
 interface ICommentItemProps {
 	commentInfo: ICommentItem
 	type: 'read' | 'edit'
+	selectedId: number | null
 	setSelectedId: React.Dispatch<React.SetStateAction<number | null>>
 }
 
-const CommentItem = ({ commentInfo, type, setSelectedId }: ICommentItemProps) => {
+const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentItemProps) => {
 	const { setPageType } = useDetailPageTypeStore()
 	const [editText, setEditText] = useState(commentInfo.context)
+
+	// 수정 버튼을 누르지 않고 댓글 클릭만 해도 수정 모드로 댓글이 띄워지는 문제 해결을 위한 코드
+	useEffect(() => {
+		setEditText(commentInfo.context)
+		setPageType('read')
+	}, [selectedId])
 
 	// handler about Comment
 	const handleChangeCommit = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -48,7 +55,7 @@ const CommentItem = ({ commentInfo, type, setSelectedId }: ICommentItemProps) =>
 
 	// handler about ShowMoreButton
 	const handleCancelEdit = () => {
-		setEditText('')
+		setEditText(commentInfo.context)
 		setPageType('read')
 	}
 	const handleCompleteEdit = async () => {
@@ -57,6 +64,8 @@ const CommentItem = ({ commentInfo, type, setSelectedId }: ICommentItemProps) =>
 			setPageType('read')
 		}
 	}
+
+	// Todo : 자기 댓글이 아닐 때 이걸 판별해줘서 showMore 버튼이랑 좋아요 비활성화 버튼 안보이도록 처리 필요
 	return (
 		<div onClick={handleClickComment} data-id={commentInfo.id} className="relative flex flex-col">
 			<UserProfile type="comment" userInfo={commentInfo.writer} isLoading={false} />
@@ -66,7 +75,7 @@ const CommentItem = ({ commentInfo, type, setSelectedId }: ICommentItemProps) =>
 			) : (
 				<div className="border-[1px] rounded-md border-gray ml-11 mr-7 mt-1 p-2">
 					<textarea
-						placeholder={commentInfo.context}
+						placeholder={editText}
 						value={editText}
 						onChange={handleChangeCommit}
 						className="w-full text-sm resize-none focus:outline-none"

@@ -53,6 +53,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 							<CommentItem
 								commentInfo={comment}
 								type={comment.id === selectedId && pageType === 'editComment' ? 'edit' : 'read'}
+								selectedId={selectedId}
 								setSelectedId={setSelectedId}
 							/>
 						</li>
