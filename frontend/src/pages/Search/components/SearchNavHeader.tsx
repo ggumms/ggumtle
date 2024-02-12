@@ -23,7 +23,7 @@ const SearchNavHeader = ({ headerData }: { headerData: MultiPageHeaderInfo[] }) 
 	}, [currentPath])
 
 	return (
-		<div className="flex items-center justify-around py-2">
+		<div className="flex items-center justify-around pb-2">
 			<ul className={`flex gap-[2px] w-full`}>
 				{headerData.map((headerItem, index) => {
 					return (
