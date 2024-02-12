@@ -23,6 +23,7 @@ const SearchUserItem = ({ user }: { user: IUserSearch }) => {
 	}
 
 	const handleFollowButton = () => {
+		console.log("handle")
 		setIsFollow(!isFollow)
 	}
 	

@@ -22,7 +22,7 @@ const NumInfo = ({ userId }: { userId: number }) => {
 				<span className="text-xs font-light">달성률</span>
 			</Link>
 			<div className="h-8 bg-unActive w-[0.3px]"></div>
-			<Link to="/" className="flex flex-col justify-center items-center w-1/3">
+			<Link to="/follow/1" className="flex flex-col justify-center items-center w-1/3">
 				<span className="text-sm">{stats && stats.follower}</span>
 				<span className="text-xs font-light">팔로워</span>
 			</Link>
