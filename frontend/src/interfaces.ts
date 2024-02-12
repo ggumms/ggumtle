@@ -111,6 +111,11 @@ export interface IBucketInfo {
 	createdDate: string
 }
 
+export interface IBucketDetailInfo {
+	bucketInfo: IBucketInfo
+	userInfo: UserInfoType
+}
+
 export type TimeUnitType = 'min' | 'hour' | 'day' | 'month' | 'year'
 
 export interface ICommentItem {
@@ -124,7 +129,31 @@ export interface ICommentItem {
 	updatedDate: string
 }
 
-export interface IBucketDetailInfo {
-	bucketInfo: IBucketInfo
-	userInfo: UserInfoType
+export interface ICommentListInfo {
+	content: ICommentItem[]
+	pageable: {
+		pageNumber: number
+		pageSize: number
+		sort: {
+			empty: boolean
+			sorted: boolean
+			unsorted: boolean
+		}
+		offset: number
+		paged: boolean
+		unpaged: boolean
+	}
+	last: boolean
+	totalElements: number
+	totalPages: number
+	size: number
+	number: number
+	sort: {
+		empty: boolean
+		sorted: boolean
+		unsorted: boolean
+	}
+	first: boolean
+	numberOfElements: number
+	empty: boolean
 }

@@ -103,7 +103,13 @@ const BucketDetail = () => {
 								: bucketId && <WriteReviewButton id={bucketId} />}
 						</div>
 						{bucketId && <Reaction id={bucketId} />}
-						<CommentList isInputFocused={isInputFocused} setIsInputShown={setIsInputShown} />
+						{bucketId && (
+							<CommentList
+								isInputFocused={isInputFocused}
+								setIsInputShown={setIsInputShown}
+								id={bucketId}
+							/>
+						)}
 					</>
 				)}
 			</WithHeaderLayout>

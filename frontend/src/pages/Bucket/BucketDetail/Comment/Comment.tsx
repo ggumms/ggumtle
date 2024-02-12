@@ -57,7 +57,7 @@ const Comment = ({ commentInfo, type, setSelectedId }: ICommentProps) => {
 	return (
 		<div onClick={handleClickComment} data-id={commentInfo.id} className="relative flex flex-col">
 			{/* //Todo: comment 유저로 정보 변경 필요 */}
-			<UserProfile type="comment" userInfo={commentInfo.writer} />
+			<UserProfile type="comment" userInfo={commentInfo.writer} isLoading={false} />
 			<p className="text-[10px] ml-11">{getTime(commentInfo.time, commentInfo.timeUnit)}</p>
 			{type === 'read' ? (
 				<p className="text-xs ml-11">{commentInfo.context}</p>
