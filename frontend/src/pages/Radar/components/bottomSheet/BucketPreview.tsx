@@ -24,12 +24,10 @@ interface IBucketInfo {
 }
 const BucketPreview = ({ bucketId }: { bucketId: number }) => {
 	const { isLoading, data: bucketInfo } = useQuery<IBucketInfo>({
-		queryKey: ['previewUser', bucketId],
+		queryKey: ['previewBucket', bucketId],
 		queryFn: getBucketPreview,
 		enabled: !!bucketId,
 	})
-	console.log('api get: ', bucketInfo)
-	console.log('api get: ', bucketInfo?.bucketPicture)
 	const category: CategoryType[] = ['연애', '언어', '환경']
 
 	return (
@@ -59,11 +57,13 @@ const BucketPreview = ({ bucketId }: { bucketId: number }) => {
 				) : (
 					bucketInfo && (
 						<ProfileBucket
+							type="profile"
 							isLoading={isLoading}
 							title={bucketInfo.title}
 							color={bucketInfo.color}
 							dayCount={bucketInfo.dayCount}
 							isLock={null}
+							isDone={false}
 						/>
 					)
 				)}

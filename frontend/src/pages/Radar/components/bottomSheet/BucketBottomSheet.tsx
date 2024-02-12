@@ -2,9 +2,9 @@ import { MAX_BOTTOM_SHEET_HEIGHT } from '../../../../hooks/useUserBottomSheet'
 import Header from '../../../../components/Header'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
 import { icons } from '../../../../constants/header-icons'
-import UserPage from '../../../UserPage'
 import BucketPreview from './BucketPreview'
 import RadarCategoryItems from '../RadarCategory'
+import BucketDetail from '../../../Bucket/BucketDetail'
 
 /*
 bottomSheet Header 토글시 -> 카테고리 표출
@@ -56,7 +56,7 @@ const BucketBottomSheet = (props: BucketBottomSheetProp) => {
 			)}
 			{isMaxup ? (
 				<div ref={content}>
-					<UserPage isForRadar={true} />
+					<BucketDetail />
 				</div>
 			) : bucketId ? (
 				<div className="px-5 py-2">

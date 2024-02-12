@@ -1,11 +1,11 @@
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType, UserInfoType } from '../../../../interfaces'
-import LocationInfo from './LocationInfo'
-import TotalReaction from './TotalReaction'
-import TotalComment from './TotalComment'
 import UserProfile from '../../../../components/UserProfile'
 import FeedShare from '../../utils/FeedShare'
+import LocationInfo from '../FeedSection/LocationInfo'
+import TotalReaction from '../FeedSection/TotalReaction'
+import TotalComment from '../FeedSection/TotalComment'
 
 // 하나의 피드 (버킷)
 const BucketFeed = () => {
@@ -40,11 +40,13 @@ const BucketFeed = () => {
 			{/* 버킷 */}
 			{hasTitleBucket && (
 				<ProfileBucket
+					type="profile"
 					isLoading={false}
 					title={bucketTitle}
 					color={color}
 					dayCount={dayCount}
 					isLock={null}
+					isDone={false}
 				/>
 			)}
 

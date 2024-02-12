@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
-import UserItem from './radar/UserItem'
-import ButtonArea from './ButtonArea'
-import Radar from './radar/Radar'
-import { ProfileAvatar } from '../../../assets/svgs'
-import { getRadarUsers } from '../api'
+import UserItem from './components/radar/UserItem'
+import ButtonArea from './components/ButtonArea'
+import Radar from './components/radar/Radar'
+import { ProfileAvatar } from '../../assets/svgs'
+import { getRadarUsers } from './api'
 import { useQuery } from '@tanstack/react-query'
-import { user1stPositioning } from '../utils/user/radar1st'
-import { user2ndPositioning } from '../utils/user/radar2nd'
-import { user3rdPositioning } from '../utils/user/radar3rd'
-import { IRadarUser } from '../types/radarUser'
-import UserBottomSheet from './bottomSheet/UserBottomSheet'
-import useUserBottomSheet from '../../../hooks/useUserBottomSheet'
+import { user1stPositioning } from './utils/user/radar1st'
+import { user2ndPositioning } from './utils/user/radar2nd'
+import { user3rdPositioning } from './utils/user/radar3rd'
+import { IRadarUser } from './types/radarUser'
+import UserBottomSheet from './components/bottomSheet/UserBottomSheet'
+import useUserBottomSheet from '../../hooks/useUserBottomSheet'
 import { Link } from 'react-router-dom'
-import BackDots from './radar/BackDots'
+import BackDots from './components/radar/BackDots'
 
 export interface IUserSimple {
 	userId: number
@@ -64,6 +64,7 @@ const FollowingTab = () => {
 			radar.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
+						console.log(user)
 						user1stPositioning({ setUsers1st, user, radius, maxNum })
 					},
 					200 * index + 100 * Math.random()
@@ -74,7 +75,7 @@ const FollowingTab = () => {
 	// 두 번째 레이더
 	useEffect(() => {
 		const radius = 34
-		const maxNum = 6
+		const maxNum = 5
 		!isLoading &&
 			radar &&
 			radar.circle2.forEach((user, index) => {
@@ -90,7 +91,7 @@ const FollowingTab = () => {
 	// 세 번째 레이더
 	useEffect(() => {
 		const radius = 50
-		const maxNum = 9
+		const maxNum = 7
 		!isLoading &&
 			radar &&
 			radar.circle3.forEach((user, index) => {
@@ -108,7 +109,7 @@ const FollowingTab = () => {
 			<BackDots />
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
-					<Link to="/mypage" className="">
+					<Link to="/mypage" className="z-30">
 						<ProfileAvatar className="h-14 w-14" />
 					</Link>
 				</Radar>

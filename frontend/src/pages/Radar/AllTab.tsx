@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
-import { ProfileAvatar } from '../../../assets/svgs'
-import Radar from './radar/Radar'
-import BucketItem from './radar/BucketItem'
-import { PosType } from '../types/radarUser'
+import { ProfileAvatar } from '../../assets/svgs'
+import Radar from './components/radar/Radar'
+import BucketItem from './components/radar/BucketItem'
+import { PosType } from './types/radarUser'
 import { useQuery } from '@tanstack/react-query'
-import { getRadarBuckets } from '../api'
-import { bucket1stPositioning } from '../utils/total/radar1st'
-import ButtonArea from './ButtonArea'
-import BucketBottomSheet from './bottomSheet/BucketBottomSheet'
-import useBucketBottomSheet from '../../../hooks/useBucketBottomSheet'
-import { useRadarCategoryStore } from '../../../store/radarCategoryStore'
-import BackDots from './radar/BackDots'
+import { getRadarBuckets } from './api'
+import { bucket1stPositioning } from './utils/total/radar1st'
+import ButtonArea from './components/ButtonArea'
+import BucketBottomSheet from './components/bottomSheet/BucketBottomSheet'
+import useBucketBottomSheet from '../../hooks/useBucketBottomSheet'
+import { useRadarCategoryStore } from '../../store/radarCategoryStore'
+import BackDots from './components/radar/BackDots'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -30,7 +30,8 @@ interface IRadarBucketList {
 const AllTab = () => {
 	const { selectedCategory } = useRadarCategoryStore()
 
-	const { sheet, content, openPreview, closePreview, isMaxup, togglePreview } = useBucketBottomSheet()
+	const { sheet, content, openPreview, closePreview, isMaxup, togglePreview } =
+		useBucketBottomSheet()
 	const [buckets1st, setBuckets1st] = useState<IRadarBucket[]>([])
 	const [buckets2nd, setBuckets2nd] = useState<IRadarBucket[]>([])
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])

@@ -2,8 +2,8 @@ import { DummyUser1 } from '../../../../assets/svgs'
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType, UserInfoType } from '../../../../interfaces'
-import FollowButtons from './FollowButtons'
-import NumInfo from './NumInfo'
+import FollowButtons from '../ProfileSection/FollowButtons'
+import NumInfo from '../ProfileSection/NumInfo'
 
 const ProfileSection = () => {
 	const userInfo: UserInfoType = {
@@ -36,11 +36,13 @@ const ProfileSection = () => {
 					{/* @TODO: 대표버킷 없을 경우 처리 */}
 					{hasTitleBucket && (
 						<ProfileBucket
+							type="profile"
 							isLoading={false}
 							title={bucketTitle}
 							color={color}
 							dayCount={dayCount}
 							isLock={null}
+							isDone={false}
 						/>
 					)}
 					<div className="bg-white">
@@ -51,8 +53,8 @@ const ProfileSection = () => {
 				</div>
 			</div>
 			<div>
-				<NumInfo />
-				<FollowButtons />
+				<NumInfo userId={userInfo.userId} />
+				<FollowButtons userId={userInfo.userId} />
 			</div>
 		</div>
 	)
