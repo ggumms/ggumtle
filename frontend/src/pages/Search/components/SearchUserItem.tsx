@@ -1,21 +1,22 @@
 import UserProfile from '../../../components/UserProfile'
 import { UserInfoType } from '../../../interfaces'
+import { IUserSearch } from '../../../store/searchUserStore'
 
-const SearchUserItem = () => {
+const SearchUserItem = ({ user }: { user: IUserSearch }) => {
 	const userInfo: UserInfoType = {
-		userId: 1,
-		userProfileImage: 'url',
-		userNickname: 'junho',
-		category: ['인간관계', '여행', '직장'],
-		bucketId: 2,
-		bucketTitle: '구독자 100만명 달성하기',
-		dayCount: 14,
-		color: 'mint',
-		isAchieved: true,
-		owner: true,
-		// isFollowing: false,
-		isFollowing: true,
+		userId: user.userId,
+		userProfileImage: user.userProfileImage,
+		userNickname: user.userNickname,
+		category: [],
+		bucketId: user.bucketId,
+		bucketTitle: user.bucketTitle,
+		dayCount: undefined,
+		color: user.bucketColor,
+		isAchieved: user.isAchieved,
+		owner: undefined,
+		isFollowing: user.isFollowing,
 	}
+	console.log('잘 넘어왔나?', userInfo)
 	return (
 		<div className="flex justify-between items-center px-1 py-1">
 			<UserProfile type="follow" userInfo={userInfo} />

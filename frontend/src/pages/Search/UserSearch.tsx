@@ -14,15 +14,10 @@ const UserSearch = () => {
 	}, [userList])
 	return (
 		<div className="h-screen px-4 w-full">
-			{/* {userList.length ? (
-				userList.map((user) => <SearchUserItem />)
-			) : searching ? (
-				<LoadingUser />
-			) : null} */}
 			{searching ? (
 				<LoadingUser />
 			) : userList.length ? (
-				userList.map((user) => <SearchUserItem />)
+				userList.map((user) => <SearchUserItem user={user}/>)
 			) : null}
 		</div>
 	)

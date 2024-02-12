@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { ColorType } from '../interfaces'
 
-interface IUserSearch {
+export interface IUserSearch {
 	bucketColor: ColorType
 	bucketId: number
 	bucketTitle: string
