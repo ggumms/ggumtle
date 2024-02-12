@@ -1,16 +1,30 @@
 import { Menu, Transition } from '@headlessui/react'
 import { AiOutlineMore } from 'react-icons/ai'
 import { useDetailPageTypeStore } from '../../../../store/detailStore'
+import { deleteBucketComment } from '../api'
+import { useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'react-router'
 
-const ShowMoreButton = () => {
+interface IShowMoreButtonProps {
+	commentId: number
+}
+
+const ShowMoreButton = ({ commentId }: IShowMoreButtonProps) => {
 	const { setPageType } = useDetailPageTypeStore()
+	const queryClient = useQueryClient()
+	const { bucketId } = useParams()
 
 	const handleClickModifyButton = () => {
 		setPageType('editComment')
 	}
-	const handleClickDeleteButton = () => {
-		// Todo : 삭제 요청 Api 적용
+
+	const handleClickDeleteButton = async () => {
+		const deleteRes = await deleteBucketComment(commentId)
+		if (deleteRes === 'success') {
+			queryClient.refetchQueries({ queryKey: ['comments', bucketId] })
+		}
 	}
+
 	return (
 		<div>
 			<Menu as="div" className="absolute top-0 right-0">

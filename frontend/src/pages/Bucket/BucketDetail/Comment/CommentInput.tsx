@@ -31,14 +31,16 @@ const CommentInput = ({ bucketId, setIsInputFocused }: ICommentInput) => {
 		const commentRes = await postBucketComment(bucketId, commentText)
 		if (commentRes === 'success') {
 			setCommentText('')
-			queryClient.refetchQueries({ queryKey: ['commentList', bucketId] })
+			console.log('refetching!')
+			queryClient.refetchQueries({ queryKey: ['comments', bucketId] })
 		}
 	}
 	const handleSubmitComment = async () => {
 		const commentRes = await postBucketComment(bucketId, commentText)
 		if (commentRes === 'success') {
 			setCommentText('')
-			queryClient.refetchQueries({ queryKey: ['commentList', bucketId] })
+			console.log('refetching!')
+			queryClient.refetchQueries({ queryKey: ['comments', bucketId] })
 		}
 	}
 

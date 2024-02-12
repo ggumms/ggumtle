@@ -23,7 +23,14 @@ const useInfiniteCommentList = (id: string) => {
 		return result
 	}, [data])
 
-	return { commentListData, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage }
+	return {
+		commentListData,
+		isLoading,
+		isError,
+		hasNextPage,
+		fetchNextPage,
+		isFetchingNextPage,
+	}
 }
 
 export default useInfiniteCommentList

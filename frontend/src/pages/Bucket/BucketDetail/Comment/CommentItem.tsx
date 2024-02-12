@@ -75,7 +75,7 @@ const CommentItem = ({ commentInfo, type, setSelectedId }: ICommentItemProps) =>
 				</div>
 			)}
 			<LikeButton commentId={commentInfo.id} likeStatus={commentInfo.numberOfLikes > 0} />
-			<ShowMoreButton />
+			<ShowMoreButton commentId={commentInfo.id} />
 		</div>
 	)
 }
