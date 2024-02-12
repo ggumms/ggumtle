@@ -3,7 +3,6 @@ import { useSearchReviewStore } from '../../store/searchReviewStore'
 import SearchReviewItem from './components/SearchReviewItem'
 import { useSearchReview } from '../../hooks/searchHooks'
 import SearchBar from './components/SearchBar'
-import LoadingBucket from './components/skeleton/LoadingBucket'
 import LoadingReview from './components/skeleton/LoadingReview'
 
 const ReviewSearch = () => {

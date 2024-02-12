@@ -31,14 +31,14 @@ interface IFollow {
 	isFollowing: boolean
 }
 export const updateFollow = async ({ userId, isFollowing }: IFollow) => {
-	// const [, userId, isFollow] = queryKey
+	console.log("api: ", userId, isFollowing)
 	return await instance
 		.put('user/follow', {
 			isFollowing: isFollowing ? false : true,
 			followee: userId,
 		})
 		.then((response) => {
-			response.data
 			console.log('response.data', response.data)
+			return response.data
 		})
 }
