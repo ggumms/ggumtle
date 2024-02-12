@@ -16,7 +16,7 @@ const SearchPage = () => {
 	}
 
 	const func: IMenuFunc = {
-		left_func: () => navigate(-1),
+		left_func: () => navigate("/"),
 		right_func: undefined,
 	}
 
