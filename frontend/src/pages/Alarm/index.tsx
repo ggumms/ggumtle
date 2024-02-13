@@ -5,7 +5,6 @@ import Header from '../../components/Header'
 import { icons } from '../../constants/header-icons'
 import { IMenu, IMenuFunc } from '../../interfaces'
 import Button from '@mui/material/Button'
-import { useEffect, useState } from 'react'
 import { IAlarm } from '../Radar/types/alarm'
 import AlarmItem from './AlarmItem'
 import { useAlarmQuery } from '../../hooks/useAlarm'
@@ -33,7 +32,7 @@ const AlarmPage = () => {
 	}
 
 	const deleteAllAlarms = () => {
-		// mutation.mutate()
+		mutation.mutate()
 		console.log("다 읽음")
 	}
 
