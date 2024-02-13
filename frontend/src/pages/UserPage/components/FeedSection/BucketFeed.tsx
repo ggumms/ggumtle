@@ -35,7 +35,7 @@ const BucketFeed = ({ userId, bucket }: { userId: number; bucket: IFeed }) => {
 		<div className="px-4 py-2 bg-white">
 			{/* 작성자 프로필 정보 */}
 			<div className="pt-1 pb-2">
-				{userInfo && <UserProfile type="detail" userInfo={userInfo} />}
+				{userInfo && <UserProfile type="detail" userInfo={userInfo} isLoading={false} />}
 			</div>
 
 			{/* 버킷 */}

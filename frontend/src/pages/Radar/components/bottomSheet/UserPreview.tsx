@@ -12,14 +12,14 @@ const UserPreview = ({ userId }: { userId: number }) => {
 	// const category: CategoryType[] = ['연애', '언어', '환경']
 
 	return (
-		<div className="w-full flex items-center justify-around">
+		<div className="flex items-center justify-around w-full">
 			<div className="flex flex-col items-center justify-center w-2/5">
 				{isLoading ? (
 					<Skeleton variant="circular" width={60} height={60} />
 				) : (
 					userInfo && (
-						<div className="w-16 h-16 rounded-full overflow-hidden">
-							<img src={userInfo.userProfileImage} alt="" className="w-full h-full object-cover" />
+						<div className="w-16 h-16 overflow-hidden rounded-full">
+							<img src={userInfo.userProfileImage} alt="" className="object-cover w-full h-full" />
 						</div>
 					)
 				)}
@@ -40,7 +40,7 @@ const UserPreview = ({ userId }: { userId: number }) => {
 							type="profile"
 							isLoading={isLoading}
 							title={userInfo.bucketTitle}
-							color={userInfo.color}
+							color={userInfo.bucketColor}
 							dayCount={userInfo.dayCount}
 							isLock={null}
 							isDone={userInfo.isAchieved}

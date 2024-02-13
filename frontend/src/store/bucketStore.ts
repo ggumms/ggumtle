@@ -141,7 +141,7 @@ const addBucketInfoSlices: StateCreator<
 	[['zustand/immer', never], ['zustand/devtools', never]],
 	[],
 	IAddStateSlice
-> = (set, get) => ({
+> = (_, get) => ({
 	addBucketState: (bucketInfo: IBucketInfo) => {
 		get().resetCategory() // 객체 형식이기 때문에 reset이 필요
 
@@ -169,7 +169,7 @@ const resetAllSlices: StateCreator<
 	[['zustand/immer', never], ['zustand/devtools', never]],
 	[],
 	IResetStateSlice
-> = (set, get) => ({
+> = (_, get) => ({
 	resetAllState: () => {
 		get().resetCategory()
 		get().resetBucketColor()
