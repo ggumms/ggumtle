@@ -22,6 +22,7 @@ import NotFoundPage from './pages/NotfoundPage'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
 import AddReview from './pages/Review/AddReview'
 import ValidateTokenLayout from './components/layout/ValidateTokenLayout'
+import ReviewDetail from './pages/Review/ReviewDetail'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -145,6 +146,8 @@ const routerData: RouterElement[] = [
 	},
 	{ path: '/bucket/achieve/:bucketId', element: <AchieveBucket />, label: '리뷰달성' },
 	{ path: '/review/write/:bucketId', element: <AddReview />, label: '리뷰작성' },
+	{ path: '/review/:reviewId', element: <ReviewDetail />, label: '리뷰상세' },
+
 	{ path: '*', element: <NotFoundPage />, label: '' },
 ]
 

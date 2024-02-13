@@ -1,7 +1,17 @@
-const QuickSaveButton = () => {
-	const handleClickQuickSave = () => {
+import { postReview } from './api'
+
+interface IQuickSaveButtonProps {
+	bucketId: string
+	title: string
+	context: string
+}
+const QuickSaveButton = ({ bucketId, title, context }: IQuickSaveButtonProps) => {
+	const handleClickQuickSave = async () => {
 		// Todo: 후기 작성분 저장, 후기 이미지 처리 로직 작성 필요
-		console.log('임시 저장 버튼 클릭')
+		const reviewId = await postReview(bucketId, title, context, false)
+		if (reviewId) {
+			alert('임시저장되었습니다.')
+		}
 	}
 	return (
 		<button
