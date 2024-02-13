@@ -1,21 +1,25 @@
 import { Menu, Transition } from '@headlessui/react'
 import { AiOutlineMore } from 'react-icons/ai'
 import { useRouter } from '../../../../hooks/useRouter'
-// import { useParams } from 'react-router'
+import { useParams } from 'react-router'
+import { deleteBucket } from '../api'
 
 const BucketMoreButton = () => {
 	const { routeTo } = useRouter()
-	// const { bucketId } = useParams()
+	const { bucketId } = useParams()
 
 	const handleClickModifyButton = () => {
-		//  수정
+		routeTo(`/bucket/modify/${bucketId}`)
 	}
 
 	const handleClickDeleteButton = async () => {
-		const deleteRes = await 'success'
-		// const deleteRes = await deleteBucket(bucketId)
+		if (!bucketId) {
+			return
+		}
+
+		const deleteRes = await deleteBucket(bucketId)
 		if (deleteRes === 'success') {
-			routeTo('/')
+			routeTo('/mypage')
 		}
 	}
 

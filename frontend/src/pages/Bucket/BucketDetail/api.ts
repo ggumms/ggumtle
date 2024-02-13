@@ -4,7 +4,8 @@ import { IBucketInfo, ICommentListInfo, UserInfoType } from '../../../interfaces
 import { IReactionInfo, ReactionType } from '../../../types/bucket'
 // Todo : api 함수 이름들 다 fetch 들어가도록 수정
 
-// :: BucketDetail
+// :: Bucket
+// - Get Detail Request
 interface IGetBucketInfoRes {
 	result: string
 	bucketInfo: IBucketInfo
@@ -25,6 +26,15 @@ export const getBucketDetailInfo = async ({
 	const { writerId } = bucketRes.data.bucketInfo
 	const userRes = await instance.get<IGetUserInfoRes>(`user/${writerId}`)
 	return { bucketInfo: bucketRes.data.bucketInfo, userInfo: userRes.data.userInfo }
+}
+// - Delete Request
+interface IDeleteBucketRes {
+	result: string
+	message: string
+}
+export const deleteBucket = async (id: string): Promise<'success' | 'fail'> => {
+	const deleteRes = await instance.get<IDeleteBucketRes>(`bucket/${id}`)
+	return deleteRes.data.result === 'ok' ? 'success' : 'fail'
 }
 
 // :: Reaction
