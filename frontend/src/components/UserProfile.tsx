@@ -59,7 +59,6 @@ const profileStyle: IProfileStyle = {
 
 // Todo : title, color, id 있을 경우에만 버킷 정보 띄워주기 + 스타일 조정하기
 const UserProfile = ({ type = 'comment', userInfo }: IUserProfileProps) => {
-	console.log("[USER INFO]", userInfo)
 	const randomProfile = [
 		<DummyUser1 className={`${profileStyle[type].profileSize}`} />,
 		<DummyUser2 className={`${profileStyle[type].profileSize}`} />,
