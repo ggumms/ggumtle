@@ -134,7 +134,7 @@ public class AlarmHandler {
         sendEventToUser(receiver.getId());
     }
 
-    @Scheduled(cron = "0 9 22 * * ?")
+    @Scheduled(cron = "0 0 21 * * ?")
     public void remindBucketAlarm() {
         LocalDate today = LocalDate.now();
         List<Bucket> buckets = bucketRepository.findAllWithUser();

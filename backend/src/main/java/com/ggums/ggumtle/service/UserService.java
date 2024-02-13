@@ -360,4 +360,33 @@ public class UserService {
 
         return "비밀번호 변경이 완료되었습니다.";
     }
+
+    @Transactional(readOnly = true)
+    public UserInfoResponseDto selfInfo(User currentUser) {
+        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
+
+        Bucket bucket = user.getRepBucket();
+
+        Boolean isAchieved = null;
+        LocalDateTime dateTime = (bucket != null && bucket.getCreatedDate() != null) ? bucket.getCreatedDate() : LocalDateTime.now();
+        if (bucket != null && bucket.getId() != null) {
+            isAchieved = bucket.getAchievementDate() != null;
+            if (isAchieved) {
+                dateTime = bucket.getAchievementDate().atStartOfDay();
+            }
+        }
+
+        return UserInfoResponseDto.builder()
+                .userId(user.getId())
+                .userProfileImage(user.getUserProfileImage())
+                .userNickname(user.getUserNickname())
+                .category(user.getUserInterest().stream().map(Interest::getName).collect(Collectors.toList()))
+                .bucketId(bucket != null ? bucket.getId() : null)
+                .bucketTitle(bucket != null ? bucket.getTitle() : null)
+                .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) + 1 : null)
+                .bucketColor(bucket != null ? bucket.getColor() : null)
+                .isAchieved(isAchieved)
+                .owner(true)
+                .build();
+    }
 }

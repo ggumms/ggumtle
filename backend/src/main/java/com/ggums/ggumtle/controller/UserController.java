@@ -162,4 +162,9 @@ public class UserController {
     public Response passwordChange(@AuthenticationPrincipal User user, @Valid @RequestBody PasswordChangeRequestDto requestDto){
          return new Response("message", userService.passwordChange(user, requestDto));
     }
+
+    @GetMapping("/self-info")
+    public Response selfInfo(@AuthenticationPrincipal User user){
+         return new Response("selfInfo", userService.selfInfo(user));
+    }
 }
