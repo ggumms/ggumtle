@@ -1,6 +1,21 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
+import { IBucketInfo } from '../interfaces'
 
+interface IDetailBucketStore {
+	detailBucket: IBucketInfo | null
+	setDetailBucket: (detailBucket: IBucketInfo) => void
+	resetDetailBucket: () => void
+}
+export const useDetailBucketStore = create<IDetailBucketStore>()(
+	devtools((set) => ({
+		detailBucket: null,
+		setDetailBucket: (detailBucket: IBucketInfo) => set(() => ({ detailBucket: detailBucket })),
+		resetDetailBucket: () => set(() => ({ detailBucket: null })),
+	}))
+)
+
+// :: Comment
 interface ICommentStore {
 	commentText: string
 	setCommentText: (commentText: string) => void

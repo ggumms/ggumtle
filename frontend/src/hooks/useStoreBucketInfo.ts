@@ -1,16 +1,16 @@
 import { useEffect } from 'react'
-import { useBucketStore } from '../store/bucketStore'
+import { useDetailBucketStore } from '../store/detailStore'
 import { IBucketInfo } from '../interfaces'
 
 const useStoreBucketInfo = (bucketInfo: IBucketInfo | undefined) => {
-	const { addBucketState, resetAllState } = useBucketStore()
+	const { setDetailBucket, resetDetailBucket } = useDetailBucketStore()
 	useEffect(() => {
-		resetAllState()
+		resetDetailBucket()
 		if (bucketInfo) {
-			addBucketState(bucketInfo)
+			setDetailBucket(bucketInfo)
 		}
 		return () => {
-			resetAllState()
+			resetDetailBucket()
 		}
 	}, [bucketInfo])
 }
