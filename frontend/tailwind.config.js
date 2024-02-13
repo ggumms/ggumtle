@@ -5,6 +5,7 @@ const colorPalette = {
 	point1: '#454645',
 	unActive: '#D9D9D9',
 	lightGray: '#F6F6F6',
+	gray: '#c4c4c4',
 	subText: '#ACADAD',
 	inputBg: '#F8F8F8',
 	disabled: '#737373',
@@ -33,6 +34,7 @@ export default {
 				pictureImage: 'url("/src/assets/svgs/pictureImage.svg")',
 				calendarImage: 'url("/src/assets/svgs/calendarImage.svg")',
 				clockImage: 'url("/src/assets/svgs/clockImage.svg")',
+				likeImage: 'url("/src/assets/svgs/heart.svg")',
 			},
 			colors: colorPalette,
 			keyframes: {

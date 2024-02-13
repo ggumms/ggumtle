@@ -11,12 +11,14 @@ const AddBucket = () => {
 	const { resetCategory, resetBucketColor } = useBucketStore()
 	const { goBack } = useRouter()
 
+	// :: Header
 	const handleLeftFunc = () => {
 		goBack()
 	}
 	const headerMenu: IMenu = { left: icons.BACK, center: '꿈틀 생성하기', right: undefined }
 	const headerFunc: IMenuFunc = { left_func: handleLeftFunc, right_func: undefined }
 
+	// :: Clear State
 	useEffect(() => {
 		// 정리 함수
 		// - 전역 state 초기화

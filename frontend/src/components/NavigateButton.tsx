@@ -19,11 +19,11 @@ const NavigateButton = ({ path, isDisable = false, children }: NavigateButtonPro
 
 	return (
 		// 접근성을 위한 a tag 추가
-		<a onClick={handleAnchorClick} className={`w-full`}>
+		<a onClick={handleAnchorClick} className={`w-full `}>
 			<button
 				onClick={handlePageMove}
 				disabled={isDisable}
-				className={`w-full text-white text-lg font-bold py-4 rounded-[5px] ${isDisable ? bgColorClass['unActive'] : bgColorClass['point1']}`}
+				className={`w-full text-white text-lg font-bold border-[1px] py-4 rounded-[5px] ${isDisable ? bgColorClass['unActive'] : bgColorClass['point1']}`}
 			>
 				{children}
 			</button>

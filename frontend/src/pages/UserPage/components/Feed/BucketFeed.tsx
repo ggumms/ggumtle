@@ -1,7 +1,7 @@
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType, UserInfoType } from '../../../../interfaces'
-import UserProfile from '../../../../components/UserProfile'
+import UserProfile from '../../../../components/UserProfile/UserProfile'
 import FeedShare from '../../utils/FeedShare'
 import LocationInfo from '../FeedSection/LocationInfo'
 import TotalReaction from '../FeedSection/TotalReaction'
@@ -17,24 +17,24 @@ const BucketFeed = () => {
 		bucketId: 2,
 		bucketTitle: '구독자 100만명 달성하기',
 		dayCount: 14,
-		color: 'mint',
+		bucketColor: 'mint',
 		isAchieved: true,
 		owner: true,
 		isFollowing: null,
 	}
-	const { bucketTitle, color, dayCount } = userInfo
+	const { bucketTitle, bucketColor, dayCount } = userInfo
 	const category: CategoryType[] = ['직장', '여행', '인간관계']
 	const photo = true
 	const location = true
 	const reactionCnt = 28
 	const commentCnt = 12
-	const hasTitleBucket = bucketTitle && color && dayCount
+	const hasTitleBucket = bucketTitle && bucketColor && dayCount
 
 	return (
-		<div className="bg-white px-4 py-2">
+		<div className="px-4 py-2 bg-white">
 			{/* 작성자 프로필 정보 */}
 			<div className="pt-1 pb-2">
-				<UserProfile type="detail" userInfo={userInfo} />
+				<UserProfile type="detail" userInfo={userInfo} isLoading={false} />
 			</div>
 
 			{/* 버킷 */}
@@ -43,7 +43,7 @@ const BucketFeed = () => {
 					type="profile"
 					isLoading={false}
 					title={bucketTitle}
-					color={color}
+					color={bucketColor}
 					dayCount={dayCount}
 					isLock={null}
 					isDone={false}
@@ -64,12 +64,12 @@ const BucketFeed = () => {
 					src="/public/dummy.PNG
       "
 					alt="dummy"
-					className="w-full h-48 object-cover my-2 rounded-md"
+					className="object-cover w-full h-48 my-2 rounded-md"
 				/>
 			)}
 
 			{/* 피드 제일 하단 감정 개수, 댓글 개수, 공유 버튼 */}
-			<div className="flex justify-between items-center pb-1">
+			<div className="flex items-center justify-between pb-1">
 				<div className="flex gap-2">
 					<TotalReaction count={reactionCnt} />
 					<TotalComment count={commentCnt} />

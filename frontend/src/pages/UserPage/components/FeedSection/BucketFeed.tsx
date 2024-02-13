@@ -3,7 +3,7 @@ import ProfileBucket from '../../../../components/ProfileBucket'
 import { CategoryType } from '../../../../interfaces'
 import TotalReaction from './TotalReaction'
 import TotalComment from './TotalComment'
-import UserProfile from '../../../../components/UserProfile'
+import UserProfile from '../../../../components/UserProfile/UserProfile'
 import FeedShare from '../../utils/FeedShare'
 import { IFeed } from '.'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
@@ -32,7 +32,7 @@ const BucketFeed = ({ userId, bucket }: { userId: number; bucket: IFeed }) => {
 	// const hasTitleBucket = bucketTitle && color && dayCount
 
 	return (
-		<div className="bg-white px-4 py-2">
+		<div className="px-4 py-2 bg-white">
 			{/* 작성자 프로필 정보 */}
 			<div className="pt-1 pb-2">
 				{userInfo && <UserProfile type="detail" userInfo={userInfo} />}
@@ -62,11 +62,11 @@ const BucketFeed = ({ userId, bucket }: { userId: number; bucket: IFeed }) => {
 			{location && <LocationInfo />} */}
 			{bucket.images &&
 				bucket.images.map((image) => (
-					<img src={image} className="w-full h-48 object-cover my-2 rounded-md" />
+					<img src={image} className="object-cover w-full h-48 my-2 rounded-md" />
 				))}
 
 			{/* 피드 제일 하단 감정 개수, 댓글 개수, 공유 버튼 */}
-			<div className="flex justify-between items-center pb-1">
+			<div className="flex items-center justify-between pb-1">
 				<div className="flex gap-2">
 					<TotalReaction count={bucket.reactionCount} />
 					<TotalComment count={bucket.commentCount} />

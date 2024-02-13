@@ -15,12 +15,13 @@ import BucketDetail from './pages/Bucket/BucketDetail'
 import AddBucket from './pages/Bucket/AddBucket'
 import MainInfo from './pages/Bucket/AddBucket/MainInfo/MainInfo'
 import CategoryInfo from './pages/Bucket/AddBucket/CategoryInfo/CategoryInfo'
-import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
+// import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
 import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
 import NotFoundPage from './pages/NotfoundPage'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
 import AddReview from './pages/Review/AddReview'
+import ValidateTokenLayout from './components/layout/ValidateTokenLayout'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -118,7 +119,27 @@ const routerData: RouterElement[] = [
 				label: '카테고리',
 			},
 			{ path: 'main', element: <MainInfo />, label: '꿈내용' },
-			{ path: 'place', element: <PlaceInfo />, label: '장소' },
+			// { path: 'place', element: <PlaceInfo />, label: '장소' },
+			{ path: 'additional', element: <AdditionalInfo />, label: '추가정보' },
+		],
+	},
+	{
+		path: '/bucket/modify/:bucketId',
+		element: <AddBucket />,
+		label: '버킷작성',
+		children: [
+			{
+				path: '',
+				element: <CategoryInfo />,
+				label: '카테고리',
+			},
+			{
+				path: 'category',
+				element: <CategoryInfo />,
+				label: '카테고리',
+			},
+			{ path: 'main', element: <MainInfo />, label: '꿈내용' },
+			// { path: 'place', element: <PlaceInfo />, label: '장소' },
 			{ path: 'additional', element: <AdditionalInfo />, label: '추가정보' },
 		],
 	},
@@ -131,7 +152,7 @@ const router: RemixRouter = createBrowserRouter(
 	routerData.map((router) => {
 		return {
 			path: router.path,
-			element: router.element,
+			element: <ValidateTokenLayout>{router.element}</ValidateTokenLayout>,
 			children: router.children ?? router.children,
 		}
 	})

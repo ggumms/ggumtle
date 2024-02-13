@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import UserProfile from '../../../components/UserProfile'
+import UserProfile from '../../../components/UserProfile/UserProfile'
 import { UserInfoType } from '../../../interfaces'
 import { IUserSearch } from '../../../store/searchUserStore'
 import { updateFollow } from '../../UserPage/api'
@@ -25,15 +25,15 @@ const SearchUserItem = ({ user }: { user: IUserSearch }) => {
 	const handleFollowButton = () => {
 		setIsFollow(!isFollow)
 	}
-	
+
 	useEffect(() => {
 		console.log('누른 후 상태변화 useEffect', isFollow)
 		mutation.mutate({ userId: user.userId, isFollowing: !isFollow })
 	}, [isFollow])
 
 	return (
-		<div className="flex justify-between items-center px-1 py-1">
-			<UserProfile type="follow" userInfo={userInfo} />
+		<div className="flex items-center justify-between px-1 py-1">
+			<UserProfile type="follow" userInfo={userInfo} isLoading={false} />
 			<button
 				onClick={handleFollowButton}
 				className={`${isFollow ? 'bg-lightGray text-subText' : 'bg-point1 text-white'}  inline-flex h-[22px] items-center justify-center text-xs rounded-md px-4`}
