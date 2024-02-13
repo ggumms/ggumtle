@@ -2,6 +2,7 @@ version: '2'
 
 services:
   ggumtle-frontend:
+    container_name: ggumtle-frontend
     image: $REGISTRY/ggumtle-frontend:$TAG
     ports:
       - "80:80"
@@ -14,6 +15,7 @@ services:
     restart: unless-stopped
 
   ggumtle-backend:
+    container_name: ggumtle-backend
     image: $REGISTRY/ggumtle-backend:$TAG
     ports:
       - "8081:8081"

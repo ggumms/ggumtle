@@ -2,26 +2,24 @@ import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { Skeleton } from '@mui/material'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
+import { randomProfile } from '../../../../constants/randomProfile'
 
-// interface UserPreviewProp {
-// 	isLoading: boolean
-// 	userInfo: IUserInfo | undefined
-// }
 const UserPreview = ({ userId }: { userId: number }) => {
 	const { isLoading, userInfo } = useUserInfoQuery(userId)
-	// const category: CategoryType[] = ['연애', '언어', '환경']
-
 	return (
 		<div className="flex items-center justify-around w-full">
 			<div className="flex flex-col items-center justify-center w-2/5">
 				{isLoading ? (
 					<Skeleton variant="circular" width={60} height={60} />
 				) : (
-					userInfo && (
+					userInfo &&
+					(userInfo.userProfileImage ? (
 						<div className="w-16 h-16 overflow-hidden rounded-full">
-							<img src={userInfo.userProfileImage} alt="" className="object-cover w-full h-full" />
+							<img src={userInfo.userProfileImage} alt="유저 프로필" />
 						</div>
-					)
+					) : (
+						randomProfile[userInfo.userId % 6]
+					))
 				)}
 				{!isLoading && userInfo && (
 					<p className="font-semibold text-point1">{userInfo.userNickname}</p>

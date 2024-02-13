@@ -2,7 +2,15 @@ import { Link } from 'react-router-dom'
 import { UserInfoType } from '../../interfaces'
 
 import { fillColorClass, textColorClass } from '../../constants/dynamicClass'
-import { SquareCheck } from '../../assets/svgs'
+import {
+	DummyUser1,
+	DummyUser2,
+	DummyUser3,
+	DummyUser4,
+	DummyUser5,
+	DummyUser6,
+	SquareCheck,
+} from '../../assets/svgs'
 import Ggumtle from '../Ggumtle'
 import UserProfileSkeleton from './UserProfileSkeleton'
 
@@ -65,16 +73,33 @@ const UserProfile = ({ type, userInfo, isLoading }: IUserProfileProps) => {
 	if (isLoading || userInfo === undefined) {
 		return <UserProfileSkeleton type={type} />
 	}
+	const randomProfile = [
+		<DummyUser1 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser2 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser3 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser4 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser5 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser6 className={`${profileStyle[type].profileSize}`} />,
+	]
 
 	return (
 		<section className="inline-flex">
-			<Link to={'/user/1'}>
-				<img
+			<Link to={`/user/${userInfo.userId}`}>
+				{/* <img
 					src={'/defaultProfile.svg'}
 					// src={userInfo.userProfileImage}
 					alt="유저 프로필 이미지"
 					className={`${profileStyle[type].profileSize} ${profileStyle[type].profileRightMargin}`}
-				/>
+				/> */}
+				<div className={`${profileStyle[type].profileRightMargin}`}>
+					{userInfo.userProfileImage ? (
+						<div className={`${profileStyle[type].profileSize} rounded-full overflow-hidden`}>
+							<img src={userInfo.userProfileImage} alt="유저 프로필 이미지" />
+						</div>
+					) : (
+						randomProfile[userInfo.userId % 6]
+					)}
+				</div>
 			</Link>
 			<div className={`relative flex flex-col ${type !== 'follow' && 'self-end'} justify-center`}>
 				<p className={`font-bold ${profileStyle[type].nameTextSize}`}>{userInfo.userNickname}</p>
