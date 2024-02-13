@@ -65,7 +65,9 @@ const BucketDetail = () => {
 					dayCount={bucketDetailInfo?.bucketInfo.dayCount}
 					isPrivate={bucketDetailInfo?.bucketInfo.isPrivate}
 				/>
-				<UserProfile type="detail" isLoading={isLoading} userInfo={bucketDetailInfo?.userInfo} />
+				<div className="mt-3">
+					<UserProfile type="detail" isLoading={isLoading} userInfo={bucketDetailInfo?.userInfo} />
+				</div>
 				{/* 옵셔널한 정보들 (장소, 사진) */}
 				{isLoading || bucketDetailInfo === undefined ? (
 					<Skeleton variant="rectangular" width={'100%'} height={'16rem'} />
@@ -74,7 +76,7 @@ const BucketDetail = () => {
 						<img
 							src={bucketDetailInfo.bucketInfo.bucketPicture}
 							alt="dummy"
-							className="object-contain w-full h-64 my-2 rounded-md"
+							className="object-contain w-full h-64 mt-6 rounded-md"
 						/>
 					)
 				)}
@@ -89,14 +91,16 @@ const BucketDetail = () => {
 				) : (
 					<>
 						{/* 날짜 */}
-						<p className="text-base text-disabled">{bucketDetailInfo.bucketInfo.createdDate}</p>
+						<p className="mt-6 text-base text-disabled">
+							{bucketDetailInfo.bucketInfo.createdDate}
+						</p>
 						{/* 태그 */}
-						<ul className="bg-white">
+						<ul className="mt-3 bg-white">
 							{bucketDetailInfo.bucketInfo.category.map((category, index) => (
 								<InterestTag tag={category} key={`category-${index}`} />
 							))}
 						</ul>
-						<div className="flex gap-3">
+						<div className="flex gap-3 my-8">
 							<ShareButton />
 							{bucketDetailInfo.bucketInfo.achievementDate === null
 								? bucketId && <AchieveDreamButton id={bucketId} />

@@ -51,7 +51,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 			{isLoading ? (
 				<>{/* Skeleton UI 작성 */}</>
 			) : (
-				<ul ref={listRef}>
+				<ul ref={listRef} className="flex flex-col gap-4 px-1 pb-28">
 					{commentListData.map((comment, index) => (
 						<li key={`comment-${index}`}>
 							<CommentItem

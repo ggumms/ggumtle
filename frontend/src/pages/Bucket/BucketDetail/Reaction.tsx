@@ -67,7 +67,7 @@ const Reaction = ({ id }: IReactionProps) => {
 
 	return (
 		// WithHeader 레이아웃을 살리기 위해서 absolute 적용, 더 좋은 방법 있으면 개선 예정
-		<div className="relative mb-28">
+		<div className="relative mb-36">
 			<ul className="absolute flex justify-evenly py-3 border-unActive border-y-[1px] w-[calc(100%_+_40px)] -left-5">
 				{reactionInfo &&
 					Object.keys(reactionInfo).map((reaction, index) => (

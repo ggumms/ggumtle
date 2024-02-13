@@ -69,9 +69,11 @@ const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentI
 	return (
 		<div onClick={handleClickComment} data-id={commentInfo.id} className="relative flex flex-col">
 			<UserProfile type="comment" userInfo={commentInfo.writer} isLoading={false} />
-			<p className="text-[10px] ml-11">{getTime(commentInfo.time, commentInfo.timeUnit)}</p>
+			<p className="text-[10px] ml-11 mb-1 mt-[2px] text-gray">
+				{getTime(commentInfo.time, commentInfo.timeUnit)}
+			</p>
 			{type === 'read' ? (
-				<p className="text-xs ml-11">{editText}</p>
+				<p className="text-sm ml-11">{editText}</p>
 			) : (
 				<div className="border-[1px] rounded-md border-gray ml-11 mr-7 mt-1 p-2">
 					<textarea
