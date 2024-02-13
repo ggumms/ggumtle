@@ -1,11 +1,10 @@
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
-
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, useParams } from 'react-router-dom'
 import LoginPage from './pages/auth/LoginPage'
 import FollowingTab from './pages/Radar/FollowingTab'
 import AllTab from './pages/Radar/AllTab'
 import Radar from './pages/Radar'
-import AlarmPage from './pages/Radar/components/AlarmPage'
+import AlarmPage from './pages/Alarm'
 import SearchPage from './pages/Search'
 import UserSearch from './pages/Search/UserSearch'
 import BucketSearch from './pages/Search/BucketSearch'
@@ -15,12 +14,17 @@ import BucketDetail from './pages/Bucket/BucketDetail'
 import AddBucket from './pages/Bucket/AddBucket'
 import MainInfo from './pages/Bucket/AddBucket/MainInfo/MainInfo'
 import CategoryInfo from './pages/Bucket/AddBucket/CategoryInfo/CategoryInfo'
-import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
+// import PlaceInfo from './pages/Bucket/AddBucket/PlaceInfo'
 import AdditionalInfo from './pages/Bucket/AddBucket/AdditionalInfo/AdditionalInfo'
 import { MultiPageHeaderInfo } from './types/router'
 import NotFoundPage from './pages/NotfoundPage'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
-import AddReview from './pages/Review/AddReview'
+import ValidateTokenLayout from './components/layout/ValidateTokenLayout'
+import WriteReview from './pages/Review/WriteReview'
+import ReviewDetail from './pages/Review/ReviewDetail'
+import FollowDetail from './pages/follow'
+import FollowerDetail from './pages/follow/FollowerDetail'
+import FollowingDetail from './pages/follow/FollowingDetail'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -76,7 +80,7 @@ const routerData: RouterElement[] = [
 			{
 				path: '',
 				element: <UserSearch />,
-				label: '유저검색',
+				label: '사용자',
 			},
 			{
 				path: 'user',
@@ -95,11 +99,41 @@ const routerData: RouterElement[] = [
 			},
 		],
 	},
+
 	{
 		path: '/mypage',
 		// @TODO: 추후 본인 userId 삽입
 		element: <UserPage isForRadar={false} userId={1} />,
 		label: '',
+	},
+	{
+		path: '/user/:userId',
+		// @TODO: 추후 본인 userId 삽입
+		element: <UserPageWrapper />,
+		label: '',
+	},
+
+	{
+		path: '/follow/:userId',
+		element: <FollowDetail />,
+		label: '팔로우상세',
+		children: [
+			{
+				path: '',
+				element: <FollowerDetail />,
+				label: '팔로워',
+			},
+			{
+				path: 'follower',
+				element: <FollowerDetail />,
+				label: '팔로워',
+			},
+			{
+				path: 'following',
+				element: <FollowingDetail />,
+				label: '팔로잉',
+			},
+		],
 	},
 	{ path: '/bucket/:bucketId', element: <BucketDetail />, label: '' },
 	{
@@ -118,12 +152,35 @@ const routerData: RouterElement[] = [
 				label: '카테고리',
 			},
 			{ path: 'main', element: <MainInfo />, label: '꿈내용' },
-			{ path: 'place', element: <PlaceInfo />, label: '장소' },
+			// { path: 'place', element: <PlaceInfo />, label: '장소' },
+			{ path: 'additional', element: <AdditionalInfo />, label: '추가정보' },
+		],
+	},
+	{
+		path: '/bucket/modify/:bucketId',
+		element: <AddBucket />,
+		label: '버킷작성',
+		children: [
+			{
+				path: '',
+				element: <CategoryInfo />,
+				label: '카테고리',
+			},
+			{
+				path: 'category',
+				element: <CategoryInfo />,
+				label: '카테고리',
+			},
+			{ path: 'main', element: <MainInfo />, label: '꿈내용' },
+			// { path: 'place', element: <PlaceInfo />, label: '장소' },
 			{ path: 'additional', element: <AdditionalInfo />, label: '추가정보' },
 		],
 	},
 	{ path: '/bucket/achieve/:bucketId', element: <AchieveBucket />, label: '리뷰달성' },
-	{ path: '/review/write/:bucketId', element: <AddReview />, label: '리뷰작성' },
+	{ path: '/review/write/:bucketId', element: <WriteReview />, label: '리뷰작성' },
+	{ path: '/review/modify/:bucketId', element: <WriteReview />, label: '리뷰수정' },
+	{ path: '/review/:reviewId', element: <ReviewDetail />, label: '리뷰상세' },
+
 	{ path: '*', element: <NotFoundPage />, label: '' },
 ]
 
@@ -131,7 +188,7 @@ const router: RemixRouter = createBrowserRouter(
 	routerData.map((router) => {
 		return {
 			path: router.path,
-			element: router.element,
+			element: <ValidateTokenLayout>{router.element}</ValidateTokenLayout>,
 			children: router.children ?? router.children,
 		}
 	})
@@ -151,6 +208,12 @@ const router: RemixRouter = createBrowserRouter(
 // export const addBucketHeaderList = routerData.map((router) => {
 // 	return { name: router.label, path: router.path }
 // })
+
+function UserPageWrapper() {
+	const { userId } = useParams()
+
+	return userId && <UserPage isForRadar={false} userId={parseInt(userId)} />
+}
 
 export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
 	let headerData
@@ -186,6 +249,19 @@ export default router
 export const searchHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
 	let headerData
 	if (router.label !== '검색페이지') return [...prev]
+	if (router.children) {
+		headerData = router.children
+			.filter((child) => child.path)
+			.map((child) => {
+				return { name: child?.label, path: child.path }
+			})
+		return [...headerData]
+	}
+	return [...prev]
+}, [] as MultiPageHeaderInfo[])
+export const followHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
+	let headerData
+	if (router.label !== '팔로우상세') return [...prev]
 	if (router.children) {
 		headerData = router.children
 			.filter((child) => child.path)

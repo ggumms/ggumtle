@@ -76,7 +76,7 @@ export interface IBaseUserInfo {
 export interface ITitleBucket {
 	bucketId: number | null
 	bucketTitle: string | null
-	color: ColorType | null
+	bucketColor: ColorType | null
 	isAchieved: boolean
 	dayCount?: number
 }
@@ -95,14 +95,16 @@ export interface IProfileUserInfo extends IBaseUserInfo, ITitleBucket {}
 
 export type UserInfoType = IMyUserInfo | IOtherUserInfo | IProfileUserInfo
 
+export type PeriodType = null | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
+
 export interface IBucketInfo {
 	writerId: number
 	reviewId: number | null
 	title: string
 	timeCapsule: string | null
 	bucketPicture: string | null
-	color: string
-	reminderDate: null | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
+	color: ColorType
+	reminderDate: PeriodType
 	latitude: number
 	longitude: number
 	address: string
@@ -111,6 +113,11 @@ export interface IBucketInfo {
 	category: CategoryType[]
 	isPrivate: boolean
 	createdDate: string
+}
+
+export interface IBucketDetailInfo {
+	bucketInfo: IBucketInfo
+	userInfo: UserInfoType
 }
 
 export type TimeUnitType = 'min' | 'hour' | 'day' | 'month' | 'year'
@@ -124,4 +131,33 @@ export interface ICommentItem {
 	time: number
 	createdDate: string
 	updatedDate: string
+}
+
+export interface ICommentListInfo {
+	content: ICommentItem[]
+	pageable: {
+		pageNumber: number
+		pageSize: number
+		sort: {
+			empty: boolean
+			sorted: boolean
+			unsorted: boolean
+		}
+		offset: number
+		paged: boolean
+		unpaged: boolean
+	}
+	last: boolean
+	totalElements: number
+	totalPages: number
+	size: number
+	number: number
+	sort: {
+		empty: boolean
+		sorted: boolean
+		unsorted: boolean
+	}
+	first: boolean
+	numberOfElements: number
+	empty: boolean
 }

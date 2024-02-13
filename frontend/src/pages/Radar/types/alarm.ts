@@ -8,14 +8,14 @@ export enum TimeUnitType {
 
 export type AlarmType =
 	| 'follow'
-	| 'likeCommentBucket'
-	| 'likeCommentReview'
+	| 'bucketReaction'
+	| 'reviewReaction'
 	| 'join'
 	| 'remind'
-	| 'bucket'
-	| 'review'
-	| 'bucketAchieve'
-	| 'commentReview'
+	| 'followBucket'
+	| 'followReview'
+	| 'followBucketAchieve'
+	| 'followCommentReview'
 	| 'commentBucket'
 
 export interface IAlarm {

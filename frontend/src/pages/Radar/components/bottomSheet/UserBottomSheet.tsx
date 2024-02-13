@@ -1,4 +1,3 @@
-import PreviewUser from './UserPreview'
 import { MAX_BOTTOM_SHEET_HEIGHT } from '../../../../hooks/useUserBottomSheet'
 import Header from '../../../../components/Header'
 import { IMenu, IMenuFunc } from '../../../../interfaces'
@@ -7,6 +6,7 @@ import UserPage from '../../../UserPage'
 import { UserBottomSheetProp } from '../../types/bottomSheet'
 import { Skeleton } from '@mui/material'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
+import UserPreview from './UserPreview'
 
 const UserBottomSheet = (props: UserBottomSheetProp) => {
 	const { userId, togglePreview, isMaxup, sheet, content } = props
@@ -55,7 +55,7 @@ const UserBottomSheet = (props: UserBottomSheetProp) => {
 					)
 				: userId && (
 						<div className="px-5 py-2">
-							<PreviewUser userId={userId} />
+							<UserPreview userId={userId} />
 						</div>
 					)}
 		</div>

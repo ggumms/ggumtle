@@ -1,25 +1,26 @@
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
+import { randomProfile } from '../../../../constants/randomProfile'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 import FollowButtons from './FollowButtons'
 import NumInfo from './NumInfo'
 
 const ProfileSection = ({ userId }: { userId: number }) => {
 	const { isLoading, userInfo } = useUserInfoQuery(userId!)
-	// const { userId, userProfileImage, bucketTitle, userNickname, color, dayCount, category } = userInfo
-	// const hasTitleBucket = bucketTitle && color && dayCount
 
 	return (
-		<div className="bg-white px-5 pt-2 pb-4">
+		<div className="px-5 pt-2 pb-4 bg-white">
 			<section className="flex items-center justify-around">
 				<fieldset className="flex flex-col items-center justify-center w-2/5">
-					{/* @TODO: 추후 실제 프로필 이미지로 변경 */}
-					{/* <DummyUser1 /> */}
-					{!isLoading && userInfo && (
-						<div className="w-16 h-16 rounded-full overflow-hidden">
-							<img src={userInfo.userProfileImage} alt="" />
-						</div>
-					)}
+					{!isLoading &&
+						userInfo &&
+						(userInfo.userProfileImage ? (
+							<div className="w-16 h-16 overflow-hidden rounded-full">
+								<img src={userInfo.userProfileImage} alt="유저 프로필" />
+							</div>
+						) : (
+							randomProfile[userInfo.userId % 6]
+						))}
 					{!isLoading && userInfo && (
 						<p className="font-semibold text-point1">{userInfo.userNickname}</p>
 					)}
@@ -33,10 +34,10 @@ const ProfileSection = ({ userId }: { userId: number }) => {
 							type="profile"
 							isLoading={false}
 							title={userInfo.bucketTitle}
-							color={userInfo.color}
+							color={userInfo.bucketColor}
 							dayCount={userInfo.dayCount}
 							isLock={null}
-							isDone={false}
+							isDone={userInfo.isAchieved}
 						/>
 					)}
 					{/* )} */}
