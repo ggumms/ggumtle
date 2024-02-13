@@ -1,11 +1,10 @@
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
-
 import { createBrowserRouter, useParams } from 'react-router-dom'
 import LoginPage from './pages/auth/LoginPage'
 import FollowingTab from './pages/Radar/FollowingTab'
 import AllTab from './pages/Radar/AllTab'
 import Radar from './pages/Radar'
-import AlarmPage from './pages/Radar/components/AlarmPage'
+import AlarmPage from './pages/Alarm'
 import SearchPage from './pages/Search'
 import UserSearch from './pages/Search/UserSearch'
 import BucketSearch from './pages/Search/BucketSearch'

@@ -1,14 +1,15 @@
 // @TODO: 페이지 전환 애니메이션 추가하기
 
 import { useNavigate } from 'react-router-dom'
-import Header from '../../../../components/Header'
-import { icons } from '../../../../constants/header-icons'
-import { IMenu, IMenuFunc } from '../../../../interfaces'
+import Header from '../../components/Header'
+import { icons } from '../../constants/header-icons'
+import { IMenu, IMenuFunc } from '../../interfaces'
 // import Button from '@mui/material-next/Button'
-import Button from '@mui/material/Button';
+import Button from '@mui/material/Button'
 import { useEffect, useState } from 'react'
-import { IAlarm } from '../../types/alarm'
+import { IAlarm } from '../Radar/types/alarm'
 import AlarmItem from './AlarmItem'
+import { useAlarmQuery } from '../../hooks/useAlarm'
 
 // 더미 데이터
 const data: IAlarm[] = [
@@ -129,6 +130,8 @@ const AlarmPage = () => {
 	const navigate = useNavigate()
 	const [notifications, setNotifications] = useState<IAlarm[]>(data)
 
+	const { data: alarms } = useAlarmQuery()
+	console.log(alarms)
 	const menu: IMenu = {
 		left: icons.BACK,
 		center: '알림',
@@ -152,14 +155,14 @@ const AlarmPage = () => {
 		<div className="w-full">
 			<Header menu={menu} func={func} />
 			<div className="h-screen mt-16 flex flex-col">
-				{notifications.length &&
-					notifications.map((alarm: IAlarm) => <AlarmItem alarm={alarm} key={alarm.alarmId} />)}
+				{alarms &&
+					alarms.alarmList.content.map((alarm: IAlarm) => (
+						<AlarmItem alarm={alarm} key={alarm.alarmId} />
+					))}
+				{/* {notifications.length &&
+					notifications.map((alarm: IAlarm) => <AlarmItem alarm={alarm} key={alarm.alarmId} />)} */}
 				<div className="fixed bottom-2 w-full flex justify-center">
-					<Button
-						color="primary"
-						onClick={deleteAllAlarms}
-						variant="contained"
-					>
+					<Button color="primary" onClick={deleteAllAlarms} variant="contained">
 						다 읽음 처리하기
 					</Button>
 				</div>

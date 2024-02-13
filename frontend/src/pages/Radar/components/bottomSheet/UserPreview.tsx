@@ -2,29 +2,10 @@ import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { Skeleton } from '@mui/material'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
-import {
-	DummyUser1,
-	DummyUser2,
-	DummyUser3,
-	DummyUser4,
-	DummyUser5,
-	DummyUser6,
-} from '../../../../assets/svgs'
+import { randomProfile } from '../../../../constants/randomProfile'
 
-// interface UserPreviewProp {
-// 	isLoading: boolean
-// 	userInfo: IUserInfo | undefined
-// }
 const UserPreview = ({ userId }: { userId: number }) => {
 	const { isLoading, userInfo } = useUserInfoQuery(userId)
-	const randomProfile = [
-		<DummyUser1 className="w-16 h-16" />,
-		<DummyUser2 className="w-16 h-16" />,
-		<DummyUser3 className="w-16 h-16" />,
-		<DummyUser4 className="w-16 h-16" />,
-		<DummyUser5 className="w-16 h-16" />,
-		<DummyUser6 className="w-16 h-16" />,
-	]
 	return (
 		<div className="flex items-center justify-around w-full">
 			<div className="flex flex-col items-center justify-center w-2/5">

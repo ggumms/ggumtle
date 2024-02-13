@@ -1,28 +1,12 @@
-import {
-	DummyUser1,
-	DummyUser2,
-	DummyUser3,
-	DummyUser4,
-	DummyUser5,
-	DummyUser6,
-} from '../../../../assets/svgs'
 import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
+import { randomProfile } from '../../../../constants/randomProfile'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 import FollowButtons from './FollowButtons'
 import NumInfo from './NumInfo'
 
 const ProfileSection = ({ userId }: { userId: number }) => {
 	const { isLoading, userInfo } = useUserInfoQuery(userId!)
-
-	const randomProfile = [
-		<DummyUser1 className="w-16 h-16" />,
-		<DummyUser2 className="w-16 h-16" />,
-		<DummyUser3 className="w-16 h-16" />,
-		<DummyUser4 className="w-16 h-16" />,
-		<DummyUser5 className="w-16 h-16" />,
-		<DummyUser6 className="w-16 h-16" />,
-	]
 
 	return (
 		<div className="px-5 pt-2 pb-4 bg-white">
