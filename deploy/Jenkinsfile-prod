@@ -22,8 +22,12 @@ pipeline {
 	stage ('frontend build') {
 	  tools { nodejs "NodeJS20" }
       steps {
-	    sh 'cd deploy/ && chmod +x ggumtle-build-frontend.sh && ./ggumtle-build-frontend.sh'
-      }
+		withCredentials([file(credentialsId: 'front_env', variable: 'SECRETS_FILE')]) {
+		    script {
+			    sh 'cd deploy/ && chmod +x ggumtle-build-frontend.sh && ./ggumtle-build-frontend.sh'
+		    }
+        }
+	  }	
     }
 	
 	stage('docker build and push'){
