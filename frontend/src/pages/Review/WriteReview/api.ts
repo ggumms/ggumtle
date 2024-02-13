@@ -36,3 +36,21 @@ export const postReview = async (
 	})
 	return reviewRes.data.reviewId
 }
+
+// - Put request
+interface IPutReviewRes {
+	result: string
+	reviewId: number
+}
+export const putReview = async (
+	bucketId: string,
+	title: string,
+	context: string
+): Promise<number> => {
+	const reviewRes = await instance.post<IPutReviewRes>(`review`, {
+		bucketId,
+		title,
+		context,
+	})
+	return reviewRes.data.reviewId
+}

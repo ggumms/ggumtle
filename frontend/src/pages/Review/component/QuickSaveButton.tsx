@@ -1,4 +1,4 @@
-import { postReview } from './api'
+import { postReview } from '../WriteReview/api'
 
 interface IQuickSaveButtonProps {
 	bucketId: string
