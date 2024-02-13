@@ -22,6 +22,9 @@ import NotFoundPage from './pages/NotfoundPage'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
 import AddReview from './pages/Review/AddReview'
 import ValidateTokenLayout from './components/layout/ValidateTokenLayout'
+import FollowDetail from './pages/follow'
+import FollowerDetail from './pages/follow/FollowerDetail'
+import FollowingDetail from './pages/follow/FollowingDetail'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -77,7 +80,7 @@ const routerData: RouterElement[] = [
 			{
 				path: '',
 				element: <UserSearch />,
-				label: '유저검색',
+				label: '사용자',
 			},
 			{
 				path: 'user',
@@ -96,11 +99,35 @@ const routerData: RouterElement[] = [
 			},
 		],
 	},
+
 	{
 		path: '/mypage',
 		// @TODO: 추후 본인 userId 삽입
 		element: <UserPage isForRadar={false} userId={1} />,
 		label: '',
+	},
+
+	{
+		path: '/follow/:userId',
+		element: <FollowDetail />,
+		label: '팔로우상세',
+		children: [
+			{
+				path: '',
+				element: <FollowerDetail />,
+				label: '팔로워',
+			},
+			{
+				path: 'follower',
+				element: <FollowerDetail />,
+				label: '팔로워',
+			},
+			{
+				path: 'following',
+				element: <FollowingDetail />,
+				label: '팔로잉',
+			},
+		],
 	},
 	{ path: '/bucket/:bucketId', element: <BucketDetail />, label: '' },
 	{
@@ -207,6 +234,19 @@ export default router
 export const searchHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
 	let headerData
 	if (router.label !== '검색페이지') return [...prev]
+	if (router.children) {
+		headerData = router.children
+			.filter((child) => child.path)
+			.map((child) => {
+				return { name: child?.label, path: child.path }
+			})
+		return [...headerData]
+	}
+	return [...prev]
+}, [] as MultiPageHeaderInfo[])
+export const followHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
+	let headerData
+	if (router.label !== '팔로우상세') return [...prev]
 	if (router.children) {
 		headerData = router.children
 			.filter((child) => child.path)

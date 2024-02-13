@@ -1,28 +1,29 @@
 import { useEffect, useState } from 'react'
 import UserProfile from '../../../components/UserProfile/UserProfile'
 import { UserInfoType } from '../../../interfaces'
-import { IUserSearch } from '../../../store/searchUserStore'
 import { updateFollow } from '../../UserPage/api'
 import { useMutation } from '@tanstack/react-query'
 
-const SearchUserItem = ({ user }: { user: IUserSearch }) => {
+const SearchUserItem = ({ user }: { user: UserInfoType }) => {
 	const mutation = useMutation({ mutationFn: updateFollow })
 	const [isFollow, setIsFollow] = useState(user.isFollowing)
-	const userInfo: UserInfoType = {
-		userId: user.userId,
-		userProfileImage: user.userProfileImage,
-		userNickname: user.userNickname,
-		category: [],
-		bucketId: user.bucketId,
-		bucketTitle: user.bucketTitle,
-		dayCount: undefined,
-		bucketColor: user.bucketColor,
-		isAchieved: user.isAchieved,
-		owner: undefined,
-		isFollowing: user.isFollowing,
-	}
+	// const userInfo: UserInfoType = {
+	// 	userId: user.userId,
+	// 	userProfileImage: user.userProfileImage,
+	// 	userNickname: user.userNickname,
+	// 	category: [],
+	// 	bucketId: user.bucketId,
+	// 	bucketTitle: user.bucketTitle,
+	// 	dayCount: undefined,
+	// 	bucketColor: user.bucketColor,
+	// 	isAchieved: user.isAchieved,
+	// 	owner: undefined,
+	// 	isFollowing: user.isFollowing,
+	// }
 
 	const handleFollowButton = () => {
+		console.log('handle')
+		mutation.mutate({ userId: user.userId, isFollowing: !isFollow })
 		setIsFollow(!isFollow)
 	}
 
@@ -33,10 +34,10 @@ const SearchUserItem = ({ user }: { user: IUserSearch }) => {
 
 	return (
 		<div className="flex items-center justify-between px-1 py-1">
-			<UserProfile type="follow" userInfo={userInfo} isLoading={false} />
+			<UserProfile type="follow" userInfo={user} isLoading={false} />
 			<button
 				onClick={handleFollowButton}
-				className={`${isFollow ? 'bg-lightGray text-subText' : 'bg-point1 text-white'}  inline-flex h-[22px] items-center justify-center text-xs rounded-md px-4`}
+				className={`${isFollow ? 'bg-lightGray text-subText' : 'bg-point1 text-white'}  inline-flex h-[22px] flex-shrink-0 items-center justify-center text-xs rounded-md px-4`}
 			>
 				{isFollow ? '팔로잉' : '팔로우'}
 			</button>
