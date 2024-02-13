@@ -1,7 +1,8 @@
 import { instance } from '../../../axios'
+import { IReviewDetail } from '../../../types/bucket'
 
 // :: Review
-// - Get request
+// - Get brief request
 interface IReviewBrief {
 	hasTemp: boolean
 	hasReview: boolean
@@ -15,6 +16,16 @@ interface IGetReviewBriefRes {
 export const getReviewBrief = async (bucketId: string): Promise<IReviewBrief> => {
 	const reviewRes = await instance.get<IGetReviewBriefRes>(`review/brief/${bucketId}`)
 	return reviewRes.data.reviewBrief
+}
+// - Get detail request
+
+interface IGetReviewDetailRes {
+	result: string
+	review: IReviewDetail
+}
+export const getReviewDetail = async (reviewId: number): Promise<IReviewDetail> => {
+	const reviewRes = await instance.get<IGetReviewDetailRes>(`review/${reviewId}`)
+	return reviewRes.data.review
 }
 
 // - Post request

@@ -68,3 +68,16 @@ export interface IReactionInfo {
 	userReaction: ReactionType
 	reactionCounts: ReactionCountType
 }
+
+// :: Review
+export interface IReviewDetail {
+	writer: IProfileUserInfo
+	bucketId: number
+	bucketTitle: string
+	daysSinceDream: number
+	reviewTitle: string
+	reviewContext: string
+	reviewCreatedDate: string
+	reviewUpdatedDate: string
+	categories: CategoryType[]
+}

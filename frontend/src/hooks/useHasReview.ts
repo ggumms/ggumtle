@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react'
-import { getReviewBrief } from '../pages/Review/WriteReview/api'
+import { getReviewDetail } from '../pages/Review/WriteReview/api'
 
-const useHasReview = (bucketId: string | undefined) => {
+const useHasReview = (reviewId: number | null | undefined) => {
 	const [hasReview, setHasReview] = useState(false)
 
-	const fetchBriefInfo = async (bucketId: string) => {
-		const { hasReview } = await getReviewBrief(bucketId)
-		setHasReview(hasReview)
+	const fetchBriefInfo = async (reviewId: number) => {
+		const { reviewCreatedDate } = await getReviewDetail(reviewId)
+		setHasReview(!!reviewCreatedDate)
 	}
 	useEffect(() => {
-		bucketId && fetchBriefInfo(bucketId)
-	}, [bucketId])
+		reviewId ? fetchBriefInfo(reviewId) : setHasReview(false)
+	}, [reviewId])
 
 	return hasReview
 }

@@ -7,24 +7,21 @@ import WithHeaderLayout from '../../../components/layout/WithHeaderLayout'
 import BucketInfo from './component/BucketInfo'
 import InterestTag from './component/InterestTag'
 import UserProfile from '../../../components/UserProfile/UserProfile'
-import ShareButton from '../../../components/ShareButton'
-import AchieveDreamButton from './component/AcheiveDreamButton'
-import WriteReviewButton from './component/WriteReviewButton'
+import BucketMoreButton from './component/BucketMoreButton'
 import DetailLocation from './component/DetailLocation'
 import Reaction from './component/Reaction'
 import CommentList from './component/Comment/CommentList'
 import CommentInput from './component/Comment/CommentInput'
+import DetailButtonSection from './component/DetailButtonSection'
 
+import useStoreBucketInfo from '../../../hooks/useStoreBucketInfo'
 import { useRouter } from '../../../hooks/useRouter'
-import { getBucketDetailInfo } from './api'
+import useHasReview from '../../../hooks/useHasReview'
 
+import { getBucketDetailInfo } from './api'
+import { isMyUserType } from './../../../utils/typeFilter'
 import { IBucketDetailInfo, IMenu, IMenuFunc } from '../../../interfaces'
 import { icons } from '../../../constants/header-icons'
-import BucketMoreButton from './component/BucketMoreButton'
-import { isMyUserType } from './../../../utils/typeFilter'
-import useStoreBucketInfo from '../../../hooks/useStoreBucketInfo'
-import useHasReview from '../../../hooks/useHasReview'
-import ShowReviewButton from './component/ShowReviewButton'
 
 const BucketDetail = () => {
 	const [isInputShown, setIsInputShown] = useState(false)
@@ -32,7 +29,6 @@ const BucketDetail = () => {
 
 	const { goBack } = useRouter()
 	const { bucketId } = useParams()
-	const hasReview = useHasReview(bucketId)
 
 	// :: Validate bucketId
 	// bucketId Path variable로 Number 값이 아닌 값이 들어오면 이전 페이지로 이동
@@ -50,6 +46,9 @@ const BucketDetail = () => {
 	})
 	useStoreBucketInfo(bucketDetailInfo?.bucketInfo)
 
+	// :: Get bucket has review
+	const hasReview = useHasReview(bucketDetailInfo?.bucketInfo.reviewId)
+
 	// :: Header
 	const bucketRightMenu =
 		bucketDetailInfo && isMyUserType(bucketDetailInfo.userInfo) ? <BucketMoreButton /> : undefined
@@ -64,6 +63,10 @@ const BucketDetail = () => {
 	const headerFunc: IMenuFunc = { left_func: handleLeftFunc, right_func: undefined }
 
 	// :: Rendering
+	if (bucketId === undefined) {
+		goBack()
+		return
+	}
 	return (
 		<>
 			<WithHeaderLayout headerMenu={headerMenu} headerFunc={headerFunc}>
@@ -111,29 +114,22 @@ const BucketDetail = () => {
 							))}
 						</ul>
 						<div className="flex gap-3 my-8">
-							<ShareButton />
-							{bucketDetailInfo.bucketInfo.achievementDate === null ? (
-								bucketId && <AchieveDreamButton id={bucketId} />
-							) : hasReview && bucketDetailInfo.bucketInfo.reviewId ? (
-								<ShowReviewButton reviewId={bucketDetailInfo.bucketInfo.reviewId} />
-							) : (
-								bucketId && <WriteReviewButton id={bucketId} />
-							)}
-						</div>
-						{bucketId && <Reaction id={bucketId} />}
-						{bucketId && (
-							<CommentList
-								isInputFocused={isInputFocused}
-								setIsInputShown={setIsInputShown}
-								id={bucketId}
+							<DetailButtonSection
+								bucketId={bucketId}
+								bucketDetailInfo={bucketDetailInfo}
+								hasReview={hasReview}
 							/>
-						)}
+						</div>
+						<Reaction id={bucketId} />
+						<CommentList
+							isInputFocused={isInputFocused}
+							setIsInputShown={setIsInputShown}
+							id={bucketId}
+						/>
 					</>
 				)}
 			</WithHeaderLayout>
-			{isInputShown && bucketId && (
-				<CommentInput bucketId={bucketId} setIsInputFocused={setIsInputFocused} />
-			)}
+			{isInputShown && <CommentInput bucketId={bucketId} setIsInputFocused={setIsInputFocused} />}
 		</>
 	)
 }
