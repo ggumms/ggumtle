@@ -1,4 +1,4 @@
-import { EmptyLike } from '../../../../assets/svgs'
+import { EmptyLike } from '../../../../../assets/svgs'
 
 interface IActiveLikeButtonProps {
 	handleClick: () => Promise<void>

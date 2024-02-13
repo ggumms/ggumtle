@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import { getBucketReaction, postBucketReaction } from './api'
-import { IReactionInfo, ReactionCountType, ReactionType } from '../../../types/bucket'
-import { isReactionType } from '../../../utils/typeFilter'
+import { getBucketReaction, postBucketReaction } from '../api'
+import { IReactionInfo, ReactionCountType, ReactionType } from '../../../../types/bucket'
+import { isReactionType } from '../../../../utils/typeFilter'
 
-import { Cool, Underpin, WantToDo } from '../../../assets/svgs'
-import { textColorClass } from '../../../constants/dynamicClass'
+import { Cool, Underpin, WantToDo } from '../../../../assets/svgs'
+import { textColorClass } from '../../../../constants/dynamicClass'
 import { Skeleton } from '@mui/material'
 
 interface IReactionProps {

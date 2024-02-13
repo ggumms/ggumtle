@@ -1,7 +1,7 @@
 import { Menu, Transition } from '@headlessui/react'
 import { AiOutlineMore } from 'react-icons/ai'
-import { useDetailPageTypeStore } from '../../../../store/detailStore'
-import { deleteBucketComment } from '../api'
+import { useDetailPageTypeStore } from '../../../../../store/detailStore'
+import { deleteBucketComment } from '../../api'
 import { useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 

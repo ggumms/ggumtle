@@ -1,6 +1,6 @@
 import { ChangeEvent, KeyboardEvent, useRef } from 'react'
-import { useCommentStore } from '../../../../store/detailStore'
-import { postBucketComment } from '../api'
+import { useCommentStore } from '../../../../../store/detailStore'
+import { postBucketComment } from '../../api'
 import { useQueryClient } from '@tanstack/react-query'
 
 interface ICommentInput {

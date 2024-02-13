@@ -1,4 +1,4 @@
-import NavigateButton from '../../../components/NavigateButton'
+import NavigateButton from '../../../../components/NavigateButton'
 
 interface IWriteReviewButtonProps {
 	id: string

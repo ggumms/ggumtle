@@ -1,9 +1,9 @@
 import CommentItem from './CommentItem'
 import { useEffect, useState } from 'react'
-import { useCommentStore, useDetailPageTypeStore } from '../../../../store/detailStore'
+import { useCommentStore, useDetailPageTypeStore } from '../../../../../store/detailStore'
 import { Skeleton } from '@mui/material'
 import { useInView } from 'react-intersection-observer'
-import useInfiniteCommentList from '../../../../hooks/useInfiniteCommentList'
+import useInfiniteCommentList from '../../../../../hooks/useInfiniteCommentList'
 
 interface ICommentListProps {
 	isInputFocused: boolean

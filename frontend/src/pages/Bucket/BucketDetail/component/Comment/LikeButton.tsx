@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import ActiveLikeButton from './ActiveLikeButton'
 import UnActiveLikeButton from './UnActiveLikeButton'
-import { postLikeStatus } from '../api'
+import { postLikeStatus } from '../../api'
 
 interface ILikeButtonProps {
 	commentId: number

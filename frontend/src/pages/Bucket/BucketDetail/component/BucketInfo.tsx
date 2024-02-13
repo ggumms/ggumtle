@@ -1,5 +1,5 @@
-import ProfileBucket from '../../../components/ProfileBucket'
-import { ColorType } from '../../../interfaces'
+import ProfileBucket from '../../../../components/ProfileBucket'
+import { ColorType } from '../../../../interfaces'
 import BucketInfoSkeleton from './Skeleton/BucketInfoSkeleton'
 
 interface BucketInfoProps {

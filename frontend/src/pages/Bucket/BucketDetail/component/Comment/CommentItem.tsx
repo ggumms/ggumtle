@@ -1,12 +1,12 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 
-import UserProfile from '../../../../components/UserProfile/UserProfile'
+import UserProfile from '../../../../../components/UserProfile/UserProfile'
 import ShowMoreButton from './ShowMoreButton'
 import LikeButton from './LikeButton'
 
-import { useDetailPageTypeStore } from '../../../../store/detailStore'
-import { putBucketComment } from '../api'
-import { ICommentItem, TimeUnitType } from '../../../../interfaces'
+import { useDetailPageTypeStore } from '../../../../../store/detailStore'
+import { putBucketComment } from '../../api'
+import { ICommentItem, TimeUnitType } from '../../../../../interfaces'
 
 const getTime = (time: number, timeUnit: TimeUnitType): string => {
 	switch (timeUnit) {
