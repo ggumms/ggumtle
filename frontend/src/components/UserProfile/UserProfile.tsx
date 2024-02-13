@@ -2,7 +2,15 @@ import { Link } from 'react-router-dom'
 import { UserInfoType } from '../../interfaces'
 
 import { fillColorClass, textColorClass } from '../../constants/dynamicClass'
-import { DummyUser1, DummyUser2, DummyUser3, DummyUser4, DummyUser5, DummyUser6, SquareCheck } from '../../assets/svgs'
+import {
+	DummyUser1,
+	DummyUser2,
+	DummyUser3,
+	DummyUser4,
+	DummyUser5,
+	DummyUser6,
+	SquareCheck,
+} from '../../assets/svgs'
 import Ggumtle from '../Ggumtle'
 import UserProfileSkeleton from './UserProfileSkeleton'
 
@@ -65,7 +73,6 @@ const UserProfile = ({ type, userInfo, isLoading }: IUserProfileProps) => {
 	if (isLoading || userInfo === undefined) {
 		return <UserProfileSkeleton type={type} />
 	}
-
 	const randomProfile = [
 		<DummyUser1 className={`${profileStyle[type].profileSize}`} />,
 		<DummyUser2 className={`${profileStyle[type].profileSize}`} />,
@@ -77,7 +84,7 @@ const UserProfile = ({ type, userInfo, isLoading }: IUserProfileProps) => {
 
 	return (
 		<section className="inline-flex">
-			<Link to={'/user/1'}>
+			<Link to={`/user/${userInfo.userId}`}>
 				{/* <img
 					src={'/defaultProfile.svg'}
 					// src={userInfo.userProfileImage}

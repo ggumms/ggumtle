@@ -1,6 +1,6 @@
 import { Router as RemixRouter } from '@remix-run/router/dist/router'
 
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, useParams } from 'react-router-dom'
 import LoginPage from './pages/auth/LoginPage'
 import FollowingTab from './pages/Radar/FollowingTab'
 import AllTab from './pages/Radar/AllTab'
@@ -106,6 +106,12 @@ const routerData: RouterElement[] = [
 		element: <UserPage isForRadar={false} userId={1} />,
 		label: '',
 	},
+	{
+		path: '/user/:userId',
+		// @TODO: 추후 본인 userId 삽입
+		element: <UserPageWrapper />,
+		label: '',
+	},
 
 	{
 		path: '/follow/:userId',
@@ -199,6 +205,12 @@ const router: RemixRouter = createBrowserRouter(
 // export const addBucketHeaderList = routerData.map((router) => {
 // 	return { name: router.label, path: router.path }
 // })
+
+function UserPageWrapper() {
+	const { userId } = useParams()
+
+	return userId && <UserPage isForRadar={false} userId={parseInt(userId)} />
+}
 
 export const addBucketHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
 	let headerData

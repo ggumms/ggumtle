@@ -2,6 +2,14 @@ import InterestTag from '../../../../components/InterestTag'
 import ProfileBucket from '../../../../components/ProfileBucket'
 import { Skeleton } from '@mui/material'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
+import {
+	DummyUser1,
+	DummyUser2,
+	DummyUser3,
+	DummyUser4,
+	DummyUser5,
+	DummyUser6,
+} from '../../../../assets/svgs'
 
 // interface UserPreviewProp {
 // 	isLoading: boolean
@@ -9,19 +17,28 @@ import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 // }
 const UserPreview = ({ userId }: { userId: number }) => {
 	const { isLoading, userInfo } = useUserInfoQuery(userId)
-	// const category: CategoryType[] = ['연애', '언어', '환경']
-
+	const randomProfile = [
+		<DummyUser1 className="w-16 h-16" />,
+		<DummyUser2 className="w-16 h-16" />,
+		<DummyUser3 className="w-16 h-16" />,
+		<DummyUser4 className="w-16 h-16" />,
+		<DummyUser5 className="w-16 h-16" />,
+		<DummyUser6 className="w-16 h-16" />,
+	]
 	return (
 		<div className="flex items-center justify-around w-full">
 			<div className="flex flex-col items-center justify-center w-2/5">
 				{isLoading ? (
 					<Skeleton variant="circular" width={60} height={60} />
 				) : (
-					userInfo && (
+					userInfo &&
+					(userInfo.userProfileImage ? (
 						<div className="w-16 h-16 overflow-hidden rounded-full">
-							<img src={userInfo.userProfileImage} alt="" className="object-cover w-full h-full" />
+							<img src={userInfo.userProfileImage} alt="유저 프로필" />
 						</div>
-					)
+					) : (
+						randomProfile[userInfo.userId % 6]
+					))
 				)}
 				{!isLoading && userInfo && (
 					<p className="font-semibold text-point1">{userInfo.userNickname}</p>
