@@ -7,8 +7,8 @@ export const AlarmMainMSG = {
 	BUCKET: '님이 새 꿈틀을 작성했어요.',
 	REVIEW: '님이 꿈틀을 달성했어요! 🎉',
 	BUCKET_ACHIEVE: '님이 꿈틀 달성 후기를 작성했어요.',
-	COMMENT_REVIEW: '님이 나의 꿈틀에 댓글을 작성했어요.',
-	COMMENT_BUCKET: '님이 나의 후기에 댓글을 작성했어요.',
+	COMMENT_REVIEW: '님이 나의 후기에 댓글을 작성했어요.',
+	COMMENT_BUCKET: '님이 나의 꿈틀에 댓글을 작성했어요.',
 }
 
 export const AlarmSubMSG = {

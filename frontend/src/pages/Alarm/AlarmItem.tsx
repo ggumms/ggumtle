@@ -1,5 +1,7 @@
-import { AlarmMainMSG, AlarmSubMSG } from '../../../../constants/alarmMessage'
-import { IAlarm, TimeUnitType } from '../../types/alarm'
+import { Link } from 'react-router-dom'
+import { AlarmMainMSG, AlarmSubMSG } from '../../constants/alarmMessage'
+import { randomProfile } from '../../constants/randomProfile'
+import { IAlarm, TimeUnitType } from '../Radar/types/alarm'
 import Desc from './Desc'
 
 const getAlarmMsg = (alarm: IAlarm) => {
@@ -18,7 +20,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 					date={date}
 				/>
 			)
-		case 'likeCommentBucket':
+		case 'bucketReaction':
 			return (
 				<Desc
 					main1={alarm.sender}
@@ -27,7 +29,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 					date={date}
 				/>
 			)
-		case 'likeCommentReview':
+		case 'reviewReaction':
 			return (
 				<Desc
 					main1={alarm.sender}
@@ -49,7 +51,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 					date={date}
 				/>
 			)
-		case 'bucket':
+		case 'followBucket':
 			return (
 				<Desc
 					main1={alarm.sender}
@@ -58,7 +60,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 					date={date}
 				/>
 			)
-		case 'review':
+		case 'followReview':
 			return (
 				<Desc
 					main1={alarm.sender}
@@ -67,7 +69,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 					date={date}
 				/>
 			)
-		case 'bucketAchieve':
+		case 'followBucketAchieve':
 			return (
 				<Desc
 					main1={alarm.sender}
@@ -76,7 +78,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 					date={date}
 				/>
 			)
-		case 'commentReview':
+		case 'followCommentReview':
 			return (
 				<Desc
 					main1={alarm.sender}
@@ -96,45 +98,42 @@ const getAlarmMsg = (alarm: IAlarm) => {
 			)
 	}
 }
+
+// likeCommentBucket, remind, followBucket, followBucketAchieve, commentBucket, join, likeCommentReview, followReview, followCommentReview, bucketReaction, reviewReaction
+
+// | 'follow' -> 사용자 페이지
+//'bucketReaction' -> 버킷 상세 페이지
+//'reviewReaction' -> 후기 상세 페이지
+//'join' -> 마이페이지
+//'remind' -> 버킷 상세 페이지 (후기?)
+//'followBucket' -> 버킷 상세 페이지
+//'followReview' -> 후기 상세 페이지
+//'followBucketAchieve' -> 후기 상세 페이지
+//'followCommentReview' -> 후기 상세 페이지
+//'commentBucket'-> 
+
 const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
+	const handleClickAlarm = () => {
+		
+	}
 	return (
-		<div
+		<Link
+			to="/"
+			onClick={handleClickAlarm}
 			className={`px-5 py-2 w-full flex items-center ${alarm.isRead && 'bg-[#f3f3f3]'}`}
 		>
 			<div>
-				{/* @TODO: alarm.senderProfileImage로 변경, null일 경우만 사용 */}
-				<svg
-					viewBox="0 0 36 36"
-					fill="none"
-					role="img"
-					xmlns="http://www.w3.org/2000/svg"
-					width="50"
-					height="50"
-				>
-					<mask id=":rf:" maskUnits="userSpaceOnUse" x="0" y="0" width="36" height="36">
-						<rect width="36" height="36" rx="72" fill="#FFFFFF"></rect>
-					</mask>
-					<g mask="url(#:rf:)">
-						<rect width="36" height="36" fill="#987f69"></rect>
-						<rect
-							x="0"
-							y="0"
-							width="36"
-							height="36"
-							transform="translate(-5 9) rotate(189 18 18) scale(1)"
-							fill="#fcd036"
-							rx="36"
-						></rect>
-						<g transform="translate(-5 4.5) rotate(-9 18 18)">
-							<path d="M13 |19 a1,0.75 0 0,0 10,0" fill="#000000"></path>
-							<rect x="10" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect>
-							<rect x="24" y="14" width="1.5" height="2" rx="1" stroke="none" fill="#000000"></rect>
-						</g>
-					</g>
-				</svg>
+				{alarm &&
+					(alarm.senderProfileImage ? (
+						<div className="w-16 h-16 overflow-hidden rounded-full">
+							<img src={alarm.senderProfileImage} alt="유저 프로필" />
+						</div>
+					) : (
+						randomProfile[0]
+					))}
 			</div>
 			<div className="w-[90%] px-2">{getAlarmMsg(alarm)}</div>
-		</div>
+		</Link>
 	)
 }
 
