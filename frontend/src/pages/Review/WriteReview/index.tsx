@@ -11,7 +11,7 @@ import ModifyButton from '../component/ModifyButton'
 import { useRouter } from '../../../hooks/useRouter'
 import useFetchBucket from '../../../hooks/useFetchBucket'
 import { useCurrentUserStore } from '../../../store/currentUserStore'
-import { getReviewInfo } from './api'
+import { getReviewBrief } from './api'
 import { IMenu, IMenuFunc } from '../../../interfaces'
 import { icons } from '../../../constants/header-icons'
 
@@ -44,7 +44,7 @@ const WriteReview = () => {
 
 	// :: Fetch review data
 	const fetchReviewData = async (bucketId: string) => {
-		const { title, context, hasReview, hasTemp } = await getReviewInfo(bucketId)
+		const { title, context, hasReview, hasTemp } = await getReviewBrief(bucketId)
 		console.log(title, context, hasReview, hasTemp)
 
 		if (isWriteMode) {

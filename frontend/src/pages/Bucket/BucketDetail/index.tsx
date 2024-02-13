@@ -23,6 +23,8 @@ import { icons } from '../../../constants/header-icons'
 import BucketMoreButton from './component/BucketMoreButton'
 import { isMyUserType } from './../../../utils/typeFilter'
 import useStoreBucketInfo from '../../../hooks/useStoreBucketInfo'
+import useHasReview from '../../../hooks/useHasReview'
+import ShowReviewButton from './component/ShowReviewButton'
 
 const BucketDetail = () => {
 	const [isInputShown, setIsInputShown] = useState(false)
@@ -30,15 +32,15 @@ const BucketDetail = () => {
 
 	const { goBack } = useRouter()
 	const { bucketId } = useParams()
+	const hasReview = useHasReview(bucketId)
 
+	// :: Validate bucketId
 	// bucketId Path variable로 Number 값이 아닌 값이 들어오면 이전 페이지로 이동
 	useEffect(() => {
 		if (isNaN(Number(bucketId))) {
 			goBack()
 			return
 		}
-
-		return () => {}
 	}, [])
 
 	// :: Get Bucket & User(writer) data
@@ -110,9 +112,13 @@ const BucketDetail = () => {
 						</ul>
 						<div className="flex gap-3 my-8">
 							<ShareButton />
-							{bucketDetailInfo.bucketInfo.achievementDate === null
-								? bucketId && <AchieveDreamButton id={bucketId} />
-								: bucketId && <WriteReviewButton id={bucketId} />}
+							{bucketDetailInfo.bucketInfo.achievementDate === null ? (
+								bucketId && <AchieveDreamButton id={bucketId} />
+							) : hasReview && bucketDetailInfo.bucketInfo.reviewId ? (
+								<ShowReviewButton reviewId={bucketDetailInfo.bucketInfo.reviewId} />
+							) : (
+								bucketId && <WriteReviewButton id={bucketId} />
+							)}
 						</div>
 						{bucketId && <Reaction id={bucketId} />}
 						{bucketId && (

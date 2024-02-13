@@ -8,12 +8,12 @@ interface IReviewBrief {
 	title: string
 	context: string
 }
-interface IGetReviewInfoRes {
+interface IGetReviewBriefRes {
 	result: string
 	reviewBrief: IReviewBrief
 }
-export const getReviewInfo = async (bucketId: string): Promise<IReviewBrief> => {
-	const reviewRes = await instance.get<IGetReviewInfoRes>(`review/brief/${bucketId}`)
+export const getReviewBrief = async (bucketId: string): Promise<IReviewBrief> => {
+	const reviewRes = await instance.get<IGetReviewBriefRes>(`review/brief/${bucketId}`)
 	return reviewRes.data.reviewBrief
 }
 
