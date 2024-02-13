@@ -87,7 +87,6 @@ export const getBucketCommentList = async ({
 		`comment/bucket/${id}?page=${pageParam}&size=${fetchSize}`
 	)
 
-	console.log('comment list 받아오기!!')
 	return commentRes.data.bucketCommentList.commentList
 }
 // - Post Request

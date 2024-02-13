@@ -27,6 +27,7 @@ import useStoreBucketInfo from '../../../hooks/useStoreBucketInfo'
 const BucketDetail = () => {
 	const [isInputShown, setIsInputShown] = useState(false)
 	const [isInputFocused, setIsInputFocused] = useState(false)
+
 	const { goBack } = useRouter()
 	const { bucketId } = useParams()
 
@@ -42,7 +43,7 @@ const BucketDetail = () => {
 
 	// :: Get Bucket & User(writer) data
 	const { isLoading, data: bucketDetailInfo } = useQuery<IBucketDetailInfo>({
-		queryKey: ['bucketInfo', bucketId],
+		queryKey: ['bucketDetailInfo', bucketId],
 		queryFn: getBucketDetailInfo,
 	})
 	useStoreBucketInfo(bucketDetailInfo?.bucketInfo)

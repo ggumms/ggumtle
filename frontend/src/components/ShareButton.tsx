@@ -15,7 +15,6 @@ const ShareButton = () => {
 	useEffect(() => {
 		Kakao.cleanup()
 		Kakao.init(import.meta.env.VITE_KAKAO_JAVASCRIPT_KEY)
-		console.log(Kakao.isInitialized())
 	}, [])
 
 	const handleShareKakao = () => {

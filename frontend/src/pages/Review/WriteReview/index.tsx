@@ -36,19 +36,22 @@ const WriteReview = () => {
 
 	// :: Check is my bucket
 	const { isLoading, bucketInfo } = useFetchBucket(bucketId as string)
-	useEffect(() => {
-		if (bucketInfo && userInfo && bucketInfo.writerId !== userInfo.userId) {
-			goBack()
-		}
-	}, [bucketInfo, userInfo])
+	// useEffect(() => {
+	// 	if (bucketInfo && userInfo && bucketInfo.writerId !== userInfo.userId) {
+	// 		goBack()
+	// 	}
+	// }, [bucketInfo, userInfo])
 
 	// :: Fetch review data
 	const fetchReviewData = async (bucketId: string) => {
 		const { title, context, hasReview, hasTemp } = await getReviewInfo(bucketId)
+		console.log(title, context, hasReview, hasTemp)
 
 		if (isWriteMode) {
 			if (hasReview) {
+				alert('작성된 리뷰가 있습니다.')
 				goBack()
+				return
 			}
 			if (hasTemp) {
 				setTitle(title)
@@ -60,6 +63,7 @@ const WriteReview = () => {
 			if (!hasReview) {
 				alert('작성된 리뷰가 없습니다.')
 				goBack()
+				return
 			}
 			title && setTitle(title)
 			context && setReviewText(context)
