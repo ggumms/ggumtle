@@ -18,14 +18,14 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 	const { ref: lastElementRef, inView: lastElementInView } = useInView()
 	const { ref: listRef, inView: listInView } = useInView()
 
-	const { commentListData, isLoading, isError, hasNextPage, fetchNextPage, isFetchingNextPage } =
+	const { commentListData, isLoading, isError, fetchNextPage, isFetchingNextPage } =
 		useInfiniteCommentList(id)
 
 	useEffect(() => {
-		if (lastElementInView && hasNextPage) {
+		if (lastElementInView) {
 			fetchNextPage()
 		}
-	}, [lastElementInView, hasNextPage, commentListData, fetchNextPage])
+	}, [lastElementInView, commentListData, fetchNextPage])
 
 	useEffect(() => {
 		if (pageType !== 'read') {
@@ -53,7 +53,10 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 			) : (
 				<ul ref={listRef} className="flex flex-col gap-4 px-1 pb-28">
 					{commentListData.map((comment, index) => (
-						<li key={`comment-${index}`}>
+						<li
+							key={`comment-${index}`}
+							ref={index === commentListData.length - 1 ? lastElementRef : null}
+						>
 							<CommentItem
 								commentInfo={comment}
 								type={comment.id === selectedId && pageType === 'editComment' ? 'edit' : 'read'}
@@ -64,7 +67,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 					))}
 				</ul>
 			)}
-			{isFetchingNextPage ? <Skeleton /> : <div ref={lastElementRef}></div>}
+			{isFetchingNextPage && <Skeleton />}
 		</>
 	)
 }

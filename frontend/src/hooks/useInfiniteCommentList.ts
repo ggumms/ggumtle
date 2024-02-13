@@ -10,7 +10,10 @@ const useInfiniteCommentList = (id: string) => {
 			queryKey: ['comments', id],
 			queryFn: getBucketCommentList,
 			initialPageParam: 0,
-			getNextPageParam: (lastPageInfo) => (lastPageInfo.last ? null : lastPageInfo.number + 1),
+			getNextPageParam: (lastPageInfo) => {
+				console.log(lastPageInfo.last)
+				return lastPageInfo.last ? null : lastPageInfo.number + 1
+			},
 		})
 
 	const commentListData = useMemo(() => {
