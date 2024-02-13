@@ -18,7 +18,7 @@ const FollowDetail = () => {
 	}
 
 	const func: IMenuFunc = {
-		left_func: () => navigate('/'),
+		left_func: () => navigate(`/user/${userId}`),
 		right_func: undefined,
 	}
 	return (
