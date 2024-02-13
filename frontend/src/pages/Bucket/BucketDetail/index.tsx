@@ -22,6 +22,7 @@ import { IBucketDetailInfo, IMenu, IMenuFunc } from '../../../interfaces'
 import { icons } from '../../../constants/header-icons'
 import BucketMoreButton from './component/BucketMoreButton'
 import { isMyUserType } from './../../../utils/typeFilter'
+import useStoreBucketInfo from '../../../hooks/useStoreBucketInfo'
 
 const BucketDetail = () => {
 	const [isInputShown, setIsInputShown] = useState(false)
@@ -44,6 +45,7 @@ const BucketDetail = () => {
 		queryKey: ['bucketInfo', bucketId],
 		queryFn: getBucketDetailInfo,
 	})
+	useStoreBucketInfo(bucketDetailInfo?.bucketInfo)
 
 	// :: Header
 	const bucketRightMenu =
