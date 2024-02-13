@@ -1,26 +1,25 @@
-import SearchUserItem from "../Search/components/SearchUserItem";
+import { useOutletContext } from 'react-router-dom'
+import SearchUserItem from '../Search/components/SearchUserItem'
+import { useQuery } from '@tanstack/react-query'
+import { getFollowee } from './api'
+import { UserInfoType } from '../../interfaces'
 
 const FollowingDetail = () => {
-	const userInfo: UserInfoType = {
-		userId: 1,
-		userProfileImage: 'url',
-		userNickname: 'junho',
-		category: ['인간관계', '여행', '직장'],
-		bucketId: 2,
-		bucketTitle: '구독자 100만명 달성하기',
-		dayCount: 14,
-		color: 'mint',
-		isAchieved: true,
-		owner: true,
-		isFollowing: true,
-	}
-	  return (
+	const { userId } = useOutletContext<{ userId: number }>()
+	const { isLoading, data } = useQuery({
+		queryKey: ['userFollowee', userId],
+		queryFn: getFollowee,
+	})
+
+	// UserInfoType issue는 머지하면서 수정하기
+	console.log(data)
+	return (
 		<div className="px-4">
-		  <SearchUserItem user={userInfo} />
-		  <SearchUserItem user={userInfo} />
-		  <SearchUserItem user={userInfo} />
-		  <SearchUserItem user={userInfo} />
+			{!isLoading &&
+				data.searchList.content.map((user: UserInfoType) => (
+					<SearchUserItem user={user} key={user.userId} />
+				))}
 		</div>
-	  );
-	};
+	)
+}
 export default FollowingDetail

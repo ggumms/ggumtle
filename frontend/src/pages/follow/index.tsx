@@ -11,7 +11,6 @@ const FollowDetail = () => {
 	const { userId } = useParams()
 	const { isLoading, userInfo } = useUserInfoQuery(parseInt(userId!))
 	// 뒤로가기 버튼은 navigate(-1)이 아니라 해당 userId의 userPage로 이동해야 될듯
-	console.log(userInfo)
 	const menu: IMenu = {
 		left: icons.BACK,
 		center: !isLoading && userInfo && userInfo.userNickname, // @TODO: 사용자 닉네임 넣기

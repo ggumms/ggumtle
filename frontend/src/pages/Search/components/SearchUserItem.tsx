@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import UserProfile from '../../../components/UserProfile'
 import { UserInfoType } from '../../../interfaces'
-import { IUserSearch } from '../../../store/searchUserStore'
 import { updateFollow } from '../../UserPage/api'
 import { useMutation } from '@tanstack/react-query'
 

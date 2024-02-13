@@ -8,3 +8,11 @@ export const getFollower = async ({ queryKey }: QueryFunctionContext) => {
 		.then((response) => response.data.followerList)
 		.catch((e) => console.log(`[Error] ${e}`))
 }
+
+export const getFollowee = async ({ queryKey }: QueryFunctionContext) => {
+	const [, userId, page, size] = queryKey
+	return await instance
+		.get(`user/followee?userId=${userId}&page=${page}&size=${size}`)
+		.then((response) => response.data.followerList)
+		.catch((e) => console.log(`[Error] ${e}`))
+}
