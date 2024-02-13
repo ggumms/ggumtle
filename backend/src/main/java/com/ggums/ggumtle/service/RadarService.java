@@ -82,7 +82,7 @@ public class RadarService {
         for (Follow follow : followeeList) {
             User followee = follow.getFollowee();
             allList.add(UserListDto.builder()
-                    .userId(follow.getId())
+                    .userId(followee.getId())
                     .userNickname(followee.getUserNickname())
                     .userProfileImage(followee.getUserProfileImage())
                     .build());
@@ -102,12 +102,12 @@ public class RadarService {
             }
         } else {
             int idx = 0;
-            int circle1Idx = (int) (size * (float) (3 / 12));
-            int circle2Idx = (int) (size * (float) (7 / 12));
+            int circle1Idx = (int) (size * ((float) 3 / 12));
+            int circle2Idx = (int) (size * ((float) 7 / 12));
             int circle3Idx = size - 1;
             boolean[] visited = new boolean[size];
 
-            while (idx < size) {
+            while (idx < 12) {
                 int randomIdx = (int) (Math.random() * 100);
                 if (idx < 3) {
                     if (visited[randomIdx % circle1Idx]) continue;

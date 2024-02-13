@@ -2,14 +2,14 @@ import { Router as RemixRouter } from '@remix-run/router/dist/router'
 
 import { createBrowserRouter } from 'react-router-dom'
 import LoginPage from './pages/auth/LoginPage'
-import FollowingTab from './pages/Radar/components/FollowingTab'
-import AllTab from './pages/Radar/components/AllTab'
+import FollowingTab from './pages/Radar/FollowingTab'
+import AllTab from './pages/Radar/AllTab'
 import Radar from './pages/Radar'
 import AlarmPage from './pages/Radar/components/AlarmPage'
-import SearchPage from './pages/Search/SearchPage'
-import UserSearch from './pages/Search/components/UserSearch'
-import BucketSearch from './pages/Search/components/BucketSearch'
-import ReviewSearch from './pages/Search/components/ReviewSearch'
+import SearchPage from './pages/Search'
+import UserSearch from './pages/Search/UserSearch'
+import BucketSearch from './pages/Search/BucketSearch'
+import ReviewSearch from './pages/Search/ReviewSearch'
 import UserPage from './pages/UserPage'
 import BucketDetail from './pages/Bucket/BucketDetail'
 import AddBucket from './pages/Bucket/AddBucket'
@@ -71,28 +71,34 @@ const routerData: RouterElement[] = [
 	{
 		path: '/search',
 		element: <SearchPage />,
-		label: '',
+		label: '검색페이지',
 		children: [
 			{
 				path: '',
 				element: <UserSearch />,
-				label: '',
+				label: '유저검색',
+			},
+			{
+				path: 'user',
+				element: <UserSearch />,
+				label: '사용자',
 			},
 			{
 				path: 'bucket',
 				element: <BucketSearch />,
-				label: '',
+				label: '꿈:틀',
 			},
 			{
 				path: 'review',
 				element: <ReviewSearch />,
-				label: '',
+				label: '후기',
 			},
 		],
 	},
 	{
 		path: '/mypage',
-		element: <UserPage isForRadar={false} />,
+		// @TODO: 추후 본인 userId 삽입
+		element: <UserPage isForRadar={false} userId={1} />,
 		label: '',
 	},
 	{ path: '/bucket/:bucketId', element: <BucketDetail />, label: '' },
@@ -196,3 +202,17 @@ export const mainHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, ro
 }, [] as MultiPageHeaderInfo[])
 
 export default router
+
+export const searchHeaderList: MultiPageHeaderInfo[] = routerData.reduce((prev, router) => {
+	let headerData
+	if (router.label !== '검색페이지') return [...prev]
+	if (router.children) {
+		headerData = router.children
+			.filter((child) => child.path)
+			.map((child) => {
+				return { name: child?.label, path: child.path }
+			})
+		return [...headerData]
+	}
+	return [...prev]
+}, [] as MultiPageHeaderInfo[])

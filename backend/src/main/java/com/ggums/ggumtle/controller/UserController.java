@@ -1,6 +1,7 @@
 package com.ggums.ggumtle.controller;
 
 import com.ggums.ggumtle.common.response.Response;
+import com.ggums.ggumtle.dto.request.PasswordChangeRequestDto;
 import com.ggums.ggumtle.dto.request.UserFollowRequestDto;
 import com.ggums.ggumtle.dto.request.UserUpdateRequestDto;
 import com.ggums.ggumtle.dto.response.UserInfoResponseDto;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -54,7 +56,7 @@ public class UserController {
                              @SchemaProperty(name = "userInfo", schema = @Schema(implementation = UserInfoResponseDto.class))
                      }))
      })
-     public Response userInfo(@AuthenticationPrincipal User user, @PathVariable("user") Long userId){
+     public Response userInfo(@AuthenticationPrincipal User user, @PathVariable("userId") Long userId){
          return new Response("userInfo", userService.userInfo(user, userId));
      }
 
@@ -142,12 +144,27 @@ public class UserController {
                              @SchemaProperty(name = "userStats", schema = @Schema(implementation = UserStatsResponseDto.class))
                      }))
      })
-     public Response userStats(@PathVariable("user") Long userId){
+     public Response userStats(@PathVariable("userId") Long userId){
          return new Response("userStats", userService.getUserStats(userId));
      }
 
     @DeleteMapping
     public Response deleteUser(@AuthenticationPrincipal User user) {
         return new Response("message", userService.deleteUser(user));
+    }
+
+    @PostMapping("/logout")
+    public Response logout(@AuthenticationPrincipal User user, HttpServletResponse response) {
+         return new Response("message", userService.logout(user, response));
+    }
+
+    @PatchMapping("/password")
+    public Response passwordChange(@AuthenticationPrincipal User user, @Valid @RequestBody PasswordChangeRequestDto requestDto){
+         return new Response("message", userService.passwordChange(user, requestDto));
+    }
+
+    @GetMapping("/self-info")
+    public Response selfInfo(@AuthenticationPrincipal User user){
+         return new Response("selfInfo", userService.selfInfo(user));
     }
 }

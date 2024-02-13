@@ -22,4 +22,8 @@ public class Authentication {
     private String userKakao;
 
     private String userGoogle;
+
+    @Builder.Default
+    @Column(nullable = false)
+    private int failedLoginAttempts = 0;
 }

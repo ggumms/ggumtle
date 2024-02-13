@@ -21,19 +21,25 @@ public enum ExceptionType {
     EMAIL_REQUEST_LIMIT_EXCEEDED(429, "이메일 요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요."),
     PASSWORD_REQUEST_LIMIT_EXCEEDED(429, "비밀번호 요청 한도를 초과하였습니다."),
     AUTHENTICATION_REQUEST_LIMIT_EXCEEDED(429, "인증요청 한도를 초과하였습니다."),
+    OUTSIDE_PASSWORD_CHANGE_REQUEST_LIMIT_EXCEEDED(429, "서버 밖 비밀번호 변경 요청 한도를 초과하였습니다."),
     VERIFICATION_CODE_EXPIRED(400, "인증 코드가 만료되었습니다. 새로운 코드를 요청해주세요."),
     VERIFICATION_CODE_MISMATCH(400, "인증 코드가 일치하지 않습니다. 다시 시도해주세요."),
     VERIFICATION_CODE_NOT_FOUND(400, "인증 코드를 찾을 수 없습니다. 다시 시도하거나 새로운 코드를 요청해주세요."),
     NICKNAME_EMPTY(400, "닉네임이 비어있습니다."),
     NICKNAME_TOO_LONG(400, "닉네임이 너무 깁니다. 최대 50자를 초과할 수 없습니다."),
     NICKNAME_DUPLICATE(409, "닉네임이 중복되었습니다."),
+    NICKNAME_UNAUTHORIZED(401, "닉네임이 유효하지 않습니다."),
     INVALID_LOGIN(401, "아이디 또는 비밀번호가 일치하지 않습니다."),
     ACCOUNT_LOCKED(403, "계정이 잠겨있습니다."),
     SELF_SUBSCRIPTION_ATTEMPTED(400, "자기 자신을 구독할 수 없습니다."),
     ALREADY_WITHDRAWN_USER(409, "이미 탈퇴한 사용자입니다."),
+    ALREADY_FOLLOWING(409, "이미 팔로우 하고있는 사용자입니다."),
 
-    // oauth
+    // authentication
     OAUTH_AUTHORIZATION_CODE_INVALID(400,"인가코드가 유효하지 않습니다."),
+    KAKAO_OAUTH_EXIST(409, "카카오로 가입이 되어 있습니다."),
+    GOOGLE_OAUTH_EXIST(409, "구글로 가입이 되어 있습니다."),
+    KAKAO_GOOGLE_OAUTH_EXIST(409, "카카오와 구글이 가입이 되어 있습니다."),
 
     // bucket
     BUCKET_NOT_FOUND(404, "해당 버킷을 찾을 수 없습니다."),

@@ -76,7 +76,7 @@ const UserProfile = ({ type, userInfo, isLoading }: IUserProfileProps) => {
 					className={`${profileStyle[type].profileSize} ${profileStyle[type].profileRightMargin}`}
 				/>
 			</Link>
-			<div className="relative flex flex-col self-end justify-center">
+			<div className={`relative flex flex-col ${type !== 'follow' && 'self-end'} justify-center`}>
 				<p className={`font-bold ${profileStyle[type].nameTextSize}`}>{userInfo.userNickname}</p>
 				<Link to={'/bucket/1'} className="flex items-center">
 					<p

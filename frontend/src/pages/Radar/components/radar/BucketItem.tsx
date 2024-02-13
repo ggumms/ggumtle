@@ -1,6 +1,6 @@
 // @TODO: 데이터 형식 어떻게 받아올지는 추후 논의
 
-import { IRadarBucket } from '../AllTab'
+import { IRadarBucket } from '../../AllTab'
 import { IRadarItemDirection, RadarElemType } from './UserItem'
 
 export interface IBucketStyle {

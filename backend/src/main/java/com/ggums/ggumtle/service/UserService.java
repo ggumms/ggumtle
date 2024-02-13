@@ -3,9 +3,11 @@ package com.ggums.ggumtle.service;
 import com.ggums.ggumtle.common.handler.AlarmHandler;
 import com.ggums.ggumtle.common.handler.ImageHandler;
 import com.ggums.ggumtle.common.handler.TransactionHandler;
+import com.ggums.ggumtle.common.jwt.JwtTokenManager;
 import com.ggums.ggumtle.common.redis.RedisLockRepository;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.dto.request.PasswordChangeRequestDto;
 import com.ggums.ggumtle.dto.request.UserFollowRequestDto;
 import com.ggums.ggumtle.dto.request.UserUpdateRequestDto;
 import com.ggums.ggumtle.dto.response.UserInfoResponseDto;
@@ -14,9 +16,12 @@ import com.ggums.ggumtle.dto.response.UserStatsResponseDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.*;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.server.authorization.AuthorizationWebFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,9 +47,12 @@ public class UserService {
     private final BucketReactionRepository bucketReactionRepository;
     private final CommentBucketRepository commentBucketRepository;
     private final CommentReviewRepository commentReviewRepository;
+    private final AuthenticationRepository authenticationRepository;
     private final AlarmRepository alarmRepository;
+    private final JwtTokenManager jwtTokenManager;
     private final ImageHandler imageHandler;
     private final AlarmHandler alarmHandler;
+    private final PasswordEncoder passwordEncoder;
 
     public String updateUser(User user, MultipartFile userImage, UserUpdateRequestDto requestDto){
 
@@ -115,7 +123,7 @@ public class UserService {
                 .category(user.getUserInterest().stream().map(Interest::getName).collect(Collectors.toList()))
                 .bucketId(bucket != null ? bucket.getId() : null)
                 .bucketTitle(bucket != null ? bucket.getTitle() : null)
-                .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) : null)
+                .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) + 1 : null)
                 .bucketColor(bucket != null ? bucket.getColor() : null)
                 .isAchieved(isAchieved)
                 .owner(currentUser.getId().equals(userId))
@@ -210,20 +218,32 @@ public class UserService {
 
         Optional<Follow> followOpt = followRepository.findByFollowerAndFollowee(user, followee);
 
+        // 언팔 요청인 경우
         if(!requestDto.getIsFollowing()){
+
             followOpt.ifPresent(followRepository::delete);
+
             return user.getUserNickname() + "님이 " + followee.getUserNickname() + "님을 구독 취소하였습니다.";
+        }// 팔로우 요청인 경우
+        else{
+
+            // 삭제는 ifPresent가 걸려있어 에러 안 던져도 상관없음
+            // 대신 생성은 잘못된 요청을 보낼 수도 있응게 걸러주는게 맞지 않을까
+
+            if (followOpt.isPresent()) {
+                throw new CustomException(ExceptionType.ALREADY_FOLLOWING);
+            }
+
+            Follow follow = followOpt.orElseGet(() -> Follow.builder()
+                    .follower(user)
+                    .followee(followee)
+                    .build());
+           followRepository.save(follow);
+           alarmHandler.createUserAlarm(followee, user, AlarmType.follow);
+
+            return user.getUserNickname() + "님이 " + followee.getUserNickname() + "님을 구독하였습니다.";
         }
 
-        Follow follow = followOpt.orElseGet(() -> Follow.builder()
-                .follower(user)
-                .followee(followee)
-                .build());
-
-       followRepository.save(follow);
-       alarmHandler.createUserAlarm(followee, user, AlarmType.follow);
-
-        return user.getUserNickname() + "님이 " + followee.getUserNickname() + "님을 구독하였습니다.";
     }
 
     // users who userId follows
@@ -316,5 +336,57 @@ public class UserService {
         user.getUserInterest().clear();
 
         return "사용자 탈퇴 및 관련 데이터 삭제 처리되었습니다.";
+    }
+
+    public String logout(User user, HttpServletResponse response){
+
+        jwtTokenManager.logoutToken(user.getUsername(), response);
+
+        return "로그아웃 성공";
+    }
+
+    public String passwordChange(User user, PasswordChangeRequestDto requestDto){
+
+        if (user.getAuthentication().getUserEmail() == null){
+            throw new CustomException(ExceptionType.NOT_VALID_USER);
+        }
+        if (!passwordEncoder.matches(requestDto.getUserPassword(), user.getAuthentication().getUserEmailPassword())){
+            throw new CustomException(ExceptionType.INVALID_LOGIN);
+        }
+
+        Authentication authentication = user.getAuthentication();
+        authentication.setUserEmailPassword(passwordEncoder.encode(requestDto.getChangedPassword()));
+        authenticationRepository.save(authentication);
+
+        return "비밀번호 변경이 완료되었습니다.";
+    }
+
+    @Transactional(readOnly = true)
+    public UserInfoResponseDto selfInfo(User currentUser) {
+        User user = userRepository.findById(currentUser.getId()).orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
+
+        Bucket bucket = user.getRepBucket();
+
+        Boolean isAchieved = null;
+        LocalDateTime dateTime = (bucket != null && bucket.getCreatedDate() != null) ? bucket.getCreatedDate() : LocalDateTime.now();
+        if (bucket != null && bucket.getId() != null) {
+            isAchieved = bucket.getAchievementDate() != null;
+            if (isAchieved) {
+                dateTime = bucket.getAchievementDate().atStartOfDay();
+            }
+        }
+
+        return UserInfoResponseDto.builder()
+                .userId(user.getId())
+                .userProfileImage(user.getUserProfileImage())
+                .userNickname(user.getUserNickname())
+                .category(user.getUserInterest().stream().map(Interest::getName).collect(Collectors.toList()))
+                .bucketId(bucket != null ? bucket.getId() : null)
+                .bucketTitle(bucket != null ? bucket.getTitle() : null)
+                .dayCount(bucket != null ? ChronoUnit.DAYS.between(dateTime, LocalDateTime.now()) + 1 : null)
+                .bucketColor(bucket != null ? bucket.getColor() : null)
+                .isAchieved(isAchieved)
+                .owner(true)
+                .build();
     }
 }

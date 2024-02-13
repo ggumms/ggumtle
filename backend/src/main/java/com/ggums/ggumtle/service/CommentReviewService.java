@@ -38,7 +38,7 @@ public class CommentReviewService {
     public String commentCreate(User user, long reviewId, CommentRequestDto requestDto) {
 
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+                .orElseThrow(()->new CustomException(ExceptionType.REVIEW_NOT_FOUND));
 
         // 후기가 비공개일 경우 후기의 작성자가 아니면 댓글을 달 수 없다.
         if (review.getBucket().getIsPrivate() && !review.getBucket().getUser().getId().equals(user.getId())) {
@@ -74,7 +74,7 @@ public class CommentReviewService {
     public CommentResponseDto commentList(User user, long reviewId, Pageable pageable) {
 
         Review review = reviewRepository.findById(reviewId)
-                .orElseThrow(()->new CustomException(ExceptionType.BUCKET_NOT_FOUND));
+                .orElseThrow(()->new CustomException(ExceptionType.REVIEW_NOT_FOUND));
 
         // 후기가 비공개일 경우 후기의 작성자가 아니면 댓글 리스트를 조회할 수 없다.
         if (review.getBucket().getIsPrivate() && !review.getBucket().getUser().getId().equals(user.getId())) {
