@@ -1,5 +1,5 @@
-import { QueryFunctionContext } from "@tanstack/react-query"
-import { instance } from "../../api"
+import { QueryFunctionContext } from '@tanstack/react-query'
+import { instance } from '../../api'
 
 export const getAlarm = async ({ queryKey }: QueryFunctionContext) => {
 	const [, page, size] = queryKey
@@ -9,5 +9,12 @@ export const getAlarm = async ({ queryKey }: QueryFunctionContext) => {
 			console.log('[get alarm]', response.data)
 			return response.data.alarm
 		})
+		.catch((e) => console.log(`[Error] ${e}`))
+}
+
+export const updateAllRead = async () => {
+	return await instance
+		.put('alarm/all-read')
+		.then((response) => response.data)
 		.catch((e) => console.log(`[Error] ${e}`))
 }

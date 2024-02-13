@@ -11,7 +11,6 @@ const FollowButtons = ({ userId }: { userId: number }) => {
 	console.log(userInfo, isFollow)
 
 	const handleFollowButton = () => {
-		console.log('click follow')
 		mutation.mutate({ userId: userId, isFollowing: !isFollow })
 		setIsFollow(!isFollow)
 	}

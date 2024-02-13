@@ -1,18 +1,9 @@
+import { Link } from 'react-router-dom'
 import { AlarmMainMSG, AlarmSubMSG } from '../../constants/alarmMessage'
 import { randomProfile } from '../../constants/randomProfile'
 import { IAlarm, TimeUnitType } from '../Radar/types/alarm'
 import Desc from './Desc'
 
-// | 'follow'
-// | 'bucketReaction'
-// | 'reviewReaction'
-// | 'join'
-// | 'remind'
-// | 'followBucket'
-// | 'followReview'
-// | 'followBucketAchieve'
-// | 'followCommentReview'
-// | 'commentBucket'
 const getAlarmMsg = (alarm: IAlarm) => {
 	const date =
 		alarm.timeUnit === 'min' && alarm.time === 0
@@ -108,9 +99,29 @@ const getAlarmMsg = (alarm: IAlarm) => {
 	}
 }
 
+// likeCommentBucket, remind, followBucket, followBucketAchieve, commentBucket, join, likeCommentReview, followReview, followCommentReview, bucketReaction, reviewReaction
+
+// | 'follow' -> 사용자 페이지
+//'bucketReaction' -> 버킷 상세 페이지
+//'reviewReaction' -> 후기 상세 페이지
+//'join' -> 마이페이지
+//'remind' -> 버킷 상세 페이지 (후기?)
+//'followBucket' -> 버킷 상세 페이지
+//'followReview' -> 후기 상세 페이지
+//'followBucketAchieve' -> 후기 상세 페이지
+//'followCommentReview' -> 후기 상세 페이지
+//'commentBucket'-> 
+
 const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
+	const handleClickAlarm = () => {
+		
+	}
 	return (
-		<div className={`px-5 py-2 w-full flex items-center ${alarm.isRead && 'bg-[#f3f3f3]'}`}>
+		<Link
+			to="/"
+			onClick={handleClickAlarm}
+			className={`px-5 py-2 w-full flex items-center ${alarm.isRead && 'bg-[#f3f3f3]'}`}
+		>
 			<div>
 				{alarm &&
 					(alarm.senderProfileImage ? (
@@ -118,11 +129,11 @@ const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
 							<img src={alarm.senderProfileImage} alt="유저 프로필" />
 						</div>
 					) : (
-						randomProfile[Math.floor(Math.random() * 6)]
+						randomProfile[0]
 					))}
 			</div>
 			<div className="w-[90%] px-2">{getAlarmMsg(alarm)}</div>
-		</div>
+		</Link>
 	)
 }
 
