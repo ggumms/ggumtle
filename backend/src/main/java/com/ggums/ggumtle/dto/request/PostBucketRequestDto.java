@@ -2,6 +2,7 @@ package com.ggums.ggumtle.dto.request;
 
 import com.ggums.ggumtle.entity.ReminderDate;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 public class PostBucketRequestDto {
+    @NotNull
     @Schema(example = "구독자분들과 팬미팅 진행하기")
     @Size(max = 100, message = "제목 크기를 초과하였습니다.")
     private String title;
@@ -27,6 +29,7 @@ public class PostBucketRequestDto {
     @Schema(example = "143.213")
     private Double longitude;
 
+    @NotNull
     @Schema(example = "dream green")
     @Size(max = 255, message = "색 글자 크기를 초과하였습니다.")
     private String color;
@@ -36,11 +39,14 @@ public class PostBucketRequestDto {
     private String address;
 
     @Schema(example = "[\"취업\",\"여행\",\"인간관계\"]")
+    @NotNull
     private List<String> category;
 
+    @NotNull
     @Schema(example = "false")
     private Boolean isPrivate;
 
+    @NotNull
     @Schema(example = "2023-07-05")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate createdDate;
