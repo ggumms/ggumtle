@@ -11,7 +11,7 @@ const commentInfo = {
 			context: '10만이 엊그제 같은데... 벌써 20만이라니...',
 			writer: {
 				userId: 1,
-				userProfileImage: 'url',
+				userProfileImage: null,
 				userNickname: '서준호',
 				bucketId: 2,
 				bucketTitle: '구독자 100만명 달성하기',
@@ -30,7 +30,7 @@ const commentInfo = {
 			context: '10만이 엊그제 같은데... 벌써 20만이라니...',
 			writer: {
 				userId: 1,
-				userProfileImage: 'url',
+				userProfileImage: null,
 				userNickname: '서준호',
 				bucketId: 2,
 				bucketTitle: '구독자 100만명 달성하기',
@@ -49,7 +49,7 @@ const commentInfo = {
 			context: '10만이 엊그제 같은데... 벌써 20만이라니...',
 			writer: {
 				userId: 1,
-				userProfileImage: 'url',
+				userProfileImage: null,
 				userNickname: '서준호',
 				bucketId: 2,
 				bucketTitle: '구독자 100만명 달성하기',

@@ -4,7 +4,7 @@ const FollowerDetail = () => {
 
 const userInfo: UserInfoType = {
 	userId: 1,
-	userProfileImage: 'url',
+	userProfileImage: null,
 	userNickname: 'junho',
 	category: ['인간관계', '여행', '직장'],
 	bucketId: 2,

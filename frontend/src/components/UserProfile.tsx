@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom'
 import { UserInfoType } from '../interfaces'
-
 import { fillColorClass, textColorClass } from '../constants/dynamicClass'
-import { SquareCheck } from '../assets/svgs'
+import { DummyUser1, DummyUser2, DummyUser3, DummyUser4, DummyUser5, DummyUser6, SquareCheck } from '../assets/svgs'
 import Ggumtle from './Ggumtle'
 
 interface IUserProfileProps {
@@ -60,15 +59,34 @@ const profileStyle: IProfileStyle = {
 
 // Todo : title, color, id 있을 경우에만 버킷 정보 띄워주기 + 스타일 조정하기
 const UserProfile = ({ type = 'comment', userInfo }: IUserProfileProps) => {
+	console.log("[USER INFO]", userInfo)
+	const randomProfile = [
+		<DummyUser1 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser2 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser3 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser4 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser5 className={`${profileStyle[type].profileSize}`} />,
+		<DummyUser6 className={`${profileStyle[type].profileSize}`} />,
+	]
+
 	return (
 		<section className="inline-block">
 			<Link to={'/user/1'} className="inline-flex">
-				<img
+				{/* <img
 					src={'/defaultProfile.svg'}
 					// src={userInfo.userProfileImage}
 					alt="유저 프로필 이미지"
 					className={`${profileStyle[type].profileSize} ${profileStyle[type].profileRightMargin}`}
-				/>
+				/> */}
+				<div className={`${profileStyle[type].profileRightMargin}`}>
+					{userInfo.userProfileImage ? (
+						<div className={`${profileStyle[type].profileSize} rounded-full overflow-hidden`}>
+							<img src={userInfo.userProfileImage} alt="" />
+						</div>
+					) : (
+						randomProfile[userInfo.userId % 6]
+					)}
+				</div>
 
 				<div className={`relative flex flex-col ${type !== 'follow' && 'self-end'} justify-center`}>
 					<p className={`font-bold ${profileStyle[type].nameTextSize}`}>{userInfo.userNickname}</p>
