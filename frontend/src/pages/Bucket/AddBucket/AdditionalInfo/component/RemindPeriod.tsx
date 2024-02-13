@@ -1,6 +1,8 @@
 import { Menu, Transition } from '@headlessui/react'
 import { useBucketStore } from '../../../../../store/bucketStore'
-import { PeriodType } from '../../../../../types/bucket'
+import { isValidatePeriod } from '../../../../../utils/typeFilter'
+import { MouseEvent } from 'react'
+import { PeriodType } from '../../../../../interfaces'
 
 const periodData = {
 	none: '없음',
@@ -14,6 +16,15 @@ const periodData = {
 const RemindPeriod = () => {
 	const { period, changePeriod } = useBucketStore()
 
+	const handleChangePeriod = (event: MouseEvent<HTMLButtonElement>) => {
+		const { period } = event.currentTarget.dataset
+		if (period === 'none') {
+			changePeriod(null)
+		} else if (period) {
+			changePeriod(period as PeriodType)
+		}
+	}
+
 	return (
 		<div>
 			<p className="mb-[14px] text-sm font-bold ml-[2px]">리마인드 주기</p>
@@ -24,7 +35,7 @@ const RemindPeriod = () => {
 				after:content-clockImage after:inline-block after:h-[19px] after:absolute after:right-4 after:translate-y-1/2 after:bottom-1/2
 				"
 				>
-					{period && periodData[period]}
+					{isValidatePeriod(period) ? periodData[period] : periodData['none']}
 				</Menu.Button>
 				<Transition
 					enter="transition duration-100 ease-out"
@@ -42,10 +53,11 @@ const RemindPeriod = () => {
 							<Menu.Item key={key}>
 								{({ active }) => (
 									<button
+										data-period={key}
 										className={`${
 											active ? 'bg-gray-100' : 'text-gray-900'
 										} group flex w-full items-center px-2 py-2 text-sm`}
-										onClick={() => changePeriod(key as PeriodType)}
+										onClick={handleChangePeriod}
 									>
 										{value}
 									</button>

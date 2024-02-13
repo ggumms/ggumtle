@@ -1,6 +1,6 @@
 import { FiShare } from 'react-icons/fi'
 import { SquareCheck } from '../../../../assets/svgs'
-import UserProfile, { IProfileStyle } from '../../../../components/UserProfile'
+import UserProfile, { IProfileStyle } from '../../../../components/UserProfile/UserProfile'
 import { fillColorClass } from '../../../../constants/dynamicClass'
 import TotalComment from './TotalComment'
 import TotalReaction from './TotalReaction'
@@ -64,10 +64,10 @@ const ReviewFeed = ({ userId, review }: { userId: number; review: IFeed }) => {
 	// const commentCnt = 94
 
 	return (
-		<div className="bg-white px-4 py-2">
+		<div className="px-4 py-2 bg-white">
 			{/* 작성자 프로필 정보 */}
 			<div className="pt-1 pb-2">
-				{userInfo && <UserProfile type="detail" userInfo={userInfo} />}
+				{userInfo && <UserProfile type="detail" userInfo={userInfo} isLoading={false} />}
 			</div>
 			<div className="flex justify-between">
 				<p className="font-semibold text-point1">{review.title}</p>
@@ -79,14 +79,14 @@ const ReviewFeed = ({ userId, review }: { userId: number; review: IFeed }) => {
 			{/* 옵셔널한 정보 (이미지) */}
 			{review.images &&
 				review.images.map((image) => (
-					<img src={image} alt="dummy" className="w-full h-48 object-cover my-2 rounded-md" />
+					<img src={image} alt="dummy" className="object-cover w-full h-48 my-2 rounded-md" />
 				))}
-			<div className="text-point1 text-xs line-clamp-2 my-2">
+			<div className="my-2 text-xs text-point1 line-clamp-2">
 				{review.context && review.context}
 			</div>
 
 			{/* 피드 제일 하단 감정 개수, 댓글 개수, 공유 버튼 */}
-			<div className="flex justify-between items-center pb-1">
+			<div className="flex items-center justify-between pb-1">
 				<div className="flex gap-2">
 					<TotalReaction count={review.reactionCount} />
 					<TotalComment count={review.commentCount} />

@@ -177,6 +177,8 @@ public class BucketService {
                     && bucket.getId().equals(user.getRepBucket().getId())) {
                 user.setRepBucket(null);
             }
+            timelineRepository.findByBucket(bucket).ifPresent(timeline ->
+                    timeline.setIsPrivate(requestDto.getIsPrivate()));
         }
 
         bucketRepository.save(bucket);

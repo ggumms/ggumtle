@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import UserProfile from '../../../components/UserProfile'
+import { useEffect, useState } from 'react'
+import UserProfile from '../../../components/UserProfile/UserProfile'
 import { UserInfoType } from '../../../interfaces'
 import { updateFollow } from '../../UserPage/api'
 import { useMutation } from '@tanstack/react-query'
@@ -7,6 +7,19 @@ import { useMutation } from '@tanstack/react-query'
 const SearchUserItem = ({ user }: { user: UserInfoType }) => {
 	const mutation = useMutation({ mutationFn: updateFollow })
 	const [isFollow, setIsFollow] = useState(user.isFollowing)
+	// const userInfo: UserInfoType = {
+	// 	userId: user.userId,
+	// 	userProfileImage: user.userProfileImage,
+	// 	userNickname: user.userNickname,
+	// 	category: [],
+	// 	bucketId: user.bucketId,
+	// 	bucketTitle: user.bucketTitle,
+	// 	dayCount: undefined,
+	// 	bucketColor: user.bucketColor,
+	// 	isAchieved: user.isAchieved,
+	// 	owner: undefined,
+	// 	isFollowing: user.isFollowing,
+	// }
 
 	const handleFollowButton = () => {
 		console.log('handle')
@@ -14,9 +27,14 @@ const SearchUserItem = ({ user }: { user: UserInfoType }) => {
 		setIsFollow(!isFollow)
 	}
 
+	useEffect(() => {
+		console.log('누른 후 상태변화 useEffect', isFollow)
+		mutation.mutate({ userId: user.userId, isFollowing: !isFollow })
+	}, [isFollow])
+
 	return (
-		<div className="flex justify-between items-center px-1 py-1">
-			<UserProfile type="follow" userInfo={user} />
+		<div className="flex items-center justify-between px-1 py-1">
+			<UserProfile type="follow" userInfo={user} isLoading={false} />
 			<button
 				onClick={handleFollowButton}
 				className={`${isFollow ? 'bg-lightGray text-subText' : 'bg-point1 text-white'}  inline-flex h-[22px] flex-shrink-0 items-center justify-center text-xs rounded-md px-4`}

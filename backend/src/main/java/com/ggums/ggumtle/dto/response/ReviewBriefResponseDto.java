@@ -8,6 +8,8 @@ import lombok.Getter;
 @Builder
 public class ReviewBriefResponseDto {
 
+    @Schema(description = "게시된 후기 존재 여부", example = "false")
+    private Boolean hasReview;
     @Schema(description = "임시저장글 존재 여부", example = "true")
     private Boolean hasTemp;
     @Schema(description = "후기 제목 or 임시저장글 없는 경우 null", example = "버킷 1의 후기")

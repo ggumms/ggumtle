@@ -76,7 +76,7 @@ public class AlarmHandler {
      *
      * @param receiver receiver user
      * @param sender sender user
-     * @param type likeCommentBucket, remind, followBucket, followBucketAchieve, commentBucket, reviewReaction
+     * @param type likeCommentBucket, followBucket, followBucketAchieve, bucketReaction
      * @param bucket alarmed bucket
      */
     public void createBucketAlarm(User receiver, User sender, AlarmType type, Bucket bucket){
@@ -99,7 +99,7 @@ public class AlarmHandler {
      *
      * @param receiver receiver user
      * @param sender sender user
-     * @param type likeCommentReview, followReview, followCommentReview, followCommentReview, reviewReaction
+     * @param type likeCommentReview, followReview, reviewReaction
      * @param review alarmed review
      */
     public void createReviewAlarm(User receiver, User sender, AlarmType type, Review review){
@@ -113,6 +113,39 @@ public class AlarmHandler {
                 .type(type)
                 .dataId(review.getId())
                 .build();
+        alarmRepository.save(alarm);
+        sendEventToUser(receiver.getId());
+    }
+
+    /**
+     * Giving comment alarm
+     * Caution that there could be only bucket orElse review
+     *
+     * @param receiver receiver
+     * @param sender sender
+     * @param type followCommentReview, commentBucket
+     * @param comment comment
+     * @param bucket bucket
+     * @param review review
+     */
+    public void createCommentAlarm(User receiver, User sender, AlarmType type, String comment, Bucket bucket, Review review){
+        if (!receiver.getAlarm()) {
+            return;
+        }
+
+        Alarm alarm = Alarm.builder()
+                .receiver(receiver)
+                .sender(sender)
+                .context(comment)
+                .type(type)
+                .build();
+
+        if (review == null) {
+            alarm.setDataId(bucket.getId());
+        } else {
+            alarm.setDataId(review.getId());
+        }
+
         alarmRepository.save(alarm);
         sendEventToUser(receiver.getId());
     }
@@ -134,7 +167,7 @@ public class AlarmHandler {
         sendEventToUser(receiver.getId());
     }
 
-    @Scheduled(cron = "0 9 22 * * ?")
+    @Scheduled(cron = "0 0 21 * * ?")
     public void remindBucketAlarm() {
         LocalDate today = LocalDate.now();
         List<Bucket> buckets = bucketRepository.findAllWithUser();

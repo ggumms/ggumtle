@@ -44,7 +44,7 @@ const ShareButton = () => {
 	return (
 		<button
 			onClick={() => handleShareKakao()}
-			className="w-full block text-lg border-point1 border-[1px] text-point1 font-bold py-4 rounded-[5px]"
+			className="w-full text-lg border-point1 border-[1px] text-point1 font-bold py-4 rounded-[5px]"
 		>
 			공유하기
 		</button>

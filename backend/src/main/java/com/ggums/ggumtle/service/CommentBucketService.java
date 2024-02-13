@@ -61,7 +61,7 @@ public class CommentBucketService {
             follow.setScore(currentScore + Score.COMMENT);
         }
 
-        alarmHandler.createBucketAlarm(bucket.getUser(), user, AlarmType.commentBucket, bucket);
+        alarmHandler.createCommentAlarm(bucket.getUser(), user, AlarmType.commentBucket, requestDto.getContext(), bucket, null);
 
         return "댓글이 생성되었습니다.";
     }
