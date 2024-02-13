@@ -25,21 +25,22 @@ const SearchUserItem = ({ user }: { user: IUserSearch }) => {
 	const handleFollowButton = () => {
 		console.log("handle")
 		setIsFollow(!isFollow)
+		mutation.mutate({ userId: user.userId, isFollowing: !user.isFollowing })
 	}
 	
-	useEffect(() => {
-		console.log('누른 후 상태변화 useEffect', isFollow)
-		mutation.mutate({ userId: user.userId, isFollowing: !isFollow })
-	}, [isFollow])
+	// useEffect(() => {
+	// 	console.log('누른 후 상태변화 useEffect', isFollow)
+	// 	mutation.mutate({ userId: user.userId, isFollowing: !isFollow })
+	// }, [isFollow])
 
 	return (
 		<div className="flex justify-between items-center px-1 py-1">
 			<UserProfile type="follow" userInfo={userInfo} />
 			<button
 				onClick={handleFollowButton}
-				className={`${isFollow ? 'bg-lightGray text-subText' : 'bg-point1 text-white'}  inline-flex h-[22px] items-center justify-center text-xs rounded-md px-4`}
+				className={`${user.isFollowing ? 'bg-lightGray text-subText' : 'bg-point1 text-white'}  inline-flex h-[22px] items-center justify-center text-xs rounded-md px-4`}
 			>
-				{isFollow ? '팔로잉' : '팔로우'}
+				{user.isFollowing ? '팔로잉' : '팔로우'}
 			</button>
 		</div>
 	)
