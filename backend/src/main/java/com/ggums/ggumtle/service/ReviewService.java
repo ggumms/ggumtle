@@ -169,19 +169,25 @@ public class ReviewService {
 
         if (reviewOpt.isPresent()) {
             Review review = reviewOpt.get();
+            // 게시된 후기가 있는 경우
             if (review.getIsPosted()) {
-                throw new CustomException(ExceptionType.REVIEW_ALREADY_POSTED);
+                return ReviewBriefResponseDto.builder()
+                        .hasReview(true)
+                        .hasTemp(false)
+                        .title(review.getTitle())
+                        .context(review.getContext())
+                        .build();
             }
             return ReviewBriefResponseDto.builder()
+                    .hasReview(false)
                     .hasTemp(true)
                     .title(review.getTitle())
                     .context(review.getContext())
                     .build();
         } else {
             return ReviewBriefResponseDto.builder()
+                    .hasReview(false)
                     .hasTemp(false)
-                    .title(null)
-                    .context(null)
                     .build();
         }
     }
