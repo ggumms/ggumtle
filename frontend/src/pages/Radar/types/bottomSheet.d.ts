@@ -6,7 +6,7 @@ export interface IUserInfo {
 	bucketId: number
 	bucketTitle: string
 	dayCount: number
-	color: ColorType
+	bucketColor: ColorType
 	isAchieved: boolean
 	owner: boolean
 	isFollowing: boolean

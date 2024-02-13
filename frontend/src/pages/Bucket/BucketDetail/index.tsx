@@ -70,6 +70,7 @@ const BucketDetail = () => {
 					color={bucketDetailInfo?.bucketInfo.color}
 					dayCount={bucketDetailInfo?.bucketInfo.dayCount}
 					isPrivate={bucketDetailInfo?.bucketInfo.isPrivate}
+					isDone={bucketDetailInfo?.bucketInfo.achievementDate}
 				/>
 				<div className="mt-3">
 					<UserProfile type="detail" isLoading={isLoading} userInfo={bucketDetailInfo?.userInfo} />

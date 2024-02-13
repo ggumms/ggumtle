@@ -16,7 +16,7 @@ const SearchUserItem = ({ user }: { user: IUserSearch }) => {
 		bucketId: user.bucketId,
 		bucketTitle: user.bucketTitle,
 		dayCount: undefined,
-		color: user.bucketColor,
+		bucketColor: user.bucketColor,
 		isAchieved: user.isAchieved,
 		owner: undefined,
 		isFollowing: user.isFollowing,

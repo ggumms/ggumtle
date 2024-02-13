@@ -63,7 +63,7 @@ const StartDate = () => {
 							>
 								<Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
 									<DatePicker
-										createdDate={createdDate}
+										createdDate={new Date(createdDate)}
 										setCreatedDate={changeCreatedDate}
 										setIsOpen={setIsOpen}
 									/>
