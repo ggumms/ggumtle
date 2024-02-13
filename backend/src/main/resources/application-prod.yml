@@ -13,7 +13,7 @@ spring:
       password: 98765
 
   web:
-    baseUrl: http://i10d111.p.ssafy.io:8081
+    baseUrl: https://i10d111.p.ssafy.io/api
 
 logging:
   level:
