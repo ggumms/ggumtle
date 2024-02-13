@@ -34,7 +34,7 @@ export const updateFollow = async ({ userId, isFollowing }: IFollow) => {
 	console.log("api: ", userId, isFollowing)
 	return await instance
 		.put('user/follow', {
-			isFollowing: isFollowing ? false : true,
+			isFollowing: isFollowing,
 			followee: userId,
 		})
 		.then((response) => {
