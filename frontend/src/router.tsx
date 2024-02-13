@@ -21,6 +21,7 @@ import { MultiPageHeaderInfo } from './types/router'
 import NotFoundPage from './pages/NotfoundPage'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
 import AddReview from './pages/Review/AddReview'
+import ValidateTokenLayout from './components/layout/ValidateTokenLayout'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -151,7 +152,7 @@ const router: RemixRouter = createBrowserRouter(
 	routerData.map((router) => {
 		return {
 			path: router.path,
-			element: router.element,
+			element: <ValidateTokenLayout>{router.element}</ValidateTokenLayout>,
 			children: router.children ?? router.children,
 		}
 	})
