@@ -65,7 +65,7 @@ public class CommentReviewService {
             follow.setScore(currentScore + Score.COMMENT);
         }
 
-        alarmHandler.createReviewAlarm(review.getBucket().getUser(), user, AlarmType.followCommentReview, review);
+        alarmHandler.createCommentAlarm(review.getBucket().getUser(), user, AlarmType.followCommentReview, requestDto.getContext(), null, review);
 
         return "댓글이 생성되었습니다.";
     }
