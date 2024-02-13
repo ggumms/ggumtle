@@ -11,6 +11,7 @@ const FollowerDetail = () => {
 		queryFn: getFollower,
 	})
 
+	console.log(data)
 	return (
 		<div className="px-4">
 			{!isLoading &&
