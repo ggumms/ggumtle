@@ -11,7 +11,6 @@ const useInfiniteCommentList = (id: string) => {
 			queryFn: getBucketCommentList,
 			initialPageParam: 0,
 			getNextPageParam: (lastPageInfo) => {
-				console.log(lastPageInfo.last)
 				return lastPageInfo.last ? null : lastPageInfo.number + 1
 			},
 		})

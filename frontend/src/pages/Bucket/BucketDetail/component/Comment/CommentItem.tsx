@@ -4,7 +4,7 @@ import UserProfile from '../../../../../components/UserProfile/UserProfile'
 import CommentMoreButton from './CommentMoreButton'
 import LikeButton from './LikeButton'
 
-import { useDetailPageTypeStore } from '../../../../../store/detailStore'
+import { useDetailBucketStore, useDetailPageTypeStore } from '../../../../../store/detailStore'
 import { putBucketComment } from '../../api'
 import { ICommentItem, TimeUnitType } from '../../../../../interfaces'
 import { useCurrentUserStore } from '../../../../../store/currentUserStore'
@@ -35,13 +35,24 @@ interface ICommentItemProps {
 
 const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentItemProps) => {
 	const { userInfo } = useCurrentUserStore()
+	const { detailBucket } = useDetailBucketStore()
 	const { setPageType } = useDetailPageTypeStore()
 	const [editText, setEditText] = useState(commentInfo.context)
 
-	const hasOwn = useMemo(
-		() => userInfo?.userId === commentInfo.writer.userId,
-		[userInfo, commentInfo]
-	)
+	// :: Setting own
+	const hasLikeOwn = useMemo(() => {
+		if (detailBucket && userInfo && detailBucket.writerId === userInfo.userId) {
+			return true
+		}
+		return false
+	}, [detailBucket, userInfo, commentInfo])
+
+	const hasCommentOwn = useMemo(() => {
+		if (userInfo && commentInfo.writer.userId === userInfo.userId) {
+			return true
+		}
+		return false
+	}, [userInfo, commentInfo])
 
 	// 수정 버튼을 누르지 않고 댓글 클릭만 해도 수정 모드로 댓글이 띄워지는 문제 해결을 위한 코드
 	useEffect(() => {
@@ -72,7 +83,6 @@ const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentI
 		}
 	}
 
-	// Todo : 자기 댓글이 아닐 때 이걸 판별해줘서 showMore 버튼이랑 좋아요 비활성화 버튼 안보이도록 처리 필요
 	return (
 		<div onClick={handleClickComment} data-id={commentInfo.id} className="relative flex flex-col">
 			<UserProfile type="comment" userInfo={commentInfo.writer} isLoading={false} />
@@ -98,9 +108,9 @@ const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentI
 			<LikeButton
 				commentId={commentInfo.id}
 				likeStatus={commentInfo.numberOfLikes > 0}
-				hasOwn={hasOwn}
+				hasOwn={hasLikeOwn}
 			/>
-			{hasOwn && <CommentMoreButton commentId={commentInfo.id} />}
+			{hasCommentOwn && <CommentMoreButton commentId={commentInfo.id} />}
 		</div>
 	)
 }
