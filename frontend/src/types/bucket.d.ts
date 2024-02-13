@@ -1,6 +1,4 @@
-import { CategoryType, ColorType, selectedInfoType } from '../interfaces'
-
-export type PeriodType = 'none' | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
+import { CategoryType, ColorType, IBucketInfo, PeriodType, selectedInfoType } from '../interfaces'
 
 export interface ICategorySlice {
 	// State
@@ -29,15 +27,17 @@ export interface ITimeCapsuleSlice {
 	resetTimeCapsule: () => void
 }
 
+type ImageUrlType = string
+
 export interface IBucketImageSlice {
-	bucketImage: File | null
-	changeBucketImage: (image: File) => void
+	bucketImage: File | ImageUrlType | null
+	changeBucketImage: (image: File | ImageUrlType | null) => void
 	resetBucketImage: () => void
 }
 
 export interface IStartDateSlice {
-	createdDate: Date
-	changeCreatedDate: (date: Date) => void
+	createdDate: Date | string
+	changeCreatedDate: (date: Date | string) => void
 	resetCreatedDate: () => void
 }
 
@@ -51,6 +51,14 @@ export interface IIsPrivateSlice {
 	isPrivate: boolean
 	changeIsPrivate: (privateValue: boolean) => void
 	resetIsPrivate: () => void
+}
+
+export interface IResetStateSlice {
+	resetAllState: () => void
+}
+
+export interface IAddStateSlice {
+	addBucketState: (bucket: IBucketInfo) => void
 }
 
 // :: Reaction

@@ -95,6 +95,8 @@ export interface IProfileUserInfo extends IBaseUserInfo, ITitleBucket {}
 
 export type UserInfoType = IMyUserInfo | IOtherUserInfo | IProfileUserInfo
 
+export type PeriodType = null | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
+
 export interface IBucketInfo {
 	writerId: number
 	reviewId: number | null
@@ -102,7 +104,7 @@ export interface IBucketInfo {
 	timeCapsule: string | null
 	bucketPicture: string | null
 	color: ColorType
-	reminderDate: null | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
+	reminderDate: PeriodType
 	latitude: number
 	longitude: number
 	address: string

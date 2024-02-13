@@ -1,5 +1,5 @@
 import { categoryData } from './category'
-import { CategoryType, ColorType, IMyUserInfo, IOtherUserInfo } from '../interfaces'
+import { CategoryType, ColorType, IMyUserInfo, IOtherUserInfo, PeriodType } from '../interfaces'
 import { IProfileUserInfo } from './../interfaces'
 import { ReactionType } from '../types/bucket'
 
@@ -45,4 +45,10 @@ export const isColorType = (input: string): input is ColorType => {
 
 export const isReactionType = (reaction: string): reaction is ReactionType => {
 	return reaction === '멋져요' || reaction === '응원해요' || reaction === '나도할래'
+}
+
+export const isValidatePeriod = (
+	period: PeriodType
+): period is 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear' => {
+	return period !== null
 }

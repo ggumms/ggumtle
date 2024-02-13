@@ -1,6 +1,6 @@
 import { create, SlicePattern, StateCreator } from 'zustand'
 import { devtools } from 'zustand/middleware'
-import { ColorType } from '../interfaces'
+import { ColorType, IBucketInfo, PeriodType } from '../interfaces'
 import { defaultCategories } from '../utils/category'
 import { immer } from 'zustand/middleware/immer'
 import { startOfToday } from 'date-fns'
@@ -13,7 +13,9 @@ import {
 	IPeriodSlice,
 	IStartDateSlice,
 	ITimeCapsuleSlice,
-	PeriodType,
+	IResetStateSlice,
+	IAddStateSlice,
+	ImageUrlType,
 } from '../types/bucket'
 
 declare module 'zustand' {
@@ -42,7 +44,7 @@ const createSelectedCategorySlice: SlicePattern<ICategorySlice> = (set) => ({
 		}),
 })
 
-const createBucketColorSlice: StateCreator<IBucketColorSlice> = (set) => ({
+const createBucketColorSlice: SlicePattern<IBucketColorSlice> = (set) => ({
 	bucketColor: null,
 	changeBucketColor: (color: ColorType) =>
 		set(() => {
@@ -54,7 +56,7 @@ const createBucketColorSlice: StateCreator<IBucketColorSlice> = (set) => ({
 		}),
 })
 
-const createBucketTitleSlice: StateCreator<IBucketTitleSlice> = (set) => ({
+const createBucketTitleSlice: SlicePattern<IBucketTitleSlice> = (set) => ({
 	bucketTitle: '',
 	changeBucketTitle: (text: string) =>
 		set(() => {
@@ -66,7 +68,7 @@ const createBucketTitleSlice: StateCreator<IBucketTitleSlice> = (set) => ({
 		}),
 })
 
-const createTimeCapsuleSlice: StateCreator<ITimeCapsuleSlice> = (set) => ({
+const createTimeCapsuleSlice: SlicePattern<ITimeCapsuleSlice> = (set) => ({
 	timeCapsule: '',
 	changeTimeCapsule: (text: string) =>
 		set(() => {
@@ -78,9 +80,9 @@ const createTimeCapsuleSlice: StateCreator<ITimeCapsuleSlice> = (set) => ({
 		}),
 })
 
-const createBucketImageSlice: StateCreator<IBucketImageSlice> = (set) => ({
+const createBucketImageSlice: SlicePattern<IBucketImageSlice> = (set) => ({
 	bucketImage: null,
-	changeBucketImage: (image: File) =>
+	changeBucketImage: (image: File | ImageUrlType | null) =>
 		set(() => {
 			return { bucketImage: image }
 		}),
@@ -90,9 +92,9 @@ const createBucketImageSlice: StateCreator<IBucketImageSlice> = (set) => ({
 		}),
 })
 
-const createStartDateSlice: StateCreator<IStartDateSlice> = (set) => ({
+const createStartDateSlice: SlicePattern<IStartDateSlice> = (set) => ({
 	createdDate: startOfToday(),
-	changeCreatedDate: (date: Date) =>
+	changeCreatedDate: (date: Date | string) =>
 		set(() => {
 			return { createdDate: date }
 		}),
@@ -102,7 +104,7 @@ const createStartDateSlice: StateCreator<IStartDateSlice> = (set) => ({
 		}),
 })
 
-const createPeriodSlice: StateCreator<IPeriodSlice> = (set) => ({
+const createPeriodSlice: SlicePattern<IPeriodSlice> = (set) => ({
 	period: 'twoWeeks',
 	changePeriod: (period: PeriodType) =>
 		set(() => {
@@ -114,7 +116,7 @@ const createPeriodSlice: StateCreator<IPeriodSlice> = (set) => ({
 		}),
 })
 
-const createIsPrivateSlice: StateCreator<IIsPrivateSlice> = (set) => ({
+const createIsPrivateSlice: SlicePattern<IIsPrivateSlice> = (set) => ({
 	isPrivate: false,
 	changeIsPrivate: (privateValue: boolean) =>
 		set(() => {
@@ -124,6 +126,60 @@ const createIsPrivateSlice: StateCreator<IIsPrivateSlice> = (set) => ({
 		set(() => {
 			return { isPrivate: false }
 		}),
+})
+
+const addBucketInfoSlices: StateCreator<
+	ICategorySlice &
+		IBucketColorSlice &
+		IBucketTitleSlice &
+		ITimeCapsuleSlice &
+		IBucketImageSlice &
+		IStartDateSlice &
+		IPeriodSlice &
+		IIsPrivateSlice &
+		IAddStateSlice,
+	[['zustand/immer', never], ['zustand/devtools', never]],
+	[],
+	IAddStateSlice
+> = (set, get) => ({
+	addBucketState: (bucketInfo: IBucketInfo) => {
+		get().resetCategory() // 객체 형식이기 때문에 reset이 필요
+
+		bucketInfo.category.forEach((category) => get().addCategory(category))
+		get().changeBucketColor(bucketInfo.color)
+		get().changeBucketTitle(bucketInfo.title)
+		get().changeTimeCapsule(bucketInfo.timeCapsule ? bucketInfo.timeCapsule : '')
+		get().changeBucketImage(bucketInfo.bucketPicture)
+		get().changeCreatedDate(bucketInfo.createdDate)
+		get().changePeriod(bucketInfo.reminderDate)
+		get().changeIsPrivate(bucketInfo.isPrivate)
+	},
+})
+
+const resetAllSlices: StateCreator<
+	ICategorySlice &
+		IBucketColorSlice &
+		IBucketTitleSlice &
+		ITimeCapsuleSlice &
+		IBucketImageSlice &
+		IStartDateSlice &
+		IPeriodSlice &
+		IIsPrivateSlice &
+		IResetStateSlice,
+	[['zustand/immer', never], ['zustand/devtools', never]],
+	[],
+	IResetStateSlice
+> = (set, get) => ({
+	resetAllState: () => {
+		get().resetCategory()
+		get().resetBucketColor()
+		get().resetBucketTitle()
+		get().resetTimeCapsule()
+		get().resetBucketImage()
+		get().resetCreatedDate()
+		get().resetPeriod()
+		get().resetIsPrivate()
+	},
 })
 
 // 버킷 정보를 관리하는 전역 State
@@ -137,7 +193,9 @@ export const useBucketStore = create<
 		IBucketImageSlice &
 		IStartDateSlice &
 		IPeriodSlice &
-		IIsPrivateSlice
+		IIsPrivateSlice &
+		IResetStateSlice &
+		IAddStateSlice
 >()(
 	devtools(
 		immer((...a) => ({
@@ -149,6 +207,8 @@ export const useBucketStore = create<
 			...createStartDateSlice(...a),
 			...createPeriodSlice(...a),
 			...createIsPrivateSlice(...a),
+			...resetAllSlices(...a),
+			...addBucketInfoSlices(...a),
 		}))
 	)
 )
