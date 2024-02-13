@@ -28,11 +28,6 @@ const SearchUserItem = ({ user }: { user: IUserSearch }) => {
 		setIsFollow(!isFollow)
 	}
 
-	useEffect(() => {
-		console.log('누른 후 상태변화 useEffect', isFollow)
-		// mutation.mutate({ userId: user.userId, isFollowing: !isFollow })
-	}, [isFollow])
-
 	return (
 		<div className="flex justify-between items-center px-1 py-1">
 			<UserProfile type="follow" userInfo={userInfo} />
