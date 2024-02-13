@@ -1,15 +1,16 @@
-import { Menu, Transition } from '@headlessui/react'
-import { AiOutlineMore } from 'react-icons/ai'
-import { useDetailPageTypeStore } from '../../../../../store/detailStore'
-import { deleteBucketComment } from '../../api'
 import { useQueryClient } from '@tanstack/react-query'
 import { useParams } from 'react-router'
+import { Menu, Transition } from '@headlessui/react'
+import { AiOutlineMore } from 'react-icons/ai'
 
-interface IShowMoreButtonProps {
+import { useDetailPageTypeStore } from '../../../../../store/detailStore'
+import { deleteBucketComment } from '../../api'
+
+interface ICommentMoreButtonProps {
 	commentId: number
 }
 
-const ShowMoreButton = ({ commentId }: IShowMoreButtonProps) => {
+const CommentMoreButton = ({ commentId }: ICommentMoreButtonProps) => {
 	const { setPageType } = useDetailPageTypeStore()
 	const queryClient = useQueryClient()
 	const { bucketId } = useParams()
@@ -60,4 +61,4 @@ const ShowMoreButton = ({ commentId }: IShowMoreButtonProps) => {
 	)
 }
 
-export default ShowMoreButton
+export default CommentMoreButton

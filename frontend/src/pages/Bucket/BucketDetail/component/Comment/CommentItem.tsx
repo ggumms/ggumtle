@@ -1,7 +1,7 @@
 import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
 
 import UserProfile from '../../../../../components/UserProfile/UserProfile'
-import ShowMoreButton from './ShowMoreButton'
+import ShowMoreButton from '../BucketMoreButton'
 import LikeButton from './LikeButton'
 
 import { useDetailPageTypeStore } from '../../../../../store/detailStore'
