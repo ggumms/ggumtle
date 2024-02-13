@@ -36,11 +36,13 @@ const WriteReview = () => {
 
 	// :: Check is my bucket
 	const { isLoading, bucketInfo } = useFetchBucket(bucketId as string)
-	// useEffect(() => {
-	// 	if (bucketInfo && userInfo && bucketInfo.writerId !== userInfo.userId) {
-	// 		goBack()
-	// 	}
-	// }, [bucketInfo, userInfo])
+	useEffect(() => {
+		if (bucketInfo && userInfo && bucketInfo.writerId !== userInfo.userId) {
+			alert('권한이 없는 사용자입니다!')
+			goBack()
+			return
+		}
+	}, [bucketInfo, userInfo])
 
 	// :: Fetch review data
 	const fetchReviewData = async (bucketId: string) => {
