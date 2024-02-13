@@ -1,12 +1,13 @@
-import { ChangeEvent, MouseEvent, useEffect, useState } from 'react'
+import { ChangeEvent, MouseEvent, useEffect, useMemo, useState } from 'react'
 
 import UserProfile from '../../../../../components/UserProfile/UserProfile'
-import ShowMoreButton from '../BucketMoreButton'
+import CommentMoreButton from './CommentMoreButton'
 import LikeButton from './LikeButton'
 
 import { useDetailPageTypeStore } from '../../../../../store/detailStore'
 import { putBucketComment } from '../../api'
 import { ICommentItem, TimeUnitType } from '../../../../../interfaces'
+import { useCurrentUserStore } from '../../../../../store/currentUserStore'
 
 const getTime = (time: number, timeUnit: TimeUnitType): string => {
 	switch (timeUnit) {
@@ -33,8 +34,14 @@ interface ICommentItemProps {
 }
 
 const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentItemProps) => {
+	const { userInfo } = useCurrentUserStore()
 	const { setPageType } = useDetailPageTypeStore()
 	const [editText, setEditText] = useState(commentInfo.context)
+
+	const hasOwn = useMemo(
+		() => userInfo?.userId === commentInfo.writer.userId,
+		[userInfo, commentInfo]
+	)
 
 	// 수정 버튼을 누르지 않고 댓글 클릭만 해도 수정 모드로 댓글이 띄워지는 문제 해결을 위한 코드
 	useEffect(() => {
@@ -53,7 +60,7 @@ const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentI
 		id && setSelectedId(parseInt(id))
 	}
 
-	// handler about ShowMoreButton
+	// handler about CommentMoreButton
 	const handleCancelEdit = () => {
 		setEditText(commentInfo.context)
 		setPageType('read')
@@ -88,8 +95,12 @@ const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentI
 					</div>
 				</div>
 			)}
-			<LikeButton commentId={commentInfo.id} likeStatus={commentInfo.numberOfLikes > 0} />
-			<ShowMoreButton commentId={commentInfo.id} />
+			<LikeButton
+				commentId={commentInfo.id}
+				likeStatus={commentInfo.numberOfLikes > 0}
+				hasOwn={hasOwn}
+			/>
+			{hasOwn && <CommentMoreButton commentId={commentInfo.id} />}
 		</div>
 	)
 }

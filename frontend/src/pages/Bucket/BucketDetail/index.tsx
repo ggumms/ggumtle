@@ -21,6 +21,7 @@ import { getBucketDetailInfo } from './api'
 import { IBucketDetailInfo, IMenu, IMenuFunc } from '../../../interfaces'
 import { icons } from '../../../constants/header-icons'
 import BucketMoreButton from './component/BucketMoreButton'
+import { isMyUserType } from './../../../utils/typeFilter'
 
 const BucketDetail = () => {
 	const [isInputShown, setIsInputShown] = useState(false)
@@ -45,14 +46,15 @@ const BucketDetail = () => {
 	})
 
 	// :: Header
+	const bucketRightMenu =
+		bucketDetailInfo && isMyUserType(bucketDetailInfo.userInfo) ? <BucketMoreButton /> : undefined
 	const handleLeftFunc = () => {
 		goBack()
 	}
-	// Todo : userInfo api 붙이고 나서 자기 글인지 여부에 따라 BucketMoreButton 조건부 렌더링으로 수정하기
 	const headerMenu: IMenu = {
 		left: icons.BACK,
 		center: `${bucketDetailInfo ? bucketDetailInfo.userInfo.userNickname + '의 꿈:틀' : '꿈:틀'}`,
-		right: <BucketMoreButton />,
+		right: bucketRightMenu,
 	}
 	const headerFunc: IMenuFunc = { left_func: handleLeftFunc, right_func: undefined }
 

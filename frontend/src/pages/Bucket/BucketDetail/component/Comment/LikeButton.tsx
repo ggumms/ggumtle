@@ -6,9 +6,10 @@ import { postLikeStatus } from '../../api'
 interface ILikeButtonProps {
 	commentId: number
 	likeStatus: boolean
+	hasOwn: boolean
 }
 
-const LikeButton = ({ commentId, likeStatus }: ILikeButtonProps) => {
+const LikeButton = ({ commentId, likeStatus, hasOwn }: ILikeButtonProps) => {
 	const [isLikeActive, setIsLikeActive] = useState(likeStatus)
 	const handleChangeLikeStatus = async () => {
 		const LikeRes = await postLikeStatus(commentId)
@@ -21,7 +22,7 @@ const LikeButton = ({ commentId, likeStatus }: ILikeButtonProps) => {
 			{isLikeActive ? (
 				<ActiveLikeButton handleClick={handleChangeLikeStatus} />
 			) : (
-				<UnActiveLikeButton handleClick={handleChangeLikeStatus} />
+				hasOwn && <UnActiveLikeButton handleClick={handleChangeLikeStatus} />
 			)}
 		</>
 	)
