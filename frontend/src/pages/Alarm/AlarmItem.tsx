@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AlarmMainMSG, AlarmSubMSG } from '../../constants/alarmMessage'
 import { randomProfile } from '../../constants/randomProfile'
-import { IAlarm, TimeUnitType } from '../Radar/types/alarm'
 import Desc from './Desc'
+import { IAlarm, TimeUnitType } from './alarm'
 
 const getAlarmMsg = (alarm: IAlarm) => {
 	const date =
@@ -56,7 +56,8 @@ const getAlarmMsg = (alarm: IAlarm) => {
 				<Desc
 					main1={alarm.sender}
 					main2={AlarmMainMSG.BUCKET}
-					sub={AlarmSubMSG.BUCKET}
+					sub={alarm.context}
+					// sub={AlarmSubMSG.BUCKET}
 					date={date}
 				/>
 			)
@@ -78,15 +79,6 @@ const getAlarmMsg = (alarm: IAlarm) => {
 					date={date}
 				/>
 			)
-		case 'followCommentReview':
-			return (
-				<Desc
-					main1={alarm.sender}
-					main2={AlarmMainMSG.COMMENT_REVIEW}
-					sub={`"${alarm.context}"`}
-					date={date}
-				/>
-			)
 		case 'commentBucket':
 			return (
 				<Desc
@@ -96,30 +88,68 @@ const getAlarmMsg = (alarm: IAlarm) => {
 					date={date}
 				/>
 			)
+		case 'commentReview':
+			return (
+				<Desc
+					main1={alarm.sender}
+					main2={AlarmMainMSG.COMMENT_BUCKET}
+					sub={`"${alarm.context}"`}
+					date={date}
+				/>
+			)
+		case 'likeCommentReview':
+			return (
+				<Desc
+					main1={alarm.sender}
+					main2={AlarmMainMSG.COMMENT_LIKE_REVIEW}
+					sub={null}
+					date={date}
+				/>
+			)
+		case 'likeCommentBucket':
+			return (
+				<Desc
+					main1={alarm.sender}
+					main2={AlarmMainMSG.COMMENT_LIKE_BUCKET}
+					sub={null}
+					date={date}
+				/>
+			)
 	}
 }
 
-// likeCommentBucket, remind, followBucket, followBucketAchieve, commentBucket, join, likeCommentReview, followReview, followCommentReview, bucketReaction, reviewReaction
-
-// | 'follow' -> 사용자 페이지
-//'bucketReaction' -> 버킷 상세 페이지
-//'reviewReaction' -> 후기 상세 페이지
-//'join' -> 마이페이지
-//'remind' -> 버킷 상세 페이지 (후기?)
-//'followBucket' -> 버킷 상세 페이지
-//'followReview' -> 후기 상세 페이지
-//'followBucketAchieve' -> 후기 상세 페이지
-//'followCommentReview' -> 후기 상세 페이지
-//'commentBucket'-> 
-
 const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
+	const navigate = useNavigate()
 	const handleClickAlarm = () => {
-		
+		console.log("handle")
+		switch(alarm.type) {
+			case 'follow':
+					navigate(`/user/${alarm.dataId}`);
+					break;
+			case 'join':
+					navigate(`/mypage`);
+					break;
+			case 'bucketReaction':
+			case 'remind':
+			case 'followBucket':
+			case 'followBucketAchieve':
+			case 'commentBucket':
+			case 'likeCommentBucket':
+					navigate(`/bucket/${alarm.dataId}`);
+					break;
+			case 'reviewReaction':
+			case 'followReview':
+			case 'commentReview':
+			case 'likeCommentReview':
+					navigate(`/review/${alarm.dataId}`);
+					break;
+			default:
+					break;
+	}
 	}
 	return (
-		<Link
-			to="/"
-			onClick={handleClickAlarm}
+		<div
+			onClick={() => handleClickAlarm()}
 			className={`px-5 py-2 w-full flex items-center ${alarm.isRead && 'bg-[#f3f3f3]'}`}
 		>
 			<div>
@@ -133,8 +163,22 @@ const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
 					))}
 			</div>
 			<div className="w-[90%] px-2">{getAlarmMsg(alarm)}</div>
-		</Link>
+		</div>
 	)
 }
+
+// Link to url
+// 	| 'follow' => user/usreId
+// 	| 'bucketReaction' => bucket/bucketId
+// 	| 'reviewReaction' => review/reviewId
+// 	| 'join' => mypage 
+// 	| 'remind' => bucket/bucketId
+// 	| 'followBucket' => bucket/bucketId
+// 	| 'followBucketAchieve' => bucket/bucketId
+// 	| 'followReview' => review/reviewId
+// 	| 'commentBucket' => bucket/bucketId
+// 	| 'commentReview' => review/reviewId
+// 	| 'likeCommentReview' => review/reviewId
+// 	| 'likeCommentBucket' => bucket/bucketId
 
 export default AlarmItem

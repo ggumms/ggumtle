@@ -42,7 +42,7 @@ const BucketFeed = ({ userId, bucket }: { userId: number; bucket: IFeed }) => {
 
 			{/* 옵셔널한 정보들 (장소, 사진) 타임라인 조회 api에 address는 없길래 일단 뺐습니다
 			{location && <LocationInfo />} */}
-			{bucket.images &&
+			{bucket.images.length &&
 				bucket.images.map((image) => (
 					<img src={image} className="object-cover w-full h-48 my-2 rounded-md" />
 				))}
