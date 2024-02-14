@@ -3,6 +3,8 @@ import { isCategoryType } from '../../../utils/typeFilter'
 import { useRadarCategoryStore } from '../../../store/radarCategoryStore'
 import { bgColorClass, borderColorClass } from '../../../constants/dynamicClass'
 import { CategoryType } from '../../../interfaces'
+import { useMyInfoQuery } from '../../../hooks/useMyInfo'
+import { useEffect } from 'react'
 
 const RadarCategoryItems = () => {
 	const { selectedCategory, addCategory, removeCategory } = useRadarCategoryStore()
@@ -14,10 +16,17 @@ const RadarCategoryItems = () => {
 		}
 	}
 
+	// const { data: myinfo, isLoading: isMyinfoLoading} = useMyInfoQuery()
+	// console.log(myinfo?.category)
+	// useEffect(() => {
+	// 	myinfo && myinfo.category.map((cate) => {
+	// 		addCategory(cate)
+	// 	})
+	// }, [])
+
 	return (
 		<ul className="flex flex-wrap overflow-x-scroll gap-x-2 gap-y-2">
 			{Object.keys(categoryData).map((categoryName, index) => {
-				// ts 타입 문제로 인한 코드
 				if (!isCategoryType(categoryName)) {
 					return <></>
 				}

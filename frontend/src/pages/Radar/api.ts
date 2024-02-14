@@ -1,5 +1,5 @@
 import { QueryFunctionContext } from '@tanstack/react-query'
-import { instance } from '../../api'
+import { instance, getMyInfo } from '../../api';
 
 export const getRadarUsers = async () => {
 	return await instance
@@ -38,9 +38,16 @@ export const getRadarBuckets = async ({ queryKey }: QueryFunctionContext) => {
 }
 
 export const getRadarInitBuckets = async () => {
-
 	return await instance
 		.get('radar/total/init')
 		.then((response) => response.data.radar)
 		.catch((e) => console.log(e))
 }
+
+export const getMy = async () => {
+	return await instance
+		.get('user/self-info')
+		.then((response) => response.data.selfInfo)
+		.catch((e) => console.log(e))
+}
+
