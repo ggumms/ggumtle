@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 interface ButtonAreaProp {
 	refreshRadar: () => void
 }
-const ButtonArea = ({refreshRadar }: ButtonAreaProp) => {
+const ButtonArea = ({ refreshRadar }: ButtonAreaProp) => {
 	return (
 		<div className="absolute bottom-14 z-5 w-full flex flex-col items-center justify-center">
 			<div className="w-full m-0 flex items-end justify-center">
