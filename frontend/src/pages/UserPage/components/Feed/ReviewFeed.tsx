@@ -2,13 +2,11 @@ import { FiShare } from 'react-icons/fi'
 import { SquareCheck } from '../../../../assets/svgs'
 import UserProfile, { IProfileStyle } from '../../../../components/UserProfile/UserProfile'
 import { fillColorClass } from '../../../../constants/dynamicClass'
-import TotalComment from './TotalComment'
-import TotalReaction from './TotalReaction'
-import { IFeed } from './index'
+import TotalComment from '../FeedSection/TotalComment'
+import TotalReaction from '../FeedSection/TotalReaction'
+import { IFeed } from '../FeedSection/index'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 import { Link } from 'react-router-dom'
-
-// 하나의 피드 (후기)
 
 // @TODO: 추후 import 해와서 사용하기
 const profileStyle: IProfileStyle = {
@@ -44,6 +42,22 @@ const profileStyle: IProfileStyle = {
 const ReviewFeed = ({ userId, review }: { userId: number; review: IFeed }) => {
 	const { userInfo } = useUserInfoQuery(userId)
 
+	const htmlString = review.context!
+	
+	// HTML 태그 제거 함수
+	function stripHtmlTags(html: string) {
+			return html.replace(/<[^>]+>/g, '');
+	}
+
+	// 일부분만 가져오는 함수
+	function truncateHtml(html: string, length: number) {
+			const strippedHtml = stripHtmlTags(html);
+			return strippedHtml.substring(0, length);
+	}
+
+	const truncatedHtml = truncateHtml(htmlString, 50); // 첫 50글자만 가져오기
+
+console.log(truncatedHtml, "변환 됐나?");
 	return (
 		<Link to={`/review/${review.id}`} className="px-4 py-2 bg-white">
 			{/* 작성자 프로필 정보 */}
@@ -63,7 +77,9 @@ const ReviewFeed = ({ userId, review }: { userId: number; review: IFeed }) => {
 					<img src={image} alt="dummy" className="object-cover w-full h-48 my-2 rounded-md" />
 				))}
 			<div className="my-2 text-xs text-point1 line-clamp-2">
-				{review.context && review.context}
+				{review.context && 
+				truncateHtml(htmlString, 100)
+				}
 			</div>
 
 			{/* 피드 제일 하단 감정 개수, 댓글 개수, 공유 버튼 */}
