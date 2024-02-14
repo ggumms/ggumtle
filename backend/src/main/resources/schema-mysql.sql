@@ -175,7 +175,7 @@ CREATE TABLE alarm
     receiver_id  BIGINT NOT NULL,
     sender_id    BIGINT,
     context      VARCHAR(1000),
-    `type`       ENUM('likeCommentBucket', 'remind', 'followBucket', 'follow', 'followBucketAchieve', 'commentBucket', 'join', 'likeCommentReview', 'followReview', 'followCommentReview', 'bucketReaction', 'reviewReaction'),
+    `type`       ENUM('likeCommentBucket', 'remind', 'followBucket', 'follow', 'followBucketAchieve', 'commentBucket', 'join', 'likeCommentReview', 'followReview', 'commentReview', 'bucketReaction', 'reviewReaction'),
     foreign key (receiver_id) references `user` (id),
     foreign key (sender_id) references `user` (id)
 );
