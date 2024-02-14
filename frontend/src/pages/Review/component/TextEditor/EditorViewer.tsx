@@ -10,7 +10,7 @@ const EditorViewer = ({ value }: IMirrorProps) => {
 		return <></>
 	}
 	return (
-		<div className="prose">
+		<div className="w-full max-w-full prose">
 			<ReactQuill value={value} readOnly={true} theme={'bubble'} />
 		</div>
 	)
