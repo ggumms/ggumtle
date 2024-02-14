@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RouterProvider } from 'react-router-dom'
 import router from './router'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
@@ -35,11 +36,11 @@ useEffect(() => {
 				headers: {Authorization: `Bearer ${import.meta.env.VITE_USER1_TOKEN}`,}
 			})
 			
-			eventSource.addEventListener('notify', (event) => {
+			eventSource.addEventListener('notify', (event: any) => {
 				console.log("new notify", event.data)
 			})
 			
-			eventSource.onerror = async (event) => {
+			eventSource.onerror = async (event: any) => {
 				if (!event.error.message.includes("No activity"))
 					eventSource.close();
 			};

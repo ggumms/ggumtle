@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AlarmMainMSG, AlarmSubMSG } from '../../constants/alarmMessage'
 import { randomProfile } from '../../constants/randomProfile'
 import Desc from './Desc'
