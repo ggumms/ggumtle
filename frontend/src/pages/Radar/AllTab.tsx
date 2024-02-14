@@ -37,7 +37,6 @@ const AllTab = () => {
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])
 
 	const [bucketId, setBucketId] = useState<number | null>(null)
-	const [refresh, setRefresh] = useState<boolean>(false)
 	const [categories, setCategories] = useState('')
 
 	const handleOpenPreview = (bucketId: number) => {
@@ -62,12 +61,11 @@ const AllTab = () => {
 
 	console.log(categories, radarBucket)
 
-	const refreshRadar = (state: boolean) => {
+	const refreshRadar = () => {
 		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
 		setBuckets1st([])
 		setBuckets2nd([])
 		setBuckets3rd([])
-		setRefresh(state)
 	}
 
 	// 첫 번째 레이더 (가장 안쪽)
@@ -84,7 +82,7 @@ const AllTab = () => {
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radarBucket])
+	}, [isLoading, radarBucket])
 
 	// 두 번째 레이더
 	useEffect(() => {
@@ -100,7 +98,7 @@ const AllTab = () => {
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radarBucket])
+	}, [isLoading, radarBucket])
 
 	// 세 번째 레이더
 	useEffect(() => {
@@ -116,7 +114,7 @@ const AllTab = () => {
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radarBucket])
+	}, [isLoading, radarBucket])
 
 	return (
 		<div>
@@ -153,7 +151,7 @@ const AllTab = () => {
 				</div>
 			</div>
 
-			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
+			<ButtonArea refreshRadar={refreshRadar} />
 			<BucketBottomSheet
 				bucketId={bucketId}
 				setBucketId={setBucketId}
