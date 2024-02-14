@@ -66,9 +66,7 @@ const AllTab = () => {
 	})
 
 	const refreshRadar = () => {
-		console.log(isLoading, "클릭 새로고침", radarBucket)
 		if(!categories) {
-			console.log("선택해야지")
 			refetchInit()
 		}
 		setBuckets1st([])
