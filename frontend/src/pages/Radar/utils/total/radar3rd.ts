@@ -1,6 +1,6 @@
 import { IRadarBucket } from '../../AllTab'
 import { IAddBucket, IBucketPosition } from '../../types/radarBucket'
-import { getCircleEdgePos } from '../common'
+import { getThirdCircleEdgePos } from '../common'
 
 export function addBucket3rd({ pos, bucket, setBuckets3rd }: IAddBucket) {
 	setBuckets3rd!((prevBuckets: IRadarBucket[]) => {
@@ -43,7 +43,7 @@ export const bucket3rdPositioning = ({
 
 	if (prevBuckets.length >= 9) return
 	// const radius = 16.5 // 16.5 | 34.5 | 50
-	const pos = getCircleEdgePos(radius)
+	const pos = getThirdCircleEdgePos(radius)
 	if (prevBuckets.length === 0) {
 		return addBucket3rd({ pos, bucket, setBuckets3rd })
 	} else {
@@ -55,7 +55,7 @@ export const bucket3rdPositioning = ({
 			)
 
 			// 거리가 13 미만이면
-			return interDistance > 13
+			return interDistance > 17
 		})
 		if (isInRange) {
 			return addBucket3rd({ pos, bucket, setBuckets3rd })

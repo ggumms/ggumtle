@@ -11,6 +11,8 @@ import BucketBottomSheet from './components/bottomSheet/BucketBottomSheet'
 import useBucketBottomSheet from '../../hooks/useBucketBottomSheet'
 import { useRadarCategoryStore } from '../../store/radarCategoryStore'
 import BackDots from './components/radar/BackDots'
+import { bucket2ndPositioning } from './utils/total/radar2nd'
+import { bucket3rdPositioning } from './utils/total/radar3rd'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -54,32 +56,36 @@ const AllTab = () => {
 		)
 		closePreview()
 	}
-	const { isLoading, data: radarBucket } = useQuery<IRadarBucketList>({
+
+	const { isLoading, data: radarBucket, refetch } = useQuery<IRadarBucketList>({
 		queryKey: ['categories', categories],
 		queryFn: getRadarBuckets,
 	})
 
-	console.log(categories, radarBucket)
-
 	const refreshRadar = () => {
-		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
 		setBuckets1st([])
 		setBuckets2nd([])
 		setBuckets3rd([])
+		refetch()
 	}
+
+	useEffect(() => {
+		refreshRadar()
+	}, [categories])
 
 	// 첫 번째 레이더 (가장 안쪽)
 	useEffect(() => {
+		console.log(radarBucket, "radarBucket")
 		const radius = 19
 		const maxNum = 3
 		!isLoading &&
 			radarBucket?.circle1 &&
-			radarBucket.circle1.forEach((bucket, index) => {
+			radarBucket.circle1.forEach((bucket) => {
 				setTimeout(
 					() => {
 						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
 					},
-					200 * index + 100 * Math.random()
+					200
 				)
 			})
 	}, [isLoading, radarBucket])
@@ -90,12 +96,12 @@ const AllTab = () => {
 		const maxNum = 6
 		!isLoading &&
 			radarBucket &&
-			radarBucket.circle2.forEach((bucket, index) => {
+			radarBucket.circle2.forEach((bucket) => {
 				setTimeout(
 					() => {
-						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+						bucket2ndPositioning({ setBuckets2nd, bucket, radius, maxNum })
 					},
-					200 * index + 100 * Math.random()
+					500
 				)
 			})
 	}, [isLoading, radarBucket])
@@ -106,12 +112,12 @@ const AllTab = () => {
 		const maxNum = 9
 		!isLoading &&
 			radarBucket &&
-			radarBucket.circle3.forEach((bucket, index) => {
+			radarBucket.circle3.forEach((bucket) => {
 				setTimeout(
 					() => {
-						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+						bucket3rdPositioning({ setBuckets3rd, bucket, radius, maxNum })
 					},
-					200 * index + 100 * Math.random()
+					800
 				)
 			})
 	}, [isLoading, radarBucket])

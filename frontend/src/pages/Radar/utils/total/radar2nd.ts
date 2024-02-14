@@ -55,7 +55,7 @@ export const bucket2ndPositioning = ({
 			)
 
 			// 거리가 13 미만이면
-			return interDistance > 13
+			return interDistance > 17
 		})
 		if (isInRange) {
 			return addBucket2nd({ pos, bucket, setBuckets2nd })
