@@ -247,7 +247,7 @@ public class UserService {
     }
 
     // users who userId follows
-    public UserListResponseDto userFolloweeList(Long userId, Pageable pageable){
+    public UserListResponseDto userFolloweeList(User requestUser, Long userId, Pageable pageable){
         Optional<User> userOpt = userRepository.findById(userId);
         if(userOpt.isEmpty()){
             throw new CustomException(ExceptionType.NOT_FOUND_USER);
@@ -255,22 +255,24 @@ public class UserService {
         User user = userOpt.get();
 
         Page<Follow> following = followRepository.findByFollower(user, pageable);
-        Page<UserListDto> searchList = following.map(follow -> convertToUserListDto(follow.getFollowee()));
+        Page<UserListDto> searchList = following.map(follow -> convertToUserListDto(requestUser, follow.getFollowee()));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
     // users who userId follows
-    public UserListResponseDto userFollowerList(Long userId, Pageable pageable) {
+    public UserListResponseDto userFollowerList(User requestUser, Long userId, Pageable pageable) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
 
         Page<Follow> followers = followRepository.findByFollowee(user, pageable);
-        Page<UserListDto> searchList = followers.map(follower -> convertToUserListDto(follower.getFollower()));
+        Page<UserListDto> searchList = followers.map(follower -> convertToUserListDto(requestUser, follower.getFollower()));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
-    private UserListDto convertToUserListDto(User user) {
-        Bucket repBucket = user.getRepBucket();
+    private UserListDto convertToUserListDto(User requestUser, User followee) {
+        Boolean isFollowing = followRepository.findByFollowerAndFollowee(requestUser, followee).isPresent();
+
+        Bucket repBucket = followee.getRepBucket();
         String bucketTitle = null;
         String bucketColor = null;
         boolean isAchieved = false;
@@ -284,9 +286,10 @@ public class UserService {
         }
 
         return UserListDto.builder()
-                .userId(user.getId())
-                .userProfileImage(user.getUserProfileImage())
-                .userNickname(user.getUserNickname())
+                .userId(followee.getId())
+                .userProfileImage(followee.getUserProfileImage())
+                .userNickname(followee.getUserNickname())
+                .isFollowing(isFollowing)
                 .bucketId(bucketId)
                 .bucketTitle(bucketTitle)
                 .bucketColor(bucketColor)
