@@ -1,5 +1,5 @@
 import { useRouter } from '../../../hooks/useRouter'
-import { putReview } from '../WriteReview/api'
+import { putReview } from '../api'
 
 interface IModifyButtonProps {
 	bucketId: string

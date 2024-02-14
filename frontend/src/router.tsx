@@ -21,10 +21,10 @@ import NotFoundPage from './pages/NotfoundPage'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
 import ValidateTokenLayout from './components/layout/ValidateTokenLayout'
 import WriteReview from './pages/Review/WriteReview'
-import ReviewDetail from './pages/Review/ReviewDetail'
 import FollowDetail from './pages/follow'
 import FollowerDetail from './pages/follow/FollowerDetail'
 import FollowingDetail from './pages/follow/FollowingDetail'
+import ReviewDetail from './pages/Review/ReviewDetail'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {

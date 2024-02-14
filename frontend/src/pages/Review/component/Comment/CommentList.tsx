@@ -1,9 +1,9 @@
-import CommentItem from './CommentItem'
 import { useEffect, useState } from 'react'
-import { useCommentStore, useDetailPageTypeStore } from '../../../../../store/detailStore'
 import { Skeleton } from '@mui/material'
 import { useInView } from 'react-intersection-observer'
-import useInfiniteCommentList from '../../../../../hooks/useInfiniteCommentList'
+import useInfiniteCommentList from '../../../../hooks/useInfiniteCommentList'
+import { useCommentStore, useDetailPageTypeStore } from '../../../../store/detailStore'
+import CommentItem from './CommentItem'
 
 interface ICommentListProps {
 	isInputFocused: boolean
@@ -19,7 +19,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 	const { ref: listRef, inView: listInView } = useInView()
 
 	const { commentListData, isLoading, isError, fetchNextPage, isFetchingNextPage } =
-		useInfiniteCommentList(id, 'bucket')
+		useInfiniteCommentList(id, 'review')
 
 	useEffect(() => {
 		if (lastElementInView) {
@@ -66,7 +66,7 @@ const CommentList = ({ isInputFocused, setIsInputShown, id }: ICommentListProps)
 						</li>
 					))}
 					{commentListData.length === 0 && (
-						<p className="w-full py-4 text-base font-bold text-center rounded-lg bg-lightGray">
+						<p className="w-full py-4 text-base text-center rounded-lg bg-lightGray">
 							등록된 댓글이 없습니다.
 						</p>
 					)}
