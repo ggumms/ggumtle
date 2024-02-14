@@ -20,7 +20,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     List<Follow> findByFollowerIdAndFolloweeIdIn(Long id, List<Long> userIds);
 
-    List<Follow> findByFollower(User user);
+    List<Follow> findByFollowerOrderByScoreDesc(User user);
 
     Page<Follow> findByFollower(User user, Pageable pageable);
 
