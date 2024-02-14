@@ -74,10 +74,10 @@ const ReviewDetail = () => {
 		<>
 			<WithHeaderLayout headerMenu={headerMenu} headerFunc={headerFunc}>
 				<p className="text-[28px] font-bold mt-6 leading-none">{reviewDetailInfo?.reviewTitle}</p>
-				<div className="mt-3 mb-6">
+				<div className="mt-6 mb-10">
 					<UserProfile type="detail" isLoading={isLoading} userInfo={reviewDetailInfo?.writer} />
 				</div>
-				<section className="px-5">
+				<section className="flex flex-col gap-5 px-5">
 					<ReviewBucket
 						isLoading={isLoading}
 						title={reviewDetailInfo?.bucketTitle}
@@ -93,7 +93,7 @@ const ReviewDetail = () => {
 				) : (
 					<>
 						{/* 날짜 */}
-						<p className="mt-6 text-base text-disabled">{reviewDetailInfo.reviewCreatedDate}</p>
+						<p className="text-base text-disabled">{reviewDetailInfo.reviewCreatedDate}</p>
 						{/* 태그 */}
 						<ul className="mt-3 bg-white">
 							{reviewDetailInfo.categories.map((category, index) => (

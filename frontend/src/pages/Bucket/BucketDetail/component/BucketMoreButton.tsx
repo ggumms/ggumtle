@@ -25,7 +25,7 @@ const BucketMoreButton = () => {
 
 	return (
 		<div>
-			<Menu as="div" className="relative">
+			<Menu as="div" className="relative leading-none">
 				<Menu.Button>
 					<AiOutlineMore color="#767676" size={24} />
 				</Menu.Button>
