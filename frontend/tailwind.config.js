@@ -1,3 +1,5 @@
+import typography from '@tailwindcss/typography'
+
 /** @type {import('tailwindcss').Config} */
 
 const colorPalette = {
@@ -146,5 +148,5 @@ export default {
 			rotate: '4s ease-in-out infinite',
 		},
 	},
-	plugins: [],
+	plugins: [typography],
 }

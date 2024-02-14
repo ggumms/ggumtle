@@ -65,7 +65,7 @@ export const putReview = async (
 	title: string,
 	context: string
 ): Promise<number> => {
-	const reviewRes = await instance.post<IPutReviewRes>(`review`, {
+	const reviewRes = await instance.put<IPutReviewRes>(`review`, {
 		bucketId,
 		title,
 		context,

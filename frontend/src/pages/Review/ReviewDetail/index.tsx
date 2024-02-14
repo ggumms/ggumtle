@@ -15,14 +15,16 @@ import InterestTag from '../component/InterestTag'
 import { useRouter } from '../../../hooks/useRouter'
 import { useDetailReviewStore } from '../../../store/detailStore'
 import { getReviewDetailQuery } from '../api'
-import { isMyUserType } from '../../../utils/typeFilter'
 
 import { IReviewDetail } from '../../../types/bucket'
 import { IMenu, IMenuFunc } from '../../../interfaces'
 import { icons } from '../../../constants/header-icons'
+import EditorViewer from '../component/TextEditor/EditorViewer'
+import { useCurrentUserStore } from './../../../store/currentUserStore'
 
 const ReviewDetail = () => {
 	const { setDetailReview, resetDetailReview } = useDetailReviewStore()
+	const { userInfo } = useCurrentUserStore()
 	const [isInputShown, setIsInputShown] = useState(false)
 	const [isInputFocused, setIsInputFocused] = useState(false)
 
@@ -49,15 +51,17 @@ const ReviewDetail = () => {
 	}, [reviewDetailInfo])
 
 	// :: Header
-	const bucketRightMenu =
-		reviewDetailInfo && isMyUserType(reviewDetailInfo.writer) ? <ReviewMoreButton /> : undefined
+	const reviewRightMenu =
+		reviewDetailInfo && reviewDetailInfo.writer.userId === userInfo?.userId ? (
+			<ReviewMoreButton bucketId={reviewDetailInfo.bucketId} />
+		) : undefined
 	const handleLeftFunc = () => {
 		goBack()
 	}
 	const headerMenu: IMenu = {
 		left: icons.BACK,
 		center: `${reviewDetailInfo ? reviewDetailInfo.writer.userNickname + '의 꿈:틀' : '꿈:틀'}`,
-		right: bucketRightMenu,
+		right: reviewRightMenu,
 	}
 	const headerFunc: IMenuFunc = { left_func: handleLeftFunc, right_func: undefined }
 
@@ -80,6 +84,7 @@ const ReviewDetail = () => {
 						color={reviewDetailInfo?.bucketColor}
 						dayCount={reviewDetailInfo?.daysSinceDream}
 					/>
+					<EditorViewer value={reviewDetailInfo?.reviewContext} />
 				</section>
 
 				{isLoading || reviewDetailInfo === undefined ? (
