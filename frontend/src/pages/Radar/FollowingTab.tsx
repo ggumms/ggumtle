@@ -63,7 +63,6 @@ const FollowingTab = () => {
 		!isLoading &&
 			radar &&
 			radar.circle1.forEach((user, index) => {
-				console.log(user.userNickname, index, "user==")
 
 				setTimeout(
 					() => {
@@ -74,7 +73,6 @@ const FollowingTab = () => {
 
 							// // 존재하지 않으면 추가
 							if (!isUserExist) {
-								console.log(circle1Pos[idx][index], index)
 								return [...prev, { ...user, pos: circle1Pos[idx][index]}]
 							}
 							return prev
