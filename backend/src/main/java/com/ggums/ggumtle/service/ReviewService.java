@@ -252,6 +252,7 @@ public class ReviewService {
                 .bucketId(bucket.getId())
                 .bucketTitle(bucket.getTitle())
                 .daysSinceDream(daysSinceDream)
+                .bucketColor(bucket.getColor())
                 .reviewTitle(review.getTitle())
                 .reviewContext(review.getContext())
                 .reviewCreatedDate(review.getCreatedDate())
