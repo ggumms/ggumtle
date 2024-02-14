@@ -61,9 +61,9 @@ const FeedSection = ({ userId }: { userId: number }) => {
 				{timeline &&
 					timeline.content.map((feed: IFeed) =>
 						feed.type === 'BUCKET' ? (
-							<BucketFeed userId={userId} bucket={feed} />
+							<BucketFeed userId={userId} bucket={feed} key={`bucket-${feed.id}`}/>
 						) : (
-							<ReviewFeed userId={userId} review={feed} />
+							<ReviewFeed userId={userId} review={feed} key={`review-${feed.id}`} />
 						)
 					)}
 			</div>

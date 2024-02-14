@@ -3,12 +3,15 @@ import { updateFollow } from '../../api'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 import { useState } from 'react'
 import { IoIosCheckmark } from 'react-icons/io'
+import { useParams } from 'react-router-dom'
 
 const FollowButtons = ({ userId }: { userId: number }) => {
 	const mutation = useMutation({ mutationFn: updateFollow })
 	const { userInfo } = useUserInfoQuery(userId)
+	const { params } = useParams()
+	console.log(params)
 	const [isFollow, setIsFollow] = useState(userInfo?.isFollowing)
-	console.log(userInfo, isFollow)
+	// console.log(userInfo, isFollow)
 
 	const handleFollowButton = () => {
 		mutation.mutate({ userId: userId, isFollowing: !isFollow })

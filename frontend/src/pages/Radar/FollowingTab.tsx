@@ -28,6 +28,10 @@ interface IRadarUserList {
 // @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
 // @TODO: 리렌더링 횟수 줄이기
 const FollowingTab = () => {
+	
+		const [users1st, setUsers1st] = useState<IRadarUser[]>([])
+		const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
+		const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 	const {
 		isLoading,
 		data: radar,
@@ -36,10 +40,6 @@ const FollowingTab = () => {
 		queryKey: ['radarUser'],
 		queryFn: getRadarUsers,
 	})
-
-	const [users1st, setUsers1st] = useState<IRadarUser[]>([])
-	const [users2nd, setUsers2nd] = useState<IRadarUser[]>([])
-	const [users3rd, setUsers3rd] = useState<IRadarUser[]>([])
 
 	const { sheet, content, openPreview, isMaxup, togglePreview } = useUserBottomSheet()
 	const [userId, setUserId] = useState<number | null>(null)
@@ -50,56 +50,90 @@ const FollowingTab = () => {
 	}
 
 	const refreshRadar = () => {
-		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
 		setUsers1st([])
 		setUsers2nd([])
 		setUsers3rd([])
 		refetch()
 	}
+
 	// 첫 번째 레이더 (가장 안쪽)
 	useEffect(() => {
+		// setUsers1st([])
 		const idx = Math.floor(Math.random() * circle1Pos.length)
 		!isLoading &&
 			radar &&
 			radar.circle1.forEach((user, index) => {
+				console.log(user.userNickname, index, "user==")
+
 				setTimeout(
 					() => {
-						setUsers1st((prev) => [...prev, { ...user, pos: circle1Pos[idx][index]}])
+						setUsers1st((prev) => {
+							if(prev.length >= 3) return prev
+							
+							const isUserExist = prev.some((e) => e.userId === user.userId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								console.log(circle1Pos[idx][index], index)
+								return [...prev, { ...user, pos: circle1Pos[idx][index]}]
+							}
+							return prev
+						})
 					},
-					200 * index + 100 * Math.random()
+					200
 				)
 			})
-	}, [isLoading, radar])
+	}, [radar, isLoading])
 
 	// 두 번째 레이더
 	useEffect(() => {
+		// setUsers2nd([])
 		const idx = Math.floor(Math.random() * circle2Pos.length)
 		!isLoading &&
 			radar &&
 			radar.circle2.forEach((user, index) => {
 				setTimeout(
 					() => {
-						setUsers2nd((prev) => [...prev, { ...user, pos: circle2Pos[idx][index]}])
+						setUsers2nd((prev) => {
+							if(prev.length >= 4) return prev
+							const isUserExist = prev.some((e) => e.userId === user.userId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								return [...prev, { ...user, pos: circle2Pos[idx][index]}]
+							}
+							return prev
+						})
 					},
-					200 * index + 100 * Math.random()
+				500
 				)
 			})
-	}, [isLoading, radar])
+	}, [radar, isLoading])
 
 	// 세 번째 레이더
 	useEffect(() => {
+		// setUsers3rd([])
 		const idx = Math.floor(Math.random() * circle3Pos.length)
 		!isLoading &&
 			radar &&
 			radar.circle3.forEach((user, index) => {
 				setTimeout(
 					() => {
-						setUsers3rd((prev) => [...prev, { ...user, pos: circle3Pos[idx][index] }])
+						setUsers3rd((prev) => {
+							if(prev.length >= 5) return prev
+							const isUserExist = prev.some((e) => e.userId === user.userId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								return [...prev, { ...user, pos: circle3Pos[idx][index]}]
+							}
+							return prev
+						})
 					},
-					200 * index + 100 * Math.random()
+				800
 				)
 			})
-	}, [isLoading, radar])
+	}, [radar, isLoading])
 
 	return (
 		<div>
