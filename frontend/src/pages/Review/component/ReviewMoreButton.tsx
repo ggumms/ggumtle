@@ -4,12 +4,15 @@ import { useRouter } from '../../../hooks/useRouter'
 import { useParams } from 'react-router'
 import { deleteReviewDetail } from '../api'
 
-const ReviewMoreButton = () => {
+interface IReviewMoreButtonProps {
+	bucketId: number
+}
+const ReviewMoreButton = ({ bucketId }: IReviewMoreButtonProps) => {
 	const { routeTo } = useRouter()
 	const { reviewId } = useParams()
 
 	const handleClickModifyButton = () => {
-		routeTo(`/review/modify/${reviewId}`)
+		routeTo(`/review/modify/${bucketId}`)
 	}
 
 	const handleClickDeleteButton = async () => {
