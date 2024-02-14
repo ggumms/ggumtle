@@ -18,3 +18,11 @@ export const updateAllRead = async () => {
 		.then((response) => response.data)
 		.catch((e) => console.log(`[Error] ${e}`))
 }
+
+export const postReadOneAlarm = async ({ alarmId }: {alarmId: number}) => {
+	return await instance
+		.post(`alarm/${alarmId}`)
+		.then((response) => response.data)
+		.catch((e) => console.log(`[Error] ${e}`))
+}
+

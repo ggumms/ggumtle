@@ -3,6 +3,8 @@ import { AlarmMainMSG, AlarmSubMSG } from '../../constants/alarmMessage'
 import { randomProfile } from '../../constants/randomProfile'
 import Desc from './Desc'
 import { IAlarm, TimeUnitType } from './alarm'
+import { postReadOneAlarm } from './api'
+import { useMutation } from '@tanstack/react-query'
 
 const getAlarmMsg = (alarm: IAlarm) => {
 	const date =
@@ -120,7 +122,13 @@ const getAlarmMsg = (alarm: IAlarm) => {
 
 const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
 	const navigate = useNavigate()
+	const mutation = useMutation({ mutationFn: postReadOneAlarm })
 	const handleClickAlarm = () => {
+		mutation.mutate({alarmId: alarm.alarmId})
+		if(mutation.isSuccess) {
+			console.log(mutation.data, "success")
+		} else console.log("else")
+
 		console.log("handle")
 		switch(alarm.type) {
 			case 'follow':
