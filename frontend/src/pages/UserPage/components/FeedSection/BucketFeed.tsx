@@ -7,32 +7,14 @@ import UserProfile from '../../../../components/UserProfile/UserProfile'
 import FeedShare from '../../utils/FeedShare'
 import { IFeed } from '.'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
+import { Link } from 'react-router-dom'
 
 // 하나의 피드 (버킷)
 const BucketFeed = ({ userId, bucket }: { userId: number; bucket: IFeed }) => {
 	const { userInfo } = useUserInfoQuery(userId)
-	// const userInfo: UserInfoType = {
-	// 	userProfileImage: bucket.
-	// 	userNickname: 'junho',
-	// 	category: ['인간관계', '여행', '직장'],
-	// 	bucketId: 2,
-	// 	bucketTitle: '구독자 100만명 달성하기',
-	// 	dayCount: 14,
-	// 	color: 'mint',
-	// 	isAchieved: true,
-	// 	owner: true,
-	// 	isFollowing: null,
-	// }
-	// const { bucketTitle, color, dayCount } = userInfo
-	// const category: CategoryType[] = ['직장', '여행', '인간관계']
-	// const photo = true
-	// const location = true
-	// const reactionCnt = 28
-	// const commentCnt = 12
-	// const hasTitleBucket = bucketTitle && color && dayCount
 
 	return (
-		<div className="px-4 py-2 bg-white">
+		<Link to={`/bucket/${bucket.id}`} className="px-4 py-2 bg-white">
 			{/* 작성자 프로필 정보 */}
 			<div className="pt-1 pb-2">
 				{userInfo && <UserProfile type="detail" userInfo={userInfo} isLoading={false} />}
@@ -73,7 +55,7 @@ const BucketFeed = ({ userId, bucket }: { userId: number; bucket: IFeed }) => {
 				</div>
 				<FeedShare />
 			</div>
-		</div>
+		</Link>
 	)
 }
 
