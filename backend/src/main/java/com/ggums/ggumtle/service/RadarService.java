@@ -1,21 +1,22 @@
 package com.ggums.ggumtle.service;
 
+import com.ggums.ggumtle.common.exception.CustomException;
+import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.dto.response.RadarBucketDto;
 import com.ggums.ggumtle.dto.response.model.UserListDto;
 import com.ggums.ggumtle.entity.Bucket;
 import com.ggums.ggumtle.entity.Follow;
+import com.ggums.ggumtle.entity.Interest;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.FollowRepository;
+import com.ggums.ggumtle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -23,6 +24,7 @@ import java.util.Map;
 @Service
 public class RadarService {
 
+    private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final BucketRepository bucketRepository;
 
@@ -37,8 +39,23 @@ public class RadarService {
         return radar;
     }
 
-    // TODO : refactor for integrate
+    public Map<String, Object> getTotalInit(User user) {
+        User owner = userRepository.findById(user.getId()).orElseThrow(() -> new CustomException(ExceptionType.NOT_FOUND_USER));
+
+        List<String> categories = new ArrayList<>();
+
+        for (Interest interest : owner.getUserInterest()) {
+            categories.add(interest.getName());
+        }
+
+        return getTotalMap(categories);
+    }
+
     public Map<String, Object> getTotal(User user, List<String> categories) {
+        return getTotalMap(categories);
+    }
+
+    private Map<String, Object> getTotalMap(List<String> categories) {
         Map<String, Object> map = new HashMap<>();
 
         List<Bucket> buckets = bucketRepository.findByIdIn(bucketRepository.getTotal(categories));

@@ -26,6 +26,13 @@ public class RadarController {
         return new Response("radar", radarService.getFollowing(user));
     }
 
+    @Operation(summary = "레이다 조회(전체) - 초기화면", description = "자신의 관심분야에 따른 전체 레이다 초기화면을 반환해줍니다. ")
+    @GetMapping("/total/init")
+    public Response getTotalInit(@AuthenticationPrincipal User user) throws Exception {
+
+        return new Response("radar", radarService.getTotalInit(user));
+    }
+
     @Operation(summary = "레이다 조회(전체)", description = "자신의 관심분야에 따른 리스트를 반환해줍니다. ")
     @GetMapping("/total")
     public Response getTotal(@AuthenticationPrincipal User user, @RequestParam List<String> categories) throws Exception {

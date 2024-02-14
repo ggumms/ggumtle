@@ -25,6 +25,8 @@ public class ReviewResponseDto {
     private String bucketTitle;
     @Schema(description = "경과 날짜", example = "369")
     private long daysSinceDream;
+    @Schema(description = "버킷 색상", example = "yellow")
+    private String bucketColor;
 
     // review
     @Schema(description = "후기 제목", example = "버킷 1의 후기")
