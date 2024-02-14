@@ -11,7 +11,7 @@ import ModifyButton from '../component/ModifyButton'
 import { useRouter } from '../../../hooks/useRouter'
 import useFetchBucket from '../../../hooks/useFetchBucket'
 import { useCurrentUserStore } from '../../../store/currentUserStore'
-import { getReviewBrief } from './api'
+import { getReviewBrief } from '../api'
 import { IMenu, IMenuFunc } from '../../../interfaces'
 import { icons } from '../../../constants/header-icons'
 

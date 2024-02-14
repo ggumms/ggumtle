@@ -1,7 +1,9 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { IBucketInfo } from '../interfaces'
+import { IReviewDetail } from '../types/bucket'
 
+// :: Bucket Detail
 interface IDetailBucketStore {
 	detailBucket: IBucketInfo | null
 	setDetailBucket: (detailBucket: IBucketInfo) => void
@@ -44,5 +46,19 @@ export const useDetailPageTypeStore = create<IDetailPageTypeStore>()(
 		pageType: 'read',
 		setPageType: (type: 'read' | 'editComment' | 'editBucket') => set(() => ({ pageType: type })),
 		resetPageType: () => set(() => ({ pageType: 'read' })),
+	}))
+)
+
+// :: Review Detail
+interface IDetailReviewStore {
+	detailReview: IReviewDetail | null
+	setDetailReview: (detailReview: IReviewDetail) => void
+	resetDetailReview: () => void
+}
+export const useDetailReviewStore = create<IDetailReviewStore>()(
+	devtools((set) => ({
+		detailReview: null,
+		setDetailReview: (detailReview: IReviewDetail) => set(() => ({ detailReview: detailReview })),
+		resetDetailReview: () => set(() => ({ detailReview: null })),
 	}))
 )

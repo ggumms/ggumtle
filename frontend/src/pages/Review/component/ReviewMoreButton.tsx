@@ -1,23 +1,26 @@
 import { Menu, Transition } from '@headlessui/react'
 import { AiOutlineMore } from 'react-icons/ai'
-import { useRouter } from '../../../../hooks/useRouter'
+import { useRouter } from '../../../hooks/useRouter'
 import { useParams } from 'react-router'
-import { deleteBucket } from '../api'
+import { deleteReviewDetail } from '../api'
 
-const BucketMoreButton = () => {
+interface IReviewMoreButtonProps {
+	bucketId: number
+}
+const ReviewMoreButton = ({ bucketId }: IReviewMoreButtonProps) => {
 	const { routeTo } = useRouter()
-	const { bucketId } = useParams()
+	const { reviewId } = useParams()
 
 	const handleClickModifyButton = () => {
-		routeTo(`/bucket/modify/${bucketId}`)
+		routeTo(`/review/modify/${bucketId}`)
 	}
 
 	const handleClickDeleteButton = async () => {
-		if (!bucketId) {
+		if (!reviewId) {
 			return
 		}
 
-		const deleteRes = await deleteBucket(bucketId)
+		const deleteRes = await deleteReviewDetail(parseInt(reviewId))
 		if (deleteRes === 'success') {
 			routeTo('/mypage')
 		}
@@ -25,7 +28,7 @@ const BucketMoreButton = () => {
 
 	return (
 		<div>
-			<Menu as="div" className="relative leading-none">
+			<Menu as="div" className="relative leading-none ">
 				<Menu.Button>
 					<AiOutlineMore color="#767676" size={24} />
 				</Menu.Button>
@@ -58,4 +61,4 @@ const BucketMoreButton = () => {
 	)
 }
 
-export default BucketMoreButton
+export default ReviewMoreButton

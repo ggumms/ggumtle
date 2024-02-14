@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getReviewDetail } from '../pages/Review/WriteReview/api'
+import { getReviewDetail } from '../pages/Review/api'
 
 const useHasReview = (reviewId: number | null | undefined) => {
 	const [hasReview, setHasReview] = useState(false)

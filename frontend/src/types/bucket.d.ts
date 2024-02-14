@@ -1,4 +1,11 @@
-import { CategoryType, ColorType, IBucketInfo, PeriodType, selectedInfoType } from '../interfaces'
+import {
+	CategoryType,
+	ColorType,
+	IBucketInfo,
+	PeriodType,
+	selectedInfoType,
+	IProfileUserInfo,
+} from '../interfaces'
 
 export interface ICategorySlice {
 	// State
@@ -74,6 +81,7 @@ export interface IReviewDetail {
 	writer: IProfileUserInfo
 	bucketId: number
 	bucketTitle: string
+	bucketColor: ColorType
 	daysSinceDream: number
 	reviewTitle: string
 	reviewContext: string

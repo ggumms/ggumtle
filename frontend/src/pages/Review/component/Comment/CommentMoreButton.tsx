@@ -1,33 +1,35 @@
+import { useQueryClient } from '@tanstack/react-query'
+import { useParams } from 'react-router'
 import { Menu, Transition } from '@headlessui/react'
 import { AiOutlineMore } from 'react-icons/ai'
-import { useRouter } from '../../../../hooks/useRouter'
-import { useParams } from 'react-router'
-import { deleteBucket } from '../api'
+import { deleteReviewComment } from '../../api'
+import { useDetailPageTypeStore } from '../../../../store/detailStore'
 
-const BucketMoreButton = () => {
-	const { routeTo } = useRouter()
-	const { bucketId } = useParams()
+interface ICommentMoreButtonProps {
+	commentId: number
+}
+
+const CommentMoreButton = ({ commentId }: ICommentMoreButtonProps) => {
+	const { setPageType } = useDetailPageTypeStore()
+	const queryClient = useQueryClient()
+	const { reviewId } = useParams()
 
 	const handleClickModifyButton = () => {
-		routeTo(`/bucket/modify/${bucketId}`)
+		setPageType('editComment')
 	}
 
 	const handleClickDeleteButton = async () => {
-		if (!bucketId) {
-			return
-		}
-
-		const deleteRes = await deleteBucket(bucketId)
+		const deleteRes = await deleteReviewComment(commentId)
 		if (deleteRes === 'success') {
-			routeTo('/mypage')
+			queryClient.refetchQueries({ queryKey: ['comments', reviewId] })
 		}
 	}
 
 	return (
 		<div>
-			<Menu as="div" className="relative leading-none">
+			<Menu as="div" className="absolute top-0 right-0">
 				<Menu.Button>
-					<AiOutlineMore color="#767676" size={24} />
+					<AiOutlineMore color="#767676" />
 				</Menu.Button>
 				<Transition
 					enter="transition duration-100 ease-out"
@@ -42,12 +44,12 @@ const BucketMoreButton = () => {
 						className="absolute z-10 mt-2 origin-top-right translate-x-1/2 bg-white divide-gray-100 rounded-sm shadow-lg right-1/2 ring-1 ring-black ring-opacity-5 focus:outline-none"
 					>
 						<Menu.Item as="li">
-							<button onClick={handleClickModifyButton} className="p-3 text-base w-14 text-point1">
+							<button onClick={handleClickModifyButton} className="w-12 p-1 text-sm text-point1">
 								수정
 							</button>
 						</Menu.Item>
 						<Menu.Item as="li">
-							<button onClick={handleClickDeleteButton} className="p-3 text-base w-14 text-point1">
+							<button onClick={handleClickDeleteButton} className="w-12 p-1 text-sm text-point1">
 								삭제
 							</button>
 						</Menu.Item>
@@ -58,4 +60,4 @@ const BucketMoreButton = () => {
 	)
 }
 
-export default BucketMoreButton
+export default CommentMoreButton

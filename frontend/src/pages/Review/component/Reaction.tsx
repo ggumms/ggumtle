@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
-import { getBucketReaction, postBucketReaction } from '../api'
-import { IReactionInfo, ReactionCountType, ReactionType } from '../../../../types/bucket'
-import { isReactionType } from '../../../../utils/typeFilter'
+import { IReactionInfo, ReactionCountType, ReactionType } from '../../../types/bucket'
+import { isReactionType } from '../../../utils/typeFilter'
 
-import { Cool, Underpin, WantToDo } from '../../../../assets/svgs'
-import { textColorClass } from '../../../../constants/dynamicClass'
+import { Cool, Underpin, WantToDo } from '../../../assets/svgs'
+import { textColorClass } from '../../../constants/dynamicClass'
 import { Skeleton } from '@mui/material'
+import { getReviewReaction, postReviewReaction } from '../api'
 
 interface IReactionProps {
 	id: string
@@ -20,20 +20,23 @@ const Reaction = ({ id }: IReactionProps) => {
 	const activeColor = 'green' // active된 Reaction의 색상을 변수로 지정해둔 것
 
 	// id별로 cachepool을 관리하기 위해선 id가 필요하다.
-	const { isLoading, data: bucketReaction } = useQuery<IReactionInfo>({
-		queryKey: ['bucketReaction', id, activeReaction],
-		queryFn: getBucketReaction,
+	const { isLoading, data: reviewReaction } = useQuery<IReactionInfo>({
+		queryKey: ['reviewReaction', id, activeReaction],
+		queryFn: getReviewReaction,
 	})
 
-	// Todo: 전역 state로 관리 예정
 	useEffect(() => {
-		bucketReaction && createReactionData(bucketReaction)
-	}, [isLoading, bucketReaction])
+		console.log(reactionInfo)
+	}, [reactionInfo])
+	useEffect(() => {
+		reviewReaction && createReactionData(reviewReaction)
+	}, [isLoading, reviewReaction])
 
-	const createReactionData = async (bucketReaction: IReactionInfo) => {
-		const { userReaction, reactionCounts } = bucketReaction
+	const createReactionData = async (reviewReaction: IReactionInfo) => {
+		const { userReaction, reactionCounts } = reviewReaction
 
 		const currentReactionInfo = { ...defaultReactionInfo }
+		console.log('is it?', currentReactionInfo)
 		Object.keys(reactionCounts).forEach((reactionType) => {
 			if (isReactionType(reactionType)) {
 				currentReactionInfo[reactionType] = reactionCounts[reactionType]
@@ -60,7 +63,7 @@ const Reaction = ({ id }: IReactionProps) => {
 		const reactionType = event.currentTarget.dataset.reaction
 
 		if (reactionType && isReactionType(reactionType)) {
-			const postReactionRes = await postBucketReaction(id, reactionType)
+			const postReactionRes = await postReviewReaction(id, reactionType)
 			postReactionRes === 'success' && setActiveReaction(reactionType)
 		}
 	}
