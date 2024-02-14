@@ -3,7 +3,6 @@ import { updateFollow } from '../../api'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 import { useState } from 'react'
 import { IoIosCheckmark } from 'react-icons/io'
-import { useParams } from 'react-router-dom'
 import { useRouter } from '../../../../hooks/useRouter'
 
 const FollowButtons = ({ userId }: { userId: number }) => {
@@ -20,12 +19,6 @@ const FollowButtons = ({ userId }: { userId: number }) => {
 		console.log('click profile share')
 	}
 
-	// useEffect(() => {
-	// 	const isFollowing = isFollow
-	// 	console.log('mutation: ', mutation)
-	// 	if (isFollowing) mutation.mutate({ userId, isFollowing })
-	// 	else console.log('undefined')
-	// }, [isFollow])
 	return (
 		<div className="flex gap-2 px-4">
 			{/* @TODO: 마이페이지일 경우 프로필 편집 버튼이 됨 */}
