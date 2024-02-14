@@ -22,7 +22,7 @@ const BucketItemStyle: IBucketItemStyle = {
 		},
 		direction: {
 			left: 45,
-			bottom: 40,
+			bottom: 32,
 		},
 	},
 	second: {
@@ -32,7 +32,7 @@ const BucketItemStyle: IBucketItemStyle = {
 		},
 		direction: {
 			left: 45,
-			bottom: 40,
+			bottom: 35,
 		},
 	},
 	third: {
@@ -41,8 +41,8 @@ const BucketItemStyle: IBucketItemStyle = {
 			text: 'text-[8px]',
 		},
 		direction: {
-			left: 46,
-			bottom: 42,
+			left: 45,
+			bottom: 38,
 		},
 	},
 }
@@ -67,10 +67,10 @@ const BucketItem = ({ bucket, type, handleOpenPreview }: BucketItemProps) => {
 				className={`${BucketItemStyle[type].style.size} rounded-2xl overflow-hidden animate-fadeIn`}
 			>
 				{/* <img src={bucket.bucketPicture} alt="" className="w-full h-full object-cover" /> */}
-				<img src="/public/dummy.PNG" alt="" className="w-full h-full object-cover" />
+				<img src={bucket.bucketPicture} alt="" className="w-full h-full object-cover" />
 			</div>
 			<p
-				className={`${BucketItemStyle[type].style.text} ${BucketItemStyle[type].style.size} whitespace-nowrap overflow-hidden text-ellipsis`}
+				className={`text-point1 ${BucketItemStyle[type].style.text} ${BucketItemStyle[type].style.size} whitespace-nowrap overflow-hidden text-ellipsis`}
 			>
 				{bucket.title}
 			</p>

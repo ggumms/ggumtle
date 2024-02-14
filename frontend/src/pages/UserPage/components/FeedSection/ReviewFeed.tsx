@@ -6,6 +6,7 @@ import TotalComment from './TotalComment'
 import TotalReaction from './TotalReaction'
 import { IFeed } from './index'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
+import { Link } from 'react-router-dom'
 
 // 하나의 피드 (후기)
 
@@ -42,29 +43,9 @@ const profileStyle: IProfileStyle = {
 }
 const ReviewFeed = ({ userId, review }: { userId: number; review: IFeed }) => {
 	const { userInfo } = useUserInfoQuery(userId)
-	// const userInfo: UserInfoType = {
-	// 	userId: 1,
-	// 	userProfileImage: 'url',
-	// 	userNickname: 'junho',
-	// 	category: ['인간관계', '여행', '직장'],
-	// 	bucketId: 2,
-	// 	bucketTitle: '구독자 100만명 달성하기',
-	// 	dayCount: 14,
-	// 	color: 'mint',
-	// 	isAchieved: true,
-	// 	owner: true,
-	// 	isFollowing: null,
-	// }
-
-	// 더미 데이터
-	// const photo = true
-	// const title = '20만 첫 팬미팅!'
-	// const color = 'yellow'
-	// const reactionCnt = 29
-	// const commentCnt = 94
 
 	return (
-		<div className="px-4 py-2 bg-white">
+		<Link to={`/review/${review.id}`} className="px-4 py-2 bg-white">
 			{/* 작성자 프로필 정보 */}
 			<div className="pt-1 pb-2">
 				{userInfo && <UserProfile type="detail" userInfo={userInfo} isLoading={false} />}
@@ -93,7 +74,7 @@ const ReviewFeed = ({ userId, review }: { userId: number; review: IFeed }) => {
 				</div>
 				<FiShare size="0.9rem" color="#454645" />
 			</div>
-		</div>
+		</Link>
 	)
 }
 
