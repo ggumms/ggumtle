@@ -180,7 +180,7 @@ public class AlarmHandler {
     }
 
     private boolean shouldSendReminder(Bucket bucket, LocalDate today) {
-        if (bucket.getReminderDate() == null){
+        if (bucket.getReminderDate() == null || bucket.getAchievementDate() != null){
             return false;
         }
 
