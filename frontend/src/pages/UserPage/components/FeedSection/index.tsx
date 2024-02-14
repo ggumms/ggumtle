@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import BucketFeed from './BucketFeed'
-import ReviewFeed from './ReviewFeed'
+import BucketFeed from '../Feed/BucketFeed'
+import ReviewFeed from '../Feed/ReviewFeed'
 import { useQuery } from '@tanstack/react-query'
 import { getTimeline } from '../../api'
 import { CategoryType, ColorType } from '../../../../interfaces'

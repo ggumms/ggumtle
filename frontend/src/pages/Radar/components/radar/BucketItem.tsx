@@ -22,7 +22,7 @@ const BucketItemStyle: IBucketItemStyle = {
 		},
 		direction: {
 			left: 45,
-			bottom: 32,
+			bottom: 30,
 		},
 	},
 	second: {
@@ -32,7 +32,7 @@ const BucketItemStyle: IBucketItemStyle = {
 		},
 		direction: {
 			left: 45,
-			bottom: 35,
+			bottom: 31,
 		},
 	},
 	third: {
@@ -42,7 +42,7 @@ const BucketItemStyle: IBucketItemStyle = {
 		},
 		direction: {
 			left: 45,
-			bottom: 38,
+			bottom: 34,
 		},
 	},
 }

@@ -5,11 +5,11 @@ import Header from '../../components/Header'
 import { icons } from '../../constants/header-icons'
 import { IMenu, IMenuFunc } from '../../interfaces'
 import Button from '@mui/material/Button'
-import { IAlarm } from '../Radar/types/alarm'
 import AlarmItem from './AlarmItem'
 import { useAlarmQuery } from '../../hooks/useAlarm'
 import { useMutation } from '@tanstack/react-query'
 import { updateAllRead } from './api'
+import { IAlarm } from './alarm'
 
 // @TODO: 실제 api통신시에 remind는 dataId 받아와서 버킷 title 다시 post 요청보내기
 
