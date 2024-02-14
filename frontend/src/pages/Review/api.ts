@@ -2,6 +2,7 @@ import { QueryFunctionContext } from '@tanstack/query-core'
 import { instance } from '../../axios'
 import { IReactionInfo, IReviewDetail, ReactionType } from '../../types/bucket'
 import { ICommentListInfo } from '../../interfaces'
+import axios from 'axios'
 
 // :: Review
 // - Get brief request
@@ -81,6 +82,28 @@ interface IDeleteReviewDetailRes {
 export const deleteReviewDetail = async (reviewId: number): Promise<'success' | 'fail'> => {
 	const reviewRes = await instance.delete<IDeleteReviewDetailRes>(`review/${reviewId}`)
 	return reviewRes.data.result === 'ok' ? 'success' : 'fail'
+}
+
+// :: Review Image
+interface IReviewImageRes {
+	result: string
+	imageUrl: string
+}
+export const postReviewImage = async (image: FormData | null): Promise<string> => {
+	console.log(image?.get('image'))
+	const axiosConfig = {
+		headers: {
+			'Content-Type': 'multipart/form-data',
+			Authorization: `Bearer ${import.meta.env.VITE_USER1_TOKEN}`,
+		},
+		withCredentials: true,
+	}
+	const imageRes = await axios.post<IReviewImageRes>(
+		`${import.meta.env.VITE_BASE_URL}/review/image`,
+		image,
+		axiosConfig
+	)
+	return imageRes.data.imageUrl
 }
 
 // :: Reaction
