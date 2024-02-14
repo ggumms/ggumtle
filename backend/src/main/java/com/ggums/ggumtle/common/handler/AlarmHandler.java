@@ -80,7 +80,7 @@ public class AlarmHandler {
      * @param bucket alarmed bucket
      */
     public void createBucketAlarm(User receiver, User sender, AlarmType type, Bucket bucket){
-        if (!receiver.getAlarm()) {
+        if (!receiver.getAlarm() || receiver.getId().equals(sender.getId())) {
             return;
         }
         Alarm alarm = Alarm.builder()
@@ -103,7 +103,7 @@ public class AlarmHandler {
      * @param review alarmed review
      */
     public void createReviewAlarm(User receiver, User sender, AlarmType type, Review review){
-        if (!receiver.getAlarm()) {
+        if (!receiver.getAlarm() || receiver.getId().equals(sender.getId())) {
             return;
         }
         Alarm alarm = Alarm.builder()
@@ -129,7 +129,7 @@ public class AlarmHandler {
      * @param review review
      */
     public void createCommentAlarm(User receiver, User sender, AlarmType type, String comment, Bucket bucket, Review review){
-        if (!receiver.getAlarm()) {
+        if (!receiver.getAlarm() || receiver.getId().equals(sender.getId())) {
             return;
         }
 
@@ -167,7 +167,7 @@ public class AlarmHandler {
         sendEventToUser(receiver.getId());
     }
 
-    @Scheduled(cron = "0 0 21 * * ?")
+    @Scheduled(cron = "0 9 * * ?")
     public void remindBucketAlarm() {
         LocalDate today = LocalDate.now();
         List<Bucket> buckets = bucketRepository.findAllWithUser();
