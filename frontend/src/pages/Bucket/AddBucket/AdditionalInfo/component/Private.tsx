@@ -16,7 +16,7 @@ const Private = () => {
 					{isPrivate ? (
 						<GoCheckCircle size={24} color="#D9D9D9" />
 					) : (
-						<GoCheckCircleFill size={24} />
+						<GoCheckCircleFill size={24} color="#454645" />
 					)}
 					<input
 						type="radio"
@@ -30,7 +30,7 @@ const Private = () => {
 				</label>
 				<label htmlFor="private" className="flex items-center gap-2">
 					{isPrivate ? (
-						<GoCheckCircleFill size={24} />
+						<GoCheckCircleFill size={24} color="#454645" />
 					) : (
 						<GoCheckCircle size={24} color="#D9D9D9" />
 					)}

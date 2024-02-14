@@ -30,10 +30,11 @@ const RemindPeriod = () => {
 			<p className="mb-[14px] text-sm font-bold ml-[2px]">리마인드 주기</p>
 			<Menu as="div" className={'relative'}>
 				<Menu.Button
-					className="
-				relative w-full px-4 py-2 text-left border-[0.5px] rounded-[5px] text-sm
-				after:content-clockImage after:inline-block after:h-[19px] after:absolute after:right-4 after:translate-y-1/2 after:bottom-1/2
-				"
+					className={
+						`relative w-full px-4 py-2 text-left border-[0.5px] border-gray text-point1 rounded-[5px] text-base` +
+						' ' +
+						'after:content-clockImage after:inline-block after:h-[19px] after:absolute after:right-4 after:translate-y-1/2 after:bottom-1/2'
+					}
 				>
 					{isValidatePeriod(period) ? periodData[period] : periodData['none']}
 				</Menu.Button>
@@ -47,7 +48,7 @@ const RemindPeriod = () => {
 				>
 					<Menu.Items
 						as="ul"
-						className="absolute left-0 w-56 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+						className="absolute left-0 w-56 mt-2 origin-top-right bg-white divide-y rounded-md shadow-lg divide-lightGray ring-1 ring-black ring-opacity-5 focus:outline-none"
 					>
 						{Object.entries(periodData).map(([key, value]) => (
 							<Menu.Item key={key}>
@@ -55,7 +56,7 @@ const RemindPeriod = () => {
 									<button
 										data-period={key}
 										className={`${
-											active ? 'bg-gray-100' : 'text-gray-900'
+											active ? 'bg-zinc-100' : 'text-point1'
 										} group flex w-full items-center px-2 py-2 text-sm`}
 										onClick={handleChangePeriod}
 									>

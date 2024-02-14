@@ -29,10 +29,11 @@ const StartDate = () => {
 			<p className="mb-[14px] text-sm font-bold  ml-[2px]">버킷 시작일</p>
 			<button
 				onClick={handleClickStartDate}
-				className="
-					relative w-full px-4 py-2 text-left border-[0.5px] rounded-[5px] text-sm
-					after:content-calendarImage after:inline-block after:h-[19px] after:absolute after:right-4 after:translate-y-1/2 after:bottom-1/2
-				"
+				className={
+					'relative w-full px-4 py-2 text-left border-[0.5px] border-gray text-point1 rounded-[5px] text-base' +
+					' ' +
+					'after:content-calendarImage after:inline-block after:h-[19px] after:absolute after:right-4 after:translate-y-1/2 after:bottom-1/2'
+				}
 			>
 				{createdDate instanceof Date ? formatDate(createdDate) : '날짜 선택'}
 			</button>
