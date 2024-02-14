@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import ProfileBucket from '../../../components/ProfileBucket'
 import { ColorType } from '../../../interfaces'
 
@@ -6,14 +7,16 @@ interface IReviewBucketProps {
 	title: string | undefined
 	color: ColorType | undefined
 	dayCount: number | undefined
+	bucketId: number | undefined
 }
-const ReviewBucket = ({ isLoading, title, color, dayCount }: IReviewBucketProps) => {
-	const isEmptyData = title === undefined || color === undefined || dayCount === undefined
+const ReviewBucket = ({ isLoading, title, color, dayCount, bucketId }: IReviewBucketProps) => {
+	const isEmptyData =
+		title === undefined || color === undefined || dayCount === undefined || bucketId === undefined
 	if (isEmptyData) {
 		return <></>
 	}
 	return (
-		<>
+		<Link to={`/bucket/${bucketId}`}>
 			<ProfileBucket
 				type="reviewDetail"
 				isLoading={isLoading}
@@ -23,7 +26,7 @@ const ReviewBucket = ({ isLoading, title, color, dayCount }: IReviewBucketProps)
 				isLock={false}
 				isDone={true}
 			/>
-		</>
+		</Link>
 	)
 }
 

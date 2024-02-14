@@ -83,6 +83,7 @@ const ReviewDetail = () => {
 						title={reviewDetailInfo?.bucketTitle}
 						color={reviewDetailInfo?.bucketColor}
 						dayCount={reviewDetailInfo?.daysSinceDream}
+						bucketId={reviewDetailInfo?.bucketId}
 					/>
 					<EditorViewer value={reviewDetailInfo?.reviewContext} />
 				</section>
