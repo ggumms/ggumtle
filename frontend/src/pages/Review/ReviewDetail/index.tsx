@@ -77,7 +77,7 @@ const ReviewDetail = () => {
 				<div className="mt-3 mb-6">
 					<UserProfile type="detail" isLoading={isLoading} userInfo={reviewDetailInfo?.writer} />
 				</div>
-				<section className="px-3">
+				<section className="px-5">
 					<ReviewBucket
 						isLoading={isLoading}
 						title={reviewDetailInfo?.bucketTitle}
