@@ -3,8 +3,6 @@ import { isCategoryType } from '../../../utils/typeFilter'
 import { useRadarCategoryStore } from '../../../store/radarCategoryStore'
 import { bgColorClass, borderColorClass } from '../../../constants/dynamicClass'
 import { CategoryType } from '../../../interfaces'
-import { useMyInfoQuery } from '../../../hooks/useMyInfo'
-import { useEffect } from 'react'
 
 const RadarCategoryItems = () => {
 	const { selectedCategory, addCategory, removeCategory } = useRadarCategoryStore()

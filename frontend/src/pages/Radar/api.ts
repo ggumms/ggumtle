@@ -1,5 +1,5 @@
 import { QueryFunctionContext } from '@tanstack/react-query'
-import { instance, getMyInfo } from '../../api';
+import { instance } from '../../api';
 
 export const getRadarUsers = async () => {
 	return await instance
