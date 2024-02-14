@@ -1,3 +1,65 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('../public/font/NanumSquareL.ttf') format('ttf');
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('../public/font/NanumSquareR.ttf') format('ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('../public/font/NanumSquareB.ttf') format('ttf');
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('../public/font/NanumSquareEB.ttf') format('ttf');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('../public/font/NanumSquare_acL.ttf') format('ttf');
+  font-weight: 300;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('../public/font/NanumSquare_acR.ttf') format('ttf');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('../public/font/NanumSquare_acB.ttf') format('ttf');
+  font-weight: 600;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'NanumSquare';
+  src: url('../public/font/NanumSquare_acEB.ttf') format('ttf');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+* {
+  font-family: "NanumSquare";
+}
