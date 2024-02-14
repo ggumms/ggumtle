@@ -33,7 +33,8 @@ export const user1stPositioning = ({ setUsers1st, user, radius, maxNum }: IUserP
 		prevUsers = prev
 		return prev
 	})
-
+	
+	console.log(prevUsers, 'user')
 	if (prevUsers.length >= 3) return
 	// const radius = 16.5 // 16.5 | 34.5 | 50
 	const pos = getCircleEdgePos(radius)

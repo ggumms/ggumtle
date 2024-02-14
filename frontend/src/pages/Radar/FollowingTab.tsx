@@ -5,14 +5,12 @@ import Radar from './components/radar/Radar'
 import { ProfileAvatar } from '../../assets/svgs'
 import { getRadarUsers } from './api'
 import { useQuery } from '@tanstack/react-query'
-import { user1stPositioning } from './utils/user/radar1st'
-import { user2ndPositioning } from './utils/user/radar2nd'
-import { user3rdPositioning } from './utils/user/radar3rd'
 import { IRadarUser } from './types/radarUser'
 import UserBottomSheet from './components/bottomSheet/UserBottomSheet'
 import useUserBottomSheet from '../../hooks/useUserBottomSheet'
 import { Link } from 'react-router-dom'
 import BackDots from './components/radar/BackDots'
+import { circle1Pos, circle2Pos, circle3Pos } from './utils/pos'
 
 export interface IUserSimple {
 	userId: number
@@ -30,7 +28,11 @@ interface IRadarUserList {
 // @TODO: 알림 페이지에서 뒤로가기 했을때 레이더 리렌더링 되지 않도록 수정하기
 // @TODO: 리렌더링 횟수 줄이기
 const FollowingTab = () => {
-	const { isLoading, data: radar } = useQuery<IRadarUserList>({
+	const {
+		isLoading,
+		data: radar,
+		refetch,
+	} = useQuery<IRadarUserList>({
 		queryKey: ['radarUser'],
 		queryFn: getRadarUsers,
 	})
@@ -41,68 +43,63 @@ const FollowingTab = () => {
 
 	const { sheet, content, openPreview, isMaxup, togglePreview } = useUserBottomSheet()
 	const [userId, setUserId] = useState<number | null>(null)
-	const [refresh, setRefresh] = useState<boolean>(false)
 
 	const handleOpenPreview = (userId: number) => {
 		openPreview()
 		setUserId(userId)
 	}
 
-	const refreshRadar = (state: boolean) => {
+	const refreshRadar = () => {
 		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
 		setUsers1st([])
 		setUsers2nd([])
 		setUsers3rd([])
-		setRefresh(state)
+		refetch()
 	}
 	// 첫 번째 레이더 (가장 안쪽)
 	useEffect(() => {
-		const radius = 19
-		const maxNum = 3
+		const idx = Math.floor(Math.random() * circle1Pos.length)
 		!isLoading &&
 			radar &&
 			radar.circle1.forEach((user, index) => {
 				setTimeout(
 					() => {
-						console.log(user)
-						user1stPositioning({ setUsers1st, user, radius, maxNum })
+						setUsers1st((prev) => [...prev, { ...user, pos: circle1Pos[idx][index]}])
 					},
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radar])
+	}, [isLoading, radar])
 
 	// 두 번째 레이더
 	useEffect(() => {
-		const radius = 34
-		const maxNum = 5
+		const idx = Math.floor(Math.random() * circle2Pos.length)
 		!isLoading &&
 			radar &&
 			radar.circle2.forEach((user, index) => {
 				setTimeout(
 					() => {
-						user2ndPositioning({ setUsers2nd, user, radius, maxNum })
+						setUsers2nd((prev) => [...prev, { ...user, pos: circle2Pos[idx][index]}])
 					},
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radar])
+	}, [isLoading, radar])
 
 	// 세 번째 레이더
 	useEffect(() => {
-		const radius = 50
-		const maxNum = 7
+		const idx = Math.floor(Math.random() * circle3Pos.length)
 		!isLoading &&
 			radar &&
 			radar.circle3.forEach((user, index) => {
 				setTimeout(
 					() => {
-						user3rdPositioning({ setUsers3rd, user, radius, maxNum })
+						setUsers3rd((prev) => [...prev, { ...user, pos: circle3Pos[idx][index] }])
 					},
 					200 * index + 100 * Math.random()
 				)
 			})
-	}, [isLoading, refresh, radar])
+	}, [isLoading, radar])
 
 	return (
 		<div>
@@ -143,7 +140,7 @@ const FollowingTab = () => {
 			</div>
 
 			{/* @TODO: preview가 아닌 부분을 클릭해도 closePreview 되도록 */}
-			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
+			<ButtonArea refreshRadar={refreshRadar} />
 			<UserBottomSheet
 				userId={userId}
 				togglePreview={togglePreview}
