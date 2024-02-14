@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react'
 import DatePicker from './DatePicker'
 import { Dialog, Transition } from '@headlessui/react'
 import { useBucketStore } from '../../../../../store/bucketStore'
+import { formatDate } from '../../../../../utils/date'
 
 // createdDate로 이름 변경 필요
 const StartDate = () => {
@@ -14,14 +15,6 @@ const StartDate = () => {
 
 	const handleClickStartDate = () => {
 		setIsOpen(true)
-	}
-
-	// padStart : 빈 문자열을 채워주는 메서드
-	const formatDate = (date: Date): string => {
-		const year = date.getFullYear()
-		const month = (date.getMonth() + 1).toString().padStart(2, '0')
-		const day = date.getDate().toString().padStart(2, '0')
-		return `${year}-${month}-${day}`
 	}
 
 	return (

@@ -4,19 +4,23 @@ import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'ax
 const baseConfig = {
 	baseURL: import.meta.env.VITE_BASE_URL,
 	timeout: 10 * 1000,
-	headers: {
-		'Content-type': 'application/json',
-	},
 	withCredentials: true,
 }
 
 const instance = axios.create(baseConfig)
+const multipartInstance = axios.create(baseConfig)
 
 // :: interceptor setting
 // 1. request
 // - 요청이 전달되기 전에 작업 수행
 const requestPrev = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
 	config.headers['Content-Type'] = 'application/json'
+	config.headers['Authorization'] = `Bearer ${import.meta.env.VITE_USER1_TOKEN}`
+
+	return config
+}
+const multipartReqPrev = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+	config.headers['Content-Type'] = 'multipart/form-data'
 	config.headers['Authorization'] = `Bearer ${import.meta.env.VITE_USER1_TOKEN}`
 
 	return config
@@ -40,9 +44,12 @@ const responseError = (error: AxiosError): Promise<never> => {
 instance.interceptors.request.use(requestPrev, requestError)
 instance.interceptors.response.use(resolveResponse, responseError)
 
+multipartInstance.interceptors.request.use(multipartReqPrev, requestError)
+multipartInstance.interceptors.response.use(resolveResponse, responseError)
+
 // :: axios Error 여부 판단
 const isAxiosError = <E>(err: unknown | AxiosError<E>): err is AxiosError => {
 	return axios.isAxiosError(err)
 }
 
-export { instance, isAxiosError }
+export { instance, multipartInstance, isAxiosError }

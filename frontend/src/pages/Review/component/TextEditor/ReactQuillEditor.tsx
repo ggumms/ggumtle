@@ -38,10 +38,8 @@ const ReactQuillEditor = ({ value, setValue }: ReactQuillProps) => {
 			alert('파일의 용량이 너무 큽니다.')
 			return
 		}
-
 		const imageFormData = new FormData()
 		imageFormData.append('image', selectedFile)
-		console.log('이미지', imageFormData)
 
 		const imageUrl = await postReviewImage(imageFormData)
 
