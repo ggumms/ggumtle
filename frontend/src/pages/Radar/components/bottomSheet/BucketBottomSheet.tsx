@@ -5,6 +5,7 @@ import { icons } from '../../../../constants/header-icons'
 import BucketPreview from './BucketPreview'
 import RadarCategoryItems from '../RadarCategory'
 import BucketDetail from '../../../Bucket/BucketDetail'
+import { Link } from 'react-router-dom'
 
 /*
 bottomSheet Header 토글시 -> 카테고리 표출
@@ -59,9 +60,9 @@ const BucketBottomSheet = (props: BucketBottomSheetProp) => {
 					<BucketDetail />
 				</div>
 			) : bucketId ? (
-				<div className="px-5 py-2">
+				<Link to={`/bucket/${bucketId}`} className="px-5 py-2">
 					<BucketPreview bucketId={bucketId} />
-				</div>
+				</Link>
 			) : (
 				<fieldset className="pt-2">
 					<div className="px-5 pb-2">

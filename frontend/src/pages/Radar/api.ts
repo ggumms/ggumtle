@@ -36,3 +36,11 @@ export const getRadarBuckets = async ({ queryKey }: QueryFunctionContext) => {
 		.then((response) => response.data.radar)
 		.catch((e) => console.log(e))
 }
+
+export const getRadarInitBuckets = async () => {
+
+	return await instance
+		.get('radar/total/init')
+		.then((response) => response.data.radar)
+		.catch((e) => console.log(e))
+}
