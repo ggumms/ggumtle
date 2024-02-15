@@ -76,6 +76,7 @@ const FeedSection = ({ userId }: { userId: number }) => {
 						<li
 							key={feed.type === 'BUCKET' ? `bucket-${feed.id}` : `review-${feed.id}`}
 							ref={index === timeLineData.length - 1 ? lastElementRef : null}
+							className='px-4 py-2 bg-white'
 						>
 							{feed.type === 'BUCKET' ? (
 								<BucketFeed userId={userId} bucket={feed} />
