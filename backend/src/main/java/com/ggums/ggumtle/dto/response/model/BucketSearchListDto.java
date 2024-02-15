@@ -19,13 +19,13 @@ public class BucketSearchListDto {
     private String title;
     @Schema(description = "경과 날짜", example = "369")
     private Long dayCount;
-    @ArraySchema(arraySchema = @Schema(description = "버킷 카테고리", example = "[\"취업\",\"여행\", \"인간관계\"]"))
+    @ArraySchema(arraySchema = @Schema(description = "버킷 카테고리", example = "[\"휴식\",\"여행\", \"인간관계\"]"))
     private List<String> category;
     @Schema(description = "후기에 달린 리액션 개수", example = "2")
     private int reactionCount;
     @Schema(description = "후기에 달린 댓글 개수", example = "3")
     private int commentCount;
-    @Schema(description = "버킷 색상", example = "dream green")
+    @Schema(description = "버킷 색상", example = "lightGreen")
     private String color;
     @Schema(description = "버킷 달성 여부", example = "false")
     private Boolean isAchieved;
