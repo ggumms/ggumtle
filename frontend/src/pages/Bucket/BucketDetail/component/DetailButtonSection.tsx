@@ -33,7 +33,7 @@ const DetailButtonSection = ({
 			) : hasReview && bucketDetailInfo.bucketInfo.reviewId ? (
 				<ShowReviewButton reviewId={bucketDetailInfo.bucketInfo.reviewId} />
 			) : (
-				bucketId && <WriteReviewButton id={bucketId} />
+				bucketId && <WriteReviewButton bucketId={bucketId} />
 			)}
 		</>
 	)

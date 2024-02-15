@@ -1,11 +1,11 @@
 import NavigateButton from '../../../../components/NavigateButton'
 
 interface IWriteReviewButtonProps {
-	id: string
+	bucketId: string
 }
 
-const WriteReviewButton = ({ id }: IWriteReviewButtonProps) => {
-	return <NavigateButton path={`/review/write/${id}`}>후기 작성하기</NavigateButton>
+const WriteReviewButton = ({ bucketId }: IWriteReviewButtonProps) => {
+	return <NavigateButton path={`/review/write/${bucketId}`}>후기 작성하기</NavigateButton>
 }
 
 export default WriteReviewButton

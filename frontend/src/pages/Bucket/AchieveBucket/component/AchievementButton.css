@@ -1,0 +1,9 @@
+.confetti-button {
+	cursor: pointer;
+	transition: transform ease-in 0.1s;
+	/* box-shadow ease-in 0.25s; */
+}
+
+.confetti-button:active {
+	transform: scale(0.9);
+}
