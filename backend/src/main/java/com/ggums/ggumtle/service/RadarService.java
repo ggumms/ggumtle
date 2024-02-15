@@ -124,20 +124,23 @@ public class RadarService {
             int circle3Idx = size - 1;
             boolean[] visited = new boolean[size];
 
+            // TODO : refactor
             while (idx < 12) {
-                int randomIdx = (int) (Math.random() * 100);
                 if (idx < 3) {
-                    if (visited[randomIdx % circle1Idx]) continue;
-                    userList1.add(allList.get(randomIdx % circle1Idx));
-                    visited[randomIdx % circle1Idx] = true;
+                    int tempIdx = (int) (Math.random() * (circle1Idx + 1));
+                    if (visited[tempIdx]) continue;
+                    userList1.add(allList.get(tempIdx));
+                    visited[tempIdx] = true;
                 } else if (idx < 7) {
-                    if (visited[randomIdx % circle2Idx]) continue;
-                    userList2.add(allList.get(randomIdx % circle2Idx));
-                    visited[randomIdx % circle2Idx] = true;
+                    int tempIdx = (int) (Math.random() * (circle2Idx - circle1Idx + 1)) + circle1Idx;
+                    if (visited[tempIdx]) continue;
+                    userList2.add(allList.get(tempIdx));
+                    visited[tempIdx] = true;
                 } else {
-                    if (visited[randomIdx % circle3Idx]) continue;
-                    userList3.add(allList.get(randomIdx % circle3Idx));
-                    visited[randomIdx % circle3Idx] = true;
+                    int tempIdx = (int) (Math.random() * (circle3Idx - circle2Idx + 1)) + circle2Idx;
+                    if (visited[tempIdx]) continue;
+                    userList3.add(allList.get(tempIdx));
+                    visited[tempIdx] = true;
                 }
                 idx++;
             }
