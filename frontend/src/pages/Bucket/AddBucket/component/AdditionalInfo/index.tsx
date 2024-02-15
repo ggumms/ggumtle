@@ -1,9 +1,9 @@
-import PageDescription from '../../../../components/PageDescription'
-import BucketImage from './component/BucketImage'
-import StartDate from './component/StartDate'
-import RemindPeriod from './component/RemindPeriod'
-import Private from './component/Private'
-import CompleteButton from './component/CompleteButton'
+import PageDescription from '../../../../../components/PageDescription'
+import BucketImage from './BucketImage'
+import StartDate from './StartDate'
+import RemindPeriod from './RemindPeriod'
+import Private from './Private'
+import CompleteButton from './CompleteButton'
 
 const AdditionalInfo = () => {
 	return (

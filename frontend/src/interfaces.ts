@@ -97,22 +97,26 @@ export type UserInfoType = IMyUserInfo | IOtherUserInfo | IProfileUserInfo
 
 export type PeriodType = null | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
 
-export interface IBucketInfo {
-	writerId: number
-	reviewId: number | null
+// Todo : IBucketInfo와 비교해서 리팩토링 필요
+export interface IBaseBucketInfo {
 	title: string
 	timeCapsule: string | null
-	bucketPicture: string | null
-	color: ColorType
 	reminderDate: PeriodType
-	latitude: number
-	longitude: number
-	address: string
+	latitude: number | null
+	longitude: number | null
+	address: string | null
+	color: ColorType
+	category: CategoryType[]
+	createdDate: string
+	isPrivate: boolean
+}
+
+export interface IBucketInfo extends IBaseBucketInfo {
+	bucketPicture: string | null
+	writerId: number
+	reviewId: number | null
 	dayCount: number
 	achievementDate: string | null
-	category: CategoryType[]
-	isPrivate: boolean
-	createdDate: string
 }
 
 export interface IBucketDetailInfo {

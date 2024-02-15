@@ -32,7 +32,7 @@ public class TimelineDto {
     @Schema(description = "미달성 : 경과 시간 or 달성 : 걸린 시간", example = "17")
     private Long day;
 
-    @Schema(description = "버킷 색깔", example = "dream green")
+    @Schema(description = "버킷 색깔", example = "lightGreen")
     private String color;
 
     @Schema(description = "버킷 이미지 or 후기 이미지들", example = "null")

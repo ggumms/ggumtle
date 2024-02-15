@@ -40,7 +40,7 @@ const Ggumtle = ({
 	)
 
 	return (
-		<div style={ggumtleInlineStyle} className={`ggumtle ${bgColorClass[color]}`}>
+		<div style={ggumtleInlineStyle} className={`ggumtle ${bgColorClass[color]} transition-colors`}>
 			{explanation && <p className="sr-only">{explanation}</p>}
 			{children}
 		</div>

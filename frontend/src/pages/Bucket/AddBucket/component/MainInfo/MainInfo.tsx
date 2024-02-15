@@ -1,7 +1,7 @@
-import SelectBucketColor from './components/SelectBucketColor'
-import Title from './components/Title'
-import TimeCapsule from './components/TimeCapsule'
-import MainNextButton from './components/MainNextButton'
+import SelectBucketColor from './SelectBucketColor'
+import Title from './Title'
+import TimeCapsule from './TimeCapsule'
+import MainNextButton from './MainNextButton'
 
 const MainInfo = () => {
 	return (

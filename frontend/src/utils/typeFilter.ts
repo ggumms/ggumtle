@@ -52,3 +52,14 @@ export const isValidatePeriod = (
 ): period is 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear' => {
 	return period !== null
 }
+
+export const isPeriodType = (period: string | null): period is PeriodType => {
+	return (
+		period === null ||
+		period === 'oneDay' ||
+		period === 'oneWeek' ||
+		period === 'twoWeeks' ||
+		period === 'oneMonth' ||
+		period === 'oneYear'
+	)
+}

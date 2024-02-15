@@ -39,6 +39,6 @@ public class ReviewResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @Schema(description = "후기 수정 시간", example = "2024-01-26 12:54", type = "string")
     private LocalDateTime reviewUpdatedDate;
-    @ArraySchema(arraySchema = @Schema(description = "후기 카테고리", example = "[\"여행\",\"인간관계\", \"취업\"]"))
+    @ArraySchema(arraySchema = @Schema(description = "후기 카테고리", example = "[\"여행\",\"인간관계\", \"휴식\"]"))
     private List<String> categories;
 }

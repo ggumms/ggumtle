@@ -17,7 +17,7 @@ public class UserInfoResponseDto {
     private String userProfileImage;
     @Schema(description = "사용자 별명", example = "서준호")
     private String userNickname;
-    @ArraySchema(arraySchema = @Schema(description = "사용자 관심사", example = "[\"취업\",\"여행\", \"인간관계\"]"))
+    @ArraySchema(arraySchema = @Schema(description = "사용자 관심사", example = "[\"휴식\",\"여행\", \"인간관계\"]"))
     private List<String> category;
     @Schema(description = "대표버킷 id", example = "null", nullable = true)
     private Long bucketId;
