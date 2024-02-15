@@ -122,7 +122,7 @@ export const AlarmMSG = (alarm: IAlarm) => {
 	}
 }
 
-const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
+const AlarmItem = ({ alarm, readAll }: { alarm: IAlarm, readAll: boolean }) => {
 
 	const navigate = useNavigate()
 	const mutation = useMutation({ mutationFn: postReadOneAlarm })
@@ -132,7 +132,7 @@ const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
 			console.log(mutation.data, "success")
 		} else console.log("else")
 
-		console.log("handle")
+		console.log("handle", readAll)
 		switch(alarm.type) {
 			case 'follow':
 					navigate(`/user/${alarm.dataId}`);

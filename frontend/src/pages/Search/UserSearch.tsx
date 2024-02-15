@@ -35,11 +35,11 @@ const UserSearch = () => {
 	}
 
 	return (
-		<div className="w-full">
+		<div className="w-full pt-24">
 			<SearchBar input={input} setInput={setInput} onClickHandler={handleInputChange} />
 			<section className="flex flex-col px-4">
 				{searching ? (
-					<LoadingUser />
+					userList.map(() => <LoadingUser /> )
 				) : userList.length ? (
 					userList.map((user) => <SearchUserItem user={user} key={user.userId} />)
 				) : null}
