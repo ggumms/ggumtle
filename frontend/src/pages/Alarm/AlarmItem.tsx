@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AlarmMainMSG, AlarmSubMSG } from '../../constants/alarmMessage'
 import { randomProfile } from '../../constants/randomProfile'
 import Desc from './Desc'
@@ -7,7 +7,7 @@ import { postReadOneAlarm } from './api'
 import { useMutation } from '@tanstack/react-query'
 import { useMyInfoQuery } from '../../hooks/useMyInfo'
 
-const getAlarmMsg = (alarm: IAlarm) => {
+export const AlarmMSG = (alarm: IAlarm) => {
 	const {data: myinfo} = useMyInfoQuery()
 	const date =
 		alarm.timeUnit === 'min' && alarm.time === 0
@@ -173,7 +173,7 @@ const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
 						randomProfile[0]
 					))}
 			</div>
-			<div className="w-[90%] px-2">{getAlarmMsg(alarm)}</div>
+			<div className="w-[90%] px-2">{AlarmMSG(alarm)}</div>
 		</div>
 	)
 }

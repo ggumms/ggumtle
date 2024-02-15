@@ -31,3 +31,4 @@ export interface IAlarm {
 	type: AlarmType
 	dataId: number
 }
+

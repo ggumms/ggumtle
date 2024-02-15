@@ -5,8 +5,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useEffect } from 'react'
 import { EventSourcePolyfill } from 'event-source-polyfill';
+import { ToastContainer } from 'react-toastify';
+import Toast from './pages/Alarm/Toast'
+import 'react-toastify/dist/ReactToastify.css';
+import Desc from './pages/Alarm/Desc'
+import { AlarmMainMSG } from './constants/alarmMessage'
+import { IAlarm, TimeUnitType } from './pages/Alarm/alarm'
 
 function App() {
+
 	const theme = createTheme({
 		components: {
 			MuiButton: {
@@ -24,35 +31,6 @@ function App() {
 		},
 	})
 
-	// function notifyMe() {
-	// 	if (!("Notification" in window)) {
-	// 		// Check if the browser supports notifications
-	// 		alert("This browser does not support desktop notification");
-	// 	} else if (Notification.permission === "granted") {
-	// 			// Check whether notification permissions have already been granted;
-	// 			// if so, use service worker to create a notification
-	// 			console.log("granded===")
-	// 			navigator.serviceWorker.ready.then(function(registration) {
-	// 					registration.showNotification("Hi there!", {
-	// 							body: "You have a new notification!",
-	// 							icon: '/public/icons/icon-200.png'
-	// 					});
-	// 			});
-	// 	} else if (Notification.permission !== "denied") {
-	// 			// We need to ask the user for permission
-	// 			Notification.requestPermission().then(function(permission) {
-	// 					// If the user accepts, let's create a notification using service worker
-	// 					if (permission === "granted") {
-	// 							navigator.serviceWorker.ready.then(function(registration) {
-	// 									registration.showNotification("Hi there!", {
-	// 											body: "You have a new notification!",
-	// 											icon: '/public/icons/icon-200.png'
-	// 									});
-	// 							});
-	// 					}
-	// 			});
-	// 	}
-	// }
 useEffect(() => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	let eventSource:any
@@ -68,10 +46,41 @@ useEffect(() => {
 			};
 			
 			eventSource.addEventListener('serverEvent', async(event: any) => {
-				console.log(event.data, "알림이 왔어요 serverEvent")
-				const message = event.data;
-				console.log("=======새로운 알림 도착:", JSON.parse(message), '파싱');
-				// notifyMe()
+				const notification: IAlarm = JSON.parse(event.data)
+				console.log(notification, "알림이 왔어요 serverEvent")
+				
+				const date =
+				notification.timeUnit === 'min' && notification.time === 0
+					? '방금'
+					: `${notification.time}${TimeUnitType[notification.timeUnit]} 전`
+					
+				const handleIntoDetail = () => {
+					window.location.href = `/bucket/${notification.dataId}`
+				}
+				
+				switch(notification.type) {
+					case 'commentBucket':
+						Toast.success(<Desc
+							main1={notification.sender}
+							main2={AlarmMainMSG.COMMENT_BUCKET}
+							sub={`"${notification.context}"`}
+							date={date}
+						/>, {
+							onClick:
+							handleIntoDetail});
+						break
+					case 'remind':
+						Toast.success(<Desc
+							main1={'🔔 리마인드: '}
+							main2={AlarmMainMSG.REMIND(notification.dataId)}
+							sub={notification.context}
+							date={date}
+						/>, {
+							onClick:
+							handleIntoDetail});
+						break
+
+				}
 			})
 			eventSource.onerror = async (event: any) => {
 				if (!event.error.message.includes("No activity"))
@@ -90,6 +99,7 @@ useEffect(() => {
 
 	return (
 		<ThemeProvider theme={theme}>
+			<ToastContainer position="top-center" />
 			<RouterProvider router={router} />
 			<ReactQueryDevtools />
 		</ThemeProvider>
