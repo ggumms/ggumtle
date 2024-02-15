@@ -165,3 +165,47 @@ export interface ICommentListInfo {
 	numberOfElements: number
 	empty: boolean
 }
+
+export interface ITimelineItem {
+	id: number
+	type: 'REVIEW' | 'BUCKET'
+	isAchieved: boolean
+	title: string
+	context: string
+	day: number
+	color: ColorType
+	images: string[]
+	categories: CategoryType[]
+	reactionCount: number
+	commentCount: number
+	createdDate: string
+}
+
+export interface ITimelineInfo {
+	content: ITimelineItem[]
+	pageable: {
+		pageNumber: number
+		pageSize: number
+		sort: {
+			empty: boolean
+			sorted: boolean
+			unsorted: boolean
+		}
+		offset: number
+		paged: boolean
+		unpaged: boolean
+	}
+	last: boolean
+	totalElements: number
+	totalPages: number
+	size: number
+	number: number
+	sort: {
+		empty: boolean
+		sorted: boolean
+		unsorted: boolean
+	}
+	first: boolean
+	numberOfElements: number
+	empty: boolean
+}

@@ -149,7 +149,7 @@ export const getReviewCommentList = async ({
 	pageParam,
 }: QueryFunctionContext<string[], number>): Promise<ICommentListInfo> => {
 	const [, id] = queryKey
-	const fetchSize = import.meta.env.VITE_COMMENT_PAGE_SIZE
+	const fetchSize = import.meta.env.VITE_PAGE_SIZE
 
 	const commentRes = await instance.get<IGetCommentRes>(
 		`comment/review/${id}?page=${pageParam}&size=${fetchSize}`
