@@ -12,15 +12,17 @@ const DEFAULT_SPEED = 10
 // screen-reader 설명을 위한 explanation props 추가
 // 검색 아이콘을 위한 children props 추가
 interface IGgumtleProps {
+	ggumtleRef?: React.RefObject<HTMLDivElement>
 	color: string
 	width: number
 	height: number
-	speed: number
+	speed?: number
 	explanation?: string
 	children?: ReactNode
 }
 
 const Ggumtle = ({
+	ggumtleRef,
 	color = DEFAULT_COLOR,
 	width = DEFAULT_WIDTH,
 	height = DEFAULT_HEIGHT,
@@ -28,11 +30,12 @@ const Ggumtle = ({
 	explanation,
 	children,
 }: IGgumtleProps) => {
+	console.log('ggumtle is rendered!')
 	const getGgumtleSize = (width: number, height: number) => {
 		return { width: `${width}px`, height: `${height}px` }
 	}
 	const getGgumtleAnimation = (speed: number) => {
-		return { animation: `transform ${speed}s ease-in-out infinite both alternate` }
+		return { animation: `ggumtleMove ${speed}s ease-in-out infinite both alternate` }
 	}
 	const ggumtleInlineStyle = Object.assign(
 		getGgumtleSize(width, height),
@@ -40,7 +43,7 @@ const Ggumtle = ({
 	)
 
 	return (
-		<div style={ggumtleInlineStyle} className={`ggumtle ${bgColorClass[color]} transition-colors`}>
+		<div ref={ggumtleRef} style={ggumtleInlineStyle} className={`ggumtle ${bgColorClass[color]}`}>
 			{explanation && <p className="sr-only">{explanation}</p>}
 			{children}
 		</div>

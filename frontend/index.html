@@ -9,7 +9,8 @@
 		<meta name="theme-color" content="#ffffff" />
 		<link rel="stylesheet" href="./src/index.css" />
 		<link rel="manifest" href="/manifest.json" />
-		<link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet" />
+		<!-- 볼드체가 적용이 안돼서 일단 폰트 뺐습니다 -->
+		<!-- <link href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css" rel="stylesheet"> -->
 		<link rel="stylesheet" href="path/to/assets/content-styles.css" type="text/css" />
 		<script
 			src="https://t1.kakaocdn.net/kakao_js_sdk/2.6.0/kakao.min.js"
@@ -23,16 +24,13 @@
 		<script type="module" src="/src/main.tsx"></script>
 		<script>
 			if ('serviceWorker' in navigator) {
-				// Register a service worker hosted at the root of the
-				// site using the default scope.
-				navigator.serviceWorker
-					.register('/sw.js')
-					.then((registration) => {
-						console.log('Service worker registration succeeded:', registration)
-					})
-					.catch((err) => {
-						console.log('Service worker registration failed:', error)
-					})
+				window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                console.log('Service Worker 등록 성공:', registration);
+            }).catch(function (error) {
+                console.log('Service Worker 등록 실패:', error);
+            });
+        });
 			} else {
 				console.log('Service workers are not supported.')
 			}

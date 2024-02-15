@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class AlarmListDto {
+public class AlarmDto {
 
     @Schema(description = "알람 id", example = "1")
     private Long alarmId;

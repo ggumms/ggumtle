@@ -1,16 +1,26 @@
 import { useEffect } from 'react'
+// import defaultPicture from '../assets/ggumtle.gif'
 
 const { Kakao } = window
-const bucketPicture = '/public/dummy.PNG'
-const title = '구독자분들과 팬미팅 진행하기'
-const userNickname = 'juno'
-// const bucketId = 3
+const title = '카카오톡 공유 테스트'
+const userNickname = 'inhwa'
+const baseUrl = import.meta.env.VITE_KAKAO_SHARE_BASE_URL
+const defaultPicture = `${baseUrl}/assets/ggumtle.gif`
 
-const ShareButton = () => {
-	// 예상 props
-	const realUrl = `http://localhost:5173`
-	const feedTitle = title
-	const username = userNickname
+interface IShareButtonProps {
+	userName?: string
+	feedTitle?: string
+	path?: string
+	imageUrl?: string
+}
+const ShareButton = ({
+	userName = userNickname,
+	feedTitle = title,
+	path = '',
+	imageUrl = defaultPicture,
+}: IShareButtonProps) => {
+	const destinationUrl = path ? baseUrl + path : baseUrl
+	console.log(userName, feedTitle, path, defaultPicture, imageUrl, destinationUrl)
 
 	useEffect(() => {
 		Kakao.cleanup()
@@ -19,22 +29,24 @@ const ShareButton = () => {
 
 	const handleShareKakao = () => {
 		Kakao.Share.sendDefault({
+			// 카카오톡 공유 메세지를 표시한 유형
 			objectType: 'feed',
+			// 공유 메세지안에 들어갈 내용
 			content: {
-				title: `꿈:틀 | ${username}`,
+				title: `꿈:틀 | ${userName}`,
 				description: feedTitle,
-				imageUrl: bucketPicture,
+				imageUrl: imageUrl,
 				link: {
-					mobileWebUrl: realUrl,
-					webUrl: realUrl,
+					mobileWebUrl: destinationUrl,
+					webUrl: destinationUrl,
 				},
 			},
 			buttons: [
 				{
-					title: '공유하기',
+					title: '이동하기',
 					link: {
-						mobileWebUrl: realUrl,
-						webUrl: realUrl,
+						mobileWebUrl: destinationUrl,
+						webUrl: destinationUrl,
 					},
 				},
 			],

@@ -9,11 +9,11 @@
 	/* transform-style: preserve-3d; */
 	/* 원근법을 적용하기 위한 속성 */
 	/* perspective: 1000px; */
-	animation: transform 10s ease-in-out infinite both alternate;
+	animation: ggumtleMove 10s ease-in-out infinite both alternate;
 	/* movement 40s ease-in-out infinite both; */
 }
 
-@keyframes transform {
+@keyframes ggumtleMove {
 	0%,
 	100% {
 		border-radius: 63% 37% 54% 46% / 55% 48% 52% 45%;
