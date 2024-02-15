@@ -11,6 +11,7 @@ import useUserBottomSheet from '../../hooks/useUserBottomSheet'
 import { Link } from 'react-router-dom'
 import BackDots from './components/radar/BackDots'
 import { circle1Pos, circle2Pos, circle3Pos } from './utils/pos'
+import { useMyInfoQuery } from '../../hooks/useMyInfo'
 
 export interface IUserSimple {
 	userId: number
@@ -40,6 +41,8 @@ const FollowingTab = () => {
 		queryKey: ['radarUser'],
 		queryFn: getRadarUsers,
 	})
+
+	const { isLoading: isMyInfoLoading, data: myInfo} = useMyInfoQuery()
 
 	const { sheet, content, openPreview, isMaxup, togglePreview } = useUserBottomSheet()
 	const [userId, setUserId] = useState<number | null>(null)
@@ -139,7 +142,12 @@ const FollowingTab = () => {
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
 					<Link to="/mypage" className="z-30">
-						<ProfileAvatar className="h-14 w-14" />
+						{
+						!isMyInfoLoading && myInfo ? 
+							<div className={`w-16 h-16 rounded-full overflow-hidden`} >
+								<img src={myInfo.userProfileImage} alt="" className="w-full h-full object-cover" />
+							</div>
+						: <ProfileAvatar className="h-14 w-14" /> }
 					</Link>
 				</Radar>
 
