@@ -129,6 +129,9 @@ public class AlarmController {
 
     @PostMapping("/send-reminder")
     @Operation(summary = "리마인더 알람 발송", description = "리마인더 알람 전송")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "sent")
+    })
     public Response sendReminder(){
         alarmHandler.remindBucketAlarm();
         return new Response("message", "sent");
