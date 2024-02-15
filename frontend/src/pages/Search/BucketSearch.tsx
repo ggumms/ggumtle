@@ -37,11 +37,11 @@ const BucketSearch = () => {
 	}
 
 	return (
-		<div className="w-full">
+		<div className="w-full pt-24">
 			<SearchBar input={input} setInput={setInput} onClickHandler={handleInputChange} />
 			<section className="bg-lightGray flex flex-col gap-2">
 				{searching ? (
-					<LoadingBucket />
+					bucketList.map(() => <LoadingBucket /> )
 				) : bucketList.length ? (
 					bucketList.map((bucket) => <SearchBucketItem bucket={bucket} key={bucket.bucketId} />)
 				) : null}
