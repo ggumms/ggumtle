@@ -11,6 +11,8 @@ import com.ggums.ggumtle.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +50,9 @@ public class AlarmService {
 
     // getting list of alarm
     public AlarmResponseDto alarmList(User user, Pageable pageable){
-        Page<Alarm> alarms = alarmRepository.findByReceiver(user, pageable);
+        Pageable sortedPageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("createdDate").descending());
+
+        Page<Alarm> alarms = alarmRepository.findByReceiver(user, sortedPageable);
         Page<AlarmDto> alarmList = alarms.map(this::convertToAlarmResponseDto);
         return AlarmResponseDto.builder().alarmList(alarmList).build();
     }
