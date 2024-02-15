@@ -104,11 +104,16 @@ const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentI
 					</div>
 				</div>
 			)}
-			<LikeButton
-				commentId={commentInfo.id}
-				likeStatus={commentInfo.numberOfLikes > 0}
-				hasOwn={hasLikeOwn}
-			/>
+			{detailReview && (
+				<LikeButton
+					commentId={commentInfo.id}
+					likeStatus={commentInfo.numberOfLikes > 0}
+					hasOwn={hasLikeOwn}
+					reviewOwnerImage={
+						detailReview.writer.userProfileImage ? detailReview.writer.userProfileImage : null
+					}
+				/>
+			)}
 			{hasCommentOwn && <CommentMoreButton commentId={commentInfo.id} />}
 		</div>
 	)

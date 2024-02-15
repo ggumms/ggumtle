@@ -8,6 +8,7 @@ import { useDetailBucketStore, useDetailPageTypeStore } from '../../../../../sto
 import { putBucketComment } from '../../api'
 import { ICommentItem, TimeUnitType } from '../../../../../interfaces'
 import { useCurrentUserStore } from '../../../../../store/currentUserStore'
+import { useUserInfoQuery } from '../../../../../hooks/useUserInfo'
 
 const getTime = (time: number, timeUnit: TimeUnitType): string => {
 	switch (timeUnit) {
@@ -38,6 +39,8 @@ const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentI
 	const { detailBucket } = useDetailBucketStore()
 	const { setPageType } = useDetailPageTypeStore()
 	const [editText, setEditText] = useState(commentInfo.context)
+
+	const { userInfo: bucketUserInfo } = useUserInfoQuery(detailBucket?.writerId)
 
 	// :: Setting own
 	const hasLikeOwn = useMemo(() => {
@@ -105,11 +108,16 @@ const CommentItem = ({ commentInfo, type, selectedId, setSelectedId }: ICommentI
 					</div>
 				</div>
 			)}
-			<LikeButton
-				commentId={commentInfo.id}
-				likeStatus={commentInfo.numberOfLikes > 0}
-				hasOwn={hasLikeOwn}
-			/>
+			{bucketUserInfo && (
+				<LikeButton
+					commentId={commentInfo.id}
+					likeStatus={commentInfo.numberOfLikes > 0}
+					hasOwn={hasLikeOwn}
+					reviewOwnerImage={
+						bucketUserInfo.userProfileImage ? bucketUserInfo.userProfileImage : null
+					}
+				/>
+			)}
 			{hasCommentOwn && <CommentMoreButton commentId={commentInfo.id} />}
 		</div>
 	)
