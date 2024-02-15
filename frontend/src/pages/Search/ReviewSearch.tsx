@@ -38,11 +38,11 @@ const ReviewSearch = () => {
 	}
 
 	return (
-		<div className="w-full">
+		<div className="w-full pt-24">
 			<SearchBar input={input} setInput={setInput} onClickHandler={handleInputChange} />
 			<section className="bg-lightGray flex flex-col gap-2">
 				{searching ? (
-					<LoadingReview />
+					reviewList.map(() => <LoadingReview />)
 				) : reviewList.length ? (
 					reviewList.map((review) => <SearchReviewItem review={review} key={review.reviewId} />)
 				) : null}

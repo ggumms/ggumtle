@@ -1,5 +1,5 @@
 export interface DescProp {
-	main1: string
+	main1: string | undefined
 	main2: string
 	sub: string | null
 	date: string
@@ -13,7 +13,7 @@ const Desc = ({ main1, main2, sub, date }: DescProp) => {
 				{main2}
 			</p>
 			<p className="font-light text-point1 text-xs truncate">{sub}</p>
-			<p className="font-light text-point1 text-xs">{date}</p>
+			<p className="font-light text-gray text-[10px]">{date}</p>
 		</div>
 	)
 }

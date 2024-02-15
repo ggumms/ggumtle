@@ -11,6 +11,8 @@ import useBucketBottomSheet from '../../hooks/useBucketBottomSheet'
 import { useRadarCategoryStore } from '../../store/radarCategoryStore'
 import BackDots from './components/radar/BackDots'
 import { circle1Pos, circle2Pos, circle3Pos } from './utils/pos'
+import { useMyInfoQuery } from '../../hooks/useMyInfo'
+import { Link } from 'react-router-dom'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -59,6 +61,8 @@ const AllTab = () => {
 		queryKey: ['radarBuckets', categories],
 		queryFn: getRadarBuckets,
 	})
+
+	const { isLoading: isMyInfoLoading, data: myInfo} = useMyInfoQuery()
 	
 	const { isLoading: isInitLoading, data: radarInitBucket, refetch: refetchInit, isRefetching: isRefetchingInit } = useQuery<IRadarBucketList>({
 		queryKey: ['initBuckets'],
@@ -223,7 +227,14 @@ const AllTab = () => {
 			<BackDots />
 			<div className="w-full h-[calc(100vh-5rem)] flex justify-center items-center overflow-hidden">
 				<Radar>
-					<ProfileAvatar className="h-14 w-14" />
+					<Link to="/mypage" className="z-30">
+							{
+							!isMyInfoLoading && myInfo ? 
+								<div className={`w-16 h-16 rounded-full overflow-hidden`} >
+									<img src={myInfo.userProfileImage} alt="" className="w-full h-full object-cover" />
+								</div>
+							: <ProfileAvatar className="h-14 w-14" /> }
+						</Link>
 				</Radar>
 				<div className="absolute top-[calc(50%-5px)] left-1/2 w-[110%] aspect-square transform translate-x-[-50%] translate-y-[-50%]">
 					{buckets1st.map((bucket) => (

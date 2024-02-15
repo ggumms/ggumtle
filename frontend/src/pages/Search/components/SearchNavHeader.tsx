@@ -26,17 +26,17 @@ const SearchNavHeader = ({ headerData }: { headerData: MultiPageHeaderInfo[] }) 
 	}, [currentPath])
 
 	return (
-		<div className="flex items-center justify-around pb-2">
+		<div className="fixed top-16 right-0 left-0 z-10 bg-white flex items-center justify-around pb-2">
 			<ul className={`flex gap-[2px] w-full`}>
 				{headerData.map((headerItem, index) => {
 					return (
-						<li key={`hedaer-${index}`} className={`w-1/3 relative`}>
+						<li key={`hedaer-${index}`} className={`w-1/3 relative bg-white`}>
 							<NavLink
 								to={headerItem.path}
 								// Todo : 삭제 예정
 								data-id={index}
 								className={
-									'inline-block w-full text-center py-2' +
+									'inline-block w-full text-center py-2 bg-white' +
 									(selectedIndex === index ? ' text-[#454645] font-[700]' : ' text-[#D9D9D9]   ')
 								}
 							>
