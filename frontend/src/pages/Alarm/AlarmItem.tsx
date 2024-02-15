@@ -5,8 +5,10 @@ import Desc from './Desc'
 import { IAlarm, TimeUnitType } from './alarm'
 import { postReadOneAlarm } from './api'
 import { useMutation } from '@tanstack/react-query'
+import { useMyInfoQuery } from '../../hooks/useMyInfo'
 
 const getAlarmMsg = (alarm: IAlarm) => {
+	const {data: myinfo} = useMyInfoQuery()
 	const date =
 		alarm.timeUnit === 'min' && alarm.time === 0
 			? '방금'
@@ -42,7 +44,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 			)
 		case 'join':
 			return (
-				<Desc main1={alarm.sender} main2={AlarmMainMSG.JOIN} sub={AlarmSubMSG.JOIN} date={date} />
+				<Desc main1={myinfo?.userNickname} main2={AlarmMainMSG.JOIN} sub={AlarmSubMSG.JOIN} date={date} />
 			)
 		case 'remind':
 			return (
@@ -94,7 +96,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 			return (
 				<Desc
 					main1={alarm.sender}
-					main2={AlarmMainMSG.COMMENT_BUCKET}
+					main2={AlarmMainMSG.COMMENT_REVIEW}
 					sub={`"${alarm.context}"`}
 					date={date}
 				/>
@@ -121,6 +123,7 @@ const getAlarmMsg = (alarm: IAlarm) => {
 }
 
 const AlarmItem = ({ alarm }: { alarm: IAlarm }) => {
+
 	const navigate = useNavigate()
 	const mutation = useMutation({ mutationFn: postReadOneAlarm })
 	const handleClickAlarm = () => {

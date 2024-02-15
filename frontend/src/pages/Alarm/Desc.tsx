@@ -1,5 +1,5 @@
 export interface DescProp {
-	main1: string
+	main1: string | undefined
 	main2: string
 	sub: string | null
 	date: string
