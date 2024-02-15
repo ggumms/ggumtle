@@ -3,7 +3,14 @@ import Ggumtle from '../../../components/Ggumtle'
 import { useRouter } from '../../../hooks/useRouter'
 import { useParams } from 'react-router'
 
-const MAX_SPEED = 0.5
+const ROTATING_TEXT = [
+	'꿈을 꿨던 처음은 어떠셨나요?',
+	'가장 기억에 남는 순간은 언제인가요?',
+	'포기하고 싶은 순간이 있었나요?',
+	'어떤 변화를 느끼셨나요?',
+	'함께한 사람들이 있으셨나요?',
+	'꿈을 이루면서 생각나는 사람이 있으셨나요?',
+]
 
 // Todo : url을 통해서 현재 버킷 정보를 확인하고 해당 버킷이 사용자의 버킷인지 확인 필요 -> 사용자의 버킷이 아니라면 메인 페이지로 인동
 // Todo : 축하 페이지와 달성 페이지 나누지 말고 애니메이션 이용해서 한 페이지에서 관리하기
@@ -43,7 +50,7 @@ const AchieveBucket = () => {
 	const changeGgumtleSpeed = (gauge: number) => {
 		if (ggumtleRef.current) {
 			if (animationRef.current) {
-				const playbackRate = gauge === 0 ? 0.05 : gauge * 0.01 // 기본 속도에 대한 새 속도의 비율 계산
+				const playbackRate = gauge === 0 ? 0.05 : gauge * 0.005 // 기본 속도에 대한 새 속도의 비율 계산
 				animationRef.current.updatePlaybackRate(playbackRate)
 			} else {
 				animationRef.current = ggumtleRef.current.animate(
@@ -54,11 +61,10 @@ const AchieveBucket = () => {
 						{ borderRadius: '61% 39% 55% 45% / 61% 38% 62% 39%' },
 						{ borderRadius: '61% 39% 67% 33% / 70% 50% 50% 30%' },
 						{ borderRadius: '50% 50% 34% 66% / 56% 68% 32% 44%' },
-						{ borderRadius: '46% 54% 50% 50% / 35% 61% 39% 65%' },
-						{ borderRadius: '63% 37% 54% 46% / 55% 48% 52% 45%' }, // 마지막에 다시 초기 상태로 돌아가게 설정
+						// { borderRadius: '46% 54% 50% 50% / 35% 61% 39% 65%' },
 					],
 					{
-						duration: 1000 * MAX_SPEED, // 1초 동안
+						duration: 100000, // 1초 동안
 						easing: 'ease-in-out',
 						iterations: Infinity, // 무한 반복
 						direction: 'alternate', // 방향 전환

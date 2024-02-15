@@ -6,6 +6,7 @@ const title = '구독자분들과 팬미팅 진행하기'
 const userNickname = 'juno'
 // const bucketId = 3
 
+// Todo : 위의 요소들 + 필요한 요소를 props로 받아서 처리할 수 있도록 만들기
 const ShareButton = () => {
 	// 예상 props
 	const realUrl = `http://localhost:5173`
