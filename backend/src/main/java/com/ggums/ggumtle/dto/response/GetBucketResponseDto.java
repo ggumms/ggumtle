@@ -24,7 +24,7 @@ public class GetBucketResponseDto {
     private String timeCapsule;
     @Schema(description = "버킷 사진 URL", example = "(호스트 서버 주소)/image/bucketImage/(이미지명).png")
     private String bucketPicture;
-    @Schema(description = "버킷 색상", example = "dream green")
+    @Schema(description = "버킷 색상", example = "lightGreen")
     private String color;
     @Schema(description = "리마인드 주기", example = "twoWeeks")
     private ReminderDate reminderDate;
@@ -39,7 +39,7 @@ public class GetBucketResponseDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Schema(description = "버킷 달성 날짜", example = "2023-01-01", type = "string")
     private LocalDate achievementDate;
-    @ArraySchema(arraySchema = @Schema(description = "버킷 카테고리", example = "[\"취업\",\"여행\", \"인간관계\"]"))
+    @ArraySchema(arraySchema = @Schema(description = "버킷 카테고리", example = "[\"휴식\",\"여행\", \"인간관계\"]"))
     private List<String> category;
     @Schema(description = "비공개 여부", example = "false")
     private Boolean isPrivate;
