@@ -97,22 +97,26 @@ export type UserInfoType = IMyUserInfo | IOtherUserInfo | IProfileUserInfo
 
 export type PeriodType = null | 'oneDay' | 'oneWeek' | 'twoWeeks' | 'oneMonth' | 'oneYear'
 
-export interface IBucketInfo {
-	writerId: number
-	reviewId: number | null
+// Todo : IBucketInfo와 비교해서 리팩토링 필요
+export interface IBaseBucketInfo {
 	title: string
 	timeCapsule: string | null
-	bucketPicture: string | null
-	color: ColorType
 	reminderDate: PeriodType
-	latitude: number
-	longitude: number
-	address: string
+	latitude: number | null
+	longitude: number | null
+	address: string | null
+	color: ColorType
+	category: CategoryType[]
+	createdDate: string
+	isPrivate: boolean
+}
+
+export interface IBucketInfo extends IBaseBucketInfo {
+	bucketPicture: string | null
+	writerId: number
+	reviewId: number | null
 	dayCount: number
 	achievementDate: string | null
-	category: CategoryType[]
-	isPrivate: boolean
-	createdDate: string
 }
 
 export interface IBucketDetailInfo {
@@ -135,6 +139,50 @@ export interface ICommentItem {
 
 export interface ICommentListInfo {
 	content: ICommentItem[]
+	pageable: {
+		pageNumber: number
+		pageSize: number
+		sort: {
+			empty: boolean
+			sorted: boolean
+			unsorted: boolean
+		}
+		offset: number
+		paged: boolean
+		unpaged: boolean
+	}
+	last: boolean
+	totalElements: number
+	totalPages: number
+	size: number
+	number: number
+	sort: {
+		empty: boolean
+		sorted: boolean
+		unsorted: boolean
+	}
+	first: boolean
+	numberOfElements: number
+	empty: boolean
+}
+
+export interface ITimelineItem {
+	id: number
+	type: 'REVIEW' | 'BUCKET'
+	isAchieved: boolean
+	title: string
+	context: string
+	day: number
+	color: ColorType
+	images: string[]
+	categories: CategoryType[]
+	reactionCount: number
+	commentCount: number
+	createdDate: string
+}
+
+export interface ITimelineInfo {
+	content: ITimelineItem[]
 	pageable: {
 		pageNumber: number
 		pageSize: number

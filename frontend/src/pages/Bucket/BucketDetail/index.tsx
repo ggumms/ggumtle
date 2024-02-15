@@ -8,7 +8,6 @@ import BucketInfo from './component/BucketInfo'
 import InterestTag from './component/InterestTag'
 import UserProfile from '../../../components/UserProfile/UserProfile'
 import BucketMoreButton from './component/BucketMoreButton'
-import DetailLocation from './component/DetailLocation'
 import Reaction from './component/Reaction'
 import CommentList from './component/Comment/CommentList'
 import CommentInput from './component/Comment/CommentInput'
@@ -93,12 +92,7 @@ const BucketDetail = () => {
 						/>
 					)
 				)}
-				<DetailLocation
-					isLoading={isLoading}
-					latitude={bucketDetailInfo?.bucketInfo.latitude}
-					longitude={bucketDetailInfo?.bucketInfo.longitude}
-					address={bucketDetailInfo?.bucketInfo.address}
-				/>
+
 				{isLoading || bucketDetailInfo === undefined ? (
 					<>{/* Todo: skeleton 추가 */}</>
 				) : (

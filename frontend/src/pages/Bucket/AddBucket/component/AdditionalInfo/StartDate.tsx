@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react'
 import DatePicker from './DatePicker'
 import { Dialog, Transition } from '@headlessui/react'
 import { useBucketStore } from '../../../../../store/bucketStore'
+import { formatDate } from '../../../../../utils/date'
 
 // createdDate로 이름 변경 필요
 const StartDate = () => {
@@ -16,23 +17,16 @@ const StartDate = () => {
 		setIsOpen(true)
 	}
 
-	// padStart : 빈 문자열을 채워주는 메서드
-	const formatDate = (date: Date): string => {
-		const year = date.getFullYear()
-		const month = (date.getMonth() + 1).toString().padStart(2, '0')
-		const day = date.getDate().toString().padStart(2, '0')
-		return `${year}-${month}-${day}`
-	}
-
 	return (
 		<div>
 			<p className="mb-[14px] text-sm font-bold  ml-[2px]">버킷 시작일</p>
 			<button
 				onClick={handleClickStartDate}
-				className="
-					relative w-full px-4 py-2 text-left border-[0.5px] rounded-[5px] text-sm
-					after:content-calendarImage after:inline-block after:h-[19px] after:absolute after:right-4 after:translate-y-1/2 after:bottom-1/2
-				"
+				className={
+					'relative w-full px-4 py-2 text-left border-[0.5px] border-gray text-point1 rounded-[5px] text-base' +
+					' ' +
+					'after:content-calendarImage after:inline-block after:h-[19px] after:absolute after:right-4 after:translate-y-1/2 after:bottom-1/2'
+				}
 			>
 				{createdDate instanceof Date ? formatDate(createdDate) : '날짜 선택'}
 			</button>

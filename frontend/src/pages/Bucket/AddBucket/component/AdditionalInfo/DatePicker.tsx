@@ -114,7 +114,7 @@ const DatePicker = ({ createdDate, setCreatedDate, setIsOpen }: IDatePicker) => 
 													'text-gray-400'
 												} 
 												${isEqual(day, createdDate) && isToday(day) && 'bg-red-500'} 
-												${isEqual(day, createdDate) && 'bg-gray-900'} 
+												${isEqual(day, createdDate) && 'bg-point1'} 
 												${!isEqual(day, createdDate) && 'hover:bg-gray-200'} 
 												${(isEqual(day, createdDate) || isToday(day)) && 'font-semibold'} 
 												mx-auto flex h-8 w-8 items-center justify-center rounded-full

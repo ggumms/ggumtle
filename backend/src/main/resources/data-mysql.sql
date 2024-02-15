@@ -41,7 +41,7 @@ WHERE id IN (1, 2, 3, 4);
 -- Dummy Interest for development
 insert into interest (name)
 values ('여행'),
-       ('취업'),
+       ('휴식'),
        ('인간관계');
 
 

@@ -23,7 +23,7 @@ const CategorySelect = ({ categoryData }: CategorySelectProps) => {
 	}
 
 	return (
-		<ul className="flex flex-wrap gap-x-2 gap-y-4">
+		<ul className="flex flex-wrap gap-x-2 gap-y-4 ">
 			{Object.keys(categoryData).map((categoryName, index) => {
 				// ts 타입 문제로 인한 코드
 				if (!isCategoryType(categoryName)) {
@@ -35,7 +35,7 @@ const CategorySelect = ({ categoryData }: CategorySelectProps) => {
 						data-name={categoryName}
 						onClick={handleCategorySelect}
 						className={
-							`flex items-center font-bold px-4 py-[10px] rounded-[8px] ${borderColorClass[categoryData[categoryName]]} border-2 text-sm` +
+							`flex items-center font-bold px-4 py-[10px] rounded-[8px] ${borderColorClass[categoryData[categoryName]]} border-2 text-sm transition-colors` +
 							' ' +
 							(selectedInfo[categoryName]
 								? `${bgColorClass[categoryData[categoryName]]} text-white`

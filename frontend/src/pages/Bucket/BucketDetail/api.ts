@@ -33,7 +33,7 @@ interface IDeleteBucketRes {
 	message: string
 }
 export const deleteBucket = async (id: string): Promise<'success' | 'fail'> => {
-	const deleteRes = await instance.get<IDeleteBucketRes>(`bucket/${id}`)
+	const deleteRes = await instance.delete<IDeleteBucketRes>(`bucket/${id}`)
 	return deleteRes.data.result === 'ok' ? 'success' : 'fail'
 }
 

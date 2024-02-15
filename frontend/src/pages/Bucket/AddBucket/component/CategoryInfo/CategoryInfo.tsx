@@ -1,6 +1,6 @@
-import CategorySelect from '../../../../components/CategorySelect'
-import { categoryData } from '../../../../utils/category'
-import PageDescription from '../../../../components/PageDescription'
+import CategorySelect from '../../../../../components/CategorySelect'
+import { categoryData } from '../../../../../utils/category'
+import PageDescription from '../../../../../components/PageDescription'
 import CategoryNextButton from './CategoryNextButton'
 
 const CategoryInfo = () => {

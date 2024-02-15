@@ -32,6 +32,6 @@ public class EmailJoinRequestDto {
     @Schema(example = "Male")
     private Gender gender;
 
-    @Schema(example = "[\"취업\",\"여행\",\"인간관계\"]")
+    @Schema(example = "[\"휴식\",\"여행\",\"인간관계\"]")
     private List<String> category;
 }
