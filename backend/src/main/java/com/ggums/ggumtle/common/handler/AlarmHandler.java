@@ -204,7 +204,6 @@ public class AlarmHandler {
         SseEmitter emitter = userEmitters.get(userId);
         if (emitter != null) {
             try {
-                emitter.send(SseEmitter.event().name("serverEvent").data("readAlarm"));
                 emitter.send(SseEmitter.event().name("serverEvent").data(alarmService.convertToAlarmResponseDto(alarm)));
             } catch (IOException e) {
                 emitter.completeWithError(e);
