@@ -3,7 +3,7 @@ import router from './router'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { useEffect } from 'react'
-import * as Polyfill from 'event-source-polyfill'
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 function App() {
 	const theme = createTheme({
@@ -31,15 +31,15 @@ useEffect(() => {
 		try {
 
 			const alarmConnectEndpoint = `${import.meta.env.VITE_BASE_URL}/api/alarm/subscribe`
-			eventSource = new Polyfill.EventSourcePolyfill(alarmConnectEndpoint, {
+			eventSource = new EventSourcePolyfill(alarmConnectEndpoint, {
 				headers: {Authorization: `Bearer ${import.meta.env.VITE_USER1_TOKEN}`,}
 			})
 			
-			eventSource.addEventListener('notify', (event) => {
+			eventSource.addEventListener('notify', (event: any) => {
 				console.log("new notify", event.data)
 			})
 			
-			eventSource.onerror = async (event) => {
+			eventSource.onerror = async (event: any) => {
 				if (!event.error.message.includes("No activity"))
 					eventSource.close();
 			};
