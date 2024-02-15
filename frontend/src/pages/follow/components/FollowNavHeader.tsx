@@ -26,7 +26,7 @@ const FollowNavHeader = ({ headerData }: { headerData: MultiPageHeaderInfo[] }) 
 	}, [currentPath])
 
 	return (
-		<div className="flex items-center justify-around pb-2">
+		<div className="flex items-center justify-around z-10 fixed top-16 right-0 left-0 bg-white ">
 			<ul className={`flex gap-[2px] w-full`}>
 				{headerData.map((headerItem, index) => {
 					return (
@@ -45,7 +45,7 @@ const FollowNavHeader = ({ headerData }: { headerData: MultiPageHeaderInfo[] }) 
 							{selectedIndex === index && (
 								<motion.div
 									layoutId="underline"
-									className="absolute h-[1px] bottom-1 w-full bg-black"
+									className="absolute h-[1px] bottom-0 w-full bg-black"
 								/>
 							)}
 						</li>

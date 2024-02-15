@@ -14,7 +14,7 @@ const SearchUserItem = ({ user }: { user: UserInfoType }) => {
 	}
 
 	return (
-		<div className="flex items-center justify-between px-1 py-1">
+		<div className="flex items-center gap-3 justify-between px-1 py-1">
 			<UserProfile type="follow" userInfo={user} isLoading={false} />
 			<button
 				onClick={handleFollowButton}

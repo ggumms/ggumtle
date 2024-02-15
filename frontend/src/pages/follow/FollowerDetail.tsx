@@ -13,7 +13,7 @@ const FollowerDetail = () => {
 
 	console.log(data)
 	return (
-		<div className="px-4">
+		<div className="px-4 pt-14">
 			{!isLoading &&
 				data.searchList.content.map((user: UserInfoType) => (
 					<SearchUserItem user={user} key={user.userId} />
