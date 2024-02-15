@@ -21,6 +21,7 @@ import { getBucketDetailInfo } from './api'
 import { isMyUserType } from './../../../utils/typeFilter'
 import { IBucketDetailInfo, IMenu, IMenuFunc } from '../../../interfaces'
 import { icons } from '../../../constants/header-icons'
+import TimeCapsule from './component/TimeCapsule'
 
 const BucketDetail = () => {
 	const [isInputShown, setIsInputShown] = useState(false)
@@ -81,6 +82,7 @@ const BucketDetail = () => {
 					<UserProfile type="detail" isLoading={isLoading} userInfo={bucketDetailInfo?.userInfo} />
 				</div>
 				{/* 옵셔널한 정보들 (장소, 사진) */}
+
 				{isLoading || bucketDetailInfo === undefined ? (
 					<Skeleton variant="rectangular" width={'100%'} height={'16rem'} />
 				) : (
@@ -92,7 +94,13 @@ const BucketDetail = () => {
 						/>
 					)
 				)}
-
+				{isLoading || bucketDetailInfo === undefined ? (
+					<></>
+				) : (
+					bucketDetailInfo.bucketInfo.timeCapsule && (
+						<TimeCapsule bucketInfo={bucketDetailInfo.bucketInfo} />
+					)
+				)}
 				{isLoading || bucketDetailInfo === undefined ? (
 					<>{/* Todo: skeleton 추가 */}</>
 				) : (
