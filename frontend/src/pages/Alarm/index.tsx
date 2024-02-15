@@ -10,13 +10,14 @@ import { useAlarmQuery } from '../../hooks/useAlarm'
 import { useMutation } from '@tanstack/react-query'
 import { updateAllRead } from './api'
 import { IAlarm } from './alarm'
+import { useEffect, useState } from 'react'
 
 // @TODO: 실제 api통신시에 remind는 dataId 받아와서 버킷 title 다시 post 요청보내기
 
 const AlarmPage = () => {
 	const navigate = useNavigate()
 	const mutation = useMutation({ mutationFn: updateAllRead })
-	// const [notifications, setNotifications] = useState<IAlarm[]>()
+	const [readAll, setReadAll] = useState<boolean>()
 
 	const { data: alarms } = useAlarmQuery()
 	console.log(alarms)
@@ -33,8 +34,12 @@ const AlarmPage = () => {
 
 	const deleteAllAlarms = () => {
 		mutation.mutate()
-		console.log("다 읽음")
+		setReadAll((prev) => !prev)
 	}
+
+	useEffect(() => {
+		console.log("다 읽음")
+	}, [readAll])
 
 	return (
 		<div className="w-full">

@@ -1,0 +1,13 @@
+.Toastify__toast {
+  position: fixed;
+  top: 15px;
+  left: 0px;
+  right: 0px;
+  border-radius: 30px;
+  color: white;
+  margin: auto;
+  width: 75%;
+  padding: 0px 10px;
+  height: auto;
+  font-size: 15px;
+}

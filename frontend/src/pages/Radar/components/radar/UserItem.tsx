@@ -30,7 +30,7 @@ const UserItemStyle: IUserItemStyle = {
 	first: {
 		style: {
 			size: 'w-14 h-14',
-			text: 'text-base',
+			text: 'text-sm',
 		},
 		direction: {
 			left: 45,
@@ -40,7 +40,7 @@ const UserItemStyle: IUserItemStyle = {
 	second: {
 		style: {
 			size: 'w-12 h-12',
-			text: 'text-sm',
+			text: 'text-xs',
 		},
 		direction: {
 			left: 45,
@@ -50,7 +50,7 @@ const UserItemStyle: IUserItemStyle = {
 	third: {
 		style: {
 			size: 'w-10 h-10',
-			text: 'text-xs',
+			text: 'text-[10px]',
 		},
 		direction: {
 			left: 45,
