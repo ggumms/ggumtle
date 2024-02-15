@@ -1,16 +1,22 @@
 import { TouchEvent, useEffect, useRef, useState } from 'react'
 import Ggumtle from '../../../components/Ggumtle'
+import { useRouter } from '../../../hooks/useRouter'
+import { useParams } from 'react-router'
 
 const MAX_SPEED = 0.5
 
 // Todo : url을 통해서 현재 버킷 정보를 확인하고 해당 버킷이 사용자의 버킷인지 확인 필요 -> 사용자의 버킷이 아니라면 메인 페이지로 인동
+// Todo : 축하 페이지와 달성 페이지 나누지 말고 애니메이션 이용해서 한 페이지에서 관리하기
 const AchieveBucket = () => {
 	const [isPressing, setIsPressing] = useState(false)
+
 	const ggumtleRef = useRef<HTMLDivElement>(null)
 	const gaugeRef = useRef(0) // useRef를 사용하여 gauge 값을 추적
-	const animationRef = useRef<Animation>() // useRef를 사용하여 gauge 값을 추적
+	const animationRef = useRef<Animation>() // useRef를 사용하여 Animation 객체를 추적
+	const triggerButtonRef = useRef<HTMLButtonElement>(null)
 
-	const achieveButtonRef = useRef<HTMLButtonElement>(null)
+	const { routeTo } = useRouter()
+	const { bucketId } = useParams()
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout | null = null
@@ -71,12 +77,12 @@ const AchieveBucket = () => {
 	}
 	// touch event엔 onMouseLeave와 같은 이벤트가 없어서 직접 구현
 	const handleCheckPressIsInButton = (event: TouchEvent<HTMLButtonElement>) => {
-		if (!achieveButtonRef.current) {
+		if (!triggerButtonRef.current) {
 			return
 		}
 
 		const touch = event.touches[0]
-		const { left, top, right, bottom } = achieveButtonRef.current.getBoundingClientRect()
+		const { left, top, right, bottom } = triggerButtonRef.current.getBoundingClientRect()
 
 		if (
 			touch.clientX < left ||
@@ -88,11 +94,15 @@ const AchieveBucket = () => {
 		}
 	}
 
+	const handleClickAchievement = () => {
+		routeTo(`/bucket/congratulation/${bucketId}`)
+	}
+
 	return (
-		<div>
+		<div className="flex flex-col items-center justify-center h-screen gap-20 px-20">
 			<Ggumtle ggumtleRef={ggumtleRef} width={200} height={200} color="lightGreen" />
 			<button
-				ref={achieveButtonRef}
+				ref={triggerButtonRef}
 				onMouseDown={handleStartToPress}
 				onMouseUp={handleEndToPress}
 				onMouseLeave={handleEndToPress}
@@ -101,8 +111,9 @@ const AchieveBucket = () => {
 				onTouchMove={handleCheckPressIsInButton}
 				className={`w-full text-white text-lg font-bold py-4 rounded-[5px] bg-point1`}
 			>
-				달성하기
+				트리거 버튼
 			</button>
+			<button onClick={handleClickAchievement}>달성하기</button>
 		</div>
 	)
 }

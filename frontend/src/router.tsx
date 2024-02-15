@@ -25,6 +25,7 @@ import FollowerDetail from './pages/follow/FollowerDetail'
 import FollowingDetail from './pages/follow/FollowingDetail'
 import ReviewDetail from './pages/Review/ReviewDetail'
 import AchieveBucket from './pages/Bucket/AchieveBucket'
+import CongratulateBucket from './pages/Bucket/CongratulateBucket'
 
 // Router와 관련된 데이터를 관리하는 객체의 타입
 interface IRouterBase {
@@ -180,7 +181,7 @@ const routerData: RouterElement[] = [
 	{ path: '/review/write/:bucketId', element: <WriteReview />, label: '리뷰작성' },
 	{ path: '/review/modify/:bucketId', element: <WriteReview />, label: '리뷰수정' },
 	{ path: '/review/:reviewId', element: <ReviewDetail />, label: '리뷰상세' },
-
+	{ path: '/bucket/congratulation/:bucketId', element: <CongratulateBucket />, label: '리뷰축하' },
 	{ path: '*', element: <NotFoundPage />, label: '' },
 ]
 
