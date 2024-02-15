@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,6 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AlarmHandler {
 
     public final Map<Long, SseEmitter> userEmitters = new ConcurrentHashMap<>();
+    public final List<SseEmitter> emitters = new ArrayList<>();
     private final AlarmRepository alarmRepository;
     private final BucketRepository bucketRepository;
     private final AlarmService alarmService;
@@ -40,15 +42,25 @@ public class AlarmHandler {
     @Async
     @Scheduled(fixedRate = 30000)
     public void sendHeartbeatToClients() {
-        for (Map.Entry<Long, SseEmitter> entry : userEmitters.entrySet()) {
+        for(SseEmitter emitter : emitters){
             try {
-                entry.getValue().send(SseEmitter.event().comment("heartbeat"));
+                emitter.send(SseEmitter.event().comment("heartbeat"));
             } catch (IOException e) {
-                userEmitters.remove(entry.getKey());
+                emitters.remove(emitter);
             } catch (Exception e) {
                 throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
             }
         }
+
+//        for (Map.Entry<Long, SseEmitter> entry : userEmitters.entrySet()) {
+//            try {
+//                entry.getValue().send(SseEmitter.event().comment("heartbeat"));
+//            } catch (IOException e) {
+//                userEmitters.remove(entry.getKey());
+//            } catch (Exception e) {
+//                throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
+//            }
+//        }
     }
 
 
@@ -201,16 +213,26 @@ public class AlarmHandler {
 
     @Async
     protected void sendEventToUser(Long userId, Alarm alarm) {
-        SseEmitter emitter = userEmitters.get(userId);
-        if (emitter != null) {
+        for (SseEmitter emitter : emitters) {
             try {
                 emitter.send(SseEmitter.event().name("serverEvent").data(alarmService.convertToAlarmResponseDto(alarm)));
             } catch (IOException e) {
                 emitter.completeWithError(e);
-                userEmitters.remove(userId);
             } catch (Exception e) {
                 throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
             }
         }
+
+//        SseEmitter emitter = userEmitters.get(userId);
+//        if (emitter != null) {
+//            try {
+//                emitter.send(SseEmitter.event().name("serverEvent").data(alarmService.convertToAlarmResponseDto(alarm)));
+//            } catch (IOException e) {
+//                emitter.completeWithError(e);
+//                userEmitters.remove(userId);
+//            } catch (Exception e) {
+//                throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
+//            }
+//        }
     }
 }
