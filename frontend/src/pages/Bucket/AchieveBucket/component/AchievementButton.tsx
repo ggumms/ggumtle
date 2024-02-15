@@ -1,30 +1,56 @@
 import { useParams } from 'react-router'
 import { useRouter } from '../../../../hooks/useRouter'
-import { TouchEvent, useRef } from 'react'
+import { TouchEvent, useEffect, useState } from 'react'
+import './AchievementButton.css'
+import { patchAchieve } from '../api'
 
-interface IachievementButtonProps {
+interface IAchievementButtonProps {
 	setIsPressing: React.Dispatch<React.SetStateAction<boolean>>
+	setHasConfetti: React.Dispatch<React.SetStateAction<boolean>>
 	gaugeRef: React.RefObject<number>
+	AchieveButtonRef: React.RefObject<HTMLButtonElement>
 }
-const AchievementButton = ({ gaugeRef, setIsPressing }: IachievementButtonProps) => {
+const AchievementButton = ({
+	gaugeRef,
+	AchieveButtonRef,
+	setIsPressing,
+	setHasConfetti,
+}: IAchievementButtonProps) => {
+	const [isLoading, setIsLoading] = useState(true)
 	const { routeTo } = useRouter()
 	const { bucketId } = useParams()
-	const triggerButtonRef = useRef<HTMLButtonElement>(null)
+
+	useEffect(() => {
+		console.log(isLoading)
+	}, [isLoading])
+
+	const handleStartToClick = () => {
+		setIsPressing(true)
+	}
+	const handleEndToClick = () => {
+		if (gaugeRef.current === 100) {
+			setIsLoading(false)
+		}
+		setIsPressing(false)
+	}
 
 	const handleStartToPress = () => {
 		setIsPressing(true)
 	}
 	const handleEndToPress = () => {
+		if (gaugeRef.current === 100) {
+			setIsLoading(false)
+		}
 		setIsPressing(false)
 	}
 	// touch event엔 onMouseLeave와 같은 이벤트가 없어서 직접 구현
 	const handleCheckPressIsInButton = (event: TouchEvent<HTMLButtonElement>) => {
-		if (!triggerButtonRef.current) {
+		if (!AchieveButtonRef.current) {
 			return
 		}
 
 		const touch = event.touches[0]
-		const { left, top, right, bottom } = triggerButtonRef.current.getBoundingClientRect()
+		const { left, top, right, bottom } = AchieveButtonRef.current.getBoundingClientRect()
 
 		if (
 			touch.clientX < left ||
@@ -36,25 +62,33 @@ const AchievementButton = ({ gaugeRef, setIsPressing }: IachievementButtonProps)
 		}
 	}
 
-	const handleClickAchievement = () => {
-		routeTo(`/bucket/congratulation/${bucketId}`)
+	const handleClickAchievement = async () => {
+		console.log('bucketId', bucketId)
+		if (bucketId) {
+			const achieveRes = await patchAchieve(bucketId)
+			if (achieveRes === 'success') {
+				setHasConfetti(true)
+				setTimeout(() => {
+					routeTo(`/bucket/congratulation/${bucketId}`)
+				}, 3000)
+			}
+		}
 	}
 
 	return (
 		<>
 			<button
-				ref={triggerButtonRef}
-				onMouseDown={handleStartToPress}
-				onMouseUp={handleEndToPress}
-				onMouseLeave={handleEndToPress}
+				ref={AchieveButtonRef}
+				onMouseDown={handleStartToClick}
+				onMouseUp={isLoading ? handleEndToClick : handleClickAchievement}
+				onMouseLeave={isLoading ? handleEndToClick : handleClickAchievement}
 				onTouchStart={handleStartToPress}
-				onTouchEnd={handleEndToPress}
+				onTouchEnd={isLoading ? handleEndToPress : handleClickAchievement}
 				onTouchMove={handleCheckPressIsInButton}
-				className={`w-full text-white text-lg font-bold py-4 rounded-[5px] bg-point1 border-2`}
+				className={`confetti-button  w-full text-white text-xl font-bold py-4 rounded-[5px] bg-point1 border-2 border-point1`}
 			>
 				달성하기
 			</button>
-			<button onClick={handleClickAchievement}>달성하기</button>
 		</>
 	)
 }
