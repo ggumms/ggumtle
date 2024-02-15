@@ -29,8 +29,8 @@ const profileStyle: IProfileStyle = {
 		checkSize: '1.2rem',
 	},
 	bucketDetail: {
-		titleText: 'text-base font-semibold py-1',
-		subText: 'text-xs font-light',
+		titleText: 'text-lg font-semibold py-1',
+		subText: 'text-sm font-light',
 		dayText: 'text-base font-semibold',
 		ggumtleSize: 25,
 		padding: 'pt-1 pb-2',

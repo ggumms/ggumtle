@@ -103,7 +103,7 @@ const UserProfile = ({ type, userInfo, isLoading }: IUserProfileProps) => {
 			</Link>
 			<div className={`relative flex flex-col ${type !== 'follow' && 'self-end'} justify-center`}>
 				<p className={`font-bold ${profileStyle[type].nameTextSize}`}>{userInfo.userNickname}</p>
-				<Link to={'/bucket/1'} className="flex items-center">
+				<Link to={`/bucket/${userInfo.bucketId}`} className="flex items-center">
 					<p
 						className={`inline-block  leading-none ${profileStyle[type].bucketTextSize} ${userInfo.isAchieved && userInfo.bucketColor ? textColorClass[userInfo.bucketColor] : 'text-point1'} ${profileStyle[type].bucketTitleLeftMargin}`}
 					>
