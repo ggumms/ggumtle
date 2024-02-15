@@ -160,53 +160,70 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserListResponseDto searchUsers(String word, Pageable pageable, User currentUser) {
-        List<User> allUsers = userRepository.findAllByDeletedDateIsNull();
+        List<User> searchResult = new ArrayList<>();
 
         List<String> searchKeywords = HangulHandler.separateInitialConsonants(word);
 
-        List<User> filteredUsers = allUsers.stream()
-                .filter(user -> {
-                    String userNickname = user.getUserNickname();
+        List<User> allUsers = userRepository.findAllByDeletedDateIsNull();
 
-                    if (userNickname.length() < searchKeywords.size()) {
-                        return false;
-                    }
+        for (User user : allUsers) {
+            String userNickname = user.getUserNickname();
+            if (isMatchingInitialConsonants(userNickname, searchKeywords)) {
+                searchResult.add(user);
+            }
+        }
 
-                    List<String> userInitials = new ArrayList<>();
-                    for (char c : userNickname.toCharArray()) {
-                        String initialConsonant = HangulHandler.getFirstInitialConsonant(String.valueOf(c));
-                        userInitials.add(initialConsonant);
-                    }
-
-                    int keywordIndex = 0;
-                    for (String userInitial : userInitials) {
-                        if (userInitial.equals(searchKeywords.get(keywordIndex))) {
-                            keywordIndex++;
-                        }
-                        if (keywordIndex == searchKeywords.size()) {
-                            return true;
-                        }
-                    }
-                    return false;
-                })
-                .collect(Collectors.toList());
+        List<User> filteredUsers = removeDuplicates(searchResult);
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), filteredUsers.size());
         List<User> paginatedUsers = filteredUsers.subList(start, end);
-        Page<User> users = new PageImpl<>(paginatedUsers, pageable, filteredUsers.size());
+        Page<User> paginatedPage = new PageImpl<>(paginatedUsers, pageable, filteredUsers.size());
 
-        List<Long> userIds = users.getContent().stream()
+        List<Long> userIds = paginatedPage.getContent().stream()
                 .map(User::getId)
                 .filter(id -> !id.equals(currentUser.getId()))
                 .collect(Collectors.toList());
 
         Map<Long, Boolean> followingMap = getFollowingMap(currentUser, userIds);
 
-        Page<UserListDto> searchList = users.map(user -> convertToUserSearchListDto(user, followingMap));
+        Page<UserListDto> searchList = paginatedPage.map(user -> convertToUserSearchListDto(user, followingMap));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
+    private boolean isMatchingInitialConsonants(String userNickname, List<String> searchKeywords) {
+        if (userNickname.length() < searchKeywords.size()) {
+            return false;
+        }
+
+        List<String> userInitials = new ArrayList<>();
+        for (char c : userNickname.toCharArray()) {
+            String initialConsonant = HangulHandler.getFirstInitialConsonant(String.valueOf(c));
+            userInitials.add(initialConsonant);
+        }
+
+        int keywordIndex = 0;
+        for (String userInitial : userInitials) {
+            if (userInitial.equals(searchKeywords.get(keywordIndex))) {
+                keywordIndex++;
+            }
+            if (keywordIndex == searchKeywords.size()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<User> removeDuplicates(List<User> userList) {
+        Set<Long> userIds = new HashSet<>();
+        List<User> result = new ArrayList<>();
+        for (User user : userList) {
+            if (userIds.add(user.getId())) {
+                result.add(user);
+            }
+        }
+        return result;
+    }
 
     private Map<Long, Boolean> getFollowingMap(User currentUser, List<Long> userIds) {
         List<Follow> follows = followRepository.findByFollowerIdAndFolloweeIdIn(currentUser.getId(), userIds);

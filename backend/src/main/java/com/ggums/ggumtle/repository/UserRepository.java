@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUserNickname(String nickname);
 
     List<User> findAllByDeletedDateIsNull();
+
+    Page<User> findByUserNicknameContainingAndDeletedDateIsNull(String word, Pageable pageable);
 }
