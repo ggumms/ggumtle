@@ -33,7 +33,7 @@ public class RadarService {
 
         Map<String, Object> radar = new HashMap<>();
 
-        List<Follow> followeeList = followRepository.findByFollower(user);
+        List<Follow> followeeList = followRepository.findByFollowerOrderByScoreDesc(user);
         makeCircle(radar, followeeList);
 
         return radar;
