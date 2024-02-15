@@ -3,9 +3,7 @@ package com.ggums.ggumtle.service;
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
 import com.ggums.ggumtle.dto.response.AlarmResponseDto;
-import com.ggums.ggumtle.dto.response.BucketSearchResponseDto;
-import com.ggums.ggumtle.dto.response.model.AlarmListDto;
-import com.ggums.ggumtle.dto.response.model.BucketSearchListDto;
+import com.ggums.ggumtle.dto.response.model.AlarmDto;
 import com.ggums.ggumtle.entity.Alarm;
 import com.ggums.ggumtle.entity.User;
 import com.ggums.ggumtle.repository.AlarmRepository;
@@ -51,11 +49,11 @@ public class AlarmService {
     // getting list of alarm
     public AlarmResponseDto alarmList(User user, Pageable pageable){
         Page<Alarm> alarms = alarmRepository.findByReceiver(user, pageable);
-        Page<AlarmListDto> alarmList = alarms.map(this::convertToAlarmResponseDto);
+        Page<AlarmDto> alarmList = alarms.map(this::convertToAlarmResponseDto);
         return AlarmResponseDto.builder().alarmList(alarmList).build();
     }
 
-    private AlarmListDto convertToAlarmResponseDto(Alarm alarm){
+    public AlarmDto convertToAlarmResponseDto(Alarm alarm){
 
         String timeUnit;
         long time;
@@ -79,7 +77,7 @@ public class AlarmService {
             time = ChronoUnit.MINUTES.between(alarm.getCreatedDate(), LocalDateTime.now());
         }
 
-        return AlarmListDto.builder()
+        return AlarmDto.builder()
                 .alarmId(alarm.getId())
                 .sender(alarm.getSender() != null ? alarm.getSender().getUserNickname() : null)
                 .senderProfileImage(alarm.getSender() != null ? alarm.getSender().getUserProfileImage() : null)
