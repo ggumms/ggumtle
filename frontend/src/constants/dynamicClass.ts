@@ -60,3 +60,20 @@ export const fillColorClass: ClassType = {
 	sandPink: 'fill-sandPink',
 	brown: 'fill-brown',
 }
+
+export const halfBgColorClass: ClassType = {
+	unActive: 'bg-unActive/[0.5]',
+	point1: 'bg-point1/[0.5]',
+	green: 'bg-green/[0.5]',
+	lightGreen: 'bg-lightGreen/[0.5]',
+	red: 'bg-red/[0.5]',
+	yellow: 'bg-yellow/[0.5]',
+	mint: 'bg-mint/[0.5]',
+	orange: 'bg-orange/[0.5]',
+	skyBlue: 'bg-skyBlue/[0.5]',
+	purple: 'bg-purple/[0.5]',
+	pink: 'bg-pink/[0.5]',
+	beige: 'bg-beige/[0.5]',
+	sandPink: 'bg-sandPink/[0.5]',
+	brown: 'bg-brown/[0.5]',
+}
