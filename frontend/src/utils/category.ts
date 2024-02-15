@@ -1,4 +1,5 @@
-import { CategoryDataType, selectedInfoType } from '../interfaces'
+import { CategoryDataType, CategoryType, selectedInfoType } from '../interfaces'
+import { isCategoryType } from './typeFilter'
 
 // Todo : Enum으로 수정해서 적용해보기
 export const categoryData: CategoryDataType = {
@@ -33,3 +34,12 @@ export const categoryData: CategoryDataType = {
 export const defaultCategories = Object.keys(categoryData).reduce((prev, category) => {
 	return { ...prev, [category]: false }
 }, {} as selectedInfoType)
+
+export const getCurrentCategories = (selectedCategoryInfo: selectedInfoType): CategoryType[] =>
+	Object.keys(selectedCategoryInfo).reduce((prev, category) => {
+		if (isCategoryType(category) && selectedCategoryInfo[category]) {
+			return [...prev, category]
+		}
+
+		return prev
+	}, [] as CategoryType[])

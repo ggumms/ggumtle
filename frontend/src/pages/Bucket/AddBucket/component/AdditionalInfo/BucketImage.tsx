@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { checkFileIsValidImage, checkFileSizeIsValid } from '../../../../../utils/image'
 import { Picture } from '../../../../../assets/svgs'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -7,9 +7,20 @@ import { useBucketStore } from '../../../../../store/bucketStore'
 
 // image는 나중에 submit할 때 Post하기
 const BucketImage = () => {
-	const { changeBucketImage, resetBucketImage } = useBucketStore() // 서버에 전송하기 위한 state
+	const { bucketImage, changeBucketImage, resetBucketImage } = useBucketStore() // 서버에 전송하기 위한 state
 	const [imageSrc, setImageSrc] = useState('') // 화면에 표시하기 위한 state
 	const fileInputRef = useRef<HTMLInputElement>(null) // onChange를 제대로 동작 시키기 위해 사용
+
+	useEffect(() => {
+		const reader = new FileReader()
+		reader.onload = (e: ProgressEvent<FileReader>) => {
+			const result = e.target?.result
+			if (typeof result === 'string') {
+				setImageSrc(result)
+			}
+		}
+		bucketImage instanceof File && reader && reader.readAsDataURL(bucketImage)
+	}, [bucketImage])
 
 	// 파일을 선택했을 때 돌아가는 함수
 	const handleFileValidation = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,14 +46,6 @@ const BucketImage = () => {
 			return
 		}
 
-		const reader = new FileReader()
-		reader.onload = (e: ProgressEvent<FileReader>) => {
-			const result = e.target?.result
-			if (typeof result === 'string') {
-				setImageSrc(result)
-			}
-		}
-		reader.readAsDataURL(selectedFile)
 		changeBucketImage(selectedFile)
 	}
 
