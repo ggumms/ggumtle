@@ -13,9 +13,9 @@ self.addEventListener('fetch', (e) => {
 	console.log('[Service Worker] fetched resource ' + e.request.url)
 })
 
-// push alarm
+// push alarm 
+// 안 쓰이는 코드
 self.addEventListener('push', function (event) {
-	console.log("이건 되나")
 	const data = event.data.json();
 	const options = {
 			body: data.body,
