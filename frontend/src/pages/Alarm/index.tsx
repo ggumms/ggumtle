@@ -10,16 +10,14 @@ import { useAlarmQuery } from '../../hooks/useAlarm'
 import { useMutation } from '@tanstack/react-query'
 import { updateAllRead } from './api'
 import { IAlarm } from './alarm'
-
-// @TODO: 실제 api통신시에 remind는 dataId 받아와서 버킷 title 다시 post 요청보내기
+import { useEffect, useState } from 'react'
 
 const AlarmPage = () => {
 	const navigate = useNavigate()
 	const mutation = useMutation({ mutationFn: updateAllRead })
-	// const [notifications, setNotifications] = useState<IAlarm[]>()
+	const [readAll, setReadAll] = useState<boolean>(false)
 
 	const { data: alarms } = useAlarmQuery()
-	console.log(alarms)
 	const menu: IMenu = {
 		left: icons.BACK,
 		center: '알림',
@@ -31,10 +29,19 @@ const AlarmPage = () => {
 		right_func: undefined,
 	}
 
-	const deleteAllAlarms = () => {
-		mutation.mutate()
-		console.log("다 읽음")
+	const deleteAllAlarms = async() => {
+		await mutation.mutate(undefined, {
+			onSuccess: () => {
+				console.log('success')
+					setReadAll(prev => !prev);
+				
+			}
+	});
 	}
+
+	useEffect(() => {
+		console.log("다 읽음", readAll)
+	}, [readAll])
 
 	return (
 		<div className="w-full">
@@ -42,7 +49,7 @@ const AlarmPage = () => {
 			<div className="h-screen mt-16 flex flex-col">
 				{alarms &&
 					alarms.alarmList.content.map((alarm: IAlarm) => (
-						<AlarmItem alarm={alarm} key={alarm.alarmId} />
+						<AlarmItem alarm={alarm} readAll={readAll} key={alarm.alarmId} />
 					))}
 				<div className="fixed bottom-2 w-full flex justify-center">
 					<Button color="primary" onClick={deleteAllAlarms} variant="contained">

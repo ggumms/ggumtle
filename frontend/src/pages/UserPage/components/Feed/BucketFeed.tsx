@@ -14,7 +14,7 @@ const BucketFeed = ({ userId, bucket }: { userId: number; bucket: IFeed }) => {
 	const { userInfo } = useUserInfoQuery(userId)
 
 	return (
-		<Link to={`/bucket/${bucket.id}`} className="px-4 py-2 bg-white">
+		<Link to={`/bucket/${bucket.id}`} className="">
 			{/* 작성자 프로필 정보 */}
 			<div className="pt-1 pb-2">
 				{userInfo && <UserProfile type="detail" userInfo={userInfo} isLoading={false} />}

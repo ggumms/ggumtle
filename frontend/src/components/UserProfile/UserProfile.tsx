@@ -112,7 +112,7 @@ const UserProfile = ({ type, userInfo, isLoading }: IUserProfileProps) => {
 					{userInfo.bucketTitle &&
 						(userInfo.isAchieved ? (
 							<SquareCheck
-								className={`inline-block ${userInfo.bucketColor && fillColorClass[userInfo.bucketColor]} ${profileStyle[type].achieveIconWidth} ${profileStyle[type].achieveIconHeight} `}
+								className={`inline-block shrink-0 ${userInfo.bucketColor && fillColorClass[userInfo.bucketColor]} ${profileStyle[type].achieveIconWidth} ${profileStyle[type].achieveIconHeight} `}
 							/>
 						) : (
 							<Ggumtle

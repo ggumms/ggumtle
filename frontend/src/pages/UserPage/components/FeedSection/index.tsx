@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BucketFeed from '../Feed/BucketFeed'
 import ReviewFeed from '../Feed/ReviewFeed'
-import { useQuery } from '@tanstack/react-query'
-import { getTimeline } from '../../api'
+// import { useQuery } from '@tanstack/react-query'
+// import { getTimeline } from '../../api'
 import { CategoryType, ColorType } from '../../../../interfaces'
+import { useInView } from 'react-intersection-observer'
+import useInfiniteTimeline from '../../../../hooks/useInfiniteTimeline'
 
 export interface IFeed {
 	categories: CategoryType[]
@@ -25,17 +27,28 @@ const FeedSection = ({ userId }: { userId: number }) => {
 	const [doing, setDoing] = useState<boolean>(true)
 	const [review, setReview] = useState<boolean>(true)
 	// const userId = 1
-	const page = 0
-	const size = 5
-	const { data: timeline } = useQuery({
-		queryKey: ['timeline', userId, doing, done, review, page, size],
-		queryFn: getTimeline,
-	})
+
+	// before infiniteScroll
+	// const page = 0
+	// const size = 5
+	// const { data: timeline } = useQuery({
+	// 	queryKey: ['timeline', userId, doing, done, review, page, size],
+	// 	queryFn: getTimeline,
+	// })
+
+	const { ref: lastElementRef, inView: lastElementInView } = useInView()
+	const { timeLineData, fetchNextPage } = useInfiniteTimeline(userId, doing, done, review)
+
+	useEffect(() => {
+		if (lastElementInView) {
+			fetchNextPage()
+		}
+	}, [lastElementInView, timeLineData, fetchNextPage])
 
 	return (
 		<div>
 			{/* @TODO: 토글 컴포넌트로 따로 분리하기 start---- */}
-			<div className="flex gap-2 py-3 px-5">
+			<div className="flex gap-2 px-5 py-3">
 				<div
 					onClick={() => setDoing(!doing)}
 					className={`transition-colors ${doing ? 'bg-point1 text-white' : 'bg-white text-point1'} w-14 h-6 rounded-md flex items-center justify-center text-xs`}
@@ -57,16 +70,22 @@ const FeedSection = ({ userId }: { userId: number }) => {
 			</div>
 			{/* @TODO: 토글 컴포넌트로 따로 분리하기 end---- */}
 
-			<div className="flex flex-col gap-2">
-				{timeline &&
-					timeline.content.map((feed: IFeed) =>
-						feed.type === 'BUCKET' ? (
-							<BucketFeed userId={userId} bucket={feed} key={`bucket-${feed.id}`}/>
-						) : (
-							<ReviewFeed userId={userId} review={feed} key={`review-${feed.id}`} />
-						)
-					)}
-			</div>
+			<ul className="flex flex-col gap-2">
+				{timeLineData &&
+					timeLineData.map((feed: IFeed, index: number) => (
+						<li
+							key={feed.type === 'BUCKET' ? `bucket-${feed.id}` : `review-${feed.id}`}
+							ref={index === timeLineData.length - 1 ? lastElementRef : null}
+							className='px-4 py-2 bg-white'
+						>
+							{feed.type === 'BUCKET' ? (
+								<BucketFeed userId={userId} bucket={feed} />
+							) : (
+								<ReviewFeed userId={userId} review={feed} />
+							)}
+						</li>
+					))}
+			</ul>
 		</div>
 	)
 }
