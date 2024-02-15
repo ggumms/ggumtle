@@ -2,10 +2,12 @@ package com.ggums.ggumtle.common.handler;
 
 import com.ggums.ggumtle.common.exception.CustomException;
 import com.ggums.ggumtle.common.exception.ExceptionType;
+import com.ggums.ggumtle.dto.response.model.AlarmDto;
 import com.ggums.ggumtle.entity.*;
 import com.ggums.ggumtle.repository.AlarmRepository;
 import com.ggums.ggumtle.repository.BucketRepository;
 import com.ggums.ggumtle.repository.UserRepository;
+import com.ggums.ggumtle.service.AlarmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,7 +34,7 @@ public class AlarmHandler {
     public final Map<Long, SseEmitter> userEmitters = new ConcurrentHashMap<>();
     private final AlarmRepository alarmRepository;
     private final BucketRepository bucketRepository;
-    private final UserRepository userRepository;
+    private final AlarmService alarmService;
 
     // Giving connection signals to client
     @Async
@@ -61,14 +63,14 @@ public class AlarmHandler {
         if (!receiver.getAlarm()) {
             return;
         }
-        Alarm alarm =  Alarm.builder()
+        Alarm alarm = Alarm.builder()
                 .receiver(receiver)
                 .sender(sender)
                 .type(type)
                 .dataId(sender != null ? sender.getId() : null)
                 .build();
         alarmRepository.save(alarm);
-        sendEventToUser(receiver.getId());
+        sendEventToUser(receiver.getId(), alarm);
     }
 
     /**
@@ -91,7 +93,7 @@ public class AlarmHandler {
                 .dataId(bucket.getId())
                 .build();
         alarmRepository.save(alarm);
-        sendEventToUser(receiver.getId());
+        sendEventToUser(receiver.getId(), alarm);
     }
 
     /**
@@ -114,7 +116,7 @@ public class AlarmHandler {
                 .dataId(review.getId())
                 .build();
         alarmRepository.save(alarm);
-        sendEventToUser(receiver.getId());
+        sendEventToUser(receiver.getId(), alarm);
     }
 
     /**
@@ -147,7 +149,7 @@ public class AlarmHandler {
         }
 
         alarmRepository.save(alarm);
-        sendEventToUser(receiver.getId());
+        sendEventToUser(receiver.getId(), alarm);
     }
 
     /**
@@ -164,7 +166,7 @@ public class AlarmHandler {
                 .dataId(bucket.getId())
                 .build();
         alarmRepository.save(alarm);
-        sendEventToUser(receiver.getId());
+        sendEventToUser(receiver.getId(), alarm);
     }
 
     @Scheduled(cron = "0 0 12 * * ?")
@@ -198,11 +200,12 @@ public class AlarmHandler {
     }
 
     @Async
-    protected void sendEventToUser(Long userId) {
+    protected void sendEventToUser(Long userId, Alarm alarm) {
         SseEmitter emitter = userEmitters.get(userId);
         if (emitter != null) {
             try {
                 emitter.send(SseEmitter.event().name("serverEvent").data("readAlarm"));
+                emitter.send(SseEmitter.event().name("serverEvent").data(alarmService.convertToAlarmResponseDto(alarm)));
             } catch (IOException e) {
                 emitter.completeWithError(e);
                 userEmitters.remove(userId);
