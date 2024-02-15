@@ -123,7 +123,7 @@ public class AlarmHandler {
      *
      * @param receiver receiver
      * @param sender sender
-     * @param type followCommentReview, commentBucket
+     * @param type commentReview, commentBucket
      * @param comment comment
      * @param bucket bucket
      * @param review review
@@ -180,7 +180,7 @@ public class AlarmHandler {
     }
 
     private boolean shouldSendReminder(Bucket bucket, LocalDate today) {
-        if (bucket.getReminderDate() == null){
+        if (bucket.getReminderDate() == null || bucket.getAchievementDate() != null){
             return false;
         }
 

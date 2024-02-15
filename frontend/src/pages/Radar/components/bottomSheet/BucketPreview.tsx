@@ -39,7 +39,7 @@ const BucketPreview = ({ bucketId }: { bucketId: number }) => {
 					bucketInfo && (
 						<div className="w-16 h-16 rounded-2xl overflow-hidden">
 							<img
-								src={`${import.meta.env.VITE_BASE_URL}/image/bucketProfile/${bucketInfo.bucketPicture}`}
+								src={bucketInfo.bucketPicture}
 								alt=""
 								className="w-full h-full object-cover"
 							/>

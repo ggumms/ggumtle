@@ -21,6 +21,7 @@
 		"@types/quill": "^2.0.14",
 		"axios": "^1.6.7",
 		"date-fns": "^3.3.1",
+		"event-source-polyfill": "^1.0.31",
 		"framer-motion": "^10.18.0",
 		"immer": "^10.0.3",
 		"quilljs-markdown": "^1.2.0",
@@ -37,6 +38,7 @@
 	"devDependencies": {
 		"@svgr/rollup": "^8.1.0",
 		"@types/dompurify": "^3.0.5",
+		"@types/event-source-polyfill": "^1.0.5",
 		"@types/react": "^18.2.43",
 		"@types/react-datepicker": "^4.19.5",
 		"@types/react-dom": "^18.2.17",
@@ -53,6 +55,7 @@
 		"prettier": "^3.2.4",
 		"tailwindcss": "^3.4.1",
 		"typescript": "^5.2.2",
-		"vite": "^5.0.8"
+		"vite": "^5.0.8",
+		"vite-plugin-pwa": "^0.18.1"
 	}
 }

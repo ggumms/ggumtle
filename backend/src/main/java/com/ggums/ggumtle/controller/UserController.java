@@ -118,8 +118,8 @@ public class UserController {
                              @SchemaProperty(name = "followerList", schema = @Schema(implementation = UserListResponseDto.class))
                      }))
      })
-     public Response userFollowee(@RequestParam Long userId, Pageable pageable){
-         return new Response("followerList", userService.userFolloweeList(userId, pageable));
+     public Response userFollowee(@AuthenticationPrincipal User requestUser, @RequestParam Long userId, Pageable pageable){
+         return new Response("followerList", userService.userFolloweeList(requestUser, userId, pageable));
      }
 
      @GetMapping("/follower")
@@ -131,8 +131,8 @@ public class UserController {
                              @SchemaProperty(name = "followerList", schema = @Schema(implementation = UserListResponseDto.class))
                      }))
      })
-     public Response userFollower(@RequestParam Long userId, Pageable pageable){
-         return new Response("followerList", userService.userFollowerList(userId, pageable));
+     public Response userFollower(@AuthenticationPrincipal User requestUser, @RequestParam Long userId, Pageable pageable){
+         return new Response("followerList", userService.userFollowerList(requestUser, userId, pageable));
      }
 
      @GetMapping("/stats/{userId}")

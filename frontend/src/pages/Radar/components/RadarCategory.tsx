@@ -14,10 +14,17 @@ const RadarCategoryItems = () => {
 		}
 	}
 
+	// const { data: myinfo, isLoading: isMyinfoLoading} = useMyInfoQuery()
+	// console.log(myinfo?.category)
+	// useEffect(() => {
+	// 	myinfo && myinfo.category.map((cate) => {
+	// 		addCategory(cate)
+	// 	})
+	// }, [])
+
 	return (
 		<ul className="flex flex-wrap overflow-x-scroll gap-x-2 gap-y-2">
 			{Object.keys(categoryData).map((categoryName, index) => {
-				// ts 타입 문제로 인한 코드
 				if (!isCategoryType(categoryName)) {
 					return <></>
 				}

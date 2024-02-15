@@ -13,10 +13,12 @@ export type AlarmType =
 	| 'join'
 	| 'remind'
 	| 'followBucket'
-	| 'followReview'
 	| 'followBucketAchieve'
-	| 'followCommentReview'
+	| 'followReview'
 	| 'commentBucket'
+	| 'commentReview'
+	| 'likeCommentReview'
+	| 'likeCommentBucket'
 
 export interface IAlarm {
 	alarmId: number

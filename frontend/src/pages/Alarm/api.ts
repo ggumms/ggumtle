@@ -11,6 +11,15 @@ export const getAlarm = async ({ queryKey }: QueryFunctionContext) => {
 		})
 		.catch((e) => console.log(`[Error] ${e}`))
 }
+export const getAlarmCount = async () => {
+	return await instance
+		.get(`alarm/count`)
+		.then((response) => {
+			console.log(response.data.alarmCount)
+			return response.data.alarmCount
+		})
+		.catch((e) => console.log(`[Error] ${e}`))
+}
 
 export const updateAllRead = async () => {
 	return await instance
@@ -18,3 +27,11 @@ export const updateAllRead = async () => {
 		.then((response) => response.data)
 		.catch((e) => console.log(`[Error] ${e}`))
 }
+
+export const postReadOneAlarm = async ({ alarmId }: {alarmId: number}) => {
+	return await instance
+		.post(`alarm/${alarmId}`)
+		.then((response) => response.data)
+		.catch((e) => console.log(`[Error] ${e}`))
+}
+

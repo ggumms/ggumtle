@@ -3,12 +3,13 @@ import { updateFollow } from '../../api'
 import { useUserInfoQuery } from '../../../../hooks/useUserInfo'
 import { useState } from 'react'
 import { IoIosCheckmark } from 'react-icons/io'
+import { useRouter } from '../../../../hooks/useRouter'
 
 const FollowButtons = ({ userId }: { userId: number }) => {
 	const mutation = useMutation({ mutationFn: updateFollow })
 	const { userInfo } = useUserInfoQuery(userId)
+	const { currentPath } = useRouter()
 	const [isFollow, setIsFollow] = useState(userInfo?.isFollowing)
-	console.log(userInfo, isFollow)
 
 	const handleFollowButton = () => {
 		mutation.mutate({ userId: userId, isFollowing: !isFollow })
@@ -18,15 +19,10 @@ const FollowButtons = ({ userId }: { userId: number }) => {
 		console.log('click profile share')
 	}
 
-	// useEffect(() => {
-	// 	const isFollowing = isFollow
-	// 	console.log('mutation: ', mutation)
-	// 	if (isFollowing) mutation.mutate({ userId, isFollowing })
-	// 	else console.log('undefined')
-	// }, [isFollow])
 	return (
 		<div className="flex gap-2 px-4">
 			{/* @TODO: 마이페이지일 경우 프로필 편집 버튼이 됨 */}
+			
 			{isFollow ? (
 				<div
 					onClick={handleFollowButton}
@@ -42,7 +38,7 @@ const FollowButtons = ({ userId }: { userId: number }) => {
 					onClick={handleFollowButton}
 					className="bg-point1 text-white w-1/2 flex items-center justify-center text-sm h-6 rounded-md"
 				>
-					팔로우
+					{currentPath === "/mypage" ? '프로필 편집':  '팔로우'}
 				</div>
 			)}
 			<div

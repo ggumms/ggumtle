@@ -103,7 +103,7 @@ const routerData: RouterElement[] = [
 	{
 		path: '/mypage',
 		// @TODO: 추후 본인 userId 삽입
-		element: <UserPage isForRadar={false} userId={1} />,
+		element: <UserPage isForRadar={false} userId={6} />,
 		label: '',
 	},
 	{

@@ -5,6 +5,7 @@ import { icons } from '../../../../constants/header-icons'
 import BucketPreview from './BucketPreview'
 import RadarCategoryItems from '../RadarCategory'
 import BucketDetail from '../../../Bucket/BucketDetail'
+import { Link } from 'react-router-dom'
 
 /*
 bottomSheet Header 토글시 -> 카테고리 표출
@@ -44,7 +45,7 @@ const BucketBottomSheet = (props: BucketBottomSheetProp) => {
 		<div
 			ref={sheet}
 			style={{ height: `${MAX_BOTTOM_SHEET_HEIGHT}px` }}
-			className={`flex flex-col fixed top-[calc(100%-50px)] left-0 right-0 z-5 rounded-t-2xl shadow-2xl
+			className={`flex flex-col fixed top-[calc(100%-50px)] left-0 right-0 z-30 rounded-t-2xl shadow-2xl
 		bg-white transition-transform duration-500 ease-out overflow-scroll pb-20`}
 		>
 			{isMaxup ? (
@@ -59,9 +60,9 @@ const BucketBottomSheet = (props: BucketBottomSheetProp) => {
 					<BucketDetail />
 				</div>
 			) : bucketId ? (
-				<div className="px-5 py-2">
+				<Link to={`/bucket/${bucketId}`} className="px-5 py-2">
 					<BucketPreview bucketId={bucketId} />
-				</div>
+				</Link>
 			) : (
 				<fieldset className="pt-2">
 					<div className="px-5 pb-2">

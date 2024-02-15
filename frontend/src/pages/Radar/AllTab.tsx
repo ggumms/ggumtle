@@ -4,13 +4,13 @@ import Radar from './components/radar/Radar'
 import BucketItem from './components/radar/BucketItem'
 import { PosType } from './types/radarUser'
 import { useQuery } from '@tanstack/react-query'
-import { getRadarBuckets } from './api'
-import { bucket1stPositioning } from './utils/total/radar1st'
+import { getRadarBuckets, getRadarInitBuckets } from './api'
 import ButtonArea from './components/ButtonArea'
 import BucketBottomSheet from './components/bottomSheet/BucketBottomSheet'
 import useBucketBottomSheet from '../../hooks/useBucketBottomSheet'
 import { useRadarCategoryStore } from '../../store/radarCategoryStore'
 import BackDots from './components/radar/BackDots'
+import { circle1Pos, circle2Pos, circle3Pos } from './utils/pos'
 
 export interface IRadarBucket {
 	pos: PosType
@@ -37,7 +37,6 @@ const AllTab = () => {
 	const [buckets3rd, setBuckets3rd] = useState<IRadarBucket[]>([])
 
 	const [bucketId, setBucketId] = useState<number | null>(null)
-	const [refresh, setRefresh] = useState<boolean>(false)
 	const [categories, setCategories] = useState('')
 
 	const handleOpenPreview = (bucketId: number) => {
@@ -55,68 +54,169 @@ const AllTab = () => {
 		)
 		closePreview()
 	}
-	const { isLoading, data: radarBucket } = useQuery<IRadarBucketList>({
-		queryKey: ['categories', categories],
+
+	const { isLoading, data: radarBucket, refetch } = useQuery<IRadarBucketList>({
+		queryKey: ['radarBuckets', categories],
 		queryFn: getRadarBuckets,
 	})
+	
+	const { isLoading: isInitLoading, data: radarInitBucket, refetch: refetchInit, isRefetching: isRefetchingInit } = useQuery<IRadarBucketList>({
+		queryKey: ['initBuckets'],
+		queryFn: getRadarInitBuckets,
+	})
 
-	console.log(categories, radarBucket)
-
-	const refreshRadar = (state: boolean) => {
-		// @TODO: [리팩토링] 유저리스트를 비우지 않고 pos값만 변동시키면 효율 개선 가능
+	const refreshRadar = () => {
+		if(!categories) {
+			refetchInit()
+		}
 		setBuckets1st([])
 		setBuckets2nd([])
 		setBuckets3rd([])
-		setRefresh(state)
+		refetch()
 	}
 
-	// 첫 번째 레이더 (가장 안쪽)
 	useEffect(() => {
-		const radius = 19
-		const maxNum = 3
+		refreshRadar()
+	}, [categories])
+
+	// 초기 화면
+	useEffect(() => {
+		const idx = Math.floor(Math.random() * circle1Pos.length)
+		!isInitLoading &&
+			radarInitBucket?.circle1 &&
+			radarInitBucket.circle1.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						setBuckets1st((prev) => {
+							if(prev.length >= 3) return prev
+							
+							const isUserExist = prev.some((e) => e.bucketId === bucket.bucketId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								return [...prev, { ...bucket, pos: circle1Pos[idx][index]}]
+							}
+							return prev
+						})
+					},
+					200
+				)
+			})
+
+		const idx2 = Math.floor(Math.random() * circle2Pos.length)
+		!isInitLoading &&
+			radarInitBucket?.circle2 &&
+			radarInitBucket.circle2.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						setBuckets2nd((prev) => {
+							if(prev.length >= 4) return prev
+							
+							const isUserExist = prev.some((e) => e.bucketId === bucket.bucketId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								return [...prev, { ...bucket, pos: circle2Pos[idx2][index]}]
+							}
+							return prev
+						})
+					},
+					500
+				)
+			})
+
+		const idx3 = Math.floor(Math.random() * circle3Pos.length)
+		!isInitLoading &&
+			radarInitBucket?.circle3 &&
+			radarInitBucket.circle3.forEach((bucket, index) => {
+				setTimeout(
+					() => {
+						setBuckets3rd((prev) => {
+							if(prev.length >= 5) return prev
+							
+							const isUserExist = prev.some((e) => e.bucketId === bucket.bucketId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								return [...prev, { ...bucket, pos: circle3Pos[idx3][index]}]
+							}
+							return prev
+						})
+					},
+					800
+				)
+			})
+	}, [isInitLoading, isRefetchingInit])
+
+	// @TODO: 로직을 분리하고 싶다..
+	// 카테고리 선택시
+	useEffect(() => {
+		const idx = Math.floor(Math.random() * circle1Pos.length)
 		!isLoading &&
 			radarBucket?.circle1 &&
 			radarBucket.circle1.forEach((bucket, index) => {
 				setTimeout(
 					() => {
-						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+						setBuckets1st((prev) => {
+							if(prev.length >= 3) return prev
+							
+							const isUserExist = prev.some((e) => e.bucketId === bucket.bucketId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								return [...prev, { ...bucket, pos: circle1Pos[idx][index]}]
+							}
+							return prev
+						})
 					},
-					200 * index + 100 * Math.random()
+					200
 				)
 			})
-	}, [isLoading, refresh, radarBucket])
 
-	// 두 번째 레이더
-	useEffect(() => {
-		const radius = 34
-		const maxNum = 6
+		const idx2 = Math.floor(Math.random() * circle2Pos.length)
 		!isLoading &&
-			radarBucket &&
+			radarBucket?.circle2 &&
 			radarBucket.circle2.forEach((bucket, index) => {
 				setTimeout(
 					() => {
-						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+						setBuckets2nd((prev) => {
+							if(prev.length >= 4) return prev
+							
+							const isUserExist = prev.some((e) => e.bucketId === bucket.bucketId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								return [...prev, { ...bucket, pos: circle2Pos[idx2][index]}]
+							}
+							return prev
+						})
 					},
-					200 * index + 100 * Math.random()
+					500
 				)
 			})
-	}, [isLoading, refresh, radarBucket])
 
-	// 세 번째 레이더
-	useEffect(() => {
-		const radius = 50
-		const maxNum = 9
+		const idx3 = Math.floor(Math.random() * circle3Pos.length)
 		!isLoading &&
-			radarBucket &&
+			radarBucket?.circle3 &&
 			radarBucket.circle3.forEach((bucket, index) => {
 				setTimeout(
 					() => {
-						bucket1stPositioning({ setBuckets1st, bucket, radius, maxNum })
+						setBuckets3rd((prev) => {
+							if(prev.length >= 5) return prev
+							
+							const isUserExist = prev.some((e) => e.bucketId === bucket.bucketId)
+
+							// // 존재하지 않으면 추가
+							if (!isUserExist) {
+								return [...prev, { ...bucket, pos: circle3Pos[idx3][index]}]
+							}
+							return prev
+						})
 					},
-					200 * index + 100 * Math.random()
+					800
 				)
 			})
-	}, [isLoading, refresh, radarBucket])
+	}, [isLoading, radarBucket])
 
 	return (
 		<div>
@@ -153,7 +253,7 @@ const AllTab = () => {
 				</div>
 			</div>
 
-			<ButtonArea refresh={refresh} refreshRadar={refreshRadar} />
+			<ButtonArea refreshRadar={refreshRadar} />
 			<BucketBottomSheet
 				bucketId={bucketId}
 				setBucketId={setBucketId}

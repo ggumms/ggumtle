@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import BucketFeed from './BucketFeed'
-import ReviewFeed from './ReviewFeed'
+import BucketFeed from '../Feed/BucketFeed'
+import ReviewFeed from '../Feed/ReviewFeed'
 import { useQuery } from '@tanstack/react-query'
 import { getTimeline } from '../../api'
 import { CategoryType, ColorType } from '../../../../interfaces'
@@ -61,9 +61,9 @@ const FeedSection = ({ userId }: { userId: number }) => {
 				{timeline &&
 					timeline.content.map((feed: IFeed) =>
 						feed.type === 'BUCKET' ? (
-							<BucketFeed userId={userId} bucket={feed} />
+							<BucketFeed userId={userId} bucket={feed} key={`bucket-${feed.id}`}/>
 						) : (
-							<ReviewFeed userId={userId} review={feed} />
+							<ReviewFeed userId={userId} review={feed} key={`review-${feed.id}`} />
 						)
 					)}
 			</div>
