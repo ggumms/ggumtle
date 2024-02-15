@@ -24,4 +24,5 @@ services:
       - $HOME/ggumtle/image:/image
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - TZ: "Asia/Seoul"
     restart: unless-stopped
