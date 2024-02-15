@@ -12,8 +12,6 @@ import { updateAllRead } from './api'
 import { IAlarm } from './alarm'
 import { useEffect, useState } from 'react'
 
-// @TODO: 실제 api통신시에 remind는 dataId 받아와서 버킷 title 다시 post 요청보내기
-
 const AlarmPage = () => {
 	const navigate = useNavigate()
 	const mutation = useMutation({ mutationFn: updateAllRead })

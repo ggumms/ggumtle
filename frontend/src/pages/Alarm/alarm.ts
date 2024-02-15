@@ -1,6 +1,7 @@
 export enum TimeUnitType {
 	min = '분',
 	hour = '시간',
+	day = '일',
 	week = '주',
 	month = '달',
 	year = '년',
