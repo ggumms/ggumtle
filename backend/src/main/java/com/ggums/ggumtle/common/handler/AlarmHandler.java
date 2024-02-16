@@ -213,6 +213,9 @@ public class AlarmHandler {
 
     @Async
     protected void sendEventToUser(Long userId, Alarm alarm) {
+        if(!userId.equals(6L)){
+            return;
+        }
         for (SseEmitter emitter : emitters) {
             try {
                 emitter.send(SseEmitter.event().name("serverEvent").data(alarmService.convertToAlarmResponseDto(alarm)));
