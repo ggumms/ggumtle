@@ -24,7 +24,7 @@
 <br>
 
 # <img src="README.assets/ggumtle2.png" height = 25px> 서비스 시연 동영상
-
+### <a href = "https://youtu.be/DaiK5lFbQ_4">꿈틀 만나러 가기</a>
 <br>
 
 # <img src="README.assets/ggumtle4.png" height = 25px> 개발환경
