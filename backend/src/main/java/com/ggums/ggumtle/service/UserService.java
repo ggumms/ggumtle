@@ -1,6 +1,7 @@
 package com.ggums.ggumtle.service;
 
 import com.ggums.ggumtle.common.handler.AlarmHandler;
+import com.ggums.ggumtle.common.handler.HangulHandler;
 import com.ggums.ggumtle.common.handler.ImageHandler;
 import com.ggums.ggumtle.common.handler.TransactionHandler;
 import com.ggums.ggumtle.common.jwt.JwtTokenManager;
@@ -19,9 +20,9 @@ import com.ggums.ggumtle.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.server.authorization.AuthorizationWebFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,6 +53,7 @@ public class UserService {
     private final JwtTokenManager jwtTokenManager;
     private final ImageHandler imageHandler;
     private final AlarmHandler alarmHandler;
+    private final HangulHandler hangulHandler;
     private final PasswordEncoder passwordEncoder;
 
     public String updateUser(User user, MultipartFile userImage, UserUpdateRequestDto requestDto){
@@ -158,21 +160,69 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserListResponseDto searchUsers(String word, Pageable pageable, User currentUser) {
-        Page<User> users = userRepository.findByUserNicknameContainingAndDeletedDateIsNull(word, pageable);
-        List<Long> userIds = users.getContent().stream()
-                .filter(u -> !u.getId().equals(currentUser.getId()))
-                .map(User::getId) // only one user needs to be filtered
+        List<User> searchResult = new ArrayList<>();
+
+        List<String> searchKeywords = HangulHandler.separateInitialConsonants(word);
+
+        List<User> allUsers = userRepository.findAllByDeletedDateIsNull();
+
+        for (User user : allUsers) {
+            String userNickname = user.getUserNickname();
+            if (isMatchingInitialConsonants(userNickname, searchKeywords)) {
+                searchResult.add(user);
+            }
+        }
+
+        List<User> filteredUsers = removeDuplicates(searchResult);
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), filteredUsers.size());
+        List<User> paginatedUsers = filteredUsers.subList(start, end);
+        Page<User> paginatedPage = new PageImpl<>(paginatedUsers, pageable, filteredUsers.size());
+
+        List<Long> userIds = paginatedPage.getContent().stream()
+                .map(User::getId)
+                .filter(id -> !id.equals(currentUser.getId()))
                 .collect(Collectors.toList());
 
         Map<Long, Boolean> followingMap = getFollowingMap(currentUser, userIds);
 
-        Page<UserListDto> searchList = users.map(user -> convertToUserSearchListDto(user, followingMap));
+        Page<UserListDto> searchList = paginatedPage.map(user -> convertToUserSearchListDto(user, followingMap));
         return UserListResponseDto.builder().searchList(searchList).build();
     }
 
-    private Map<Long, Bucket> getRepresentativeBucketsMap(List<Long> userIds) {
-        List<Bucket> repBucket = bucketRepository.findByUserIdIn(userIds);
-        return repBucket.stream().collect(Collectors.toConcurrentMap(rb -> rb.getUser().getId(), Function.identity()));
+    private boolean isMatchingInitialConsonants(String userNickname, List<String> searchKeywords) {
+        if (userNickname.length() < searchKeywords.size()) {
+            return false;
+        }
+
+        List<String> userInitials = new ArrayList<>();
+        for (char c : userNickname.toCharArray()) {
+            String initialConsonant = HangulHandler.getFirstInitialConsonant(String.valueOf(c));
+            userInitials.add(initialConsonant);
+        }
+
+        int keywordIndex = 0;
+        for (String userInitial : userInitials) {
+            if (userInitial.equals(searchKeywords.get(keywordIndex))) {
+                keywordIndex++;
+            }
+            if (keywordIndex == searchKeywords.size()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<User> removeDuplicates(List<User> userList) {
+        Set<Long> userIds = new HashSet<>();
+        List<User> result = new ArrayList<>();
+        for (User user : userList) {
+            if (userIds.add(user.getId())) {
+                result.add(user);
+            }
+        }
+        return result;
     }
 
     private Map<Long, Boolean> getFollowingMap(User currentUser, List<Long> userIds) {
