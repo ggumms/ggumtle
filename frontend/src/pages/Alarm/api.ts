@@ -13,7 +13,7 @@ export const getAlarm = async ({ queryKey }: QueryFunctionContext) => {
 }
 export const getAlarmCount = async () => {
 	return await instance
-		.get(`alarm/count`)
+		.get(`/alarm/count`)
 		.then((response) => {
 			console.log(response.data.alarmCount)
 			return response.data.alarmCount
