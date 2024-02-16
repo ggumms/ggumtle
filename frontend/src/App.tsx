@@ -38,7 +38,7 @@ useEffect(() => {
 	const fetchSse = async() => {
 		try {
 
-			const alarmConnectEndpoint = `${import.meta.env.VITE_BASE_URL}alarm/subscribe`
+			const alarmConnectEndpoint = `${import.meta.env.VITE_BASE_URL}/alarm/subscribe`
 			eventSource = new EventSourcePolyfill(alarmConnectEndpoint, {
 				headers: {Authorization: `Bearer ${import.meta.env.VITE_USER1_TOKEN}`,}
 			})
