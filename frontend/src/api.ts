@@ -27,7 +27,7 @@ interface IGetUserInfoRes {
 }
 
 export const getMyInfo = async (): Promise<IMyUserInfo> => {
-	const userRes = await instance.get<IGetUserInfoRes>(`user/self-info`)
+	const userRes = await instance.get<IGetUserInfoRes>(`/user/self-info`)
 	return userRes.data.selfInfo
 }
 
@@ -39,6 +39,6 @@ interface IGetBucketInfoRes {
 }
 export const getBucketInfo = async ({ queryKey }: QueryFunctionContext): Promise<IBucketInfo> => {
 	const [, id] = queryKey
-	const bucketRes = await instance.get<IGetBucketInfoRes>(`bucket/info/${id}`)
+	const bucketRes = await instance.get<IGetBucketInfoRes>(`/bucket/info/${id}`)
 	return bucketRes.data.bucketInfo
 }

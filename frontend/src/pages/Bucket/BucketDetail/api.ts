@@ -22,9 +22,9 @@ export const getBucketDetailInfo = async ({
 	queryKey,
 }: QueryFunctionContext): Promise<IBucketDetailInfo> => {
 	const [, id] = queryKey
-	const bucketRes = await instance.get<IGetBucketInfoRes>(`bucket/info/${id}`)
+	const bucketRes = await instance.get<IGetBucketInfoRes>(`/bucket/info/${id}`)
 	const { writerId } = bucketRes.data.bucketInfo
-	const userRes = await instance.get<IGetUserInfoRes>(`user/${writerId}`)
+	const userRes = await instance.get<IGetUserInfoRes>(`/user/${writerId}`)
 	return { bucketInfo: bucketRes.data.bucketInfo, userInfo: userRes.data.userInfo }
 }
 // - Delete Request
@@ -33,7 +33,7 @@ interface IDeleteBucketRes {
 	message: string
 }
 export const deleteBucket = async (id: string): Promise<'success' | 'fail'> => {
-	const deleteRes = await instance.delete<IDeleteBucketRes>(`bucket/${id}`)
+	const deleteRes = await instance.delete<IDeleteBucketRes>(`/bucket/${id}`)
 	return deleteRes.data.result === 'ok' ? 'success' : 'fail'
 }
 
@@ -47,7 +47,7 @@ export const getBucketReaction = async ({
 	queryKey,
 }: QueryFunctionContext): Promise<IReactionInfo> => {
 	const [, id] = queryKey
-	const reactionRes = await instance.get<IGetReactionRes>(`bucket/reaction/${id}`)
+	const reactionRes = await instance.get<IGetReactionRes>(`/bucket/reaction/${id}`)
 	return reactionRes.data.bucketReaction
 }
 // - Post Request
@@ -59,7 +59,7 @@ export const postBucketReaction = async (
 	id: string,
 	reactionType: ReactionType
 ): Promise<'success' | 'fail'> => {
-	const reactionRes = await instance.post<IPostReactionRes>(`bucket/reaction/`, {
+	const reactionRes = await instance.post<IPostReactionRes>(`/bucket/reaction/`, {
 		bucketId: id,
 		userReaction: reactionType,
 	})
@@ -84,7 +84,7 @@ export const getBucketCommentList = async ({
 	const fetchSize = import.meta.env.VITE_COMMENT_PAGE_SIZE
 
 	const commentRes = await instance.get<IGetCommentRes>(
-		`comment/bucket/${id}?page=${pageParam}&size=${fetchSize}`
+		`/comment/bucket/${id}?page=${pageParam}&size=${fetchSize}`
 	)
 
 	return commentRes.data.bucketCommentList.commentList
@@ -98,7 +98,7 @@ export const postBucketComment = async (
 	id: string,
 	context: string
 ): Promise<'success' | 'fail'> => {
-	const commentRes = await instance.post<IPostCommentRes>(`comment/bucket/${id}`, { context })
+	const commentRes = await instance.post<IPostCommentRes>(`/comment/bucket/${id}`, { context })
 	return commentRes.data.result === 'ok' ? 'success' : 'fail'
 }
 // - Delete Request
@@ -107,7 +107,7 @@ interface IDeleteCommentRes {
 	message: string
 }
 export const deleteBucketComment = async (id: number): Promise<'success' | 'fail'> => {
-	const commentRes = await instance.delete<IDeleteCommentRes>(`comment/bucket/${id}`)
+	const commentRes = await instance.delete<IDeleteCommentRes>(`/comment/bucket/${id}`)
 	return commentRes.data.result === 'ok' ? 'success' : 'fail'
 }
 // - Put Request
@@ -119,7 +119,7 @@ export const putBucketComment = async (
 	id: number,
 	context: string
 ): Promise<'success' | 'fail'> => {
-	const commentRes = await instance.put<IPutCommentRes>(`comment/bucket/${id}`, { context })
+	const commentRes = await instance.put<IPutCommentRes>(`/comment/bucket/${id}`, { context })
 	return commentRes.data.result === 'ok' ? 'success' : 'fail'
 }
 
@@ -130,6 +130,6 @@ interface IPostLikeRes {
 }
 // Todo : postBucketLikeStatus 이름 변경 필요, LikeRes 소문자로 변경하기
 export const postLikeStatus = async (commentId: number): Promise<'success' | 'fail'> => {
-	const LikeRes = await instance.put<IPostLikeRes>(`comment/bucket/like/${commentId}`)
+	const LikeRes = await instance.put<IPostLikeRes>(`/comment/bucket/like/${commentId}`)
 	return LikeRes.data.result === 'ok' ? 'success' : 'fail'
 }
