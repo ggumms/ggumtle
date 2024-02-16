@@ -17,7 +17,7 @@ interface IGetReviewBriefRes {
 	reviewBrief: IReviewBrief
 }
 export const getReviewBrief = async (bucketId: string): Promise<IReviewBrief> => {
-	const reviewRes = await instance.get<IGetReviewBriefRes>(`review/brief/${bucketId}`)
+	const reviewRes = await instance.get<IGetReviewBriefRes>(`/review/brief/${bucketId}`)
 	return reviewRes.data.reviewBrief
 }
 // - Get detail request
@@ -26,14 +26,14 @@ interface IGetReviewDetailRes {
 	review: IReviewDetail
 }
 export const getReviewDetail = async (reviewId: number): Promise<IReviewDetail> => {
-	const reviewRes = await instance.get<IGetReviewDetailRes>(`review/${reviewId}`)
+	const reviewRes = await instance.get<IGetReviewDetailRes>(`/review/${reviewId}`)
 	return reviewRes.data.review
 }
 export const getReviewDetailQuery = async ({
 	queryKey,
 }: QueryFunctionContext): Promise<IReviewDetail> => {
 	const [, reviewId] = queryKey
-	const reviewRes = await instance.get<IGetReviewDetailRes>(`review/${reviewId}`)
+	const reviewRes = await instance.get<IGetReviewDetailRes>(`/review/${reviewId}`)
 	return reviewRes.data.review
 }
 // - Post review request
@@ -47,7 +47,7 @@ export const postReview = async (
 	context: string,
 	isPosted: boolean
 ): Promise<number> => {
-	const reviewRes = await instance.post<IPostReviewRes>(`review`, {
+	const reviewRes = await instance.post<IPostReviewRes>(`/review`, {
 		bucketId,
 		title,
 		context,
@@ -66,7 +66,7 @@ export const putReview = async (
 	title: string,
 	context: string
 ): Promise<number> => {
-	const reviewRes = await instance.put<IPutReviewRes>(`review`, {
+	const reviewRes = await instance.put<IPutReviewRes>(`/review`, {
 		bucketId,
 		title,
 		context,
@@ -80,7 +80,7 @@ interface IDeleteReviewDetailRes {
 	message: string
 }
 export const deleteReviewDetail = async (reviewId: number): Promise<'success' | 'fail'> => {
-	const reviewRes = await instance.delete<IDeleteReviewDetailRes>(`review/${reviewId}`)
+	const reviewRes = await instance.delete<IDeleteReviewDetailRes>(`/review/${reviewId}`)
 	return reviewRes.data.result === 'ok' ? 'success' : 'fail'
 }
 
@@ -116,7 +116,7 @@ export const getReviewReaction = async ({
 	queryKey,
 }: QueryFunctionContext): Promise<IReactionInfo> => {
 	const [, id] = queryKey
-	const reactionRes = await instance.get<IGetReactionRes>(`review/${id}/reaction`)
+	const reactionRes = await instance.get<IGetReactionRes>(`/review/${id}/reaction`)
 	return reactionRes.data.reviewReactions
 }
 // - Post Request
@@ -128,7 +128,7 @@ export const postReviewReaction = async (
 	id: string,
 	reactionType: ReactionType
 ): Promise<'success' | 'fail'> => {
-	const reactionRes = await instance.post<IPostReactionRes>(`review/${id}/reaction`, {
+	const reactionRes = await instance.post<IPostReactionRes>(`/review/${id}/reaction`, {
 		reaction: reactionType,
 	})
 	if (reactionRes.data.result === 'ok' && reactionRes.data.myReaction === reactionType) {
@@ -152,7 +152,7 @@ export const getReviewCommentList = async ({
 	const fetchSize = import.meta.env.VITE_PAGE_SIZE
 
 	const commentRes = await instance.get<IGetCommentRes>(
-		`comment/review/${id}?page=${pageParam}&size=${fetchSize}`
+		`/comment/review/${id}?page=${pageParam}&size=${fetchSize}`
 	)
 
 	return commentRes.data.reviewCommentList.commentList
@@ -166,7 +166,7 @@ export const postReviewComment = async (
 	id: string,
 	context: string
 ): Promise<'success' | 'fail'> => {
-	const commentRes = await instance.post<IPostCommentRes>(`comment/review/${id}`, { context })
+	const commentRes = await instance.post<IPostCommentRes>(`/comment/review/${id}`, { context })
 	return commentRes.data.result === 'ok' ? 'success' : 'fail'
 }
 // - Delete Request
@@ -175,7 +175,7 @@ interface IDeleteCommentRes {
 	message: string
 }
 export const deleteReviewComment = async (id: number): Promise<'success' | 'fail'> => {
-	const commentRes = await instance.delete<IDeleteCommentRes>(`comment/review/${id}`)
+	const commentRes = await instance.delete<IDeleteCommentRes>(`/comment/review/${id}`)
 	return commentRes.data.result === 'ok' ? 'success' : 'fail'
 }
 // - Put Request
@@ -187,7 +187,7 @@ export const putReviewComment = async (
 	id: number,
 	context: string
 ): Promise<'success' | 'fail'> => {
-	const commentRes = await instance.put<IPutCommentRes>(`comment/review/${id}`, { context })
+	const commentRes = await instance.put<IPutCommentRes>(`/comment/review/${id}`, { context })
 	return commentRes.data.result === 'ok' ? 'success' : 'fail'
 }
 
@@ -198,6 +198,6 @@ interface IPostLikeRes {
 }
 // Todo : postBucketLikeStatus 이름 변경 필요, LikeRes 소문자로 변경하기
 export const putReviewLikeStatus = async (commentId: number): Promise<'success' | 'fail'> => {
-	const LikeRes = await instance.put<IPostLikeRes>(`comment/review/like/${commentId}`)
+	const LikeRes = await instance.put<IPostLikeRes>(`/comment/review/like/${commentId}`)
 	return LikeRes.data.result === 'ok' ? 'success' : 'fail'
 }

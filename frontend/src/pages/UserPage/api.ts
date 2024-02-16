@@ -5,7 +5,7 @@ import { ITimelineInfo } from '../../interfaces'
 export const getUserStats = async ({ queryKey }: QueryFunctionContext) => {
 	const [, userId] = queryKey
 	return await instance
-		.get(`user/stats/${userId}`)
+		.get(`/user/stats/${userId}`)
 		.then((response) => response.data.userStats)
 		.catch((e) => console.log(e))
 }
@@ -22,7 +22,7 @@ export const getTimeline = async ({
 	const [, userId, doing, done, review] = queryKey
 	const fetchSize = import.meta.env.VITE_PAGE_SIZE
 
-	const timelineRes = await instance.get<ITimelineRes>('timeline', {
+	const timelineRes = await instance.get<ITimelineRes>('/timeline', {
 		params: {
 			userId: userId,
 			doing: doing,
@@ -42,7 +42,7 @@ interface IFollow {
 }
 export const updateFollow = async ({ userId, isFollowing }: IFollow) => {
 	return await instance
-		.put('user/follow', {
+		.put('/user/follow', {
 			isFollowing: isFollowing,
 			followee: userId,
 		})

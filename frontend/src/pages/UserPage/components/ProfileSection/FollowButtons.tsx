@@ -22,15 +22,13 @@ const FollowButtons = ({ userId }: { userId: number }) => {
 	return (
 		<div className="flex gap-2 px-4">
 			{/* @TODO: 마이페이지일 경우 프로필 편집 버튼이 됨 */}
-			
+
 			{isFollow ? (
 				<div
 					onClick={handleFollowButton}
 					className="bg-lightGray text-point1 w-1/2 flex items-center justify-center text-sm h-6 rounded-md"
 				>
-					<span className='pl-3'>
-						팔로잉 중
-						</span>
+					<span className="pl-3">팔로잉 중</span>
 					<IoIosCheckmark className="text-green text-2xl m-0" />
 				</div>
 			) : (
@@ -38,7 +36,7 @@ const FollowButtons = ({ userId }: { userId: number }) => {
 					onClick={handleFollowButton}
 					className="bg-point1 text-white w-1/2 flex items-center justify-center text-sm h-6 rounded-md"
 				>
-					{currentPath === "/mypage" ? '프로필 편집':  '팔로우'}
+					{currentPath === '/mypage' ? '프로필 편집' : '팔로우'}
 				</div>
 			)}
 			<div

@@ -3,7 +3,7 @@ import { instance } from '../../api';
 
 export const getRadarUsers = async () => {
 	return await instance
-		.get('radar/following')
+		.get('/radar/following')
 		.then((response) => response.data.radar)
 		.catch((e) => console.log(e))
 }
@@ -11,14 +11,14 @@ export const getRadarUsers = async () => {
 export const getUserInfo = async ({ queryKey }: QueryFunctionContext) => {
 	const [, userId] = queryKey
 	return await instance
-		.get(`user/${userId}`)
+		.get(`/user/${userId}`)
 		.then((response) => response.data.userInfo)
 		.catch((e) => console.log(e))
 }
 export const getBucketPreview = async ({ queryKey }: QueryFunctionContext) => {
 	const [, bucketId] = queryKey
 	return await instance
-		.get(`bucket/info/${bucketId}`)
+		.get(`/bucket/info/${bucketId}`)
 		.then((response) => response.data.bucketInfo)
 		.catch((e) => console.log(e))
 }
@@ -28,7 +28,7 @@ export const getRadarBuckets = async ({ queryKey }: QueryFunctionContext) => {
 	const [, categories] = queryKey
 
 	return await instance
-		.get('radar/total', {
+		.get('/radar/total', {
 			params: {
 				categories: categories,
 			},
@@ -39,14 +39,14 @@ export const getRadarBuckets = async ({ queryKey }: QueryFunctionContext) => {
 
 export const getRadarInitBuckets = async () => {
 	return await instance
-		.get('radar/total/init')
+		.get('/radar/total/init')
 		.then((response) => response.data.radar)
 		.catch((e) => console.log(e))
 }
 
 export const getMy = async () => {
 	return await instance
-		.get('user/self-info')
+		.get('/user/self-info')
 		.then((response) => response.data.selfInfo)
 		.catch((e) => console.log(e))
 }

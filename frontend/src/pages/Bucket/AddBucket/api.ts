@@ -10,7 +10,7 @@ interface IPostBucketRes {
 	bucketId: number
 }
 export const postBucket = async (bucketInfo: IBaseBucketInfo): Promise<number | null> => {
-	const bucketRes = await instance.post<IPostBucketRes>(`bucket/`, bucketInfo)
+	const bucketRes = await instance.post<IPostBucketRes>(`/bucket/`, bucketInfo)
 	if (bucketRes.data.result === 'ok') {
 		return bucketRes.data.bucketId
 	}
@@ -22,7 +22,7 @@ interface IBucketImageRes {
 	bucketImageUrl: string
 }
 export const postBucketImage = async (image: FormData, id: number): Promise<string> => {
-	const imageRes = await multipartInstance.post<IBucketImageRes>(`bucket/image/${id}`, image)
+	const imageRes = await multipartInstance.post<IBucketImageRes>(`/bucket/image/${id}`, image)
 	return imageRes.data.bucketImageUrl
 
 	// const axiosConfig = {
