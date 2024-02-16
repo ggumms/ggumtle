@@ -36,7 +36,7 @@ public class AlarmController {
     @GetMapping(value = "/subscribe", produces = "text/event-stream")
     @Operation(summary = "알람 연결", description = "알람 연결을 요청합니다")
     public SseEmitter subscribe(@AuthenticationPrincipal User user) {
-        Long userId = user.getId();
+//        Long userId = user.getId();
         SseEmitter emitter = new SseEmitter(Long.MAX_VALUE);
         try {
             emitter.send(SseEmitter.event().name("INIT"));
@@ -44,15 +44,21 @@ public class AlarmController {
             throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
         }
 
-        // if previous emitter exist, complete(delete)
-        SseEmitter previousEmitter = alarmHandler.userEmitters.put(userId, emitter);
-        if (previousEmitter != null) {
-            previousEmitter.complete();
-        }
+        alarmHandler.emitters.add(emitter);
 
-        emitter.onCompletion(() -> alarmHandler.userEmitters.remove(userId, emitter));
-        emitter.onTimeout(() -> alarmHandler.userEmitters.remove(userId, emitter));
-        emitter.onError((e) -> alarmHandler.userEmitters.remove(userId, emitter));
+//        // if previous emitter exist, complete(delete)
+//        SseEmitter previousEmitter = alarmHandler.userEmitters.put(userId, emitter);
+//        if (previousEmitter != null) {
+//            previousEmitter.complete();
+//        }
+        emitter.onCompletion(() -> alarmHandler.emitters.remove(emitter));
+        emitter.onTimeout(() -> alarmHandler.emitters.remove(emitter));
+        emitter.onError((e) -> alarmHandler.emitters.remove(emitter));
+
+
+//        emitter.onCompletion(() -> alarmHandler.userEmitters.remove(userId, emitter));
+//        emitter.onTimeout(() -> alarmHandler.userEmitters.remove(userId, emitter));
+//        emitter.onError((e) -> alarmHandler.userEmitters.remove(userId, emitter));
 
         return emitter;
     }
