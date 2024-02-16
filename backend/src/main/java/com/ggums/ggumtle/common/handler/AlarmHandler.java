@@ -42,11 +42,13 @@ public class AlarmHandler {
     @Async
     @Scheduled(fixedRate = 30000)
     public void sendHeartbeatToClients() {
-        for(SseEmitter emitter : emitters){
+        List<SseEmitter> emittersCopy = new ArrayList<>(emitters);
+
+        for(SseEmitter emitter : emittersCopy){
             try {
                 emitter.send(SseEmitter.event().comment("heartbeat"));
             } catch (IOException e) {
-                emitters.remove(emitter);
+                emittersCopy.remove(emitter);
             } catch (Exception e) {
                 throw new CustomException(ExceptionType.SSE_EMITTER_ERROR);
             }
@@ -216,7 +218,8 @@ public class AlarmHandler {
         if(!userId.equals(6L)){
             return;
         }
-        for (SseEmitter emitter : emitters) {
+        List<SseEmitter> emittersCopy = new ArrayList<>(emitters);
+        for (SseEmitter emitter : emittersCopy) {
             try {
                 emitter.send(SseEmitter.event().name("serverEvent").data(alarmService.convertToAlarmResponseDto(alarm)));
             } catch (IOException e) {
