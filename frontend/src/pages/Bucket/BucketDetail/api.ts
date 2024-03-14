@@ -50,7 +50,7 @@ export const getBucketReaction = async ({
 	const reactionRes = await instance.get<IGetReactionRes>(`/bucket/reaction/${id}`)
 	return reactionRes.data.bucketReaction
 }
-// - Post Request
+// - Post Requestc
 interface IPostReactionRes {
 	result: string
 	userReaction: ReactionType
