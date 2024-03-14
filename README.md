@@ -1,6 +1,6 @@
 # <img src="README.assets/ggumtle.png" height = 25px> 꿈 : 틀 소개
 
-![Alt text](/README.assets/ggumtle-thumnail.png)
+![Alt text](/README.assets/ggumtle-thumnail-2.png)
 
     꿈, 이제는 정말 이뤄나갈 시간.
     마음에만 담아두지 말고 꿈틀에 담아보세요.
